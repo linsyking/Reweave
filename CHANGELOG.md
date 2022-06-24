@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.3](https://focs.ji.sjtu.edu.cn/git/SilverFOCS-22/p2team01/compare/v0.0.2...v0.0.3) (2022-06-24)
+
+
+### Bug Fixes
+
+* fix it ([49b96df](https://focs.ji.sjtu.edu.cn/git/SilverFOCS-22/p2team01/commit/49b96df027187ffada543796f86ee638d75c4e3c))
+
 ### 0.0.2 (2022-06-24)
 
 
