@@ -22,7 +22,7 @@ cd p2team01
 # Next, install packages and compile
 make
 
-# Now you can view the index.html file that elm compiles!
+# Now you can view the index.html file that elm compiles! 
 ```
 
 ## Usage
