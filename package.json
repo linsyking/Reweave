@@ -1,0 +1,16 @@
+{
+  "name" : "p2",
+  "version": "0.0.1",
+  "scripts": {
+    "release": "standard-version && git push --follow-tags origin dev"
+  },
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.3.0",
+    "standard-version": "^9.5.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
