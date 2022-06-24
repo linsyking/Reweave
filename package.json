@@ -1,6 +1,6 @@
 {
   "name": "p2",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "release": "standard-version && git push --follow-tags origin dev"
   },
@@ -13,7 +13,7 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-   "repository": {
+  "repository": {
     "type": "git",
     "url": "https://focs.ji.sjtu.edu.cn/git/SilverFOCS-22/p2team01"
   }
