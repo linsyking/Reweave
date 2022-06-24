@@ -2,10 +2,12 @@
   "name": "p2",
   "version": "0.0.3",
   "scripts": {
-    "release": "standard-version && git push --follow-tags origin dev"
+    "release": "standard-version && git push --follow-tags origin dev",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "cz-conventional-changelog": "^3.3.0",
+    "husky": "^8.0.1",
     "standard-version": "^9.5.0"
   },
   "config": {
