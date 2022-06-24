@@ -49,7 +49,7 @@ Wang Dayong
 
 ### Team logo
 
-<img src="https:////wsl$/Ubuntu/home/zhang/22SU/p1team01/assets/img/logo.png" style="zoom:10%;" />
+
 
 # License
 
