@@ -20,3 +20,4 @@ scripts/grouping.csv
 node_modules/
 index.html
 build/
+!public/index.html
