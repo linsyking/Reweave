@@ -2,6 +2,7 @@ module Lib.Layer.Base exposing (..)
 
 import Base exposing (GlobalData, Msg)
 import Html exposing (Html)
+import Lib.Audio.Base exposing (AudioOption)
 
 
 type alias Layer a b =
@@ -16,7 +17,8 @@ type alias Layer a b =
 type LayerMsg
     = LayerStringMsg String
     | LayerIntMsg Int
-    | LayerSoundMsg String
+    | LayerSoundMsg String String AudioOption
+    | LayerStopSoundMsg String
     | NullLayerMsg
 
 

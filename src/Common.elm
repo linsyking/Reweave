@@ -1,11 +1,12 @@
-module Common exposing (Model, Sound(..), SoundState(..), audio, initGlobalData)
+module Common exposing (Model, audio, initGlobalData)
 
 import Audio exposing (Audio, AudioData)
 import Base exposing (..)
 import Constants exposing (..)
+import Lib.Audio.Audio exposing (getAudio)
+import Lib.Audio.Base exposing (AudioRepo)
 import Lib.Scene.Base exposing (..)
 import Scenes.SceneSettings exposing (..)
-import Time
 
 
 type alias Model =
@@ -13,19 +14,8 @@ type alias Model =
     , currentScene : SceneCT --- Readonly
     , currentGlobalData : GlobalData
     , time : Int --- Readonly
-    , sound : Sound
-    , soundState : SoundState
+    , audiorepo : AudioRepo
     }
-
-
-type Sound
-    = NoSound
-    | CurrentSound Audio.Source
-
-
-type SoundState
-    = NotPlaying
-    | Playing Time.Posix
 
 
 initGlobalData : GlobalData
@@ -40,16 +30,6 @@ initGlobalData =
 
 
 audio : AudioData -> Model -> Audio
-audio _ model =
-    case model.soundState of
-        Playing t ->
-            case model.sound of
-                CurrentSound cs ->
-                    Audio.audio cs t
-                        |> Audio.scaleVolume model.currentGlobalData.audioVolume
-
-                _ ->
-                    Audio.silence
-
-        _ ->
-            Audio.silence
+audio ad model =
+    Audio.group (getAudio ad model.audiorepo)
+        |> Audio.scaleVolume model.currentGlobalData.audioVolume

@@ -1,6 +1,7 @@
 module Base exposing (Flags, GlobalData, Msg(..))
 
 import Audio
+import Lib.Audio.Base exposing (AudioOption)
 import Time
 
 
@@ -17,8 +18,8 @@ type Msg
     | KeyUp Int
     | StringMessage String
     | NewWindowSize ( Int, Int )
-    | SoundLoaded (Result Audio.LoadError Audio.Source)
-    | PlaySoundGotTime Time.Posix
+    | SoundLoaded String AudioOption (Result Audio.LoadError Audio.Source)
+    | PlaySoundGotTime String AudioOption Audio.Source Time.Posix
     | UnknownMsg
 
 

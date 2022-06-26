@@ -2,6 +2,7 @@ module Lib.Scene.Base exposing (..)
 
 import Base exposing (GlobalData, Msg)
 import Html exposing (Html, div)
+import Lib.Audio.Base exposing (AudioOption)
 
 
 type alias Scene a =
@@ -26,7 +27,8 @@ type SceneMsg
 
 
 type SceneOutputMsg
-    = ChangeScene ( SceneMsg, String )
-    | PlaySound String
-    | SetSound Float
+    = SOChangeScene ( SceneMsg, String )
+    | SOPlayAudio String String AudioOption
+    | SOStopAudio String
+    | SOSetVolume Float
     | NullSceneOutputMsg

@@ -7,6 +7,7 @@ import Common exposing (..)
 import Html exposing (Html)
 import Json.Decode as Decode
 import Json.Encode as Encode
+import Lib.Audio.Audio exposing (loadAudio, stopAudio)
 import Lib.Coordinate.Coordinates exposing (getStartPoint, maxHandW)
 import Lib.Layer.Base exposing (LayerMsg(..))
 import Lib.Scene.Base exposing (..)
@@ -28,8 +29,7 @@ initModel =
     , currentScene = nullSceneCT
     , currentGlobalData = initGlobalData
     , time = 0
-    , sound = NoSound
-    , soundState = NotPlaying
+    , audiorepo = []
     }
 
 
@@ -67,7 +67,7 @@ init flags =
         newgd =
             { oldgd | browserViewPort = ( flags.windowWidth, flags.windowHeight ), realWidth = gw, realHeight = gh, startLeft = fl, startTop = ft }
     in
-    ( { ms | currentGlobalData = newgd }, Cmd.none, Audio.loadAudio SoundLoaded "" )
+    ( { ms | currentGlobalData = newgd }, Cmd.none, Audio.cmdNone )
 
 
 
@@ -77,11 +77,11 @@ init flags =
 update : AudioData -> Msg -> Model -> ( Model, Cmd Msg, AudioCmd Msg )
 update _ msg model =
     case msg of
-        SoundLoaded result ->
+        SoundLoaded name opt result ->
             case result of
                 Ok sound ->
-                    ( { model | sound = CurrentSound sound }
-                    , Task.perform PlaySoundGotTime Time.now
+                    ( model
+                    , Task.perform (PlaySoundGotTime name opt sound) Time.now
                     , Audio.cmdNone
                     )
 
@@ -91,8 +91,8 @@ update _ msg model =
                     , Audio.cmdNone
                     )
 
-        PlaySoundGotTime t ->
-            ( { model | soundState = Playing t }, Cmd.none, Audio.cmdNone )
+        PlaySoundGotTime name opt sound t ->
+            ( { model | audiorepo = loadAudio model.audiorepo name sound opt t }, Cmd.none, Audio.cmdNone )
 
         NewWindowSize t ->
             let
@@ -139,14 +139,14 @@ update _ msg model =
                     { tmodel | currentData = sdt }
             in
             case som of
-                ChangeScene ( tm, s ) ->
+                SOChangeScene ( tm, s ) ->
                     --- Load new scene
                     ( loadSceneByName tmodel s tm, Cmd.none, Audio.cmdNone )
 
-                PlaySound s ->
-                    ( bnewmodel, Cmd.none, Audio.loadAudio SoundLoaded s )
+                SOPlayAudio name path opt ->
+                    ( bnewmodel, Cmd.none, Audio.loadAudio (SoundLoaded name opt) path )
 
-                SetSound s ->
+                SOSetVolume s ->
                     let
                         oldgd =
                             bnewmodel.currentGlobalData
@@ -156,7 +156,10 @@ update _ msg model =
                     in
                     ( { bnewmodel | currentGlobalData = newgd }, Cmd.none, Audio.cmdNone )
 
-                NullSceneOutputMsg ->
+                SOStopAudio name ->
+                    ( { bnewmodel | audiorepo = stopAudio bnewmodel.audiorepo name }, Cmd.none, Audio.cmdNone )
+
+                _ ->
                     ( bnewmodel, Cmd.none, Audio.cmdNone )
 
 

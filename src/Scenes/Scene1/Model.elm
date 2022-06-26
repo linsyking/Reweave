@@ -33,10 +33,16 @@ handleLayerMsg lmsg ( model, _ ) =
     case lmsg of
         LayerStringMsg str ->
             if str == "Restart" then
-                ( model, ChangeScene ( NullSceneMsg, "Scene1" ) )
+                ( model, SOChangeScene ( NullSceneMsg, "Scene1" ) )
 
             else
                 ( model, NullSceneOutputMsg )
+
+        LayerSoundMsg name path opt ->
+            ( model, SOPlayAudio name path opt )
+
+        LayerStopSoundMsg name ->
+            ( model, SOStopAudio name )
 
         _ ->
             ( model, NullSceneOutputMsg )
