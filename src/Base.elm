@@ -1,6 +1,7 @@
 module Base exposing (Flags, GlobalData, Msg(..))
 
 import Audio
+import Canvas.Texture exposing (Texture)
 import Lib.Audio.Base exposing (AudioOption)
 import Time
 
@@ -20,7 +21,14 @@ type Msg
     | NewWindowSize ( Int, Int )
     | SoundLoaded String AudioOption (Result Audio.LoadError Audio.Source)
     | PlaySoundGotTime String AudioOption Audio.Source Time.Posix
+    | TextureLoaded (Maybe Texture)
     | UnknownMsg
+
+
+type LoadSprite a
+    = LoadingSprite
+    | LoadedSprite a
+    | LoadErrorSprite
 
 
 type alias GlobalData =
