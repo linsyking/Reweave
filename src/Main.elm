@@ -4,6 +4,8 @@ import Audio exposing (AudioCmd, AudioData)
 import Base exposing (..)
 import Browser.Events exposing (onKeyDown, onKeyUp, onResize)
 import Canvas
+import Canvas.Settings exposing (fill)
+import Color
 import Common exposing (..)
 import Dict
 import Html exposing (Html)
@@ -211,4 +213,6 @@ view _ model =
         , style "top" (String.fromFloat model.currentGlobalData.startTop)
         , style "position" "fixed"
         ]
-        [ (getCurrentScene model).view ( model.currentData, model.time ) model.currentGlobalData ]
+        [ Canvas.shapes [ fill Color.white ] [ Canvas.rect ( 0, 0 ) (toFloat model.currentGlobalData.realWidth) (toFloat model.currentGlobalData.realHeight) ]
+        , (getCurrentScene model).view ( model.currentData, model.time ) model.currentGlobalData
+        ]

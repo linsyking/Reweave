@@ -1,6 +1,7 @@
 module Lib.Resources.Base exposing (..)
 
 import Base exposing (Msg(..))
+import Canvas exposing (text)
 import Canvas.Texture as Texture exposing (Texture)
 import Dict exposing (Dict)
 
@@ -26,6 +27,6 @@ saveSprite dst name text =
     Dict.insert name text dst
 
 
-getSprite : String -> Dict String Texture -> Maybe Texture
-getSprite name dst =
+igetSprite : String -> Dict String Texture -> Maybe Texture
+igetSprite name dst =
     Dict.get name dst
