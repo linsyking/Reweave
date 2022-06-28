@@ -4,8 +4,6 @@ import Audio exposing (AudioCmd, AudioData)
 import Base exposing (..)
 import Browser.Events exposing (onKeyDown, onKeyUp, onResize)
 import Canvas
-import Canvas.Settings exposing (fill)
-import Color exposing (Color)
 import Common exposing (..)
 import Dict
 import Html exposing (Html)
