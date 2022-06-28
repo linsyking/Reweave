@@ -3,6 +3,7 @@ module Common exposing (Model, audio, initGlobalData)
 import Audio exposing (Audio, AudioData)
 import Base exposing (..)
 import Constants exposing (..)
+import Dict
 import Lib.Audio.Audio exposing (getAudio)
 import Lib.Audio.Base exposing (AudioRepo)
 import Lib.Scene.Base exposing (..)
@@ -26,6 +27,7 @@ initGlobalData =
     , startLeft = 0
     , startTop = 0
     , audioVolume = 0.5
+    , sprites = Dict.empty
     }
 
 

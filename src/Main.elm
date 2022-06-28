@@ -3,13 +3,19 @@ port module Main exposing (..)
 import Audio exposing (AudioCmd, AudioData)
 import Base exposing (..)
 import Browser.Events exposing (onKeyDown, onKeyUp, onResize)
+import Canvas
+import Canvas.Settings exposing (fill)
+import Color exposing (Color)
 import Common exposing (..)
+import Dict
 import Html exposing (Html)
+import Html.Attributes exposing (style)
 import Json.Decode as Decode
 import Json.Encode as Encode
 import Lib.Audio.Audio exposing (loadAudio, stopAudio)
 import Lib.Coordinate.Coordinates exposing (getStartPoint, maxHandW)
 import Lib.Layer.Base exposing (LayerMsg(..))
+import Lib.Resources.Base exposing (getTexture, saveSprite)
 import Lib.Scene.Base exposing (..)
 import Lib.Scene.SceneLoader exposing (getCurrentScene, loadSceneByName)
 import Scenes.SceneSettings exposing (..)
@@ -77,6 +83,25 @@ init flags =
 update : AudioData -> Msg -> Model -> ( Model, Cmd Msg, AudioCmd Msg )
 update _ msg model =
     case msg of
+        TextureLoaded _ Nothing ->
+            ( model, Cmd.none, Audio.cmdNone )
+
+        TextureLoaded name (Just t) ->
+            let
+                oldsprites =
+                    model.currentGlobalData.sprites
+
+                newsp =
+                    saveSprite oldsprites name t
+
+                oldgd =
+                    model.currentGlobalData
+
+                newgd =
+                    { oldgd | sprites = newsp }
+            in
+            ( { model | currentGlobalData = newgd }, Cmd.none, Audio.cmdNone )
+
         SoundLoaded name opt result ->
             case result of
                 Ok sound ->
@@ -111,56 +136,60 @@ update _ msg model =
             ( { model | currentGlobalData = newgd }, Cmd.none, Audio.cmdNone )
 
         _ ->
-            let
-                cs =
-                    getCurrentScene model
+            if Dict.isEmpty model.currentGlobalData.sprites then
+                ( model, Cmd.none, Audio.cmdNone )
 
-                cd =
-                    model.currentData
+            else
+                let
+                    cs =
+                        getCurrentScene model
 
-                cm =
-                    ( cd, model.time )
+                    cd =
+                        model.currentData
 
-                ( sdt, som ) =
-                    cs.update msg cm
+                    cm =
+                        ( cd, model.time )
 
-                ntmodel =
-                    { model | time = model.time + 1 }
+                    ( sdt, som ) =
+                        cs.update msg cm
 
-                tmodel =
-                    case msg of
-                        Tick _ ->
-                            ntmodel
+                    ntmodel =
+                        { model | time = model.time + 1 }
 
-                        _ ->
-                            model
+                    tmodel =
+                        case msg of
+                            Tick _ ->
+                                ntmodel
 
-                bnewmodel =
-                    { tmodel | currentData = sdt }
-            in
-            case som of
-                SOChangeScene ( tm, s ) ->
-                    --- Load new scene
-                    ( loadSceneByName tmodel s tm, Cmd.none, Audio.cmdNone )
+                            _ ->
+                                model
 
-                SOPlayAudio name path opt ->
-                    ( bnewmodel, Cmd.none, Audio.loadAudio (SoundLoaded name opt) path )
+                    bnewmodel =
+                        { tmodel | currentData = sdt }
+                in
+                case som of
+                    SOChangeScene ( tm, s ) ->
+                        --- Load new scene
+                        ( loadSceneByName tmodel s tm, Cmd.none, Audio.cmdNone )
 
-                SOSetVolume s ->
-                    let
-                        oldgd =
-                            bnewmodel.currentGlobalData
+                    SOPlayAudio name path opt ->
+                        ( bnewmodel, Cmd.none, Audio.loadAudio (SoundLoaded name opt) path )
 
-                        newgd =
-                            { oldgd | audioVolume = s }
-                    in
-                    ( { bnewmodel | currentGlobalData = newgd }, Cmd.none, Audio.cmdNone )
+                    SOSetVolume s ->
+                        let
+                            oldgd =
+                                bnewmodel.currentGlobalData
 
-                SOStopAudio name ->
-                    ( { bnewmodel | audiorepo = stopAudio bnewmodel.audiorepo name }, Cmd.none, Audio.cmdNone )
+                            newgd =
+                                { oldgd | audioVolume = s }
+                        in
+                        ( { bnewmodel | currentGlobalData = newgd }, Cmd.none, Audio.cmdNone )
 
-                _ ->
-                    ( bnewmodel, Cmd.none, Audio.cmdNone )
+                    SOStopAudio name ->
+                        ( { bnewmodel | audiorepo = stopAudio bnewmodel.audiorepo name }, Cmd.none, Audio.cmdNone )
+
+                    _ ->
+                        ( bnewmodel, Cmd.none, Audio.cmdNone )
 
 
 subscriptions : AudioData -> Model -> Sub Msg
@@ -175,4 +204,13 @@ subscriptions _ _ =
 
 view : AudioData -> Model -> Html Msg
 view _ model =
-    (getCurrentScene model).view ( model.currentData, model.time ) model.currentGlobalData
+    Canvas.toHtmlWith
+        { width = model.currentGlobalData.realWidth
+        , height = model.currentGlobalData.realHeight
+        , textures = getTexture
+        }
+        [ style "left" (String.fromFloat model.currentGlobalData.startLeft)
+        , style "top" (String.fromFloat model.currentGlobalData.startTop)
+        , style "position" "fixed"
+        ]
+        [ (getCurrentScene model).view ( model.currentData, model.time ) model.currentGlobalData ]

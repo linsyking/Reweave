@@ -1,8 +1,7 @@
 module Lib.Layer.LayerHandler exposing (..)
 
 import Base exposing (GlobalData, Msg)
-import Html exposing (Html, div)
-import Html.Attributes
+import Canvas exposing (Renderable)
 import Lib.Layer.Base exposing (Layer, LayerMsg(..), LayerTarget(..))
 
 
@@ -192,18 +191,7 @@ updateLayerRecursive msg t cd msgs xs =
         updateLayerRecursive msg t newcd (newmsgs ++ tmsgs) newdata
 
 
-viewLayer : GlobalData -> Int -> a -> List ( String, Layer a b ) -> Html Msg
+viewLayer : GlobalData -> Int -> a -> List ( String, Layer a b ) -> Renderable
 viewLayer vp t cd xs =
-    div []
-        (List.indexedMap
-            (\id x ->
-                div
-                    [ Html.Attributes.style "z-index" (String.fromInt id)
-                    , Html.Attributes.style "position" "fixed"
-                    , Html.Attributes.style "width" "100%"
-                    , Html.Attributes.style "height" "100%"
-                    ]
-                    [ x ]
-            )
-            (List.map (\( _, l ) -> l.view ( l.data, t ) cd vp) xs)
-        )
+    Canvas.group []
+        (List.map (\( _, l ) -> l.view ( l.data, t ) cd vp) xs)

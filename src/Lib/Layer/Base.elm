@@ -1,7 +1,7 @@
 module Lib.Layer.Base exposing (..)
 
 import Base exposing (GlobalData, Msg)
-import Html exposing (Html)
+import Canvas exposing (Renderable)
 import Lib.Audio.Base exposing (AudioOption)
 
 
@@ -10,7 +10,7 @@ type alias Layer a b =
     { data : b
     , init : Int -> a -> b
     , update : Msg -> LayerMsg -> ( b, Int ) -> a -> ( b, a, ( LayerTarget, LayerMsg ) )
-    , view : ( b, Int ) -> a -> GlobalData -> Html Msg
+    , view : ( b, Int ) -> a -> GlobalData -> Renderable
     }
 
 

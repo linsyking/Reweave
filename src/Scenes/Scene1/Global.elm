@@ -1,7 +1,7 @@
 module Scenes.Scene1.Global exposing (..)
 
 import Base exposing (GlobalData, Msg)
-import Html exposing (Html)
+import Canvas exposing (Renderable)
 import Lib.Scene.Base exposing (..)
 import Scenes.Scene1.Export exposing (..)
 import Scenes.SceneSettings exposing (..)
@@ -46,7 +46,7 @@ toCT sd =
             in
             ( sdata sdt, som )
 
-        view : ( SceneDataTypes, Int ) -> GlobalData -> Html Msg
+        view : ( SceneDataTypes, Int ) -> GlobalData -> Renderable
         view ( dt, t ) vp =
             sd.view ( dtToT dt, t ) vp
     in

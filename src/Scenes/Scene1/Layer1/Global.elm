@@ -1,7 +1,7 @@
 module Scenes.Scene1.Layer1.Global exposing (..)
 
 import Base exposing (GlobalData, Msg)
-import Html exposing (Html)
+import Canvas exposing (Renderable)
 import Lib.Layer.Base exposing (..)
 import Scenes.Scene1.Layer1.Export exposing (Data, nullData)
 import Scenes.Scene1.LayerBase exposing (CommonData)
@@ -38,7 +38,7 @@ getLayerCT layer =
             in
             ( dToCT rldt, rcd, ( rlt, rlm ) )
 
-        view : ( LayerDataType, Int ) -> CommonData -> GlobalData -> Html Msg
+        view : ( LayerDataType, Int ) -> CommonData -> GlobalData -> Renderable
         view ( ldt, t ) cd gd =
             layer.view ( ctTod ldt, t ) cd gd
     in

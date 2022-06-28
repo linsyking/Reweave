@@ -1,7 +1,7 @@
 module Scenes.Scene1.Model exposing (..)
 
 import Base exposing (GlobalData, Msg)
-import Html exposing (Html)
+import Canvas exposing (Renderable)
 import Lib.Layer.Base exposing (LayerMsg(..))
 import Lib.Layer.LayerHandler exposing (updateLayer, viewLayer)
 import Lib.Scene.Base exposing (SceneMsg(..), SceneOutputMsg(..))
@@ -63,6 +63,6 @@ updateModel msg ( model, t ) =
     ( newmodel, newso )
 
 
-viewModel : ( XModel, Int ) -> GlobalData -> Html Msg
+viewModel : ( XModel, Int ) -> GlobalData -> Renderable
 viewModel ( model, t ) gd =
     viewLayer gd t model.commonData model.layers
