@@ -23,6 +23,7 @@ type Msg
     | SoundLoaded String AudioOption (Result Audio.LoadError Audio.Source)
     | PlaySoundGotTime String AudioOption Audio.Source Time.Posix
     | TextureLoaded String (Maybe Texture)
+    | MouseDown ( Float, Float )
     | UnknownMsg
 
 

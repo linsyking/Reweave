@@ -7,7 +7,7 @@ import Lib.Audio.Base exposing (AudioOption)
 
 type alias Scene a =
     { init : Int -> SceneMsg -> a
-    , update : Msg -> ( a, Int ) -> ( a, SceneOutputMsg )
+    , update : Msg -> GlobalData -> ( a, Int ) -> ( a, SceneOutputMsg, GlobalData )
     , view : ( a, Int ) -> GlobalData -> Renderable
     }
 
@@ -15,7 +15,7 @@ type alias Scene a =
 nullScene : Scene Bool
 nullScene =
     { init = \_ _ -> True
-    , update = \_ ( x, _ ) -> ( x, NullSceneOutputMsg )
+    , update = \_ gd ( x, _ ) -> ( x, NullSceneOutputMsg, gd )
     , view = \_ _ -> text [] ( 0, 0 ) ""
     }
 

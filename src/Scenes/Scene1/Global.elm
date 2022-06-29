@@ -38,13 +38,13 @@ toCT sd =
         init t tm =
             sdata (sd.init t tm)
 
-        update : Msg -> ( SceneDataTypes, Int ) -> ( SceneDataTypes, SceneOutputMsg )
-        update msg ( dt, t ) =
+        update : Msg -> GlobalData -> ( SceneDataTypes, Int ) -> ( SceneDataTypes, SceneOutputMsg, GlobalData )
+        update msg gd ( dt, t ) =
             let
-                ( sdt, som ) =
-                    sd.update msg ( dtToT dt, t )
+                ( sdt, som, newgd ) =
+                    sd.update msg gd ( dtToT dt, t )
             in
-            ( sdata sdt, som )
+            ( sdata sdt, som, newgd )
 
         view : ( SceneDataTypes, Int ) -> GlobalData -> Renderable
         view ( dt, t ) vp =

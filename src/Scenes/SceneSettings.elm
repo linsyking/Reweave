@@ -22,6 +22,6 @@ type alias SceneCT =
 nullSceneCT : SceneCT
 nullSceneCT =
     { init = \_ _ -> NullSceneData
-    , update = \_ ( _, _ ) -> ( NullSceneData, NullSceneOutputMsg )
+    , update = \_ g ( _, _ ) -> ( NullSceneData, NullSceneOutputMsg, g )
     , view = \_ _ -> text [] ( 0, 0 ) ""
     }

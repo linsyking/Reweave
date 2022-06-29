@@ -71,3 +71,28 @@ getStartPoint ( w, h ) =
 
     else
         ( 0, (toFloat h - fh) / 2 )
+
+
+judgeMouse : GlobalData -> ( Float, Float ) -> ( Int, Int ) -> ( Int, Int ) -> Bool
+judgeMouse gd ( mx, my ) ( x, y ) ( w, h ) =
+    let
+        ( rpx, rpy ) =
+            posToReal gd ( x, y )
+
+        rw =
+            widthToReal gd w
+
+        rh =
+            heightToReal gd h
+
+        mpx =
+            mx - gd.startLeft
+
+        mpy =
+            my - gd.startTop
+    in
+    if rpx <= mpx && mpx <= rpx + rw && rpy <= mpy && mpy <= rpy + rh then
+        True
+
+    else
+        False
