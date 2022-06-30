@@ -2,7 +2,8 @@
   "name": "p2",
   "version": "0.1.0",
   "scripts": {
-    "release": "standard-version && git push --follow-tags origin dev",
+    "release": "standard-version",
+    "publish": "standard-version && git push --follow-tags origin dev",
     "prepare": "husky install",
     "agree": "curl https://yydbxx.cn/test/st/p2/approvePR.php"
   },
