@@ -20,6 +20,15 @@ updateComponents t msg gd xs =
         xs
 
 
+updateOneComponent : Msg -> ComponentTMsg -> GlobalData -> Int -> Component -> ( Component, ComponentTMsg, GlobalData )
+updateOneComponent msg ct gd t c =
+    let
+        ( newx, newmsg, newgd ) =
+            c.update msg ct gd ( c.data, t )
+    in
+    ( { c | data = newx }, newmsg, newgd )
+
+
 updateSingleComponent : Msg -> ComponentTMsg -> GlobalData -> Int -> Int -> Array Component -> ( Array Component, ComponentTMsg, GlobalData )
 updateSingleComponent msg ct gd t n xs =
     case getComponent n xs of
