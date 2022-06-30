@@ -48,22 +48,19 @@ applyOnce msg gd t cd lms ms dxs xs =
                 ( ( newdata, newcd, newmsg ), newgd ) =
                     if List.isEmpty slname then
                         let
-                            ( ( xxx, yyy, ( zlt, zlm ) ), zgd ) =
+                            ( ( xxx, yyy, lltlm ), zgd ) =
                                 layer.update msg gd NullLayerMsg ( data, t ) cd
                         in
-                        ( ( xxx, yyy, [ ( zlt, zlm ) ] ), zgd )
+                        ( ( xxx, yyy, lltlm ), zgd )
 
                     else
                         List.foldl
                             (\x ( ( dd, dcd, dmg ), nngd ) ->
                                 let
-                                    ( ( xxx, yyy, ( zlt, zlm ) ), zgd ) =
+                                    ( ( xxx, yyy, lltlm ), zgd ) =
                                         layer.update msg nngd x ( dd, t ) dcd
-
-                                    zzz =
-                                        ( zlt, zlm )
                                 in
-                                ( ( xxx, yyy, dmg ++ [ zzz ] ), zgd )
+                                ( ( xxx, yyy, dmg ++ lltlm ), zgd )
                             )
                             ( ( data, cd, [] ), gd )
                             slname
@@ -93,13 +90,10 @@ applyOnceOnlyNew msg gd t cd lms ms dxs xs =
                         List.foldl
                             (\x ( ( dd, dcd, dmg ), nngd ) ->
                                 let
-                                    ( ( xxx, yyy, ( zlt, zlm ) ), zgd ) =
+                                    ( ( xxx, yyy, lltlm ), zgd ) =
                                         layer.update msg nngd x ( dd, t ) dcd
-
-                                    zzz =
-                                        ( zlt, zlm )
                                 in
-                                ( ( xxx, yyy, dmg ++ [ zzz ] ), zgd )
+                                ( ( xxx, yyy, dmg ++ lltlm ), zgd )
                             )
                             ( ( data, cd, [] ), gd )
                             slname
