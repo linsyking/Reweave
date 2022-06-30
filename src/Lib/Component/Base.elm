@@ -1,8 +1,8 @@
 module Lib.Component.Base exposing (..)
 
 import Base exposing (GlobalData, Msg)
+import Canvas exposing (Renderable)
 import Dict exposing (Dict)
-import Html exposing (Html)
 
 
 
@@ -13,8 +13,8 @@ type alias Component =
     { name : String
     , data : Data
     , init : Int -> ComponentTMsg -> Data
-    , update : ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
-    , view : ( Data, Int ) -> GlobalData -> Html Msg
+    , update : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
+    , view : ( Data, Int ) -> GlobalData -> Renderable
     , query : String -> ( Data, Int ) -> ComponentTMsg
     }
 

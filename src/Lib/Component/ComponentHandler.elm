@@ -2,17 +2,17 @@ module Lib.Component.ComponentHandler exposing (..)
 
 import Array exposing (Array)
 import Base exposing (GlobalData, Msg)
-import Html exposing (Html, div)
+import Canvas exposing (Renderable)
 import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 
 
-updateComponents : Int -> GlobalData -> Array Component -> ( Array Component, List ComponentTMsg, GlobalData )
-updateComponents t gd xs =
+updateComponents : Int -> Msg -> GlobalData -> Array Component -> ( Array Component, List ComponentTMsg, GlobalData )
+updateComponents t msg gd xs =
     Array.foldl
         (\x ( acs, ct, mlgg ) ->
             let
                 ( newx, newmsg, newgd ) =
-                    x.update NullComponentMsg mlgg ( x.data, t )
+                    x.update msg NullComponentMsg mlgg ( x.data, t )
             in
             ( Array.push { x | data = newx } acs, ct ++ [ newmsg ], newgd )
         )
@@ -20,13 +20,13 @@ updateComponents t gd xs =
         xs
 
 
-updateSingleComponent : ComponentTMsg -> GlobalData -> Int -> Int -> Array Component -> ( Array Component, ComponentTMsg, GlobalData )
-updateSingleComponent ct gd t n xs =
+updateSingleComponent : Msg -> ComponentTMsg -> GlobalData -> Int -> Int -> Array Component -> ( Array Component, ComponentTMsg, GlobalData )
+updateSingleComponent msg ct gd t n xs =
     case getComponent n xs of
         Just k ->
             let
                 ( newx, newmsg, newgd ) =
-                    k.update ct gd ( k.data, t )
+                    k.update msg ct gd ( k.data, t )
             in
             ( Array.set n { k | data = newx } xs, newmsg, newgd )
 
@@ -34,9 +34,9 @@ updateSingleComponent ct gd t n xs =
             ( xs, NullComponentMsg, gd )
 
 
-genView : GlobalData -> Int -> Array Component -> Html Msg
+genView : GlobalData -> Int -> Array Component -> Renderable
 genView vp t xs =
-    div [] (Array.toList (Array.map (\x -> x.view ( x.data, t ) vp) xs))
+    Canvas.group [] (Array.toList (Array.map (\x -> x.view ( x.data, t ) vp) xs))
 
 
 getComponent : Int -> Array Component -> Maybe Component
