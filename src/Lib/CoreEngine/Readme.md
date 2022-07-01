@@ -17,3 +17,9 @@ The layers will be rendered by the order:
 1. FrontgroundLayer: Including HealthBar and Menus and so on
 2. GameLayer: Including all game objects
 3. BackgroundLayer: Inclusing backgrounds
+
+## GameLayer
+
+This layer calculates the collision between object and solid/object and object, and sent the collision result to the objects themselves. Objects will deal with those collision results.
+
+In one game component, you have access to the `GameGloablData` data, which includes solid map and camera position, which is useful.
