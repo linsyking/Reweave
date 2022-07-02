@@ -1,7 +1,7 @@
 module Lib.Scene.Base exposing (..)
 
 import Base exposing (GlobalData, Msg)
-import Canvas exposing (Renderable, text)
+import Canvas exposing (Renderable, group)
 import Lib.Audio.Base exposing (AudioOption)
 
 
@@ -16,7 +16,7 @@ nullScene : Scene Bool
 nullScene =
     { init = \_ _ -> True
     , update = \_ gd ( x, _ ) -> ( x, NullSceneOutputMsg, gd )
-    , view = \_ _ -> text [] ( 0, 0 ) ""
+    , view = \_ _ -> group [] []
     }
 
 

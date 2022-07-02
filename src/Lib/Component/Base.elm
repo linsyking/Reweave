@@ -7,7 +7,7 @@ import Lib.DefinedTypes.Base exposing (DefinedTypes)
 
 
 
---- Componentv Base
+--- Component Base
 
 
 type alias Component =
