@@ -3,7 +3,7 @@ module Lib.CoreEngine.GameComponent.Base exposing (..)
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
 import Dict exposing (Dict)
-import Lib.CoreEngine.Base exposing (GameGloablData)
+import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.DefinedTypes.Base exposing (DefinedTypes)
 
 
@@ -16,8 +16,8 @@ type alias GameComponent =
     , kb_input : Bool
     , data : Data
     , init : Int -> GameComponentTMsg -> Data
-    , update : Msg -> GameComponentTMsg -> GameGloablData -> GlobalData -> ( Data, Int ) -> ( Data, GameComponentTMsg, GameGloablData )
-    , view : ( Data, Int ) -> GameGloablData -> GlobalData -> Renderable
+    , update : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, GameComponentTMsg, GameGlobalData )
+    , view : ( Data, Int ) -> GameGlobalData -> GlobalData -> Renderable
     , query : String -> ( Data, Int ) -> GameComponentTMsg
     }
 
@@ -33,6 +33,8 @@ type GameComponentTMsg
 type alias Data =
     { status : LifeStatus
     , position : ( Int, Int ) -- The position in map
+    , velocity : ( Float, Float )
+    , acceleration : ( Float, Float )
     , simplecheck : Box -- Simple check the collision for faster calculation
     , collisionbox : List Box
     , extra : Dict String DefinedTypes

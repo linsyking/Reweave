@@ -3,11 +3,11 @@ module Lib.CoreEngine.GameComponent.ComponentHandler exposing (..)
 import Array exposing (Array)
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
-import Lib.CoreEngine.Base exposing (GameGloablData)
+import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentTMsg(..))
 
 
-updateOneGameComponent : Msg -> GameComponentTMsg -> GameGloablData -> GlobalData -> Int -> GameComponent -> ( GameComponent, GameComponentTMsg, GameGloablData )
+updateOneGameComponent : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> Int -> GameComponent -> ( GameComponent, GameComponentTMsg, GameGlobalData )
 updateOneGameComponent msg ct ggd gd t c =
     let
         ( newx, newmsg, newggd ) =
@@ -16,7 +16,7 @@ updateOneGameComponent msg ct ggd gd t c =
     ( { c | data = newx }, newmsg, newggd )
 
 
-updateSingleGameComponent : Msg -> GameComponentTMsg -> GameGloablData -> GlobalData -> Int -> Int -> Array GameComponent -> ( Array GameComponent, GameComponentTMsg, GameGloablData )
+updateSingleGameComponent : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> Int -> Int -> Array GameComponent -> ( Array GameComponent, GameComponentTMsg, GameGlobalData )
 updateSingleGameComponent msg ct ggd gd t n xs =
     case getGameComponent n xs of
         Just k ->
@@ -30,7 +30,7 @@ updateSingleGameComponent msg ct ggd gd t n xs =
             ( xs, NullGameComponentMsg, ggd )
 
 
-genView : GameGloablData -> GlobalData -> Int -> Array GameComponent -> Renderable
+genView : GameGlobalData -> GlobalData -> Int -> Array GameComponent -> Renderable
 genView ggd vp t xs =
     Canvas.group [] (Array.toList (Array.map (\x -> x.view ( x.data, t ) ggd vp) xs))
 

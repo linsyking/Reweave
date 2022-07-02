@@ -2,6 +2,7 @@ module Scenes.SceneSettings exposing (SceneCT, SceneDataTypes(..), nullSceneCT)
 
 import Base exposing (..)
 import Canvas exposing (group)
+import Lib.CoreEngine.Export as CoreEngine
 import Lib.Scene.Base exposing (..)
 import Scenes.Scene1.Export as S1
 
@@ -12,6 +13,7 @@ import Scenes.Scene1.Export as S1
 
 type SceneDataTypes
     = S1DataT S1.Data
+    | CoreEngineDataT CoreEngine.Data
     | NullSceneData
 
 

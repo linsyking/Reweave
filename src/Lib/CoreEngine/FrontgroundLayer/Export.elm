@@ -1,6 +1,6 @@
 module Lib.CoreEngine.FrontgroundLayer.Export exposing (..)
 
-import Lib.CoreEngine.Base exposing (GameGloablData)
+import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.FrontgroundLayer.Common exposing (Model)
 import Lib.CoreEngine.FrontgroundLayer.Display exposing (view)
 import Lib.CoreEngine.FrontgroundLayer.Model exposing (initModel, updateModel)
@@ -16,7 +16,7 @@ nullData =
     { k = 0 }
 
 
-layer : Layer GameGloablData Data
+layer : Layer GameGlobalData Data
 layer =
     { data = nullData
     , init = initModel

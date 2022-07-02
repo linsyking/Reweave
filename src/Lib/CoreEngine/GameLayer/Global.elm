@@ -2,7 +2,7 @@ module Lib.CoreEngine.GameLayer.Global exposing (..)
 
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
-import Lib.CoreEngine.Base exposing (GameGloablData)
+import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameLayer.Export exposing (Data, nullData)
 import Lib.CoreEngine.LayerSettings exposing (LayerCT, LayerDataType(..))
 import Lib.Layer.Base exposing (..)
@@ -23,14 +23,14 @@ ctTod ldt =
             nullData
 
 
-getLayerCT : Layer GameGloablData Data -> LayerCT
+getLayerCT : Layer GameGlobalData Data -> LayerCT
 getLayerCT layer =
     let
-        init : Int -> GameGloablData -> LayerDataType
+        init : Int -> GameGlobalData -> LayerDataType
         init t cd =
             dToCT (layer.init t cd)
 
-        update : Msg -> GlobalData -> LayerMsg -> ( LayerDataType, Int ) -> GameGloablData -> ( ( LayerDataType, GameGloablData, List ( LayerTarget, LayerMsg ) ), GlobalData )
+        update : Msg -> GlobalData -> LayerMsg -> ( LayerDataType, Int ) -> GameGlobalData -> ( ( LayerDataType, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
         update m gd lm ( ldt, t ) cd =
             let
                 ( ( rldt, rcd, ltm ), newgd ) =
@@ -38,7 +38,7 @@ getLayerCT layer =
             in
             ( ( dToCT rldt, rcd, ltm ), newgd )
 
-        view : ( LayerDataType, Int ) -> GameGloablData -> GlobalData -> Renderable
+        view : ( LayerDataType, Int ) -> GameGlobalData -> GlobalData -> Renderable
         view ( ldt, t ) cd gd =
             layer.view ( ctTod ldt, t ) cd gd
     in
