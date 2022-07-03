@@ -13,20 +13,24 @@ import Lib.DefinedTypes.Base exposing (DefinedTypes)
 
 type alias GameComponent =
     { name : String
-    , kb_input : Bool
+    , uid : Int
     , data : Data
     , init : Int -> GameComponentTMsg -> Data
-    , update : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, GameComponentTMsg, GameGlobalData )
+    , update : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
     , view : ( Data, Int ) -> GameGlobalData -> GlobalData -> Renderable
     , query : String -> ( Data, Int ) -> GameComponentTMsg
     }
 
 
+type GameComponentMsgType
+    = GameParentMsg GameComponentTMsg
+    | GameActorUidMsg Int GameComponentTMsg
+    | GameActorNameMsg String GameComponentTMsg
+
+
 type GameComponentTMsg
-    = GameComponentStringMsg String
-    | GameComponentIntMsg Int
-    | GameComponentLStringMsg (List String)
-    | GameComponentLSStringMsg String (List String)
+    = GameSolidCollisionMsg (List ( Int, Int ))
+    | GameInterCollisionMsg String Int (List Box)
     | NullGameComponentMsg
 
 
@@ -47,7 +51,8 @@ type LifeStatus
 
 
 type alias Box =
-    { offsetX : Int
+    { name : String
+    , offsetX : Int
     , offsetY : Int
     , width : Int
     , height : Int

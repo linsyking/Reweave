@@ -28,6 +28,7 @@ initGlobalData =
     , startTop = 0
     , audioVolume = 0.5
     , sprites = Dict.empty
+    , randomnum = 0
     }
 
 

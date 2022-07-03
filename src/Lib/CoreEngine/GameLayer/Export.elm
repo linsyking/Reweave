@@ -1,6 +1,8 @@
 module Lib.CoreEngine.GameLayer.Export exposing (..)
 
+import Array
 import Lib.CoreEngine.Base exposing (GameGlobalData)
+import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameLayer.Common exposing (Model)
 import Lib.CoreEngine.GameLayer.Display exposing (view)
 import Lib.CoreEngine.GameLayer.Model exposing (initModel, updateModel)
@@ -13,7 +15,7 @@ type alias Data =
 
 nullData : Data
 nullData =
-    { k = 0 }
+    { player = Player.gameComponent, actors = Array.empty }
 
 
 layer : Layer GameGlobalData Data
