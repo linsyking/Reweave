@@ -3,7 +3,7 @@ module Components.Bar.Bar exposing (..)
 import Base exposing (GlobalData, Msg)
 import Dict exposing (Dict)
 import Lib.Coordinate.Coordinates exposing (..)
-import Lib.Component.Base exposing (DefinedTypes(..), ComponentTMsg(..), Data, dgetbool, dgetfloat, dsetfloat)
+import Lib.Component.Base exposing (DefinedTypes(..), ComponentTMsg(..), Data, dgetfloat, dsetfloat)
 import Constants exposing (..)
 import Canvas exposing (..)
 import Canvas.Settings exposing (..)
@@ -14,15 +14,15 @@ import Color
 initBar : Int -> ComponentTMsg -> Data
 initBar _ _ =
     Dict.fromList
-        [ ( "cx", CDFloat 120 )
+        [ ( "cx", CDFloat 120 ) -- center of circle
         , ( "cy", CDFloat 120 )
-        , ( "radius", CDFloat 100 )
-        , ( "cp1x", CDFloat 110 )
-        , ( "cp1y", CDFloat 28 )
-        , ( "cp2x", CDFloat 112 )
+        , ( "radius", CDFloat 30 ) -- radius of circle
+        , ( "cp1x", CDFloat 110 ) -- the first controlling point of bezier curve
+        , ( "cp1y", CDFloat 28 ) 
+        , ( "cp2x", CDFloat 112 ) -- the second controlling point of bezier curve
         , ( "cp2y", CDFloat 179 )
-        , ( "t", CDFloat 0 )
-        , ( "clockwise", CDInt 0 )
+        , ( "t", CDFloat 0 ) -- duration
+        , ( "clockwise", CDInt 0 ) -- 4 states of the curve
         , ( "angle", CDFloat -90 )
         ]
 
@@ -34,7 +34,7 @@ bezier clockwise t d =
         radius = dgetfloat d "radius"
         angle = dgetfloat d "angle"
         lineY = cy + radius * sin( degrees angle )
-        k = (90 - abs(angle)) / 2
+        k = (90 - abs(angle)) / 3
         m = radius * cos( degrees angle ) / 8
         cp1x =  cx - m + 20 * t
         cp1y = lineY - k + k * t
@@ -82,7 +82,6 @@ updateBar : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, Compo
 updateBar msg gMsg globalData ( d, t ) =
         let
             time = dgetfloat d "t"
-            clockwise = dgetbool d "clockwise"
         in
         case gMsg of
             ComponentIntMsg num ->
