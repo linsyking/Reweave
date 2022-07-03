@@ -4,7 +4,7 @@ import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
 import Lib.CoreEngine.BackgroundLayer.Export as BGL
 import Lib.CoreEngine.BackgroundLayer.Global as BGLG
-import Lib.CoreEngine.Base exposing (nullGameGlobalData)
+import Lib.CoreEngine.Base exposing (nullGameGlobalData, testGameGlobalData)
 import Lib.CoreEngine.Common exposing (Model)
 import Lib.CoreEngine.FrontgroundLayer.Export as FGL
 import Lib.CoreEngine.FrontgroundLayer.Global as FGLG
@@ -36,7 +36,7 @@ initModel t _ =
         gct =
             GLG.getLayerCT { gl | data = GL.layer.init t nullGameGlobalData }
     in
-    { gameGlobalData = nullGameGlobalData
+    { gameGlobalData = testGameGlobalData
     , layers = [ ( "Background", bgct ), ( "Game", gct ), ( "Frontground", fgct ) ]
     }
 

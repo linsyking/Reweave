@@ -38,6 +38,7 @@ type alias Data =
     { status : LifeStatus
     , position : ( Int, Int ) -- The position in map
     , velocity : ( Float, Float )
+    , mass : Int
     , acceleration : ( Float, Float )
     , simplecheck : Box -- Simple check the collision for faster calculation
     , collisionbox : List Box

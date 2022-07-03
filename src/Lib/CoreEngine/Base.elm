@@ -29,9 +29,16 @@ testGameGlobalData =
 
 sds : Array2D.Array2D Int
 sds =
-    Array2D.repeat 240 135 0
+    Array2D.repeat 240 130 0
 
 
 ps : Array2D.Array2D Int
 ps =
-    Array2D.appendColumn Array.empty 1 (Array2D.appendColumn Array.empty 1 sds)
+    sds
+        |> Array2D.appendColumn Array.empty 1
+        |> Array2D.appendColumn Array.empty 1
+        |> Array2D.appendColumn Array.empty 1
+        |> Array2D.appendColumn Array.empty 1
+        |> Array2D.appendColumn Array.empty 1
+        |> Array2D.appendColumn Array.empty 1
+        |> Array2D.appendColumn Array.empty 1

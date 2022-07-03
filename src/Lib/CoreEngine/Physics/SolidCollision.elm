@@ -5,12 +5,8 @@ import Array2D
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent)
 import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos)
+import Lib.Tools.Math exposing (rfint)
 import Math.Vector2 exposing (Vec2, vec2)
-
-
-rfint : Int -> Int
-rfint x =
-    floor (toFloat x / 8)
 
 
 pointIsSolid : ( Int, Int ) -> GameGlobalData -> Bool
