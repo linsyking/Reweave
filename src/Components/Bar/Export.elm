@@ -5,7 +5,7 @@ import Components.Bar.Bar exposing (viewBar)
 
 component : Component
 component =
-    { name = "HealthBar"
+    { name = "Bar"
     , data = initBar 0 NullComponentMsg
     , init = initBar
     , update = updateBar
