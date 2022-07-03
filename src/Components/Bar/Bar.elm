@@ -22,11 +22,11 @@ initBar _ _ =
         , ( "cp2x", CDFloat 112 )
         , ( "cp2y", CDFloat 179 )
         , ( "t", CDFloat 0 )
-        , ( "clockwise", CDBool True )
+        , ( "clockwise", CDInt 0 )
         , ( "angle", CDFloat -90 )
         ]
 
-bezier : Bool -> Float -> Data -> Data
+bezier : Int -> Float -> Data -> Data
 bezier clockwise t d =
     let
         cx = dgetfloat d "cx"
@@ -45,20 +45,36 @@ bezier clockwise t d =
         cp2CounterX = cx - m - 20 + 20 * t
         cp2CounterY = lineY + k * t 
     in
-        if clockwise then
+        case clockwise of
+            1 ->
                 d 
                     |> dsetfloat "cp1x" cp1x
                     |> dsetfloat "cp1y" cp1y
                     |> dsetfloat "cp2x" cp2x
                     |> dsetfloat "cp2y" cp2y
                     |> dsetfloat "t" (t+0.01)
-        else
+            0 ->
                 d 
                     |> dsetfloat "cp1x" cp1CounterX
                     |> dsetfloat "cp1y" cp1CounterY
                     |> dsetfloat "cp2x" cp2CounterX
                     |> dsetfloat "cp2y" cp2CounterY
                     |> dsetfloat "t" (t+0.01)
+            2 ->
+                d 
+                    |> dsetfloat "cp1x" cp1CounterX
+                    |> dsetfloat "cp1y" (-cp1CounterY+2*lineY)
+                    |> dsetfloat "cp2x" cp2CounterX
+                    |> dsetfloat "cp2y" (-cp2CounterY+2*lineY)
+                    |> dsetfloat "t" (t+0.01)
+            3 ->
+                d 
+                    |> dsetfloat "cp1x" cp1x
+                    |> dsetfloat "cp1y" (-cp1y+2*lineY)
+                    |> dsetfloat "cp2x" cp2x
+                    |> dsetfloat "cp2y" (-cp2y+2*lineY)
+                    |> dsetfloat "t" (t+0.01)
+            _ -> d
 
 
 
@@ -73,10 +89,7 @@ updateBar msg gMsg globalData ( d, t ) =
                 ( d |> dsetfloat "angle" (90 - 180 / 100 * toFloat num), NullComponentMsg, globalData )
 
             _ ->
-                if modBy 2 ( ceiling time ) == 0 then
-                    ( bezier (not clockwise) ( time - toFloat( floor time ) ) d, NullComponentMsg, globalData )
-                else
-                    ( bezier clockwise ( time - toFloat( floor time ) ) d, NullComponentMsg, globalData )
+                ( bezier (modBy 4 ( ceiling time )) ( time - toFloat( floor time ) ) d, NullComponentMsg, globalData )
 
 
 viewBar : ( Data, Int ) -> GlobalData -> Renderable
