@@ -4,7 +4,7 @@ module Scenes.Scene1.Layer2.Models exposing (..)
 
 import Array
 import Base exposing (..)
-import Components.Bar.Export as ComBarE
+import Components.Menu.Export as ComMenuE
 import Constants exposing (..)
 import Lib.Audio.Base exposing (AudioOption(..))
 import Lib.Component.Base exposing (ComponentTMsg(..))
@@ -17,7 +17,7 @@ import Scenes.Scene1.LayerBase exposing (CommonData)
 
 initModel : Int -> CommonData -> ModelX
 initModel _ _ =
-    { components = [ ComBarE.initComponent 0 NullComponentMsg ]
+    { components = [ ComMenuE.initComponent 0 NullComponentMsg ]
     }
 
 
@@ -35,6 +35,16 @@ updateModel msg gd _ ( model, t ) cd =
 
                     else
                         updateSingleComponent msg NullComponentMsg gd t 0 (Array.fromList components)
+            in
+            ( ( { model | components = Array.toList newComponents }, cd, [] ), gd )
+
+        MouseDown _ ->
+            let
+                components =
+                    model.components
+
+                ( newComponents, _, _ ) =
+                    updateSingleComponent msg NullComponentMsg gd t 0 (Array.fromList components)
             in
             ( ( { model | components = Array.toList newComponents }, cd, [] ), gd )
 

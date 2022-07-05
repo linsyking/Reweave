@@ -37,6 +37,7 @@ type DefinedTypes
     | CDFloat Float
     | CDString String
     | CDLString (List String)
+    | CDLComponent (List Component)
 
 
 dgetint : Dict String DefinedTypes -> String -> Int
@@ -132,3 +133,22 @@ dgetLString f s =
 dsetlstring : String -> List String -> Dict String DefinedTypes -> Dict String DefinedTypes
 dsetlstring s t f =
     Dict.update s (\_ -> Just (CDLString t)) f
+
+
+dgetLComponent : Dict String DefinedTypes -> String -> List Component
+dgetLComponent f s =
+    let
+        other =
+            []
+    in
+    case Dict.get s f of
+        Just (CDLComponent x) ->
+            x
+
+        _ ->
+            other
+
+
+dsetLComponent : String -> List Component -> Dict String DefinedTypes -> Dict String DefinedTypes
+dsetLComponent s t f =
+    Dict.update s (\_ -> Just (CDLComponent t)) f
