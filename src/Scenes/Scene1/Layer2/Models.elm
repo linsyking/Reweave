@@ -8,7 +8,7 @@ import Components.Bar.Export as ComBarE
 import Constants exposing (..)
 import Lib.Audio.Base exposing (AudioOption(..))
 import Lib.Component.Base exposing (ComponentTMsg(..))
-import Lib.Component.ComponentHandler exposing (updateComponents, updateSingleComponent)
+import Lib.Component.ComponentHandler exposing (updateSingleComponent)
 import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget(..))
 import Lib.Scene.Base exposing (..)
 import Scenes.Scene1.Layer2.Common exposing (..)
