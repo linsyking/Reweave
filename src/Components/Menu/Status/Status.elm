@@ -18,9 +18,9 @@ initStatus _ _ =
         [ ( "show", CDBool False )
         , ( "life", CDInt 10 )
         , ( "kinetic energy", CDInt 0 )
-        , ( "posX", CDInt 1000 )
-        , ( "posY", CDInt 1000 )
-        , ( "radius", CDInt 50 )
+        , ( "posX", CDInt 1800 )
+        , ( "posY", CDInt 120 )
+        , ( "radius", CDInt 100 )
         ]
 
 
@@ -76,9 +76,10 @@ viewStatus ( model, _ ) globalData =
     in
     group []
         [ shapes [ stroke Color.grey ] [ circle (posToReal globalData ( posX, posY )) (widthToReal globalData radius) ]
+        , renderText globalData 50 "Status" "sans-serif" ( 1730, 80 )
         , if showStatus then
-            renderText globalData 50 "Show" "sans-serif" ( 500, 500 )
+            renderText globalData 50 "Status-Show" "sans-serif" ( 500, 500 )
 
           else
-            renderText globalData 50 "Hide" "sans-serif" ( 500, 500 )
+            renderText globalData 50 "Status-Hide" "sans-serif" ( 500, 500 )
         ]
