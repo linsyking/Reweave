@@ -213,7 +213,7 @@ setFirstFitComponentInList name newCom comList =
     let
         ( comExist, comID ) =
             List.foldl
-                (\( comName, comData ) cnt ->
+                (\( comName, _ ) cnt ->
                     if comName == name then
                         ( True, Tuple.second cnt )
 
