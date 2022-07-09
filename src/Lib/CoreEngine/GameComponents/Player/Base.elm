@@ -6,18 +6,14 @@ type SpaceLog
     | Nope
 
 
-type alias State =
-    { key : String
+type alias StateData =
+    { stype : String
     , starttime : Int
-    , onEnter : Model -> Model
-    , doing : Model -> Model
-    , onExit : Model -> Model
-    , ifExit : Model -> Bool
     }
 
 
-type PlayerStates
-    = PlayerStates (List State)
+type PlayerState
+    = PlayerStates (List StateData)
 
 
 type alias BoundKey =
@@ -34,7 +30,7 @@ type alias Model =
     , originKeys : BoundKey
     , keyPressed : SpaceLog
     , jStartTime : Int
-    , playerStates : PlayerStates
+    , playerStates : PlayerState
     , lastOriginKeys : BoundKey
     }
 
