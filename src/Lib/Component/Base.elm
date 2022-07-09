@@ -1,7 +1,7 @@
 module Lib.Component.Base exposing (..)
 
 import Base exposing (GlobalData, Msg)
-import Canvas exposing (Renderable)
+import Canvas exposing (Renderable, group)
 import Dict exposing (Dict)
 
 
@@ -16,6 +16,29 @@ type alias Component =
     , update : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
     , view : ( Data, Int ) -> GlobalData -> Renderable
     , query : String -> ( Data, Int ) -> ComponentTMsg
+    }
+
+
+nullComponent : Component
+nullComponent =
+    { name = "NULL"
+    , data = Dict.empty
+    , init = \_ _ -> Dict.empty
+    , update =
+        \_ _ _ _ ->
+            ( Dict.empty
+            , NullComponentMsg
+            , { browserViewPort = ( 1280, 720 )
+              , realHeight = 720
+              , realWidth = 1280
+              , startLeft = 0
+              , startTop = 0
+              , audioVolume = 0.5
+              , sprites = Dict.empty
+              }
+            )
+    , view = \_ _ -> group [] []
+    , query = \_ _ -> NullComponentMsg
     }
 
 
@@ -37,7 +60,7 @@ type DefinedTypes
     | CDFloat Float
     | CDString String
     | CDLString (List String)
-    | CDLComponent (List Component)
+    | CDLComponent (List ( String, Component ))
 
 
 dgetint : Dict String DefinedTypes -> String -> Int
@@ -135,7 +158,7 @@ dsetlstring s t f =
     Dict.update s (\_ -> Just (CDLString t)) f
 
 
-dgetLComponent : Dict String DefinedTypes -> String -> List Component
+dgetLComponent : Dict String DefinedTypes -> String -> List ( String, Component )
 dgetLComponent f s =
     let
         other =
@@ -149,6 +172,62 @@ dgetLComponent f s =
             other
 
 
-dsetLComponent : String -> List Component -> Dict String DefinedTypes -> Dict String DefinedTypes
+dsetLComponent : String -> List ( String, Component ) -> Dict String DefinedTypes -> Dict String DefinedTypes
 dsetLComponent s t f =
     Dict.update s (\_ -> Just (CDLComponent t)) f
+
+
+findComponentsInList : String -> List ( String, Component ) -> List ( String, Component )
+findComponentsInList name comList =
+    List.filter
+        (\( comName, _ ) ->
+            if comName == name then
+                True
+
+            else
+                False
+        )
+        comList
+
+
+findFirstFitComponentInList : String -> List ( String, Component ) -> ( String, Component )
+findFirstFitComponentInList name comList =
+    Maybe.withDefault ( "NONE", nullComponent ) (List.head (findComponentsInList name comList))
+
+
+setComponentsInList : String -> ( String, Component ) -> List ( String, Component ) -> List ( String, Component )
+setComponentsInList name newCom comList =
+    List.map
+        (\( comName, comData ) ->
+            if comName == name then
+                newCom
+
+            else
+                ( comName, comData )
+        )
+        comList
+
+
+setFirstFitComponentInList : String -> ( String, Component ) -> List ( String, Component ) -> List ( String, Component )
+setFirstFitComponentInList name newCom comList =
+    let
+        ( comExist, comID ) =
+            List.foldl
+                (\( comName, comData ) cnt ->
+                    if comName == name then
+                        ( True, Tuple.second cnt )
+
+                    else if Tuple.first cnt == True then
+                        cnt
+
+                    else
+                        ( False, Tuple.second cnt + 1 )
+                )
+                ( False, 0 )
+                comList
+    in
+    if comExist then
+        List.concat [ List.take (comID - 1) comList, [ newCom ], List.drop comID comList ]
+
+    else
+        comList

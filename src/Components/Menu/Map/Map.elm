@@ -1,215 +1,86 @@
 module Components.Menu.Map.Map exposing (..)
 
-import Base exposing (GlobalData, Msg)
+import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (..)
 import Canvas.Settings exposing (..)
 import Canvas.Settings.Advanced exposing (..)
 import Color
 import Constants exposing (..)
 import Dict exposing (Dict)
-import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..), dgetfloat, dsetfloat)
+import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..), dgetbool, dgetfloat, dgetint, dsetbool)
 import Lib.Coordinate.Coordinates exposing (..)
+import Lib.Render.Render exposing (..)
 
 
 initMap : Int -> ComponentTMsg -> Data
 initMap _ _ =
     Dict.fromList
-        [ ( "cx", CDFloat 120 ) -- center of circle
-        , ( "cy", CDFloat 120 )
-        , ( "radius", CDFloat 30 ) -- radius of circle
-        , ( "cp1x", CDFloat 110 ) -- the first controlling point of bezier curve
-        , ( "cp1y", CDFloat 28 )
-        , ( "cp2x", CDFloat 112 ) -- the second controlling point of bezier curve
-        , ( "cp2y", CDFloat 179 )
-        , ( "t", CDFloat 0 ) -- duration
-        , ( "clockwise", CDInt 0 ) -- 4 states of the curve
-        , ( "angle", CDFloat -90 )
+        [ ( "show", CDBool False )
+        , ( "posX", CDInt 1870 )
+        , ( "posY", CDInt 280 )
+        , ( "radius", CDInt 30 )
         ]
 
 
-bezier : Int -> Float -> Data -> Data
-bezier clockwise t d =
+updateMap : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
+updateMap mainMsg _ globalData ( model, t ) =
     let
-        cx =
-            dgetfloat d "cx"
+        reverseShowStatus =
+            if dgetbool model "show" then
+                False
 
-        cy =
-            dgetfloat d "cy"
+            else
+                True
+
+        posX =
+            dgetint model "posX"
+
+        posY =
+            dgetint model "posY"
 
         radius =
-            dgetfloat d "radius"
-
-        angle =
-            dgetfloat d "angle"
-
-        lineY =
-            cy + radius * sin (degrees angle)
-
-        k =
-            (90 - abs angle) / 3
-
-        m =
-            radius * cos (degrees angle) / 8
-
-        cp1x =
-            cx - m + 20 * t
-
-        cp1y =
-            lineY - k + k * t
-
-        cp2x =
-            cx - m - 20 * t
-
-        cp2y =
-            lineY + k - k * t
-
-        cp1CounterX =
-            cx + 20 - m - 20 * t
-
-        cp1CounterY =
-            lineY - k * t
-
-        cp2CounterX =
-            cx - m - 20 + 20 * t
-
-        cp2CounterY =
-            lineY + k * t
+            dgetint model "radius"
     in
-    case clockwise of
-        1 ->
-            d
-                |> dsetfloat "cp1x" cp1x
-                |> dsetfloat "cp1y" cp1y
-                |> dsetfloat "cp2x" cp2x
-                |> dsetfloat "cp2y" cp2y
-                |> dsetfloat "t" (t + 0.01)
+    case mainMsg of
+        MouseDown ( x, y ) ->
+            if judgeMouse globalData ( x, y ) ( posX - radius, posY - radius ) ( 2 * radius, 2 * radius ) then
+                ( model
+                    |> dsetbool "show" reverseShowStatus
+                , NullComponentMsg
+                , globalData
+                )
 
-        0 ->
-            d
-                |> dsetfloat "cp1x" cp1CounterX
-                |> dsetfloat "cp1y" cp1CounterY
-                |> dsetfloat "cp2x" cp2CounterX
-                |> dsetfloat "cp2y" cp2CounterY
-                |> dsetfloat "t" (t + 0.01)
-
-        2 ->
-            d
-                |> dsetfloat "cp1x" cp1CounterX
-                |> dsetfloat "cp1y" (-cp1CounterY + 2 * lineY)
-                |> dsetfloat "cp2x" cp2CounterX
-                |> dsetfloat "cp2y" (-cp2CounterY + 2 * lineY)
-                |> dsetfloat "t" (t + 0.01)
-
-        3 ->
-            d
-                |> dsetfloat "cp1x" cp1x
-                |> dsetfloat "cp1y" (-cp1y + 2 * lineY)
-                |> dsetfloat "cp2x" cp2x
-                |> dsetfloat "cp2y" (-cp2y + 2 * lineY)
-                |> dsetfloat "t" (t + 0.01)
+            else
+                ( model, NullComponentMsg, globalData )
 
         _ ->
-            d
-
-
-updateMap : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
-updateMap msg gMsg globalData ( d, t ) =
-    let
-        time =
-            dgetfloat d "t"
-    in
-    case gMsg of
-        ComponentIntMsg num ->
-            ( d |> dsetfloat "angle" (90 - 180 / 100 * toFloat num), NullComponentMsg, globalData )
-
-        _ ->
-            ( bezier (modBy 4 (ceiling time)) (time - toFloat (floor time)) d, NullComponentMsg, globalData )
+            ( model, NullComponentMsg, globalData )
 
 
 viewMap : ( Data, Int ) -> GlobalData -> Renderable
-viewMap ( d, _ ) globalData =
+viewMap ( model, _ ) globalData =
     let
-        angle =
-            dgetfloat d "angle"
+        showStatus =
+            dgetbool model "show"
 
-        cx =
-            dgetfloat d "cx"
+        posX =
+            dgetint model "posX"
 
-        cy =
-            dgetfloat d "cy"
+        posY =
+            dgetint model "posY"
 
         radius =
-            dgetfloat d "radius"
-
-        cp1x =
-            dgetfloat d "cp1x"
-
-        cp1y =
-            dgetfloat d "cp1y"
-
-        cp2x =
-            dgetfloat d "cp2x"
-
-        cp2y =
-            dgetfloat d "cp2y"
+            dgetint model "radius"
     in
-    if angle == -90 then
-        group
-            []
-            [ Canvas.clear ( 0, 0 ) 400 400
-            , shapes
-                [ fill Color.green
-                ]
-                [ circle ( cx, cy ) radius
-                ]
-            , shapes
-                [ stroke Color.darkGreen
-                ]
-                [ circle ( cx, cy ) (radius + 5)
-                ]
+    group []
+        (List.append
+            [ shapes [ stroke Color.red ] [ circle (posToReal globalData ( posX, posY )) (widthToReal globalData radius) ]
+            , renderText globalData 50 "M" "sans-serif" ( 1850, 250 )
             ]
+            (if showStatus then
+                [ renderText globalData 50 "Map" "sans-serif" ( 500, 500 ) ]
 
-    else
-        let
-            x =
-                cx - radius * cos (degrees angle)
-
-            y =
-                cy + radius * sin (degrees angle)
-        in
-        group
-            []
-            [ Canvas.clear ( 0, 0 ) 400 400
-            , shapes
-                [ fill Color.green
-                ]
-                [ path ( x, y ) [ renderBezier angle cx cy radius cp1x cp1y cp2x cp2y ]
-                , renderArc angle cx cy radius
-                ]
-            , shapes
-                [ stroke Color.darkGreen
-                ]
-                [ circle ( cx, cy ) (radius + 5)
-                ]
-            ]
-
-
-renderArc : Float -> Float -> Float -> Float -> Shape
-renderArc angle cx cy radius =
-    if angle > 0 then
-        arc ( cx, cy ) radius { startAngle = degrees angle, endAngle = degrees 180 - degrees angle, clockwise = True }
-
-    else
-        arc ( cx, cy ) radius { endAngle = degrees 180 - degrees angle, startAngle = degrees 360 + degrees angle, clockwise = True }
-
-
-renderBezier : Float -> Float -> Float -> Float -> Float -> Float -> Float -> Float -> PathSegment
-renderBezier angle cx cy radius cp1x cp1y cp2x cp2y =
-    let
-        x =
-            cx + radius * cos (degrees angle)
-
-        y =
-            cy + radius * sin (degrees angle)
-    in
-    bezierCurveTo ( cp1x, cp1y ) ( cp2x, cp2y ) ( x, y )
+             else
+                []
+            )
+        )
