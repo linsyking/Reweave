@@ -23,7 +23,7 @@ initSettings _ _ =
 
 
 updateSettings : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
-updateSettings mainMsg _ globalData ( model, t ) =
+updateSettings mainMsg comMsg globalData ( model, t ) =
     let
         reverseShowStatus =
             if dgetbool model "show" then
@@ -46,7 +46,11 @@ updateSettings mainMsg _ globalData ( model, t ) =
             if judgeMouse globalData ( x, y ) ( posX - radius, posY - radius ) ( 2 * radius, 2 * radius ) then
                 ( model
                     |> dsetbool "show" reverseShowStatus
-                , NullComponentMsg
+                , if reverseShowStatus == True then
+                    ComponentLSStringMsg "OnShow" [ "Settings" ]
+
+                  else
+                    ComponentLSStringMsg "OnHide" [ "Settings" ]
                 , globalData
                 )
 
@@ -54,7 +58,28 @@ updateSettings mainMsg _ globalData ( model, t ) =
                 ( model, NullComponentMsg, globalData )
 
         _ ->
-            ( model, NullComponentMsg, globalData )
+            case comMsg of
+                ComponentStringMsg demand ->
+                    case demand of
+                        "Display:HIDE" ->
+                            ( model
+                                |> dsetbool "show" False
+                            , NullComponentMsg
+                            , globalData
+                            )
+
+                        "Display:SHOW" ->
+                            ( model
+                                |> dsetbool "show" True
+                            , NullComponentMsg
+                            , globalData
+                            )
+
+                        _ ->
+                            ( model, NullComponentMsg, globalData )
+
+                _ ->
+                    ( model, NullComponentMsg, globalData )
 
 
 viewSettings : ( Data, Int ) -> GlobalData -> Renderable

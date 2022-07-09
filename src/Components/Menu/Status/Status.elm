@@ -25,7 +25,7 @@ initStatus _ _ =
 
 
 updateStatus : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
-updateStatus mainMsg _ globalData ( model, t ) =
+updateStatus mainMsg comMsg globalData ( model, t ) =
     let
         reverseShowStatus =
             if dgetbool model "show" then
@@ -48,7 +48,11 @@ updateStatus mainMsg _ globalData ( model, t ) =
             if judgeMouse globalData ( x, y ) ( posX - radius, posY - radius ) ( 2 * radius, 2 * radius ) then
                 ( model
                     |> dsetbool "show" reverseShowStatus
-                , NullComponentMsg
+                , if reverseShowStatus == True then
+                    ComponentLSStringMsg "OnShow" [ "Status" ]
+
+                  else
+                    ComponentLSStringMsg "OnHide" [ "Status" ]
                 , globalData
                 )
 
@@ -56,7 +60,28 @@ updateStatus mainMsg _ globalData ( model, t ) =
                 ( model, NullComponentMsg, globalData )
 
         _ ->
-            ( model, NullComponentMsg, globalData )
+            case comMsg of
+                ComponentStringMsg demand ->
+                    case demand of
+                        "Display:HIDE" ->
+                            ( model
+                                |> dsetbool "show" False
+                            , NullComponentMsg
+                            , globalData
+                            )
+
+                        "Display:SHOW" ->
+                            ( model
+                                |> dsetbool "show" True
+                            , NullComponentMsg
+                            , globalData
+                            )
+
+                        _ ->
+                            ( model, NullComponentMsg, globalData )
+
+                _ ->
+                    ( model, NullComponentMsg, globalData )
 
 
 viewStatus : ( Data, Int ) -> GlobalData -> Renderable

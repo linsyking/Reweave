@@ -30,7 +30,11 @@ updateModel msg gd _ ( model, t ) cd =
                 ( ( model, cd, [] ), gd )
 
         _ ->
-            ( ( model, cd, [] ), gd )
+            if t == 200 then
+                Debug.log "Audio" ( ( model, cd, [ ( LayerParentScene, LayerSoundMsg "bgm" "./assets/audio/main.ogg" ALoop ) ] ), gd )
+
+            else
+                ( ( model, cd, [] ), gd )
 
 
 
