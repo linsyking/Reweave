@@ -1,7 +1,8 @@
 module Components.Trans.Export exposing (..)
+
+import Components.Trans.Trans exposing (initTrans, updateTrans, viewTrans)
 import Lib.Component.Base exposing (Component, ComponentTMsg(..))
-import Components.Trans.Trans exposing (initTrans, updateTrans)
-import Components.Trans.Trans exposing (viewTrans)
+
 
 component : Component
 component =
