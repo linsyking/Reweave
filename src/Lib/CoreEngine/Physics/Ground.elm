@@ -20,6 +20,11 @@ isInAir _ _ =
 --     True
 
 
+canJump : GameComponent -> GameGlobalData -> Bool
+canJump actor model =
+    True
+
+
 isOnground : GameComponent -> GameGlobalData -> Bool
 isOnground gc ggd =
     not (isInAir gc ggd)

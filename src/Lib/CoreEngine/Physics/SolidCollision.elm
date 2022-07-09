@@ -109,6 +109,45 @@ velToDis x =
     x / 15
 
 
+
+--- Judge if an actor can move toward a specific direction (If there exists gap)
+
+
+canMove : GameComponent -> GameGlobalData -> Vec2 -> Bool
+canMove actor model drt =
+    let
+        xv =
+            Math.Vector2.getX drt
+
+        yv =
+            Math.Vector2.getY drt
+
+        cbox =
+            actor.data.simplecheck
+
+        ( ( x1, y1 ), ( x2, y2 ) ) =
+            getBoxPos actor.data.position cbox
+    in
+    if xv == 0 && yv == 0 then
+        True
+
+    else if xv == 0 && yv > 0 then
+        not (lineHasSolid ( x1, y1 - 1 ) ( x2, y1 - 1 ) model)
+
+    else if xv == 0 && yv < 0 then
+        not (lineHasSolid ( x1, y2 + 1 ) ( x2, y2 + 1 ) model)
+
+    else if xv > 0 && yv == 0 then
+        not (lineHasSolid ( x2 + 1, y1 ) ( x2 + 1, y2 ) model)
+
+    else if xv < 0 && yv == 0 then
+        not (lineHasSolid ( x1 - 1, y1 ) ( x1 - 1, y2 ) model)
+
+    else
+        --- Maybe undefined
+        False
+
+
 movePointPlain : Vec2 -> ( Int, Int ) -> ( Int, Int )
 movePointPlain vec ( x, y ) =
     let
