@@ -17,8 +17,8 @@ initSettings : Int -> ComponentTMsg -> Data
 initSettings _ _ =
     Dict.fromList
         [ ( "show", CDBool False )
-        , ( "posX", CDInt 1650 )
-        , ( "posY", CDInt 50 )
+        , ( "posX", CDInt 500 )
+        , ( "posY", CDInt 400 )
         , ( "radius", CDInt 30 )
         , ( "Child"
           , CDLComponent
@@ -151,7 +151,7 @@ viewSettings ( model, _ ) globalData =
     group []
         (List.append
             [ shapes [ stroke Color.red ] [ circle (posToReal globalData ( posX, posY )) (widthToReal globalData radius) ]
-            , renderText globalData 50 "S" "sans-serif" ( 1633, 20 )
+            , renderText globalData 50 "S" "sans-serif" ( posX - 20, posY - 30 )
             ]
             (if showStatus then
                 List.append [ renderText globalData 50 "Settings" "sans-serif" ( 500, 500 ) ]

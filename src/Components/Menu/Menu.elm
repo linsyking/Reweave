@@ -4,19 +4,22 @@ import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (..)
 import Canvas.Settings exposing (..)
 import Canvas.Settings.Advanced exposing (..)
+import Color
 import Components.Menu.Map.Export as MenuMapE
 import Components.Menu.Settings.Export as MenuSettingsE
 import Components.Menu.Status.Export as MenuStatusE
 import Constants exposing (..)
 import Dict
-import Lib.Component.Base exposing (Component, ComponentTMsg(..), Data, DefinedTypes(..), dgetLComponent, dsetLComponent)
+import Lib.Component.Base exposing (Component, ComponentTMsg(..), Data, DefinedTypes(..), dgetLComponent, dgetbool, dsetLComponent, dsetbool)
 import Lib.Coordinate.Coordinates exposing (..)
+import Lib.Render.Render exposing (renderText)
 
 
 initMenu : Int -> ComponentTMsg -> Data
 initMenu _ _ =
     Dict.fromList
-        [ ( "Child"
+        [ ( "Show", CDBool True )
+        , ( "Child"
           , CDLComponent
                 [ ( "Status", MenuStatusE.initComponent 0 NullComponentMsg )
                 , ( "Settings", MenuSettingsE.initComponent 0 NullComponentMsg )
@@ -80,9 +83,12 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
     let
         childComponentsList =
             dgetLComponent model "Child"
+
+        showStatus =
+            dgetbool model "Show"
     in
     case mainMsg of
-        MouseDown _ ->
+        MouseDown ( x, y ) ->
             let
                 ( tmpChildComponentsList, tmpChildComponentsMsg, tmpGlobalData ) =
                     List.foldl
@@ -99,11 +105,22 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                 ( newChildComponentsList, newChildComponentsMsg, newGlobalData ) =
                     componentInteract tmpChildComponentsList tmpChildComponentsMsg NullComponentMsg tmpGlobalData
             in
-            ( model
-                |> dsetLComponent "Child" newChildComponentsList
-            , newChildComponentsMsg
-            , newGlobalData
-            )
+            if judgeMouse globalData ( x, y ) ( 1100 - 30, 400 - 30 ) ( 2 * 30, 2 * 30 ) then
+                ( model
+                    |> dsetbool "Show" False
+                , NullComponentMsg
+                , globalData
+                )
+
+            else if showStatus then
+                ( model
+                    |> dsetLComponent "Child" newChildComponentsList
+                , newChildComponentsMsg
+                , newGlobalData
+                )
+
+            else
+                ( model, NullComponentMsg, globalData )
 
         _ ->
             ( model, NullComponentMsg, globalData )
@@ -114,6 +131,21 @@ viewMenu ( model, t ) globalData =
     let
         childComponentsList =
             dgetLComponent model "Child"
+
+        showStatus =
+            dgetbool model "Show"
     in
-    group []
-        (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
+    if showStatus then
+        group []
+            (List.append
+                [ shapes [ stroke Color.black ]
+                    [ rect (posToReal globalData ( 400, 300 )) (widthToReal globalData 800) (heightToReal globalData 500)
+                    , circle (posToReal globalData ( 1100, 400 )) (widthToReal globalData 30)
+                    ]
+                , renderText globalData 50 "X" "sans-serif" ( 1100 - 15, 400 - 30 )
+                ]
+                (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
+            )
+
+    else
+        group [] []

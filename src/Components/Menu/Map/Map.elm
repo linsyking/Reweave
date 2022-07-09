@@ -16,8 +16,8 @@ initMap : Int -> ComponentTMsg -> Data
 initMap _ _ =
     Dict.fromList
         [ ( "show", CDBool False )
-        , ( "posX", CDInt 1870 )
-        , ( "posY", CDInt 280 )
+        , ( "posX", CDInt 900 )
+        , ( "posY", CDInt 400 )
         , ( "radius", CDInt 30 )
         ]
 
@@ -100,7 +100,7 @@ viewMap ( model, _ ) globalData =
     group []
         (List.append
             [ shapes [ stroke Color.red ] [ circle (posToReal globalData ( posX, posY )) (widthToReal globalData radius) ]
-            , renderText globalData 50 "M" "sans-serif" ( 1850, 250 )
+            , renderText globalData 50 "M" "sans-serif" ( posX - 20, posY - 30 )
             ]
             (if showStatus then
                 [ renderText globalData 50 "Map" "sans-serif" ( 500, 500 ) ]
