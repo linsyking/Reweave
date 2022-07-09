@@ -29,12 +29,12 @@ getCamera camPos charPos1 charPos2 =
 
 cameraWidth : Int
 cameraWidth =
-    1820
+    1920
 
 
 cameraHeight : Int
 cameraHeight =
-    1820 // 16 * 9
+    1080
 
 
 moveFunction : MoveFunction
