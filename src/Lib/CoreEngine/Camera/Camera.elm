@@ -1,11 +1,6 @@
 module Lib.CoreEngine.Camera.Camera exposing (..)
 
 
-getCamera : ( Int, Int ) -> ( Int, Int ) -> ( Int, Int ) -> ( Int, Int )
-getCamera _ _ _ =
-    ( 0, 0 )
-
-
 type alias MoveFunction =
     { a : Float, b : Float }
 
@@ -14,14 +9,32 @@ type alias AbleDel =
     { up : Int, down : Int, left : Int, right : Int }
 
 
+type alias Position =
+    { x : Int, y : Int }
+
+
+reproducePosition : ( Int, Int ) -> Position
+reproducePosition pos =
+    Position (Tuple.first pos) (Tuple.second pos)
+
+
+getCamera : ( Int, Int ) -> ( Int, Int ) -> ( Int, Int ) -> ( Int, Int )
+getCamera camPos charPos1 charPos2 =
+    let
+        tmpPos =
+            changeCameraPosition (reproducePosition camPos) (reproducePosition charPos1) (reproducePosition charPos2)
+    in
+    ( Tuple.first tmpPos, Tuple.second tmpPos )
+
+
 cameraWidth : Int
 cameraWidth =
-    1024
+    1820
 
 
 cameraHeight : Int
 cameraHeight =
-    1024 // 16 * 9
+    1820 // 16 * 9
 
 
 moveFunction : MoveFunction
@@ -29,15 +42,8 @@ moveFunction =
     MoveFunction 0.001 10
 
 
-cameraProcess : Model -> Model
-cameraProcess model =
-    model
-        |> changeCameraPosition
-        |> changeGActorDisplay
-
-
-changeCameraPosition : Model -> Model
-changeCameraPosition model =
+changeCameraPosition : Position -> Postion -> Position -> Position
+changeCameraPosition camPos charPos _ =
     let
         char =
             getPlayer model
@@ -51,7 +57,7 @@ changeCameraPosition model =
         ableDel =
             makeAbleDel camPos.y (sizeY - camPos.y - cameraHeight) camPos.x (sizeX - camPos.x - cameraWidth)
     in
-    { model | cameraPosition = Position (changeCameraPositionHelper camPos.x char ableDel True 0.2 0.6 cameraWidth) (changeCameraPositionHelper camPos.y char ableDel False 0.25 0.75 cameraHeight) }
+    Position (changeCameraPositionHelper camPos.x charPos ableDel True 0.2 0.6 cameraWidth) (changeCameraPositionHelper camPos.y char ableDel False 0.25 0.75 cameraHeight)
 
 
 makeAbleDel : Int -> Int -> Int -> Int -> AbleDel
@@ -59,11 +65,11 @@ makeAbleDel a b c d =
     AbleDel (max a 0) (max b 0) (max c 0) (max d 0)
 
 
-changeCameraPositionHelper : Int -> GActor -> AbleDel -> Bool -> Float -> Float -> Int -> Int
-changeCameraPositionHelper posCam char ableDel dir lineLow lineUp length =
+changeCameraPositionHelper : Int -> Position -> AbleDel -> Bool -> Float -> Float -> Int -> Int
+changeCameraPositionHelper posCam charPos ableDel dir lineLow lineUp length =
     let
-        ( pos, _ ) =
-            getActorPosition char
+        pos =
+            charPos
 
         posX =
             pos.x - posCam
