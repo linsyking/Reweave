@@ -9,7 +9,7 @@ import Components.Menu.Settings.Export as MenuSettingsE
 import Components.Menu.Status.Export as MenuStatusE
 import Constants exposing (..)
 import Dict
-import Lib.Component.Base exposing (Component, ComponentTMsg(..), Data, DefinedTypes(..), dgetLComponent, dsetLComponent, findFirstFitComponentInList, setFirstFitComponentInList)
+import Lib.Component.Base exposing (Component, ComponentTMsg(..), Data, DefinedTypes(..), dgetLComponent, dsetLComponent)
 import Lib.Coordinate.Coordinates exposing (..)
 
 
@@ -114,18 +114,6 @@ viewMenu ( model, t ) globalData =
     let
         childComponentsList =
             dgetLComponent model "Child"
-
-        ( statusName, status ) =
-            findFirstFitComponentInList "Status" childComponentsList
-
-        ( settingsName, settings ) =
-            findFirstFitComponentInList "Settings" childComponentsList
-
-        ( mapName, map ) =
-            findFirstFitComponentInList "Map" childComponentsList
     in
     group []
-        [ status.view ( status.data, t ) globalData
-        , settings.view ( settings.data, t ) globalData
-        , map.view ( map.data, t ) globalData
-        ]
+        (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
