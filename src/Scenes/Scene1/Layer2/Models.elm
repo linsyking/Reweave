@@ -29,24 +29,24 @@ updateModel msg gd _ ( model, t ) cd =
                 components =
                     model.components
 
-                ( newComponents, _, _ ) =
+                ( newComponents, _, newGlobalData ) =
                     if t == 100 then
                         updateSingleComponent msg (ComponentIntMsg 50) gd t 0 (Array.fromList components)
 
                     else
                         updateSingleComponent msg NullComponentMsg gd t 0 (Array.fromList components)
             in
-            ( ( { model | components = Array.toList newComponents }, cd, [] ), gd )
+            ( ( { model | components = Array.toList newComponents }, cd, [] ), newGlobalData )
 
         MouseDown _ ->
             let
                 components =
                     model.components
 
-                ( newComponents, _, _ ) =
+                ( newComponents, _, newGlobalData ) =
                     updateSingleComponent msg NullComponentMsg gd t 0 (Array.fromList components)
             in
-            ( ( { model | components = Array.toList newComponents }, cd, [] ), gd )
+            ( ( { model | components = Array.toList newComponents }, cd, [] ), newGlobalData )
 
         _ ->
             ( ( model, cd, [] ), gd )

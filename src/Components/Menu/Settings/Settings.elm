@@ -5,9 +5,10 @@ import Canvas exposing (..)
 import Canvas.Settings exposing (..)
 import Canvas.Settings.Advanced exposing (..)
 import Color
+import Components.Menu.Settings.Audio.Export as MenuSetAudioE
 import Constants exposing (..)
 import Dict exposing (Dict)
-import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..), dgetbool, dgetfloat, dgetint, dsetbool)
+import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..), dgetLComponent, dgetbool, dgetfloat, dgetint, dsetLComponent, dsetbool)
 import Lib.Coordinate.Coordinates exposing (..)
 import Lib.Render.Render exposing (..)
 
@@ -19,6 +20,12 @@ initSettings _ _ =
         , ( "posX", CDInt 1650 )
         , ( "posY", CDInt 50 )
         , ( "radius", CDInt 30 )
+        , ( "Child"
+          , CDLComponent
+                [ ( "AudioDown", MenuSetAudioE.initComponent 0 (ComponentStringMsg "AudioDown") )
+                , ( "AudioUp", MenuSetAudioE.initComponent 0 (ComponentStringMsg "AudioUp") )
+                ]
+          )
         ]
 
 
@@ -40,22 +47,50 @@ updateSettings mainMsg comMsg globalData ( model, t ) =
 
         radius =
             dgetint model "radius"
+
+        childComponentsList =
+            dgetLComponent model "Child"
+
+        ( tmpChildComponentsList, tmpChildComponentsMsg, newGlobalData ) =
+            List.foldl
+                (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
+                    let
+                        ( tmpCom, tmpComMsg, gD ) =
+                            comModel.update mainMsg comMsg tmpGData ( comModel.data, t )
+                    in
+                    ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
+                )
+                ( [], [], globalData )
+                childComponentsList
+
+        newComMsg =
+            Maybe.withDefault
+                NullComponentMsg
+                (List.head
+                    (List.filter
+                        (\tmpMsg ->
+                            if tmpMsg == NullComponentMsg then
+                                False
+
+                            else
+                                True
+                        )
+                        tmpChildComponentsMsg
+                    )
+                )
     in
     case mainMsg of
         MouseDown ( x, y ) ->
             if judgeMouse globalData ( x, y ) ( posX - radius, posY - radius ) ( 2 * radius, 2 * radius ) then
                 ( model
                     |> dsetbool "show" reverseShowStatus
-                , if reverseShowStatus == True then
-                    ComponentLSStringMsg "OnShow" [ "Settings" ]
-
-                  else
-                    ComponentLSStringMsg "OnHide" [ "Settings" ]
-                , globalData
+                    |> dsetLComponent "Child" tmpChildComponentsList
+                , newComMsg
+                , newGlobalData
                 )
 
             else
-                ( model, NullComponentMsg, globalData )
+                ( model |> dsetLComponent "Child" tmpChildComponentsList, newComMsg, newGlobalData )
 
         _ ->
             case comMsg of
@@ -64,22 +99,24 @@ updateSettings mainMsg comMsg globalData ( model, t ) =
                         "Display:HIDE" ->
                             ( model
                                 |> dsetbool "show" False
-                            , NullComponentMsg
-                            , globalData
+                                |> dsetLComponent "Child" tmpChildComponentsList
+                            , newComMsg
+                            , newGlobalData
                             )
 
                         "Display:SHOW" ->
                             ( model
                                 |> dsetbool "show" True
-                            , NullComponentMsg
-                            , globalData
+                                |> dsetLComponent "Child" tmpChildComponentsList
+                            , newComMsg
+                            , newGlobalData
                             )
 
                         _ ->
-                            ( model, NullComponentMsg, globalData )
+                            ( model |> dsetLComponent "Child" tmpChildComponentsList, newComMsg, newGlobalData )
 
                 _ ->
-                    ( model, NullComponentMsg, globalData )
+                    ( model |> dsetLComponent "Child" tmpChildComponentsList, newComMsg, newGlobalData )
 
 
 viewSettings : ( Data, Int ) -> GlobalData -> Renderable
@@ -96,6 +133,9 @@ viewSettings ( model, _ ) globalData =
 
         radius =
             dgetint model "radius"
+
+        childComponentsList =
+            dgetLComponent model "Child"
     in
     group []
         (List.append
@@ -103,7 +143,8 @@ viewSettings ( model, _ ) globalData =
             , renderText globalData 50 "S" "sans-serif" ( 1633, 20 )
             ]
             (if showStatus then
-                [ renderText globalData 50 "Settings" "sans-serif" ( 500, 500 ) ]
+                List.append [ renderText globalData 50 "Settings" "sans-serif" ( 500, 500 ) ]
+                    (List.map (\( comName, comModel ) -> comModel.view ( comModel.data, 0 ) globalData) childComponentsList)
 
              else
                 []
