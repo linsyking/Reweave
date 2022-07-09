@@ -6,8 +6,8 @@ import Canvas.Settings exposing (..)
 import Canvas.Settings.Advanced exposing (..)
 import Color
 import Constants exposing (..)
-import Dict exposing (Dict)
-import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..), dgetbool, dgetfloat, dgetint, dsetbool)
+import Dict
+import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..), dgetbool, dgetint, dsetbool)
 import Lib.Coordinate.Coordinates exposing (..)
 import Lib.Render.Render exposing (..)
 
@@ -25,9 +25,6 @@ initMap _ _ =
 updateMap : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
 updateMap mainMsg comMsg globalData ( model, t ) =
     let
-        showStatus =
-            dgetbool model "show"
-
         reverseShowStatus =
             if dgetbool model "show" then
                 False
