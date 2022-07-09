@@ -25,6 +25,9 @@ initMap _ _ =
 updateMap : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
 updateMap mainMsg comMsg globalData ( model, t ) =
     let
+        showStatus =
+            dgetbool model "show"
+
         reverseShowStatus =
             if dgetbool model "show" then
                 False

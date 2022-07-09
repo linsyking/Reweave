@@ -19,7 +19,7 @@ initMap _ comMsg =
             case demand of
                 "AudioDown" ->
                     Dict.fromList
-                        [ ( "show", CDBool False )
+                        [ ( "show", CDBool True )
                         , ( "posX", CDInt 670 )
                         , ( "posY", CDInt 680 )
                         , ( "Type", CDString "Down" )
@@ -28,7 +28,7 @@ initMap _ comMsg =
 
                 "AudioUp" ->
                     Dict.fromList
-                        [ ( "show", CDBool False )
+                        [ ( "show", CDBool True )
                         , ( "posX", CDInt 750 )
                         , ( "posY", CDInt 680 )
                         , ( "Type", CDString "Up" )
@@ -37,7 +37,7 @@ initMap _ comMsg =
 
                 _ ->
                     Dict.fromList
-                        [ ( "show", CDBool False )
+                        [ ( "show", CDBool True )
                         , ( "posX", CDInt 670 )
                         , ( "posY", CDInt 680 )
                         , ( "Type", CDString "Unknown" )
@@ -46,7 +46,7 @@ initMap _ comMsg =
 
         _ ->
             Dict.fromList
-                [ ( "show", CDBool False )
+                [ ( "show", CDBool True )
                 , ( "posX", CDInt 670 )
                 , ( "posY", CDInt 680 )
                 , ( "Type", CDString "Unknown" )
@@ -57,6 +57,9 @@ initMap _ comMsg =
 updateMap : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
 updateMap mainMsg comMsg globalData ( model, t ) =
     let
+        showStatus =
+            dgetbool model "show"
+
         reverseShowStatus =
             if dgetbool model "show" then
                 False

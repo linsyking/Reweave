@@ -32,6 +32,9 @@ initSettings _ _ =
 updateSettings : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
 updateSettings mainMsg comMsg globalData ( model, t ) =
     let
+        showStatus =
+            dgetbool model "show"
+
         reverseShowStatus =
             if dgetbool model "show" then
                 False
@@ -52,16 +55,20 @@ updateSettings mainMsg comMsg globalData ( model, t ) =
             dgetLComponent model "Child"
 
         ( tmpChildComponentsList, tmpChildComponentsMsg, newGlobalData ) =
-            List.foldl
-                (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
-                    let
-                        ( tmpCom, tmpComMsg, gD ) =
-                            comModel.update mainMsg comMsg tmpGData ( comModel.data, t )
-                    in
-                    ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
-                )
-                ( [], [], globalData )
-                childComponentsList
+            if showStatus == True then
+                List.foldl
+                    (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
+                        let
+                            ( tmpCom, tmpComMsg, gD ) =
+                                comModel.update mainMsg comMsg tmpGData ( comModel.data, t )
+                        in
+                        ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
+                    )
+                    ( [], [], globalData )
+                    childComponentsList
+
+            else
+                ( childComponentsList, [], globalData )
 
         newComMsg =
             Maybe.withDefault
@@ -85,7 +92,11 @@ updateSettings mainMsg comMsg globalData ( model, t ) =
                 ( model
                     |> dsetbool "show" reverseShowStatus
                     |> dsetLComponent "Child" tmpChildComponentsList
-                , newComMsg
+                , if reverseShowStatus == True then
+                    ComponentLSStringMsg "OnShow" [ "Settings" ]
+
+                  else
+                    ComponentLSStringMsg "OnHide" [ "Settings" ]
                 , newGlobalData
                 )
 
