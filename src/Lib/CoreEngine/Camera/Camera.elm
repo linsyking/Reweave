@@ -42,17 +42,12 @@ moveFunction =
     MoveFunction 0.001 10
 
 
-changeCameraPosition : Position -> Postion -> Position -> Position
+changeCameraPosition : Position -> Position -> Position -> Position
 changeCameraPosition camPos charPos _ =
     let
-        char =
-            getPlayer model
-
-        camPos =
-            model.cameraPosition
-
+        -- Map Size
         ( sizeX, sizeY ) =
-            getMapSize model
+            ( 10000, 1020 )
 
         ableDel =
             makeAbleDel camPos.y (sizeY - camPos.y - cameraHeight) camPos.x (sizeX - camPos.x - cameraWidth)
