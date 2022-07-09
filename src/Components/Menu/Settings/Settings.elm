@@ -7,8 +7,8 @@ import Canvas.Settings.Advanced exposing (..)
 import Color
 import Components.Menu.Settings.Audio.Export as MenuSetAudioE
 import Constants exposing (..)
-import Dict exposing (Dict)
-import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..), dgetLComponent, dgetbool, dgetfloat, dgetint, dsetLComponent, dsetbool)
+import Dict
+import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..), dgetLComponent, dgetbool, dgetint, dsetLComponent, dsetbool)
 import Lib.Coordinate.Coordinates exposing (..)
 import Lib.Render.Render exposing (..)
 
@@ -155,7 +155,7 @@ viewSettings ( model, _ ) globalData =
             ]
             (if showStatus then
                 List.append [ renderText globalData 50 "Settings" "sans-serif" ( 500, 500 ) ]
-                    (List.map (\( comName, comModel ) -> comModel.view ( comModel.data, 0 ) globalData) childComponentsList)
+                    (List.map (\( _, comModel ) -> comModel.view ( comModel.data, 0 ) globalData) childComponentsList)
 
              else
                 []

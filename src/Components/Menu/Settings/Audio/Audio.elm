@@ -6,8 +6,8 @@ import Canvas.Settings exposing (..)
 import Canvas.Settings.Advanced exposing (..)
 import Color
 import Constants exposing (..)
-import Dict exposing (Dict)
-import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..), dgetString, dgetbool, dgetfloat, dgetint, dsetbool)
+import Dict
+import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..), dgetString, dgetint, dsetbool)
 import Lib.Coordinate.Coordinates exposing (..)
 import Lib.Render.Render exposing (..)
 
@@ -57,16 +57,6 @@ initMap _ comMsg =
 updateMap : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
 updateMap mainMsg comMsg globalData ( model, t ) =
     let
-        showStatus =
-            dgetbool model "show"
-
-        reverseShowStatus =
-            if dgetbool model "show" then
-                False
-
-            else
-                True
-
         posX =
             dgetint model "posX"
 
@@ -140,9 +130,6 @@ updateMap mainMsg comMsg globalData ( model, t ) =
 viewMap : ( Data, Int ) -> GlobalData -> Renderable
 viewMap ( model, _ ) globalData =
     let
-        showStatus =
-            dgetbool model "show"
-
         posX =
             dgetint model "posX"
 
