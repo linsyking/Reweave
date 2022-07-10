@@ -195,11 +195,11 @@ update _ msg model =
 subscriptions : AudioData -> Model -> Sub Msg
 subscriptions _ _ =
     Sub.batch
-        [ Time.every 10 Tick --- Slow down the fps
+        [ Time.every 15 Tick --- Slow down the fps
         , onKeyDown (Decode.map (\x -> KeyDown x) (Decode.field "keyCode" Decode.int))
         , onKeyUp (Decode.map (\x -> KeyUp x) (Decode.field "keyCode" Decode.int))
         , onResize (\w h -> NewWindowSize ( w, h ))
-        , onMouseDown (Decode.map2 (\x y -> MouseDown ( x, y )) (Decode.field "clientX" Decode.float) (Decode.field "clientY" Decode.float))
+        , onMouseDown (Decode.map3 (\b x y -> MouseDown b ( x, y )) (Decode.field "button" Decode.int) (Decode.field "clientX" Decode.float) (Decode.field "clientY" Decode.float))
         ]
 
 

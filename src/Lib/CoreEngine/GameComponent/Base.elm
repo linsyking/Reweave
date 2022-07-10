@@ -13,7 +13,6 @@ import Lib.DefinedTypes.Base exposing (DefinedTypes)
 
 type alias GameComponent =
     { name : String
-    , uid : Int
     , data : Data
     , init : Int -> GameComponentTMsg -> Data
     , update : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
@@ -31,11 +30,13 @@ type GameComponentMsgType
 type GameComponentTMsg
     = GameSolidCollisionMsg (List ( Int, Int ))
     | GameInterCollisionMsg String Int (List Box)
+    | ClearVelocity
     | NullGameComponentMsg
 
 
 type alias Data =
     { status : LifeStatus
+    , uid : Int
     , position : ( Int, Int ) -- The position in map
     , velocity : ( Float, Float )
     , mass : Int

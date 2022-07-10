@@ -21,9 +21,6 @@ reproducePosition pos =
 getNewCamera : ( Int, Int ) -> ( ( Int, Int ), ( Int, Int ) ) -> ( Int, Int ) -> ( Int, Int )
 getNewCamera camPos ( charPos1, charPos2 ) mapsize =
     let
-        deef =
-            Debug.log "Ds" ( camPos, mapsize, charPos2 )
-
         tmpPos =
             changeCameraPosition (reproducePosition camPos) (reproducePosition charPos1) (reproducePosition charPos2) mapsize
     in
@@ -76,19 +73,19 @@ changeCameraPositionHelper posCam charPos ableDel dir lineLow lineUp length =
             pos.y - posCam
     in
     if dir == True then
-        Debug.log ("DirX " ++ String.fromInt posX) posCam + minAbleDel ableDel.left ableDel.right (moveFunctionHelper moveFunction (shouldDel posX (lineLow * toFloat length) (lineUp * toFloat length)))
+        posCam + minAbleDel ableDel.left ableDel.right (moveFunctionHelper moveFunction (shouldDel posX (lineLow * toFloat length) (lineUp * toFloat length)))
 
     else
-        Debug.log ("DirY " ++ String.fromInt posY) posCam + minAbleDel ableDel.up ableDel.down (moveFunctionHelper moveFunction (shouldDel posY (lineLow * toFloat length) (lineUp * toFloat length)))
+        posCam + minAbleDel ableDel.up ableDel.down (moveFunctionHelper moveFunction (shouldDel posY (lineLow * toFloat length) (lineUp * toFloat length)))
 
 
 minAbleDel : Int -> Int -> Int -> Int
 minAbleDel l r del =
     if del < 0 then
-        Debug.log ("minAbleDel " ++ String.fromInt del ++ " " ++ String.fromInt -l) round (max (toFloat -l) (toFloat del))
+        round (max (toFloat -l) (toFloat del))
 
     else if del > 0 then
-        Debug.log ("minAbleDel " ++ String.fromInt del ++ " " ++ String.fromInt r) round (min (toFloat r) (toFloat del))
+        round (min (toFloat r) (toFloat del))
 
     else
         0
@@ -97,13 +94,13 @@ minAbleDel l r del =
 shouldDel : Int -> Float -> Float -> Float
 shouldDel pos l r =
     if toFloat pos < l then
-        Debug.log ("shouldDel <" ++ String.fromInt pos ++ " " ++ String.fromFloat l ++ " " ++ String.fromFloat r) (toFloat pos - l)
+        toFloat pos - l
 
     else if toFloat pos <= r then
-        Debug.log ("shouldDel []" ++ String.fromInt pos ++ " " ++ String.fromFloat l ++ " " ++ String.fromFloat r) 0
+        0
 
     else
-        Debug.log ("shouldDel >" ++ String.fromInt pos ++ " " ++ String.fromFloat l ++ " " ++ String.fromFloat r) (toFloat pos - r)
+        toFloat pos - r
 
 
 moveFunctionHelper : MoveFunction -> Float -> Int

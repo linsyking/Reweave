@@ -21,7 +21,7 @@ initModel _ _ =
 updateModel : Msg -> GlobalData -> LayerMsg -> SModel -> CommonData -> ( ( ModelX, CommonData, List ( LayerTarget, LayerMsg ) ), GlobalData )
 updateModel msg gd _ ( model, t ) cd =
     case msg of
-        MouseDown ( x, y ) ->
+        MouseDown 1 ( x, y ) ->
             -- Test code for mouse down and judgemouse
             if judgeMouse gd ( x, y ) ( 100, 100 ) ( 100, 100 ) then
                 ( ( model, cd, [] ), gd )

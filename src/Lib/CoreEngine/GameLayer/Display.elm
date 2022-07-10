@@ -8,7 +8,7 @@ import Canvas exposing (Renderable, group, rect, shapes)
 import Canvas.Settings exposing (fill)
 import Color
 import Lib.Coordinate.Coordinates exposing (heightToReal, posToReal, widthToReal)
-import Lib.CoreEngine.Base exposing (GameGlobalData)
+import Lib.CoreEngine.Base exposing (GameGlobalData, brickSize)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent)
 import Lib.CoreEngine.GameLayer.Common exposing (Model)
@@ -65,7 +65,7 @@ renderSolids ggd gd =
                                         subs
 
                                     else
-                                        subs ++ [ renderSingleBlock v ( 8 * i, 8 * j ) ggd gd ]
+                                        subs ++ [ renderSingleBlock v ( brickSize * i, brickSize * j ) ggd gd ]
 
                                 Nothing ->
                                     subs
@@ -83,4 +83,4 @@ renderSolids ggd gd =
 
 renderSingleBlock : Int -> ( Int, Int ) -> GameGlobalData -> GlobalData -> Renderable
 renderSingleBlock _ p ggd gd =
-    shapes [ fill Color.red ] [ rect (posToReal gd (getPositionUnderCamera p ggd)) (widthToReal gd 8) (heightToReal gd 8) ]
+    shapes [ fill Color.red ] [ rect (posToReal gd (getPositionUnderCamera p ggd)) (widthToReal gd brickSize) (heightToReal gd brickSize) ]

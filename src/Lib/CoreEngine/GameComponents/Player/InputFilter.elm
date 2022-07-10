@@ -64,9 +64,9 @@ preCheck t model =
                 cs
 
         mok =
-            Debug.log "originkey" model.originKeys
+            model.originKeys
 
         newkeys =
-            Debug.log "NewKeys" { mok | space = nspace }
+            { mok | space = nspace }
     in
     { model | jStartTime = jst, currentKeys = newkeys }

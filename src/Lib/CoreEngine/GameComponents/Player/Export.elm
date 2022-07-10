@@ -8,7 +8,6 @@ import Lib.CoreEngine.GameComponents.Player.Model exposing (initData, initModel,
 gameComponent : GameComponent
 gameComponent =
     { name = "player"
-    , uid = 0
     , data = initData
     , init = initModel
     , update = updateModel

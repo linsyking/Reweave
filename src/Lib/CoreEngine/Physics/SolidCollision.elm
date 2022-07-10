@@ -2,11 +2,12 @@ module Lib.CoreEngine.Physics.SolidCollision exposing (..)
 
 import Array
 import Array2D
-import Lib.CoreEngine.Base exposing (GameGlobalData)
+import Lib.CoreEngine.Base exposing (GameGlobalData, brickSize)
 import Lib.CoreEngine.GameComponent.Base exposing (Data)
-import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos)
+import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos, judgeCollision)
 import Lib.Tools.Math exposing (rfint)
 import Math.Vector2 exposing (Vec2, vec2)
+import Quantity exposing (times)
 
 
 pointIsSolid : ( Int, Int ) -> GameGlobalData -> Bool
@@ -321,3 +322,50 @@ gonnaCollideSolidOrigin actor model =
 
 
 --- Judge if next frame the actor will collide with solid
+
+
+judgeEasyCollision : Data -> ( Int, Int ) -> Bool
+judgeEasyCollision d ( x, y ) =
+    let
+        gbx =
+            getBoxPos d.position d.simplecheck
+    in
+    judgeCollision gbx ( ( x * brickSize, y * brickSize ), ( x * brickSize + brickSize - 1, y * brickSize + brickSize - 1 ) )
+
+
+moveTilCollide : Data -> List ( Int, Int ) -> Data
+moveTilCollide d xs =
+    let
+        ( vx, vy ) =
+            d.velocity
+
+        tdisx =
+            velToDis vx
+
+        tdisy =
+            -(velToDis vy)
+
+        qs =
+            List.range 1 1000
+
+        ( opx, opy ) =
+            d.position
+
+        qsm =
+            List.map (\x -> ( floor (toFloat opx + tdisx * toFloat x / 1000), floor (toFloat opy + tdisy * toFloat x / 1000) )) qs
+
+        alls =
+            List.filter
+                (\pos ->
+                    let
+                        newd =
+                            { d | position = pos }
+                    in
+                    List.any (\x -> not (judgeEasyCollision newd x)) xs
+                )
+                qsm
+
+        qh =
+            Maybe.withDefault d.position (List.head (List.reverse alls))
+    in
+    { d | position = qh }

@@ -2,13 +2,15 @@ module Lib.CoreEngine.GameComponents.Player.Model exposing (..)
 
 import Base exposing (GlobalData, Msg(..))
 import Dict exposing (Dict)
+import Lib.Coordinate.Coordinates exposing (judgeMouse)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
+import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType, GameComponentTMsg(..), LifeStatus(..))
 import Lib.CoreEngine.GameComponents.Player.Acceleration exposing (putAccOn)
 import Lib.CoreEngine.GameComponents.Player.Base exposing (changebk, nullModel)
 import Lib.CoreEngine.GameComponents.Player.InputFilter exposing (afterMove, preCheck)
 import Lib.CoreEngine.GameComponents.Player.InputHandler exposing (changePlayerVelocity)
-import Lib.CoreEngine.GameComponents.Player.Movement exposing (playerMove)
+import Lib.CoreEngine.GameComponents.Player.Movement exposing (playerMove, solidCollisionMove)
 import Lib.CoreEngine.GameComponents.Player.StatesControl exposing (stateControl)
 import Lib.DefinedTypes.Base exposing (DefinedTypes(..))
 import Lib.DefinedTypes.Parser exposing (dgetPlayer, dsetPlayer)
@@ -17,13 +19,14 @@ import Lib.DefinedTypes.Parser exposing (dgetPlayer, dsetPlayer)
 initData : Data
 initData =
     { status = Alive
-    , position = ( 100, 100 )
+    , position = ( 100, 1700 )
     , velocity = ( 0, 0 )
     , mass = 50
     , acceleration = ( 0, -10 )
     , simplecheck = collisionBox
     , collisionbox = [ collisionBox ]
     , extra = Dict.empty
+    , uid = 1
     }
 
 
@@ -50,36 +53,63 @@ initModel _ _ =
 
 
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
-updateModel msg _ ggd _ ( d, t ) =
+updateModel msg gct ggd gd ( d, t ) =
     let
         model =
             dgetPlayer d.extra "model"
     in
     case msg of
         Tick _ ->
-            let
-                ( afterStateM, afterStateD ) =
-                    stateControl t model d ggd
+            case gct of
+                GameSolidCollisionMsg cs ->
+                    let
+                        ( afterStateM, afterStateD ) =
+                            stateControl t model d ggd
 
-                aftercheckM =
-                    preCheck t afterStateM
+                        aftercheckM =
+                            preCheck t afterStateM
 
-                ( afterVelM, afterVelD ) =
-                    changePlayerVelocity t afterStateD ggd aftercheckM
+                        ( afterVelM, afterVelD ) =
+                            changePlayerVelocity t afterStateD ggd aftercheckM
 
-                afterAccD =
-                    putAccOn ggd afterVelD
+                        afterAccD =
+                            putAccOn ggd afterVelD
 
-                aftermoveD =
-                    playerMove afterAccD ggd
+                        aftermoveD =
+                            solidCollisionMove cs afterAccD
 
-                aftermoveM =
-                    afterMove afterVelM
+                        aftermoveM =
+                            afterMove afterVelM
 
-                exportmodel =
-                    dsetPlayer "model" aftermoveM aftermoveD.extra
-            in
-            ( { aftermoveD | extra = exportmodel }, [], ggd )
+                        exportmodel =
+                            dsetPlayer "model" aftermoveM aftermoveD.extra
+                    in
+                    ( { aftermoveD | extra = exportmodel }, [], ggd )
+
+                _ ->
+                    let
+                        ( afterStateM, afterStateD ) =
+                            stateControl t model d ggd
+
+                        aftercheckM =
+                            preCheck t afterStateM
+
+                        ( afterVelM, afterVelD ) =
+                            changePlayerVelocity t afterStateD ggd aftercheckM
+
+                        afterAccD =
+                            putAccOn ggd afterVelD
+
+                        aftermoveD =
+                            playerMove afterAccD ggd
+
+                        aftermoveM =
+                            afterMove afterVelM
+
+                        exportmodel =
+                            dsetPlayer "model" aftermoveM aftermoveD.extra
+                    in
+                    ( { aftermoveD | extra = exportmodel }, [], ggd )
 
         KeyDown x ->
             let
@@ -101,8 +131,27 @@ updateModel msg _ ggd _ ( d, t ) =
             in
             ( { d | extra = exportmodel }, [], ggd )
 
-        _ ->
+        MouseDown 0 mp ->
+            if judgeMouse gd mp (getPositionUnderCamera d.position ggd) ( d.simplecheck.width, d.simplecheck.height ) then
+                ( d, [], { ggd | selectobj = d.uid } )
+
+            else
+                ( d, [], ggd )
+
+        MouseDown 2 mp ->
+            let
+                ss =
+                    Debug.log "das" 0
+            in
             ( d, [], ggd )
+
+        _ ->
+            case gct of
+                ClearVelocity ->
+                    ( { d | velocity = ( 0, 0 ) }, [], ggd )
+
+                _ ->
+                    ( d, [], ggd )
 
 
 queryModel : String -> ( Data, Int ) -> GameComponentTMsg

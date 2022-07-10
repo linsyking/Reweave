@@ -195,10 +195,10 @@ changePlayerVelocityY char flag =
     in
     case flag of
         1 ->
-            Debug.log ("Jump+80:" ++ String.fromFloat (vecY + 160)) ( vecX, vecY + 160 )
+            ( vecX, vecY + 160 )
 
         2 ->
-            Debug.log ("Jump+5:" ++ String.fromFloat (vecY + 3)) ( vecX, vecY + 3 )
+            ( vecX, vecY + 3 )
 
         _ ->
             charVelocity
