@@ -1,7 +1,6 @@
 all:
 	mkdir -p build
-	elm make src/Main.elm --output=build/main.js
-	cp -f public/index.html .
+# elm make src/Demo.elm
 
 format:
 	elm-format src/ --yes
