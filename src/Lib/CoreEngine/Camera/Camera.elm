@@ -18,11 +18,14 @@ reproducePosition pos =
     Position (Tuple.first pos) (Tuple.second pos)
 
 
-getCamera : ( Int, Int ) -> ( Int, Int ) -> ( Int, Int ) -> ( Int, Int )
-getCamera camPos charPos1 charPos2 =
+getNewCamera : ( Int, Int ) -> ( ( Int, Int ), ( Int, Int ) ) -> ( Int, Int ) -> ( Int, Int )
+getNewCamera camPos ( charPos1, charPos2 ) mapsize =
     let
+        deef =
+            Debug.log "Ds" ( camPos, mapsize, charPos2 )
+
         tmpPos =
-            changeCameraPosition (reproducePosition camPos) (reproducePosition charPos1) (reproducePosition charPos2)
+            changeCameraPosition (reproducePosition camPos) (reproducePosition charPos1) (reproducePosition charPos2) mapsize
     in
     ( tmpPos.x, tmpPos.y )
 
@@ -42,12 +45,12 @@ moveFunction =
     MoveFunction 0.001 10
 
 
-changeCameraPosition : Position -> Position -> Position -> Position
-changeCameraPosition camPos charPos _ =
+changeCameraPosition : Position -> Position -> Position -> ( Int, Int ) -> Position
+changeCameraPosition camPos charPos _ mapsize =
     let
         -- Map Size
         ( sizeX, sizeY ) =
-            ( 10000, 1020 )
+            mapsize
 
         ableDel =
             makeAbleDel camPos.y (sizeY - camPos.y - cameraHeight) camPos.x (sizeX - camPos.x - cameraWidth)

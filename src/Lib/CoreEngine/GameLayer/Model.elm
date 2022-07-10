@@ -4,12 +4,13 @@ import Array
 import Array.Extra
 import Base exposing (GlobalData, Msg(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
+import Lib.CoreEngine.Camera.Camera exposing (getNewCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (isAlive, sendManyGameComponentMsg, simpleUpdateAllGameComponent, splitPlayerObjs, updateOneGameComponent)
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameLayer.Common exposing (Model)
 import Lib.CoreEngine.Physics.InterCollision exposing (gonnaInterColllide)
-import Lib.CoreEngine.Physics.NaiveCollision exposing (judgeInCamera)
+import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos, judgeInCamera)
 import Lib.CoreEngine.Physics.SolidCollision exposing (gonnaSolidCollide)
 import Lib.Layer.Base exposing (LayerMsg, LayerTarget)
 import Lib.Tools.Array exposing (locate)
@@ -234,8 +235,14 @@ updateModel msg gd _ ( model, t ) ggd =
 
                 ( newplayer, newactors ) =
                     splitPlayerObjs finalobjs model.player
+
+                ( omx, omy ) =
+                    finalggd.mapsize
+
+                newcameraPosition =
+                    getNewCamera finalggd.cameraPosition (getBoxPos newplayer.data.position newplayer.data.simplecheck) ( omx * 8, omy * 8 )
             in
-            ( ( { model | player = newplayer, actors = newactors }, finalggd, [] ), gd )
+            ( ( { model | player = newplayer, actors = newactors }, { finalggd | cameraPosition = newcameraPosition }, [] ), gd )
 
         KeyDown _ ->
             let
