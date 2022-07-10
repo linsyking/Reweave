@@ -24,7 +24,7 @@ getCamera camPos charPos1 charPos2 =
         tmpPos =
             changeCameraPosition (reproducePosition camPos) (reproducePosition charPos1) (reproducePosition charPos2)
     in
-    ( Tuple.first tmpPos, Tuple.second tmpPos )
+    ( tmpPos.x, tmpPos.y )
 
 
 cameraWidth : Int
@@ -52,7 +52,7 @@ changeCameraPosition camPos charPos _ =
         ableDel =
             makeAbleDel camPos.y (sizeY - camPos.y - cameraHeight) camPos.x (sizeX - camPos.x - cameraWidth)
     in
-    Position (changeCameraPositionHelper camPos.x charPos ableDel True 0.2 0.6 cameraWidth) (changeCameraPositionHelper camPos.y char ableDel False 0.25 0.75 cameraHeight)
+    Position (changeCameraPositionHelper camPos.x charPos ableDel True 0.2 0.6 cameraWidth) (changeCameraPositionHelper camPos.y charPos ableDel False 0.25 0.75 cameraHeight)
 
 
 makeAbleDel : Int -> Int -> Int -> Int -> AbleDel

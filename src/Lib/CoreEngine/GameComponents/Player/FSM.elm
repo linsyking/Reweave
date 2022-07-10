@@ -1,7 +1,7 @@
 module Lib.CoreEngine.GameComponents.Player.FSM exposing (..)
 
 import Lib.CoreEngine.Base exposing (GameGlobalData)
-import Lib.CoreEngine.GameComponent.Base exposing (GameComponent)
+import Lib.CoreEngine.GameComponent.Base exposing (Data)
 import Lib.CoreEngine.GameComponents.Player.Base exposing (Model, PlayerState(..), StateData)
 import Lib.CoreEngine.GameComponents.Player.Common exposing (State)
 import Lib.CoreEngine.Physics.Ground exposing (isInAir, isOnground)
@@ -52,7 +52,7 @@ addPlayerStates t model s =
             PlayerStates (x ++ [ StateData s t ])
 
 
-updateState : Int -> Model -> GameComponent -> GameGlobalData -> String -> ( Model, GameComponent )
+updateState : Int -> Model -> Data -> GameGlobalData -> String -> ( Model, Data )
 updateState t model gc ggd key =
     let
         ( s, p ) =
@@ -61,7 +61,7 @@ updateState t model gc ggd key =
     ( model, s.doing p t model gc ggd )
 
 
-exitState : Int -> Model -> GameComponent -> GameGlobalData -> String -> ( Model, GameComponent )
+exitState : Int -> Model -> Data -> GameGlobalData -> String -> ( Model, Data )
 exitState t model gc ggd key =
     let
         ss =
@@ -84,7 +84,7 @@ exitState t model gc ggd key =
     ( { model | playerStates = deled }, tr )
 
 
-addState : Int -> Model -> GameComponent -> GameGlobalData -> String -> ( Model, GameComponent )
+addState : Int -> Model -> Data -> GameGlobalData -> String -> ( Model, Data )
 addState t model gc ggd key =
     let
         ns =

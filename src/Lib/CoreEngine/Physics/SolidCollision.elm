@@ -3,7 +3,7 @@ module Lib.CoreEngine.Physics.SolidCollision exposing (..)
 import Array
 import Array2D
 import Lib.CoreEngine.Base exposing (GameGlobalData)
-import Lib.CoreEngine.GameComponent.Base exposing (GameComponent)
+import Lib.CoreEngine.GameComponent.Base exposing (Data)
 import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos)
 import Lib.Tools.Math exposing (rfint)
 import Math.Vector2 exposing (Vec2, vec2)
@@ -113,7 +113,7 @@ velToDis x =
 --- Judge if an actor can move toward a specific direction (If there exists gap)
 
 
-canMove : GameComponent -> GameGlobalData -> Vec2 -> Bool
+canMove : Data -> GameGlobalData -> Vec2 -> Bool
 canMove actor model drt =
     let
         xv =
@@ -123,10 +123,10 @@ canMove actor model drt =
             Math.Vector2.getY drt
 
         cbox =
-            actor.data.simplecheck
+            actor.simplecheck
 
         ( ( x1, y1 ), ( x2, y2 ) ) =
-            getBoxPos actor.data.position cbox
+            getBoxPos actor.position cbox
     in
     if xv == 0 && yv == 0 then
         True
@@ -160,7 +160,7 @@ movePointPlain vec ( x, y ) =
     ( x + floor (velToDis vx), y + floor -(velToDis vy) )
 
 
-gonnaSolidCollide : GameComponent -> GameGlobalData -> List ( Int, Int )
+gonnaSolidCollide : Data -> GameGlobalData -> List ( Int, Int )
 gonnaSolidCollide gc ggd =
     Array.toList (gonnaCollideSolidOrigin gc ggd)
 
@@ -182,17 +182,17 @@ genSplits a b s =
             Array.push b (Array.map (\x -> x * s + a) (Array.fromList (List.range 0 fgs)))
 
 
-gonnaCollideSolidOrigin : GameComponent -> GameGlobalData -> Array.Array ( Int, Int )
+gonnaCollideSolidOrigin : Data -> GameGlobalData -> Array.Array ( Int, Int )
 gonnaCollideSolidOrigin actor model =
     let
         cbox =
-            actor.data.simplecheck
+            actor.simplecheck
 
         ( ( x1A, y1A ), ( x2A, y2A ) ) =
-            getBoxPos actor.data.position cbox
+            getBoxPos actor.position cbox
 
         velv =
-            actor.data.velocity
+            actor.velocity
 
         velvx =
             velToDis (Tuple.first velv)

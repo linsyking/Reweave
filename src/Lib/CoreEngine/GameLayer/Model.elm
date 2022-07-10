@@ -44,7 +44,7 @@ solidCollision msg t ggd gd oldgcs updgcs =
         (\( u, o ) ( ncs, nms, lggd ) ->
             let
                 checksolid =
-                    gonnaSolidCollide u ggd
+                    gonnaSolidCollide u.data ggd
 
                 ( newsol, newmsg, newggd ) =
                     updateOneGameComponent msg (GameSolidCollisionMsg checksolid) lggd gd t o

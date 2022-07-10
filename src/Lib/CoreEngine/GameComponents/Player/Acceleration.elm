@@ -1,7 +1,7 @@
 module Lib.CoreEngine.GameComponents.Player.Acceleration exposing (..)
 
 import Lib.CoreEngine.Base exposing (GameGlobalData)
-import Lib.CoreEngine.GameComponent.Base exposing (GameComponent)
+import Lib.CoreEngine.GameComponent.Base exposing (Data)
 import Lib.CoreEngine.Physics.SolidCollision exposing (canMove)
 import Math.Vector2 exposing (vec2)
 
@@ -10,12 +10,9 @@ import Math.Vector2 exposing (vec2)
 -- Add acceleration to objects
 
 
-putAccOn : GameGlobalData -> GameComponent -> GameComponent
-putAccOn model actor =
+putAccOn : GameGlobalData -> Data -> Data
+putAccOn model ada =
     let
-        ada =
-            actor.data
-
         ( acx, acy ) =
             ada.acceleration
 
@@ -23,14 +20,14 @@ putAccOn model actor =
             ada.velocity
 
         vecax =
-            if acx /= 0 && canMove actor model (vec2 acx 0) then
+            if acx /= 0 && canMove ada model (vec2 acx 0) then
                 acx
 
             else
                 0
 
         vecay =
-            if acy /= 0 && canMove actor model (vec2 0 acy) then
+            if acy /= 0 && canMove ada model (vec2 0 acy) then
                 acy
 
             else
@@ -42,4 +39,4 @@ putAccOn model actor =
         newdata =
             { ada | velocity = newvel }
     in
-    { actor | data = newdata }
+    newdata

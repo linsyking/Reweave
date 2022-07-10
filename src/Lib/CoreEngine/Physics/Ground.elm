@@ -1,30 +1,33 @@
 module Lib.CoreEngine.Physics.Ground exposing (..)
 
 import Lib.CoreEngine.Base exposing (GameGlobalData)
-import Lib.CoreEngine.GameComponent.Base exposing (GameComponent)
+import Lib.CoreEngine.GameComponent.Base exposing (Data)
+import Lib.CoreEngine.Physics.SolidCollision exposing (canMove)
+import Math.Vector2 exposing (vec2)
 
 
 
 -- Judge the relationship between objects and the ground
 
 
-isInAir : GameComponent -> GameGlobalData -> Bool
-isInAir _ _ =
-    True
+isInAir : Data -> GameGlobalData -> Bool
+isInAir gc ggd =
+    let
+        ( _, vely ) =
+            gc.velocity
+    in
+    if vely > 0 then
+        True
+
+    else
+        canMove gc ggd (vec2 0 -1)
 
 
-
--- if canJump (getPlayer model) model then
---     False
--- else
---     True
-
-
-canJump : GameComponent -> GameGlobalData -> Bool
+canJump : Data -> GameGlobalData -> Bool
 canJump actor model =
-    True
+    isOnground actor model
 
 
-isOnground : GameComponent -> GameGlobalData -> Bool
+isOnground : Data -> GameGlobalData -> Bool
 isOnground gc ggd =
     not (isInAir gc ggd)

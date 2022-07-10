@@ -2,10 +2,9 @@ module Lib.CoreEngine.GameComponents.Player.InputHandler exposing (..)
 
 import Array exposing (..)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
-import Lib.CoreEngine.GameComponent.Base exposing (GameComponent)
+import Lib.CoreEngine.GameComponent.Base exposing (Data)
 import Lib.CoreEngine.GameComponents.Player.Base exposing (Model, SpaceLog(..))
 import Lib.CoreEngine.Physics.Ground exposing (canJump)
-import Math.Vector2 exposing (Vec2, getX, getY, vec2)
 
 
 
@@ -49,7 +48,7 @@ jumpBlankVelocityFunction =
     DelVelocityFunction (-1 / 460.0) 0 0
 
 
-changePlayerVelocity : Int -> GameComponent -> GameGlobalData -> Model -> ( Model, GameComponent )
+changePlayerVelocity : Int -> Data -> GameGlobalData -> Model -> ( Model, Data )
 changePlayerVelocity t char ggd model =
     let
         space =
@@ -60,10 +59,10 @@ changePlayerVelocity t char ggd model =
     in
     if space == 0 then
         if canJump char ggd == False then
-            ( model, changePlayerVelocityHelper char (boundXY (changePlayerVelocityX char model Ydir) char.data.velocity) )
+            ( model, changePlayerVelocityHelper char (boundXY (changePlayerVelocityX char model Ydir) char.velocity) )
 
         else
-            ( model, changePlayerVelocityHelper char (boundXY (changePlayerVelocityX char model Xdir) char.data.velocity) )
+            ( model, changePlayerVelocityHelper char (boundXY (changePlayerVelocityX char model Xdir) char.velocity) )
 
     else if space == 1 then
         case model.keyPressed of
@@ -72,19 +71,19 @@ changePlayerVelocity t char ggd model =
                     ( model, changePlayerVelocityHelper char (boundXY (changePlayerVelocityX char model Ydir) (changePlayerVelocityY char 2)) )
 
                 else if canJump char ggd == False then
-                    ( { model | keyPressed = Nope }, changePlayerVelocityHelper char (boundXY (changePlayerVelocityX char model Ydir) char.data.velocity) )
+                    ( { model | keyPressed = Nope }, changePlayerVelocityHelper char (boundXY (changePlayerVelocityX char model Ydir) char.velocity) )
 
                 else
-                    ( { model | keyPressed = Nope }, changePlayerVelocityHelper char (boundXY (changePlayerVelocityX char model Xdir) char.data.velocity) )
+                    ( { model | keyPressed = Nope }, changePlayerVelocityHelper char (boundXY (changePlayerVelocityX char model Xdir) char.velocity) )
 
             Nope ->
                 ( { model | keyPressed = PressTime curTime }, changePlayerVelocityHelper char (boundXY (changePlayerVelocityX char model Ydir) (changePlayerVelocityY char 1)) )
 
     else if canJump char ggd == False then
-        ( { model | keyPressed = Nope }, changePlayerVelocityHelper char (boundXY (changePlayerVelocityX char model Ydir) char.data.velocity) )
+        ( { model | keyPressed = Nope }, changePlayerVelocityHelper char (boundXY (changePlayerVelocityX char model Ydir) char.velocity) )
 
     else
-        ( { model | keyPressed = Nope }, changePlayerVelocityHelper char (boundXY (changePlayerVelocityX char model Xdir) char.data.velocity) )
+        ( { model | keyPressed = Nope }, changePlayerVelocityHelper char (boundXY (changePlayerVelocityX char model Xdir) char.velocity) )
 
 
 type VelDirMsg
@@ -128,17 +127,14 @@ delVelocityFunction f vel =
         delVel
 
 
-changePlayerVelocityX : GameComponent -> Model -> VelDirMsg -> ( Float, Float )
-changePlayerVelocityX gc model dir =
+changePlayerVelocityX : Data -> Model -> VelDirMsg -> ( Float, Float )
+changePlayerVelocityX char model dir =
     let
         left =
             model.currentKeys.left
 
         right =
             model.currentKeys.right
-
-        char =
-            gc.data
 
         charVelocity =
             char.velocity
@@ -188,12 +184,9 @@ changePlayerVelocityX gc model dir =
         charVelocity
 
 
-changePlayerVelocityY : GameComponent -> Int -> ( Float, Float )
-changePlayerVelocityY gc flag =
+changePlayerVelocityY : Data -> Int -> ( Float, Float )
+changePlayerVelocityY char flag =
     let
-        char =
-            gc.data
-
         charVelocity =
             char.velocity
 
@@ -211,16 +204,9 @@ changePlayerVelocityY gc flag =
             charVelocity
 
 
-changePlayerVelocityHelper : GameComponent -> ( Float, Float ) -> GameComponent
-changePlayerVelocityHelper gc nv =
-    let
-        cd =
-            gc.data
-
-        ncd =
-            { cd | velocity = nv }
-    in
-    { gc | data = ncd }
+changePlayerVelocityHelper : Data -> ( Float, Float ) -> Data
+changePlayerVelocityHelper cd nv =
+    { cd | velocity = nv }
 
 
 delVelocityFunctionHelper : ( Float, Float ) -> VelTypeMsg -> ( Float, Float )
@@ -232,8 +218,8 @@ delVelocityFunctionHelper vec velTypeMsg =
         signX =
             toFloat (sign vecX)
 
-        signY =
-            toFloat (sign vecY)
+        -- signY =
+        --     toFloat (sign vecY)
     in
     case velTypeMsg of
         Pressed msgDir x ->

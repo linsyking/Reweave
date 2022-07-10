@@ -2,7 +2,7 @@ module Lib.CoreEngine.GameComponents.Player.Movement exposing (..)
 
 import Array
 import Lib.CoreEngine.Base exposing (GameGlobalData)
-import Lib.CoreEngine.GameComponent.Base exposing (GameComponent)
+import Lib.CoreEngine.GameComponent.Base exposing (Data)
 import Lib.CoreEngine.Physics.SolidCollision exposing (gonnaCollideSolidOrigin, movePointPlain)
 import Math.Vector2
 
@@ -12,14 +12,11 @@ import Math.Vector2
 -- moveMax : GActor
 
 
-playerMove : GameComponent -> GameGlobalData -> GameComponent
-playerMove gc ggd =
+playerMove : Data -> GameGlobalData -> Data
+playerMove player ggd =
     let
-        player =
-            gc.data
-
         solidcollision =
-            gonnaCollideSolidOrigin gc ggd
+            gonnaCollideSolidOrigin player ggd
 
         pv =
             player.velocity
@@ -51,4 +48,4 @@ playerMove gc ggd =
         newplayer =
             { player | position = newpos, velocity = newvel }
     in
-    { gc | data = newplayer }
+    newplayer

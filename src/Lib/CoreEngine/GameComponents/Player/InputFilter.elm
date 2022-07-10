@@ -27,6 +27,12 @@ isFirstJump model =
         False
 
 
+afterMove : Model -> Model
+afterMove model =
+    --- Copy current keys to backup
+    { model | lastOriginKeys = model.originKeys }
+
+
 preCheck : Int -> Model -> Model
 preCheck t model =
     let
