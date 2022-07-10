@@ -1,6 +1,7 @@
 module Lib.DefinedTypes.Parser exposing (..)
 
 import Dict exposing (Dict)
+import Lib.CoreEngine.GameComponents.Player.Base as PlayerBase
 import Lib.DefinedTypes.Base exposing (DefinedTypes(..))
 
 
@@ -97,3 +98,18 @@ dgetLString f s =
 dsetlstring : String -> List String -> Dict String DefinedTypes -> Dict String DefinedTypes
 dsetlstring s t f =
     Dict.update s (\_ -> Just (CDLString t)) f
+
+
+dgetPlayer : Dict String DefinedTypes -> String -> PlayerBase.Model
+dgetPlayer f s =
+    case Dict.get s f of
+        Just (CDPlayerModel x) ->
+            x
+
+        _ ->
+            PlayerBase.nullModel
+
+
+dsetPlayer : String -> PlayerBase.Model -> Dict String DefinedTypes -> Dict String DefinedTypes
+dsetPlayer s t f =
+    Dict.update s (\_ -> Just (CDPlayerModel t)) f

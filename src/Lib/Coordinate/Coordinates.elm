@@ -96,3 +96,8 @@ judgeMouse gd ( mx, my ) ( x, y ) ( w, h ) =
 
     else
         False
+
+
+fromMouseToReal : GlobalData -> ( Float, Float ) -> ( Float, Float )
+fromMouseToReal gd ( px, py ) =
+    ( px - gd.startLeft, py - gd.startTop )
