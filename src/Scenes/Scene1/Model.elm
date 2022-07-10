@@ -48,11 +48,11 @@ handleLayerMsg lmsg ( model, _ ) =
             ( model, NullSceneOutputMsg )
 
 
-updateModel : Msg -> ( XModel, Int ) -> ( XModel, SceneOutputMsg )
-updateModel msg ( model, t ) =
+updateModel : Msg -> GlobalData -> ( XModel, Int ) -> ( XModel, SceneOutputMsg, GlobalData )
+updateModel msg gd ( model, t ) =
     let
-        ( newdata, newcd, msgs ) =
-            updateLayer msg t model.commonData model.layers
+        ( ( newdata, newcd, msgs ), newgd ) =
+            updateLayer msg gd t model.commonData model.layers
 
         nmodel =
             { model | commonData = newcd, layers = newdata }
@@ -60,7 +60,7 @@ updateModel msg ( model, t ) =
         ( newmodel, newso ) =
             List.foldl (\x ( y, _ ) -> handleLayerMsg x ( y, t )) ( nmodel, NullSceneOutputMsg ) msgs
     in
-    ( newmodel, newso )
+    ( newmodel, newso, newgd )
 
 
 viewModel : ( XModel, Int ) -> GlobalData -> Renderable

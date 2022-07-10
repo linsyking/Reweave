@@ -1,7 +1,8 @@
 module Scenes.SceneSettings exposing (SceneCT, SceneDataTypes(..), nullSceneCT)
 
 import Base exposing (..)
-import Canvas exposing (text)
+import Canvas exposing (group)
+import Lib.CoreEngine.Export as CoreEngine
 import Lib.Scene.Base exposing (..)
 import Scenes.Scene1.Export as S1
 
@@ -12,6 +13,7 @@ import Scenes.Scene1.Export as S1
 
 type SceneDataTypes
     = S1DataT S1.Data
+    | CoreEngineDataT CoreEngine.Data
     | NullSceneData
 
 
@@ -22,6 +24,6 @@ type alias SceneCT =
 nullSceneCT : SceneCT
 nullSceneCT =
     { init = \_ _ -> NullSceneData
-    , update = \_ ( _, _ ) -> ( NullSceneData, NullSceneOutputMsg )
-    , view = \_ _ -> text [] ( 0, 0 ) ""
+    , update = \_ g ( _, _ ) -> ( NullSceneData, NullSceneOutputMsg, g )
+    , view = \_ _ -> group [] []
     }

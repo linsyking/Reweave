@@ -1,58 +1,11 @@
 module Lib.Coordinate.Coordinates exposing (..)
 
-import Base exposing (GlobalData, Msg)
-import Constants exposing (..)
-import Html exposing (Attribute, Html, div)
-import Html.Attributes exposing (style)
+import Base exposing (GlobalData)
+import Constants exposing (plHeight, plWidth)
 
 
 
 --- Transform Coordinates
-
-
-relgenX : GlobalData -> ( Int, Int ) -> ( Int, Int ) -> List (Attribute msg)
-relgenX gd ( x, y ) ( w, h ) =
-    let
-        rx =
-            widthToReal gd x
-
-        ry =
-            heightToReal gd y
-
-        rw =
-            widthToReal gd w
-
-        rh =
-            heightToReal gd h
-    in
-    [ style "width" (String.fromFloat rw)
-    , style "height" (String.fromFloat rh)
-    , style "left" (String.fromFloat rx)
-    , style "top" (String.fromFloat ry)
-    , style "overflow" "hidden"
-    , style "position" "absolute"
-    ]
-
-
-ffgenX : GlobalData -> ( Int, Int ) -> ( Int, Int ) -> List (Attribute msg)
-ffgenX gd ( x, y ) ( w, h ) =
-    let
-        ( x1, y1 ) =
-            fixedPosToReal gd ( x, y )
-
-        rw =
-            widthToReal gd w
-
-        rh =
-            heightToReal gd h
-    in
-    [ style "width" (String.fromFloat rw)
-    , style "height" (String.fromFloat rh)
-    , style "left" (String.fromFloat x1)
-    , style "top" (String.fromFloat y1)
-    , style "overflow" "hidden"
-    , style "position" "fixed"
-    ]
 
 
 floatpairadd : ( Float, Float ) -> ( Float, Float ) -> ( Float, Float )
@@ -120,55 +73,31 @@ getStartPoint ( w, h ) =
         ( 0, (toFloat h - fh) / 2 )
 
 
-genBlank : String -> GlobalData -> Html Msg
-genBlank color gd =
+judgeMouse : GlobalData -> ( Float, Float ) -> ( Int, Int ) -> ( Int, Int ) -> Bool
+judgeMouse gd ( mx, my ) ( x, y ) ( w, h ) =
     let
-        ( bw, bh ) =
-            gd.browserViewPort
+        ( rpx, rpy ) =
+            posToReal gd ( x, y )
 
-        lb =
-            gd.startTop + toFloat gd.realHeight
+        rw =
+            widthToReal gd w
 
-        rt =
-            gd.startLeft + toFloat gd.realWidth
+        rh =
+            heightToReal gd h
+
+        mpx =
+            mx - gd.startLeft
+
+        mpy =
+            my - gd.startTop
     in
-    div
-        [ style "z-index" "100"
-        ]
-        [ div
-            [ style "position" "fixed"
-            , style "left" "0"
-            , style "top" "0"
-            , style "width" (String.fromInt bw)
-            , style "height" (String.fromFloat gd.startTop)
-            , style "background-color" color
-            ]
-            []
-        , div
-            [ style "position" "fixed"
-            , style "left" "0"
-            , style "top" (String.fromFloat lb)
-            , style "width" (String.fromInt bw)
-            , style "height" (String.fromFloat gd.startTop)
-            , style "background-color" color
-            ]
-            []
-        , div
-            [ style "position" "fixed"
-            , style "left" "0"
-            , style "top" "0"
-            , style "width" (String.fromFloat gd.startLeft)
-            , style "height" (String.fromInt bh)
-            , style "background-color" color
-            ]
-            []
-        , div
-            [ style "position" "fixed"
-            , style "left" (String.fromFloat rt)
-            , style "top" "0"
-            , style "width" (String.fromFloat gd.startLeft)
-            , style "height" (String.fromInt bh)
-            , style "background-color" color
-            ]
-            []
-        ]
+    if rpx <= mpx && mpx <= rpx + rw && rpy <= mpy && mpy <= rpy + rh then
+        True
+
+    else
+        False
+
+
+fromMouseToReal : GlobalData -> ( Float, Float ) -> ( Float, Float )
+fromMouseToReal gd ( px, py ) =
+    ( px - gd.startLeft, py - gd.startTop )

@@ -1,41 +1,21 @@
-module Collision exposing (..)
+module Lib.CoreEngine.Physics.SolidCollision exposing (..)
 
 import Array
 import Array2D
-import Common exposing (..)
+import Lib.CoreEngine.Base exposing (GameGlobalData, brickSize)
+import Lib.CoreEngine.GameComponent.Base exposing (Data)
+import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos, judgeCollision)
+import Lib.Tools.Math exposing (rfint)
 import Math.Vector2 exposing (Vec2, vec2)
+import Quantity exposing (times)
 
 
-isRiding : GActor -> Model -> Maybe GObject
-isRiding actor _ =
-    if actor.position.y < screen_height - 70 then
-        Just (Solid (GSolid (Position 0 0) 1))
-        --- Test
-
-    else
-        Nothing
-
-
-canJump : GActor -> Model -> Bool
-canJump actor model =
-    case isRiding actor model of
-        Just _ ->
-            False
-
-        Nothing ->
-            True
-
-
-
---- Judge if a point is in the solid
-
-
-pointIsSolid : ( Int, Int ) -> Model -> Bool
+pointIsSolid : ( Int, Int ) -> GameGlobalData -> Bool
 pointIsSolid ( x, y ) model =
     blockIsSolid model ( rfint x, rfint y )
 
 
-pointOfSolid : ( Int, Int ) -> Model -> Maybe ( Int, Int )
+pointOfSolid : ( Int, Int ) -> GameGlobalData -> Maybe ( Int, Int )
 pointOfSolid ( x, y ) model =
     case Array2D.get (rfint x) (rfint y) model.solidmap of
         Just t ->
@@ -46,14 +26,14 @@ pointOfSolid ( x, y ) model =
                 Nothing
 
         Nothing ->
-            if x < 0 || rfint x >= Tuple.first model.mapSize || rfint y >= Tuple.second model.mapSize then
+            if x < 0 || rfint x >= Tuple.first model.mapsize || rfint y >= Tuple.second model.mapsize then
                 Just ( rfint x, rfint y )
 
             else
                 Nothing
 
 
-blockIsSolid : Model -> ( Int, Int ) -> Bool
+blockIsSolid : GameGlobalData -> ( Int, Int ) -> Bool
 blockIsSolid model ( x, y ) =
     case Array2D.get x y model.solidmap of
         Just t ->
@@ -64,7 +44,7 @@ blockIsSolid model ( x, y ) =
                 False
 
         Nothing ->
-            if x < 0 || x >= Tuple.first model.mapSize || y >= Tuple.second model.mapSize then
+            if x < 0 || x >= Tuple.first model.mapsize || y >= Tuple.second model.mapsize then
                 True
 
             else
@@ -75,7 +55,7 @@ blockIsSolid model ( x, y ) =
 -- Judge if the line has some points that are solid
 
 
-lineHasSolid : ( Int, Int ) -> ( Int, Int ) -> Model -> Bool
+lineHasSolid : ( Int, Int ) -> ( Int, Int ) -> GameGlobalData -> Bool
 lineHasSolid ( x1, y1 ) ( x2, y2 ) model =
     let
         x1t =
@@ -118,18 +98,23 @@ lineHasSolid ( x1, y1 ) ( x2, y2 ) model =
             totest =
                 List.map (\i -> ( i, y1t )) bdrange
         in
-        dbge [ totest ] (List.any (blockIsSolid model) totest)
+        List.any (blockIsSolid model) totest
 
     else
         -- Undefined Behavior !!!
         True
 
 
+velToDis : Float -> Float
+velToDis x =
+    x / 15
+
+
 
 --- Judge if an actor can move toward a specific direction (If there exists gap)
 
 
-canMove : GActor -> Model -> Vec2 -> Bool
+canMove : Data -> GameGlobalData -> Vec2 -> Bool
 canMove actor model drt =
     let
         xv =
@@ -139,44 +124,29 @@ canMove actor model drt =
             Math.Vector2.getY drt
 
         cbox =
-            getCollisionBox actor
+            actor.simplecheck
 
-        relp =
-            cbox.relativePosition
-
-        x1 =
-            actor.position.x + relp.x
-
-        y1 =
-            actor.position.y + relp.y
-
-        x2 =
-            x1 + cbox.width - 1
-
-        y2 =
-            y1 + cbox.height - 1
+        ( ( x1, y1 ), ( x2, y2 ) ) =
+            getBoxPos actor.position cbox
     in
-    dbge
-        [ x1, y1, x2, y2 ]
-        (if xv == 0 && yv == 0 then
-            True
+    if xv == 0 && yv == 0 then
+        True
 
-         else if xv == 0 && yv > 0 then
-            not (lineHasSolid ( x1, y1 - 1 ) ( x2, y1 - 1 ) model)
+    else if xv == 0 && yv > 0 then
+        not (lineHasSolid ( x1, y1 - 1 ) ( x2, y1 - 1 ) model)
 
-         else if xv == 0 && yv < 0 then
-            not (lineHasSolid ( x1, y2 + 1 ) ( x2, y2 + 1 ) model)
+    else if xv == 0 && yv < 0 then
+        not (lineHasSolid ( x1, y2 + 1 ) ( x2, y2 + 1 ) model)
 
-         else if xv > 0 && yv == 0 then
-            not (lineHasSolid ( x2 + 1, y1 ) ( x2 + 1, y2 ) model)
+    else if xv > 0 && yv == 0 then
+        not (lineHasSolid ( x2 + 1, y1 ) ( x2 + 1, y2 ) model)
 
-         else if xv < 0 && yv == 0 then
-            not (lineHasSolid ( x1 - 1, y1 ) ( x1 - 1, y2 ) model)
+    else if xv < 0 && yv == 0 then
+        not (lineHasSolid ( x1 - 1, y1 ) ( x1 - 1, y2 ) model)
 
-         else
-            --- Maybe undefined
-            False
-        )
+    else
+        --- Maybe undefined
+        False
 
 
 movePointPlain : Vec2 -> ( Int, Int ) -> ( Int, Int )
@@ -191,54 +161,49 @@ movePointPlain vec ( x, y ) =
     ( x + floor (velToDis vx), y + floor -(velToDis vy) )
 
 
-gonnaCollideSolid : GActor -> Model -> Array.Array ( Int, Int )
-gonnaCollideSolid actor model =
+gonnaSolidCollide : Data -> GameGlobalData -> List ( Int, Int )
+gonnaSolidCollide gc ggd =
+    Array.toList (gonnaCollideSolidOrigin gc ggd)
+
+
+genSplits : Int -> Int -> Int -> Array.Array Int
+genSplits a b s =
+    if a >= b then
+        Array.empty
+
+    else
+        let
+            fgs =
+                (b - a) // s
+        in
+        if modBy s (b - a) == 0 then
+            Array.map (\x -> x * s + a) (Array.fromList (List.range 0 fgs))
+
+        else
+            Array.push b (Array.map (\x -> x * s + a) (Array.fromList (List.range 0 fgs)))
+
+
+gonnaCollideSolidOrigin : Data -> GameGlobalData -> Array.Array ( Int, Int )
+gonnaCollideSolidOrigin actor model =
     let
         cbox =
-            getCollisionBox actor
+            actor.simplecheck
 
-        x1A =
-            actor.position.x + cbox.relativePosition.x
+        ( ( x1A, y1A ), ( x2A, y2A ) ) =
+            getBoxPos actor.position cbox
 
-        y1A =
-            actor.position.y + cbox.relativePosition.y
-
-        x2A =
-            x1A + cbox.width - 1
-
-        y2A =
-            y1A + cbox.height - 1
-
-        -- x1B =
-        --     x1A // 8
-        -- y1B =
-        --     y1A // 8
-        -- x2B =
-        --     x2A // 8
-        -- y2B =
-        --     y2A // 8
         velv =
             actor.velocity
 
-        -- ( movedx1A, movedy1A ) =
-        --     movePointPlain velv ( x1A, y1A )
-        -- movedx2A =
-        --     movedx1A + cbox.width
-        -- movedy2A =
-        --     movedy1A + cbox.height
         velvx =
-            velToDis (Math.Vector2.getX velv)
+            velToDis (Tuple.first velv)
 
         velvy =
-            velToDis (Math.Vector2.getY velv)
+            velToDis (Tuple.second velv)
 
         disv =
             vec2 velvx -velvy
 
-        -- calcPos =
-        --     Debug.log "Want to move to" ( x1A + floor velvx, y1A + floor -velvy )
-        -- ply2 =
-        --     Debug.log "Playery" (y2A - floor velvy)
         disvlength =
             Math.Vector2.length disv
 
@@ -269,15 +234,6 @@ gonnaCollideSolid actor model =
 
                 Nothing ->
                     ( x, y )
-
-        mapMaybe : Maybe ( Int, Int ) -> ( Int, Int )
-        mapMaybe x =
-            case x of
-                Just t ->
-                    t
-
-                Nothing ->
-                    ( 0, 0 )
 
         rightAgents =
             Array.map (\x -> ( x2A, x )) (genSplits y1A y2A 5)
@@ -317,7 +273,7 @@ gonnaCollideSolid actor model =
                         Array.map (\x -> pointOfSolid x model) curagents
 
                     td =
-                        List.map mapMaybe (List.filter testMaybe (Array.toList testres))
+                        List.filterMap (\x -> x) (Array.toList testres)
                 in
                 if List.isEmpty td then
                     moveAgent agents (index + 1)
@@ -366,3 +322,50 @@ gonnaCollideSolid actor model =
 
 
 --- Judge if next frame the actor will collide with solid
+
+
+judgeEasyCollision : Data -> ( Int, Int ) -> Bool
+judgeEasyCollision d ( x, y ) =
+    let
+        gbx =
+            getBoxPos d.position d.simplecheck
+    in
+    judgeCollision gbx ( ( x * brickSize, y * brickSize ), ( x * brickSize + brickSize - 1, y * brickSize + brickSize - 1 ) )
+
+
+moveTilCollide : Data -> List ( Int, Int ) -> Data
+moveTilCollide d xs =
+    let
+        ( vx, vy ) =
+            d.velocity
+
+        tdisx =
+            velToDis vx
+
+        tdisy =
+            -(velToDis vy)
+
+        qs =
+            List.range 1 1000
+
+        ( opx, opy ) =
+            d.position
+
+        qsm =
+            List.map (\x -> ( floor (toFloat opx + tdisx * toFloat x / 1000), floor (toFloat opy + tdisy * toFloat x / 1000) )) qs
+
+        alls =
+            List.filter
+                (\pos ->
+                    let
+                        newd =
+                            { d | position = pos }
+                    in
+                    List.any (\x -> not (judgeEasyCollision newd x)) xs
+                )
+                qsm
+
+        qh =
+            Maybe.withDefault d.position (List.head (List.reverse alls))
+    in
+    { d | position = qh }

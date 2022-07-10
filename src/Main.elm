@@ -2,10 +2,10 @@ port module Main exposing (..)
 
 import Audio exposing (AudioCmd, AudioData)
 import Base exposing (..)
-import Browser.Events exposing (onKeyDown, onKeyUp, onResize)
+import Browser.Events exposing (onKeyDown, onKeyUp, onMouseDown, onResize)
 import Canvas
 import Canvas.Settings exposing (fill)
-import Color exposing (Color)
+import Color
 import Common exposing (..)
 import Dict
 import Html exposing (Html)
@@ -59,7 +59,7 @@ init : Flags -> ( Model, Cmd Msg, AudioCmd Msg )
 init flags =
     let
         ms =
-            loadSceneByName initModel "Scene1" NullSceneMsg
+            loadSceneByName initModel "Engine" NullSceneMsg
 
         oldgd =
             ms.currentGlobalData
@@ -150,8 +150,8 @@ update _ msg model =
                     cm =
                         ( cd, model.time )
 
-                    ( sdt, som ) =
-                        cs.update msg cm
+                    ( sdt, som, newgd ) =
+                        cs.update msg model.currentGlobalData cm
 
                     ntmodel =
                         { model | time = model.time + 1 }
@@ -165,7 +165,7 @@ update _ msg model =
                                 model
 
                     bnewmodel =
-                        { tmodel | currentData = sdt }
+                        { tmodel | currentData = sdt, currentGlobalData = newgd }
                 in
                 case som of
                     SOChangeScene ( tm, s ) ->
@@ -180,10 +180,10 @@ update _ msg model =
                             oldgd =
                                 bnewmodel.currentGlobalData
 
-                            newgd =
+                            newgd2 =
                                 { oldgd | audioVolume = s }
                         in
-                        ( { bnewmodel | currentGlobalData = newgd }, Cmd.none, Audio.cmdNone )
+                        ( { bnewmodel | currentGlobalData = newgd2 }, Cmd.none, Audio.cmdNone )
 
                     SOStopAudio name ->
                         ( { bnewmodel | audiorepo = stopAudio bnewmodel.audiorepo name }, Cmd.none, Audio.cmdNone )
@@ -199,6 +199,7 @@ subscriptions _ _ =
         , onKeyDown (Decode.map (\x -> KeyDown x) (Decode.field "keyCode" Decode.int))
         , onKeyUp (Decode.map (\x -> KeyUp x) (Decode.field "keyCode" Decode.int))
         , onResize (\w h -> NewWindowSize ( w, h ))
+        , onMouseDown (Decode.map3 (\b x y -> MouseDown b ( x, y )) (Decode.field "button" Decode.int) (Decode.field "clientX" Decode.float) (Decode.field "clientY" Decode.float))
         ]
 
 
@@ -213,4 +214,6 @@ view _ model =
         , style "top" (String.fromFloat model.currentGlobalData.startTop)
         , style "position" "fixed"
         ]
-        [ (getCurrentScene model).view ( model.currentData, model.time ) model.currentGlobalData ]
+        [ Canvas.shapes [ fill Color.white ] [ Canvas.rect ( 0, 0 ) (toFloat model.currentGlobalData.realWidth) (toFloat model.currentGlobalData.realHeight) ]
+        , (getCurrentScene model).view ( model.currentData, model.time ) model.currentGlobalData
+        ]

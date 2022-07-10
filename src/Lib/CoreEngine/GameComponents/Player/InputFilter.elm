@@ -1,8 +1,7 @@
-module InputFilter exposing (..)
+module Lib.CoreEngine.GameComponents.Player.InputFilter exposing (..)
 
-import Collision exposing (..)
-import Common exposing (..)
-import FSM exposing (queryIsState)
+import Lib.CoreEngine.GameComponents.Player.Base exposing (Model, SpaceLog(..))
+import Lib.CoreEngine.GameComponents.Player.FSM exposing (queryIsState)
 
 
 
@@ -28,8 +27,14 @@ isFirstJump model =
         False
 
 
-preCheck : Model -> Model
-preCheck model =
+afterMove : Model -> Model
+afterMove model =
+    --- Copy current keys to backup
+    { model | lastOriginKeys = model.originKeys }
+
+
+preCheck : Int -> Model -> Model
+preCheck t model =
     let
         --- First Update Space
         cs =
@@ -38,7 +43,7 @@ preCheck model =
         jst =
             if isFirstJump model then
                 --- First Press
-                model.currentTime
+                t
 
             else
                 model.jStartTime
@@ -49,7 +54,7 @@ preCheck model =
                 if queryIsState model "inair" && not (isNope model) then
                     1
 
-                else if queryIsState model "onground" && model.currentTime - jst <= 15 then
+                else if queryIsState model "onground" && t - jst <= 15 then
                     1
 
                 else
@@ -59,9 +64,9 @@ preCheck model =
                 cs
 
         mok =
-            Debug.log "originkey" model.originKeys
+            model.originKeys
 
         newkeys =
-            Debug.log "NewKeys" { mok | space = nspace }
+            { mok | space = nspace }
     in
     { model | jStartTime = jst, currentKeys = newkeys }

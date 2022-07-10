@@ -30,13 +30,13 @@ getLayerCT layer =
         init t cd =
             dToCT (layer.init t cd)
 
-        update : Msg -> LayerMsg -> ( LayerDataType, Int ) -> CommonData -> ( LayerDataType, CommonData, ( LayerTarget, LayerMsg ) )
-        update m lm ( ldt, t ) cd =
+        update : Msg -> GlobalData -> LayerMsg -> ( LayerDataType, Int ) -> CommonData -> ( ( LayerDataType, CommonData, List ( LayerTarget, LayerMsg ) ), GlobalData )
+        update m gd lm ( ldt, t ) cd =
             let
-                ( rldt, rcd, ( rlt, rlm ) ) =
-                    layer.update m lm ( ctTod ldt, t ) cd
+                ( ( rldt, rcd, ltm ), newgd ) =
+                    layer.update m gd lm ( ctTod ldt, t ) cd
             in
-            ( dToCT rldt, rcd, ( rlt, rlm ) )
+            ( ( dToCT rldt, rcd, ltm ), newgd )
 
         view : ( LayerDataType, Int ) -> CommonData -> GlobalData -> Renderable
         view ( ldt, t ) cd gd =
