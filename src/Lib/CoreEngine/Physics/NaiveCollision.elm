@@ -83,7 +83,7 @@ judgeInCamera gc ggd =
             op1y + gcsc.height - 1
 
         cpos =
-            ggd.cameraPosition
+            ggd.camera.position
 
         cposrb =
             addIntVec cpos ( 1919, 1079 )

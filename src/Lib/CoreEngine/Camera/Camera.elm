@@ -1,30 +1,35 @@
 module Lib.CoreEngine.Camera.Camera exposing (..)
 
-
-type alias MoveFunction =
-    { a : Float, b : Float }
-
-
-type alias AbleDel =
-    { up : Int, down : Int, left : Int, right : Int }
+import Lib.CoreEngine.Base exposing (GameGlobalData, brickSize)
+import Lib.CoreEngine.Camera.Base exposing (CameraData)
+import Lib.CoreEngine.GameComponent.Base exposing (Data)
+import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos)
+import Math.Vector2 exposing (Vec2, vec2)
 
 
-type alias Position =
-    { x : Int, y : Int }
-
-
-reproducePosition : ( Int, Int ) -> Position
-reproducePosition pos =
-    Position (Tuple.first pos) (Tuple.second pos)
-
-
-getNewCamera : ( Int, Int ) -> ( ( Int, Int ), ( Int, Int ) ) -> ( Int, Int ) -> ( Int, Int )
-getNewCamera camPos ( charPos1, charPos2 ) mapsize =
+getNewCamera : GameGlobalData -> Data -> CameraData
+getNewCamera ggd d =
     let
-        tmpPos =
-            changeCameraPosition (reproducePosition camPos) (reproducePosition charPos1) (reproducePosition charPos2) mapsize
+        da =
+            Debug.log "camera" cd
+
+        cd =
+            ggd.camera
+
+        newv =
+            if judgeInBox ggd d then
+                dealInboundSpeed ggd
+
+            else
+                calcMoveVec ggd d
+
+        newc =
+            { cd | velocity = newv }
+
+        newd =
+            { ggd | camera = newc }
     in
-    ( tmpPos.x, tmpPos.y )
+    moveCamera newd
 
 
 cameraWidth : Int
@@ -37,79 +42,210 @@ cameraHeight =
     1080
 
 
-moveFunction : MoveFunction
-moveFunction =
-    MoveFunction 0.001 10
-
-
-changeCameraPosition : Position -> Position -> Position -> ( Int, Int ) -> Position
-changeCameraPosition camPos charPos _ mapsize =
+moveCamera : GameGlobalData -> CameraData
+moveCamera ggd =
     let
-        -- Map Size
-        ( sizeX, sizeY ) =
-            mapsize
+        c =
+            ggd.camera
 
-        ableDel =
-            makeAbleDel camPos.y (sizeY - camPos.y - cameraHeight) camPos.x (sizeX - camPos.x - cameraWidth)
+        ( vx, vy ) =
+            ggd.camera.velocity
+
+        ( px, py ) =
+            ggd.camera.position
+
+        rv =
+            vec2 vx vy
+
+        np =
+            if Math.Vector2.length rv < 3 then
+                ( px, py )
+
+            else
+                ( px + floor vx, py + floor vy )
+
+        nc =
+            { c | position = np }
+
+        newggd =
+            { ggd | camera = nc }
     in
-    Position (changeCameraPositionHelper camPos.x charPos ableDel True 0.2 0.6 cameraWidth) (changeCameraPositionHelper camPos.y charPos ableDel False 0.25 0.75 cameraHeight)
+    judgeInBound newggd
 
 
-makeAbleDel : Int -> Int -> Int -> Int -> AbleDel
-makeAbleDel a b c d =
-    AbleDel (max a 0) (max b 0) (max c 0) (max d 0)
-
-
-changeCameraPositionHelper : Int -> Position -> AbleDel -> Bool -> Float -> Float -> Int -> Int
-changeCameraPositionHelper posCam charPos ableDel dir lineLow lineUp length =
+judgeInBound : GameGlobalData -> CameraData
+judgeInBound ggd =
     let
-        pos =
-            charPos
+        ( mw, mh ) =
+            ggd.mapsize
 
-        posX =
-            pos.x - posCam
+        mapw =
+            mw * brickSize
 
-        posY =
-            pos.y - posCam
+        maph =
+            mh * brickSize
+
+        ( cx, cy ) =
+            ggd.camera.position
+
+        ( cx2, cy2 ) =
+            ( cx + cameraWidth - 1, cy + cameraHeight - 1 )
     in
-    if dir == True then
-        posCam + minAbleDel ableDel.left ableDel.right (moveFunctionHelper moveFunction (shouldDel posX (lineLow * toFloat length) (lineUp * toFloat length)))
+    if cx >= 0 && cy >= 0 && cx2 < mapw && cy2 < maph then
+        ggd.camera
 
     else
-        posCam + minAbleDel ableDel.up ableDel.down (moveFunctionHelper moveFunction (shouldDel posY (lineLow * toFloat length) (lineUp * toFloat length)))
+        let
+            horizonD =
+                if cx < 0 then
+                    changeCP ggd.camera ( 0, cy )
+
+                else if cx2 >= mapw then
+                    changeCP ggd.camera ( mapw - cameraWidth, cy )
+
+                else
+                    ggd.camera
+
+            ( ncx, _ ) =
+                horizonD.position
+
+            verticalD =
+                if cy < 0 then
+                    changeCP horizonD ( ncx, 0 )
+
+                else if cy2 >= maph then
+                    changeCP horizonD ( ncx, maph - cameraHeight )
+
+                else
+                    horizonD
+        in
+        verticalD
 
 
-minAbleDel : Int -> Int -> Int -> Int
-minAbleDel l r del =
-    if del < 0 then
-        round (max (toFloat -l) (toFloat del))
+changeCP : CameraData -> ( Int, Int ) -> CameraData
+changeCP c q =
+    { c | position = q }
 
-    else if del > 0 then
-        round (min (toFloat r) (toFloat del))
+
+dealInboundSpeed : GameGlobalData -> ( Float, Float )
+dealInboundSpeed ggd =
+    let
+        ( vx, vy ) =
+            ggd.camera.velocity
+
+        v =
+            vec2 vx vy
+    in
+    if Math.Vector2.length v < 6 || abs vx < 1 || abs vy < 1 then
+        ( 0, 0 )
+
+    else if Math.Vector2.length v < 10 then
+        ( vx / 10, vy / 10 )
 
     else
-        0
+        ( vx / 10, vy / 10 )
 
 
-shouldDel : Int -> Float -> Float -> Float
-shouldDel pos l r =
-    if toFloat pos < l then
-        toFloat pos - l
+calcMoveVec : GameGlobalData -> Data -> ( Float, Float )
+calcMoveVec ggd d =
+    let
+        cp =
+            getPlayerCenter d
 
-    else if toFloat pos <= r then
-        0
+        cc =
+            getCameraCenter ggd
+
+        ( pvx, pvy ) =
+            d.velocity
+
+        -- prv = vec2 pvx -pvy
+        -- prvd = Math.Vector2.length prv
+        -- ddd =
+        --     Math.Vector2.scale (0.02) prv
+        subv =
+            Math.Vector2.sub cp cc
+
+        subvl =
+            Math.Vector2.length subv
+
+        sd =
+            Debug.log "subvl" subvl
+
+        subvlf =
+            if subvl > 500 then
+                subvl * 2
+
+            else
+                subvl
+
+        velc =
+            Math.Vector2.scale (0.0001 * subvlf) subv
+    in
+    ( Math.Vector2.getX velc, Math.Vector2.getY velc )
+
+
+judgeInBox : GameGlobalData -> Data -> Bool
+judgeInBox ggd d =
+    let
+        ( ( x1, y1 ), ( x2, y2 ) ) =
+            getBoxPos d.position d.simplecheck
+
+        ( ( ix1, iy1 ), ( ix2, iy2 ) ) =
+            getCameraInbox ggd
+    in
+    if x1 > ix1 && x2 < ix2 && y1 > iy1 && y2 < iy2 then
+        True
 
     else
-        toFloat pos - r
+        False
 
 
-moveFunctionHelper : MoveFunction -> Float -> Int
-moveFunctionHelper f del =
-    if del > -f.b && del < f.b then
-        round (1.0 * del)
+getCameraInbox : GameGlobalData -> ( ( Int, Int ), ( Int, Int ) )
+getCameraInbox ggd =
+    let
+        ( cx, cy ) =
+            ggd.camera.position
 
-    else if del > f.b then
-        round f.b
+        crx =
+            toFloat cx
 
-    else
-        round -f.b
+        cry =
+            toFloat cy
+
+        p =
+            ( floor (crx + 0.4 * toFloat cameraWidth), floor (cry + 0.1 * toFloat cameraHeight) )
+
+        q =
+            ( floor (crx + 0.6 * toFloat cameraWidth), floor (cry + 0.9 * toFloat cameraHeight) )
+    in
+    ( p, q )
+
+
+getPlayerCenter : Data -> Vec2
+getPlayerCenter d =
+    let
+        ( ( x1, y1 ), ( x2, y2 ) ) =
+            getBoxPos d.position d.simplecheck
+
+        cx =
+            (toFloat x1 + toFloat x2) / 2
+
+        cy =
+            (toFloat y1 + toFloat y2) / 2
+    in
+    vec2 cx cy
+
+
+getCameraCenter : GameGlobalData -> Vec2
+getCameraCenter ggd =
+    let
+        ( cx, cy ) =
+            ggd.camera.position
+
+        vx =
+            toFloat cx + toFloat cameraWidth / 2
+
+        vy =
+            toFloat cy + toFloat cameraHeight / 2
+    in
+    vec2 vx vy

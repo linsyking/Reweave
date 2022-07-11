@@ -4,14 +4,14 @@ import Array
 import Array.Extra
 import Base exposing (GlobalData, Msg(..))
 import Lib.Coordinate.Coordinates exposing (fromMouseToReal, posToReal)
-import Lib.CoreEngine.Base exposing (GameGlobalData, brickSize)
+import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Camera exposing (getNewCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (isAlive, sendManyGameComponentMsg, simpleUpdateAllGameComponent, splitPlayerObjs, updateOneGameComponent)
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameLayer.Common exposing (Model)
 import Lib.CoreEngine.Physics.InterCollision exposing (gonnaInterColllide)
-import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos, judgeInCamera)
+import Lib.CoreEngine.Physics.NaiveCollision exposing (judgeInCamera)
 import Lib.CoreEngine.Physics.SolidCollision exposing (gonnaSolidCollide)
 import Lib.Layer.Base exposing (LayerMsg, LayerTarget)
 import Lib.Tools.Array exposing (locate)
@@ -273,13 +273,10 @@ updateModel msg gd _ ( model, t ) ggd =
                 ( newplayer, newactors ) =
                     splitPlayerObjs finalobjs model.player
 
-                ( omx, omy ) =
-                    finalggd.mapsize
-
-                newcameraPosition =
-                    getNewCamera finalggd.cameraPosition (getBoxPos newplayer.data.position newplayer.data.simplecheck) ( omx * brickSize, omy * brickSize )
+                newcamera =
+                    getNewCamera finalggd newplayer.data
             in
-            ( ( { model | player = newplayer, actors = newactors }, { finalggd | cameraPosition = newcameraPosition }, [] ), gd )
+            ( ( { model | player = newplayer, actors = newactors }, { finalggd | camera = newcamera }, [] ), gd )
 
         KeyDown 67 ->
             if ggd.selectobj > 0 then

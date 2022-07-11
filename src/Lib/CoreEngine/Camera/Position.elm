@@ -7,6 +7,6 @@ getPositionUnderCamera : ( Int, Int ) -> GameGlobalData -> ( Int, Int )
 getPositionUnderCamera ( x, y ) ggd =
     let
         ( cx, cy ) =
-            ggd.cameraPosition
+            ggd.camera.position
     in
     ( x - cx, y - cy )

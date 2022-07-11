@@ -1,10 +1,11 @@
 module Lib.CoreEngine.Base exposing (..)
 
 import Array2D exposing (Array2D)
+import Lib.CoreEngine.Camera.Base exposing (CameraData)
 
 
 type alias GameGlobalData =
-    { cameraPosition : ( Int, Int )
+    { camera : CameraData
     , solidmap : Array2D Int
     , mapsize : ( Int, Int )
     , selectobj : Int
@@ -19,7 +20,7 @@ brickSize =
 
 nullGameGlobalData : GameGlobalData
 nullGameGlobalData =
-    { cameraPosition = ( 0, 0 )
+    { camera = CameraData ( 0, 0 ) ( 0, 0 )
     , solidmap = Array2D.empty
     , mapsize = ( 0, 0 )
     , selectobj = -1
@@ -29,7 +30,7 @@ nullGameGlobalData =
 
 testGameGlobalData : GameGlobalData
 testGameGlobalData =
-    { cameraPosition = ( 0, 1120 )
+    { camera = CameraData ( 0, 1120 ) ( 0, 0 )
     , solidmap = ps
     , mapsize = ( 120, 70 )
     , selectobj = -1
@@ -58,7 +59,10 @@ ps =
         |> buildrect ( 60, 50 ) ( 13, 3 )
         |> buildrect ( 0, 68 ) ( 120, 2 )
         |> buildrect ( 0, 0 ) ( 120, 2 )
-        |> buildrect ( 0, 35 ) ( 29, 1 )
+
+
+
+-- |> buildrect ( 0, 35 ) ( 29, 1 )
 
 
 buildrect : ( Int, Int ) -> ( Int, Int ) -> Array2D.Array2D Int -> Array2D.Array2D Int
