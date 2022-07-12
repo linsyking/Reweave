@@ -10,9 +10,6 @@ import Math.Vector2 exposing (Vec2, vec2)
 getNewCamera : GameGlobalData -> Data -> CameraData
 getNewCamera ggd d =
     let
-        da =
-            Debug.log "camera" cd
-
         cd =
             ggd.camera
 
@@ -64,8 +61,15 @@ moveCamera ggd =
             else
                 ( px + floor vx, py + floor vy )
 
+        newv =
+            if Math.Vector2.length rv > 1000 then
+                ( 0, 0 )
+
+            else
+                ( vx, vy )
+
         nc =
-            { c | position = np }
+            { c | position = np, velocity = newv }
 
         newggd =
             { ggd | camera = nc }
@@ -168,11 +172,11 @@ calcMoveVec ggd d =
         subvl =
             Math.Vector2.length subv
 
-        sd =
-            Debug.log "subvl" subvl
-
         subvlf =
-            if subvl > 500 then
+            if subvl > 700 then
+                subvl
+
+            else if subvl > 500 then
                 subvl * 2
 
             else

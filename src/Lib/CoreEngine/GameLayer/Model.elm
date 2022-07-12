@@ -6,13 +6,14 @@ import Base exposing (GlobalData, Msg(..))
 import Lib.Coordinate.Coordinates exposing (fromMouseToReal, posToReal)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Camera exposing (getNewCamera)
-import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
+import Lib.CoreEngine.GameComponent.Base exposing (Data, GameComponent, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (isAlive, sendManyGameComponentMsg, simpleUpdateAllGameComponent, splitPlayerObjs, updateOneGameComponent)
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameLayer.Common exposing (Model)
+import Lib.CoreEngine.Physics.Ground exposing (isOnground)
 import Lib.CoreEngine.Physics.InterCollision exposing (gonnaInterColllide)
 import Lib.CoreEngine.Physics.NaiveCollision exposing (judgeInCamera)
-import Lib.CoreEngine.Physics.SolidCollision exposing (gonnaSolidCollide)
+import Lib.CoreEngine.Physics.SolidCollision exposing (canMove, gonnaSolidCollide, movePointPlain)
 import Lib.Layer.Base exposing (LayerMsg, LayerTarget)
 import Lib.Tools.Array exposing (locate)
 import Math.Vector2 exposing (vec2)
@@ -41,25 +42,81 @@ deleteObjects ggd gcs =
         gcs
 
 
-solidCollision : Msg -> Int -> GameGlobalData -> GlobalData -> Array.Array GameComponent -> Array.Array GameComponent -> ( Array.Array GameComponent, List GameComponentMsgType, GameGlobalData )
-solidCollision msg t ggd gd oldgcs updgcs =
+playerMove : Data -> GameGlobalData -> Data
+playerMove player ggd =
+    let
+        pv =
+            player.velocity
+
+        ff =
+            Debug.log "playermove" ( pv, rpv )
+
+        ( pvx, pvy ) =
+            pv
+
+        ( npx, npy ) =
+            rpv
+
+        rpv =
+            if isOnground player ggd then
+                ( pvx, 0 )
+
+            else if pvx < 0 && not (canMove player ggd (vec2 -1 0)) then
+                ( 0, pvy )
+
+            else if pvx > 0 && not (canMove player ggd (vec2 1 0)) then
+                ( 0, pvy )
+
+            else if pvy > 0 && not (canMove player ggd (vec2 0 1)) then
+                ( pvx, 0 )
+
+            else
+                pv
+
+        pvv =
+            Math.Vector2.vec2 npx npy
+
+        newpos =
+            movePointPlain pvv player.position
+
+        newplayer =
+            { player | position = newpos, velocity = rpv }
+    in
+    newplayer
+
+
+solidCollision : Msg -> Int -> GameGlobalData -> GlobalData -> Array.Array GameComponent -> ( Array.Array GameComponent, List GameComponentMsgType, GameGlobalData )
+solidCollision msg t ggd gd gcs =
     Array.foldl
-        (\( u, o ) ( ncs, nms, lggd ) ->
+        (\g ( ncs, nms, lggd ) ->
             let
                 checksolid =
-                    gonnaSolidCollide u.data ggd
+                    gonnaSolidCollide g.data ggd
 
                 ( newsol, newmsg, newggd ) =
-                    if List.isEmpty checksolid || not (isAlive o) then
-                        ( u, [], lggd )
+                    if List.isEmpty checksolid || not (isAlive g) then
+                        -- Update Position
+                        ( { g | data = playerMove g.data ggd }, [], lggd )
 
                     else
-                        updateOneGameComponent msg (GameSolidCollisionMsg checksolid) lggd gd t o
+                        -- Deal with position inside component
+                        let
+                            originpos =
+                                g.data.position
+
+                            ( newd, kdsl, nndd ) =
+                                updateOneGameComponent msg (GameSolidCollisionMsg checksolid) lggd gd t g
+                        in
+                        if newd.data.position == originpos then
+                            ( { newd | data = playerMove newd.data ggd }, kdsl, nndd )
+
+                        else
+                            ( newd, kdsl, nndd )
             in
             ( Array.push newsol ncs, nms ++ newmsg, newggd )
         )
         ( Array.empty, [], ggd )
-        (Array.Extra.zip updgcs oldgcs)
+        gcs
 
 
 interCollision : Msg -> Int -> GameGlobalData -> GlobalData -> Array.Array GameComponent -> ( Array.Array GameComponent, List GameComponentMsgType, GameGlobalData )
@@ -186,9 +243,8 @@ changeCVel c ( px, py ) k =
         ( ovx, ovy ) =
             odata.velocity
 
-        das =
-            Debug.log "newv" ( newvx, newvy )
-
+        -- das =
+        --     Debug.log "newv" ( newvx, newvy )
         newdata =
             { odata | velocity = ( newvx + ovx, newvy + ovy ) }
     in
@@ -217,7 +273,7 @@ updateModel msg gd _ ( model, t ) ggd =
 
                 -- Obj vs Solid
                 ( aftersolidobjs, solidmsg, aftersolidggd ) =
-                    solidCollision msg t updatedggd gd removedobjs updatedobjs
+                    solidCollision msg t updatedggd gd updatedobjs
 
                 -- Obj vs Obj
                 ( afterinterobjs, intermsg, afterinterggd ) =

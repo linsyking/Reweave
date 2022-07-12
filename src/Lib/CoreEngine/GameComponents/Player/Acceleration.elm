@@ -27,7 +27,7 @@ putAccOn model ada =
                 0
 
         vecay =
-            if acy /= 0 && canMove ada model (vec2 0 acy) && abs ovy <= 500 then
+            if acy /= 0 && canMove ada model (vec2 0 acy) && abs ovy <= 300 then
                 acy
 
             else

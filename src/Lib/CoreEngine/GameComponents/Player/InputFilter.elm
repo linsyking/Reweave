@@ -54,7 +54,7 @@ preCheck t model =
                 if queryIsState model "inair" && not (isNope model) then
                     1
 
-                else if queryIsState model "onground" && t - jst <= 15 then
+                else if queryIsState model "onground" && t - jst <= 10 then
                     1
 
                 else

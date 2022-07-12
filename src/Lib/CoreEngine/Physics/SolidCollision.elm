@@ -5,6 +5,7 @@ import Array2D
 import Lib.CoreEngine.Base exposing (GameGlobalData, brickSize)
 import Lib.CoreEngine.GameComponent.Base exposing (Data)
 import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos, judgeCollision)
+import Lib.Tools.Array exposing (delSame)
 import Lib.Tools.Math exposing (rfint)
 import Math.Vector2 exposing (Vec2, vec2)
 import Quantity exposing (times)
@@ -163,7 +164,14 @@ movePointPlain vec ( x, y ) =
 
 gonnaSolidCollide : Data -> GameGlobalData -> List ( Int, Int )
 gonnaSolidCollide gc ggd =
-    Array.toList (gonnaCollideSolidOrigin gc ggd)
+    let
+        op =
+            Array.toList (gonnaCollideSolidOrigin gc ggd)
+
+        -- dasasd =
+        --     Debug.log "dsad" ( gc.velocity, delSame op [] )
+    in
+    delSame op []
 
 
 genSplits : Int -> Int -> Int -> Array.Array Int
@@ -181,6 +189,21 @@ genSplits a b s =
 
         else
             Array.push b (Array.map (\x -> x * s + a) (Array.fromList (List.range 0 fgs)))
+
+
+ceilFloored : Float -> Int
+ceilFloored x =
+    if x == 0 then
+        0
+
+    else if x > 0 && x < 1 then
+        1
+
+    else if x < 0 && x > -1 then
+        -1
+
+    else
+        floor x
 
 
 gonnaCollideSolidOrigin : Data -> GameGlobalData -> Array.Array ( Int, Int )
@@ -201,6 +224,10 @@ gonnaCollideSolidOrigin actor model =
         velvy =
             velToDis (Tuple.second velv)
 
+        -- dsad =
+        --     Debug.log "DSd" ( velvx, velvy )
+        -- dsadd =
+        --     Debug.log "agents" ( bottomAgents, rightAgents )
         disv =
             vec2 velvx -velvy
 
@@ -329,8 +356,13 @@ judgeEasyCollision d ( x, y ) =
     let
         gbx =
             getBoxPos d.position d.simplecheck
+
+        res =
+            judgeCollision gbx ( ( x * brickSize, y * brickSize ), ( x * brickSize + brickSize - 1, y * brickSize + brickSize - 1 ) )
+
+        -- dsd = Debug.log "Dsa" (gbx, (x, y), res)
     in
-    judgeCollision gbx ( ( x * brickSize, y * brickSize ), ( x * brickSize + brickSize - 1, y * brickSize + brickSize - 1 ) )
+    res
 
 
 moveTilCollide : Data -> List ( Int, Int ) -> Data
@@ -345,23 +377,31 @@ moveTilCollide d xs =
         tdisy =
             -(velToDis vy)
 
+        -- dassad =
+        --     Debug.log "torun" ( d.position, ( tdisx, tdisy ), qh )
         qs =
-            List.range 1 1000
+            List.range 0 100
 
         ( opx, opy ) =
             d.position
 
-        qsm =
-            List.map (\x -> ( floor (toFloat opx + tdisx * toFloat x / 1000), floor (toFloat opy + tdisy * toFloat x / 1000) )) qs
+        qsmp =
+            List.map (\x -> ( floor (toFloat opx + tdisx * toFloat x / 100), floor (toFloat opy + tdisy * toFloat x / 100) )) qs
 
+        qsm =
+            delSame qsmp []
+
+        -- dssd = Debug.log "dssd" qsm
         alls =
             List.filter
                 (\pos ->
                     let
                         newd =
                             { d | position = pos }
+
+                        -- dsds = Debug.log "single" pos
                     in
-                    List.any (\x -> not (judgeEasyCollision newd x)) xs
+                    List.all (\x -> not (judgeEasyCollision newd x)) xs
                 )
                 qsm
 

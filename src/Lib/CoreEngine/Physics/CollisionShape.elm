@@ -1,5 +1,11 @@
 module Lib.CoreEngine.Physics.CollisionShape exposing (..)
 
+import Lib.CoreEngine.Base exposing (brickSize)
+import Lib.CoreEngine.GameComponent.Base exposing (Data)
+import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos)
+
+
+
 -- Judge the collision shape
 
 
@@ -32,53 +38,71 @@ judgeXSame ls =
     List.all (\( x, _ ) -> x == h) ls
 
 
-judgeShape : ( Float, Float ) -> List ( Int, Int ) -> CShape
-judgeShape ( x, y ) ls =
+judgeShape : Data -> List ( Int, Int ) -> CShape
+judgeShape d ls =
     let
+        ( x, y ) =
+            d.velocity
+
         xsame =
             judgeXSame ls
 
         ysame =
             judgeYSame ls
 
-        dsadd =
-            Debug.log "das" ( xsame, ysame )
+        ( ( x1, y1 ), ( x2, y2 ) ) =
+            getBoxPos d.position d.simplecheck
     in
-    if y >= 0 && x >= 0 then
-        if ysame then
-            CTOP
+    case ls of
+        ( lfx, lfy ) :: _ ->
+            if x2 < lfx * brickSize then
+                CRIGHT
 
-        else if xsame then
-            CRIGHT
+            else if x1 >= (lfx + 1) * brickSize then
+                CLEFT
 
-        else
-            CTOPRIGHT
+            else if y1 > lfy * brickSize then
+                CTOP
 
-    else if y >= 0 && x < 0 then
-        if ysame then
-            CTOP
+            else
+                CBOTTOM
 
-        else if xsame then
-            CLEFT
+        _ ->
+            if y >= 0 && x >= 0 then
+                if ysame then
+                    CTOP
 
-        else
-            CTOPLEFT
+                else if xsame then
+                    CRIGHT
 
-    else if y < 0 && x >= 0 then
-        if ysame then
-            CBOTTOM
+                else
+                    CTOPRIGHT
 
-        else if xsame then
-            CRIGHT
+            else if y >= 0 && x < 0 then
+                if ysame then
+                    CTOP
 
-        else
-            CBOTTOMRIGHT
+                else if xsame then
+                    CLEFT
 
-    else if ysame then
-        CBOTTOM
+                else
+                    CTOPLEFT
 
-    else if xsame then
-        CLEFT
+            else if y < 0 && x >= 0 then
+                if ysame then
+                    CBOTTOM
 
-    else
-        CBOTTOMLEFT
+                else if xsame then
+                    CRIGHT
+
+                else
+                    CBOTTOMRIGHT
+
+            else if ysame then
+                CBOTTOM
+
+            else if xsame then
+                CLEFT
+
+            else
+                CBOTTOMLEFT

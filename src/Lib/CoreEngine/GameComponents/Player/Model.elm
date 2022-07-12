@@ -10,7 +10,7 @@ import Lib.CoreEngine.GameComponents.Player.Acceleration exposing (putAccOn)
 import Lib.CoreEngine.GameComponents.Player.Base exposing (changebk, nullModel)
 import Lib.CoreEngine.GameComponents.Player.InputFilter exposing (afterMove, preCheck)
 import Lib.CoreEngine.GameComponents.Player.InputHandler exposing (changePlayerVelocity)
-import Lib.CoreEngine.GameComponents.Player.Movement exposing (playerMove, solidCollisionMove)
+import Lib.CoreEngine.GameComponents.Player.Movement exposing (solidCollisionMove)
 import Lib.CoreEngine.GameComponents.Player.StatesControl exposing (stateControl)
 import Lib.DefinedTypes.Base exposing (DefinedTypes(..))
 import Lib.DefinedTypes.Parser exposing (dgetPlayer, dsetPlayer)
@@ -19,10 +19,10 @@ import Lib.DefinedTypes.Parser exposing (dgetPlayer, dsetPlayer)
 initData : Data
 initData =
     { status = Alive
-    , position = ( 100, 1700 )
+    , position = ( 100, 2000 )
     , velocity = ( 0, 0 )
     , mass = 50
-    , acceleration = ( 0, -10 )
+    , acceleration = ( 0, -8 )
     , simplecheck = collisionBox
     , collisionbox = [ collisionBox ]
     , extra = Dict.empty
@@ -57,6 +57,9 @@ updateModel msg gct ggd gd ( d, t ) =
     let
         model =
             dgetPlayer d.extra "model"
+
+        dasdas =
+            Debug.log "dsasd" model.playerStates
     in
     case msg of
         Tick _ ->
@@ -76,7 +79,7 @@ updateModel msg gct ggd gd ( d, t ) =
                             putAccOn ggd afterVelD
 
                         aftermoveD =
-                            solidCollisionMove cs afterAccD
+                            solidCollisionMove cs ggd afterAccD
 
                         aftermoveM =
                             afterMove afterVelM
@@ -100,16 +103,13 @@ updateModel msg gct ggd gd ( d, t ) =
                         afterAccD =
                             putAccOn ggd afterVelD
 
-                        aftermoveD =
-                            playerMove afterAccD ggd
-
                         aftermoveM =
                             afterMove afterVelM
 
                         exportmodel =
-                            dsetPlayer "model" aftermoveM aftermoveD.extra
+                            dsetPlayer "model" aftermoveM afterAccD.extra
                     in
-                    ( { aftermoveD | extra = exportmodel }, [], ggd )
+                    ( { afterAccD | extra = exportmodel }, [], ggd )
 
         KeyDown x ->
             let
@@ -139,10 +139,6 @@ updateModel msg gct ggd gd ( d, t ) =
                 ( d, [], ggd )
 
         MouseDown 2 mp ->
-            let
-                ss =
-                    Debug.log "das" 0
-            in
             ( d, [], ggd )
 
         _ ->
