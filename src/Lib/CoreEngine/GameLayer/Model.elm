@@ -42,36 +42,14 @@ deleteObjects ggd gcs =
         gcs
 
 
-playerMove : Data -> GameGlobalData -> Data
-playerMove player ggd =
+playerMove : Data -> Data
+playerMove player =
     let
         pv =
             player.velocity
 
-        ff =
-            Debug.log "playermove" ( pv, rpv )
-
-        ( pvx, pvy ) =
-            pv
-
         ( npx, npy ) =
-            rpv
-
-        rpv =
-            if isOnground player ggd then
-                ( pvx, 0 )
-
-            else if pvx < 0 && not (canMove player ggd (vec2 -1 0)) then
-                ( 0, pvy )
-
-            else if pvx > 0 && not (canMove player ggd (vec2 1 0)) then
-                ( 0, pvy )
-
-            else if pvy > 0 && not (canMove player ggd (vec2 0 1)) then
-                ( pvx, 0 )
-
-            else
-                pv
+            pv
 
         pvv =
             Math.Vector2.vec2 npx npy
@@ -80,9 +58,48 @@ playerMove player ggd =
             movePointPlain pvv player.position
 
         newplayer =
-            { player | position = newpos, velocity = rpv }
+            { player | position = newpos }
     in
     newplayer
+
+
+clearWrongVelocity : GameGlobalData -> Array.Array GameComponent -> Array.Array GameComponent
+clearWrongVelocity ggd gcs =
+    Array.map
+        (\gc ->
+            let
+                ( pvx, pvy ) =
+                    gc.data.velocity
+
+                player =
+                    gc.data
+
+                ( npvx, npvy ) =
+                    if pvy < 0 && not (canMove player ggd (vec2 0 -1)) then
+                        ( pvx, 0 )
+
+                    else if pvy > 0 && not (canMove player ggd (vec2 0 1)) then
+                        ( pvx, 0 )
+
+                    else
+                        ( pvx, pvy )
+
+                fv =
+                    if npvx < 0 && not (canMove player ggd (vec2 -1 0)) then
+                        ( 0, npvy )
+
+                    else if npvx > 0 && not (canMove player ggd (vec2 1 0)) then
+                        ( 0, npvy )
+
+                    else
+                        ( npvx, npvy )
+
+                newdata =
+                    { player | velocity = fv }
+            in
+            { gc | data = newdata }
+        )
+        gcs
 
 
 solidCollision : Msg -> Int -> GameGlobalData -> GlobalData -> Array.Array GameComponent -> ( Array.Array GameComponent, List GameComponentMsgType, GameGlobalData )
@@ -96,22 +113,15 @@ solidCollision msg t ggd gd gcs =
                 ( newsol, newmsg, newggd ) =
                     if List.isEmpty checksolid || not (isAlive g) then
                         -- Update Position
-                        ( { g | data = playerMove g.data ggd }, [], lggd )
+                        ( { g | data = playerMove g.data }, [], lggd )
 
                     else
                         -- Deal with position inside component
                         let
-                            originpos =
-                                g.data.position
-
                             ( newd, kdsl, nndd ) =
                                 updateOneGameComponent msg (GameSolidCollisionMsg checksolid) lggd gd t g
                         in
-                        if newd.data.position == originpos then
-                            ( { newd | data = playerMove newd.data ggd }, kdsl, nndd )
-
-                        else
-                            ( newd, kdsl, nndd )
+                        ( newd, kdsl, nndd )
             in
             ( Array.push newsol ncs, nms ++ newmsg, newggd )
         )
@@ -271,9 +281,12 @@ updateModel msg gd _ ( model, t ) ggd =
                 ( updatedobjs, updatedmsg, updatedggd ) =
                     simpleUpdateAllGameComponent msg NullGameComponentMsg ggd gd t removedobjs
 
+                clearedobjs =
+                    clearWrongVelocity updatedggd updatedobjs
+
                 -- Obj vs Solid
                 ( aftersolidobjs, solidmsg, aftersolidggd ) =
-                    solidCollision msg t updatedggd gd updatedobjs
+                    solidCollision msg t updatedggd gd clearedobjs
 
                 -- Obj vs Obj
                 ( afterinterobjs, intermsg, afterinterggd ) =

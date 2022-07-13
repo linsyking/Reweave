@@ -18,6 +18,10 @@ type CShape
     | CTOPLEFT
     | CBOTTOMRIGHT
     | CBOTTOMLEFT
+    | CBOOSTTOPRIGHT
+    | CBOOSTTOPLEFT
+    | CBOOSTBOTTOMLEFT
+    | CBOOSTBOTTOMRIGHT
 
 
 judgeYSame : List ( Int, Int ) -> Bool

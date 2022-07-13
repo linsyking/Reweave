@@ -57,9 +57,6 @@ updateModel msg gct ggd gd ( d, t ) =
     let
         model =
             dgetPlayer d.extra "model"
-
-        dasdas =
-            Debug.log "dsasd" model.playerStates
     in
     case msg of
         Tick _ ->
@@ -69,11 +66,11 @@ updateModel msg gct ggd gd ( d, t ) =
                         ( afterStateM, afterStateD ) =
                             stateControl t model d ggd
 
-                        aftercheckM =
-                            preCheck t afterStateM
+                        ( aftercheckM, aftercheckD ) =
+                            preCheck t afterStateM afterStateD
 
                         ( afterVelM, afterVelD ) =
-                            changePlayerVelocity t afterStateD ggd aftercheckM
+                            changePlayerVelocity t aftercheckD ggd aftercheckM
 
                         afterAccD =
                             putAccOn ggd afterVelD
@@ -94,11 +91,11 @@ updateModel msg gct ggd gd ( d, t ) =
                         ( afterStateM, afterStateD ) =
                             stateControl t model d ggd
 
-                        aftercheckM =
-                            preCheck t afterStateM
+                        ( aftercheckM, aftercheckD ) =
+                            preCheck t afterStateM afterStateD
 
                         ( afterVelM, afterVelD ) =
-                            changePlayerVelocity t afterStateD ggd aftercheckM
+                            changePlayerVelocity t aftercheckD ggd aftercheckM
 
                         afterAccD =
                             putAccOn ggd afterVelD

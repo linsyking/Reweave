@@ -167,9 +167,6 @@ gonnaSolidCollide gc ggd =
     let
         op =
             Array.toList (gonnaCollideSolidOrigin gc ggd)
-
-        -- dasasd =
-        --     Debug.log "dsad" ( gc.velocity, delSame op [] )
     in
     delSame op []
 
@@ -378,7 +375,7 @@ moveTilCollide d xs =
             -(velToDis vy)
 
         -- dassad =
-        --     Debug.log "torun" ( d.position, ( tdisx, tdisy ), qh )
+        --     Debug.log "torun" ( (d.position, xs), ( tdisx, tdisy ), qh )
         qs =
             List.range 0 100
 

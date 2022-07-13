@@ -101,6 +101,20 @@ queryIsState model qs =
     List.any (\( x, _ ) -> x.key == qs) (getPlayerStates model)
 
 
+queryStateStarttime : Model -> String -> Int
+queryStateStarttime model s =
+    let
+        alls =
+            List.filter (\( x, _ ) -> x.key == s) (getPlayerStates model)
+    in
+    case alls of
+        ( _, ss ) :: _ ->
+            ss
+
+        _ ->
+            0
+
+
 getEmptyStates : Model -> List State
 getEmptyStates m =
     List.filter

@@ -1,13 +1,11 @@
 module Lib.CoreEngine.GameComponents.Player.Movement exposing (..)
 
-import Array2D exposing (Array2D)
+import Array2D
 import Lib.CoreEngine.Base exposing (GameGlobalData, brickSize)
 import Lib.CoreEngine.GameComponent.Base exposing (Data)
 import Lib.CoreEngine.Physics.CollisionShape exposing (CShape(..), judgeShape)
-import Lib.CoreEngine.Physics.Ground exposing (isOnground)
 import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos)
-import Lib.CoreEngine.Physics.SolidCollision exposing (canMove, movePointPlain, moveTilCollide)
-import Math.Vector2 exposing (vec2)
+import Lib.CoreEngine.Physics.SolidCollision exposing (moveTilCollide)
 
 
 
@@ -20,7 +18,6 @@ solidCollisionMove ls ggd d =
         ( pvx, pvy ) =
             d.velocity
 
-        -- dhk = Debug.log "collision" (judgeShape d.velocity ls, d.position, newvel)
         moved =
             moveTilCollide d (getNearBySolid ggd d)
 
@@ -49,6 +46,18 @@ solidCollisionMove ls ggd d =
 
                 CTOPRIGHT ->
                     ( 0, 0 )
+
+                CBOOSTBOTTOMLEFT ->
+                    ( -10, 0 )
+
+                CBOOSTBOTTOMRIGHT ->
+                    ( 10, 0 )
+
+                CBOOSTTOPLEFT ->
+                    ( -10, 0 )
+
+                CBOOSTTOPRIGHT ->
+                    ( 10, 0 )
     in
     { moved | velocity = newvel }
 

@@ -159,13 +159,6 @@ calcMoveVec ggd d =
         cc =
             getCameraCenter ggd
 
-        ( pvx, pvy ) =
-            d.velocity
-
-        -- prv = vec2 pvx -pvy
-        -- prvd = Math.Vector2.length prv
-        -- ddd =
-        --     Math.Vector2.scale (0.02) prv
         subv =
             Math.Vector2.sub cp cc
 
