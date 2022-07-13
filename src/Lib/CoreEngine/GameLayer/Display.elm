@@ -43,7 +43,7 @@ renderSolids ggd gd =
             ggd.solidmap
 
         ( cx, cy ) =
-            ggd.cameraPosition
+            ggd.camera.position
 
         ( cx2, cy2 ) =
             ( cx + 1920, cy + 1080 )

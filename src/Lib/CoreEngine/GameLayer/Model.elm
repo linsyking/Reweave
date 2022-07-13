@@ -4,15 +4,16 @@ import Array
 import Array.Extra
 import Base exposing (GlobalData, Msg(..))
 import Lib.Coordinate.Coordinates exposing (fromMouseToReal, posToReal)
-import Lib.CoreEngine.Base exposing (GameGlobalData, brickSize)
+import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Camera exposing (getNewCamera)
-import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
+import Lib.CoreEngine.GameComponent.Base exposing (Data, GameComponent, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (isAlive, sendManyGameComponentMsg, simpleUpdateAllGameComponent, splitPlayerObjs, updateOneGameComponent)
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameLayer.Common exposing (Model)
+import Lib.CoreEngine.Physics.Ground exposing (isOnground)
 import Lib.CoreEngine.Physics.InterCollision exposing (gonnaInterColllide)
-import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos, judgeInCamera)
-import Lib.CoreEngine.Physics.SolidCollision exposing (gonnaSolidCollide)
+import Lib.CoreEngine.Physics.NaiveCollision exposing (judgeInCamera)
+import Lib.CoreEngine.Physics.SolidCollision exposing (canMove, gonnaSolidCollide, movePointPlain)
 import Lib.Layer.Base exposing (LayerMsg, LayerTarget)
 import Lib.Tools.Array exposing (locate)
 import Math.Vector2 exposing (vec2)
@@ -41,25 +42,91 @@ deleteObjects ggd gcs =
         gcs
 
 
-solidCollision : Msg -> Int -> GameGlobalData -> GlobalData -> Array.Array GameComponent -> Array.Array GameComponent -> ( Array.Array GameComponent, List GameComponentMsgType, GameGlobalData )
-solidCollision msg t ggd gd oldgcs updgcs =
-    Array.foldl
-        (\( u, o ) ( ncs, nms, lggd ) ->
-            let
-                checksolid =
-                    gonnaSolidCollide u.data ggd
+playerMove : Data -> Data
+playerMove player =
+    let
+        pv =
+            player.velocity
 
-                ( newsol, newmsg, newggd ) =
-                    if List.isEmpty checksolid || not (isAlive o) then
-                        ( u, [], lggd )
+        ( npx, npy ) =
+            pv
+
+        pvv =
+            Math.Vector2.vec2 npx npy
+
+        newpos =
+            movePointPlain pvv player.position
+
+        newplayer =
+            { player | position = newpos }
+    in
+    newplayer
+
+
+clearWrongVelocity : GameGlobalData -> Array.Array GameComponent -> Array.Array GameComponent
+clearWrongVelocity ggd gcs =
+    Array.map
+        (\gc ->
+            let
+                ( pvx, pvy ) =
+                    gc.data.velocity
+
+                player =
+                    gc.data
+
+                ( npvx, npvy ) =
+                    if pvy < 0 && not (canMove player ggd (vec2 0 -1)) then
+                        ( pvx, 0 )
+
+                    else if pvy > 0 && not (canMove player ggd (vec2 0 1)) then
+                        ( pvx, 0 )
 
                     else
-                        updateOneGameComponent msg (GameSolidCollisionMsg checksolid) lggd gd t o
+                        ( pvx, pvy )
+
+                fv =
+                    if npvx < 0 && not (canMove player ggd (vec2 -1 0)) then
+                        ( 0, npvy )
+
+                    else if npvx > 0 && not (canMove player ggd (vec2 1 0)) then
+                        ( 0, npvy )
+
+                    else
+                        ( npvx, npvy )
+
+                newdata =
+                    { player | velocity = fv }
+            in
+            { gc | data = newdata }
+        )
+        gcs
+
+
+solidCollision : Msg -> Int -> GameGlobalData -> GlobalData -> Array.Array GameComponent -> ( Array.Array GameComponent, List GameComponentMsgType, GameGlobalData )
+solidCollision msg t ggd gd gcs =
+    Array.foldl
+        (\g ( ncs, nms, lggd ) ->
+            let
+                checksolid =
+                    gonnaSolidCollide g.data ggd
+
+                ( newsol, newmsg, newggd ) =
+                    if List.isEmpty checksolid || not (isAlive g) then
+                        -- Update Position
+                        ( { g | data = playerMove g.data }, [], lggd )
+
+                    else
+                        -- Deal with position inside component
+                        let
+                            ( newd, kdsl, nndd ) =
+                                updateOneGameComponent msg (GameSolidCollisionMsg checksolid) lggd gd t g
+                        in
+                        ( newd, kdsl, nndd )
             in
             ( Array.push newsol ncs, nms ++ newmsg, newggd )
         )
         ( Array.empty, [], ggd )
-        (Array.Extra.zip updgcs oldgcs)
+        gcs
 
 
 interCollision : Msg -> Int -> GameGlobalData -> GlobalData -> Array.Array GameComponent -> ( Array.Array GameComponent, List GameComponentMsgType, GameGlobalData )
@@ -186,9 +253,8 @@ changeCVel c ( px, py ) k =
         ( ovx, ovy ) =
             odata.velocity
 
-        das =
-            Debug.log "newv" ( newvx, newvy )
-
+        -- das =
+        --     Debug.log "newv" ( newvx, newvy )
         newdata =
             { odata | velocity = ( newvx + ovx, newvy + ovy ) }
     in
@@ -215,9 +281,12 @@ updateModel msg gd _ ( model, t ) ggd =
                 ( updatedobjs, updatedmsg, updatedggd ) =
                     simpleUpdateAllGameComponent msg NullGameComponentMsg ggd gd t removedobjs
 
+                clearedobjs =
+                    clearWrongVelocity updatedggd updatedobjs
+
                 -- Obj vs Solid
                 ( aftersolidobjs, solidmsg, aftersolidggd ) =
-                    solidCollision msg t updatedggd gd removedobjs updatedobjs
+                    solidCollision msg t updatedggd gd clearedobjs
 
                 -- Obj vs Obj
                 ( afterinterobjs, intermsg, afterinterggd ) =
@@ -273,13 +342,10 @@ updateModel msg gd _ ( model, t ) ggd =
                 ( newplayer, newactors ) =
                     splitPlayerObjs finalobjs model.player
 
-                ( omx, omy ) =
-                    finalggd.mapsize
-
-                newcameraPosition =
-                    getNewCamera finalggd.cameraPosition (getBoxPos newplayer.data.position newplayer.data.simplecheck) ( omx * brickSize, omy * brickSize )
+                newcamera =
+                    getNewCamera finalggd newplayer.data
             in
-            ( ( { model | player = newplayer, actors = newactors }, { finalggd | cameraPosition = newcameraPosition }, [] ), gd )
+            ( ( { model | player = newplayer, actors = newactors }, { finalggd | camera = newcamera }, [] ), gd )
 
         KeyDown 67 ->
             if ggd.selectobj > 0 then

@@ -3,6 +3,25 @@ module Lib.Tools.Array exposing (..)
 import Array exposing (Array)
 
 
+delSame : List a -> List a -> List a
+delSame ls xs =
+    case ls of
+        l :: lps ->
+            case List.head (List.reverse xs) of
+                Nothing ->
+                    delSame lps [ l ]
+
+                Just x ->
+                    if l == x then
+                        delSame lps xs
+
+                    else
+                        delSame lps (xs ++ [ l ])
+
+        [] ->
+            xs
+
+
 locate : (a -> Bool) -> Array a -> List Int
 locate f xs =
     let

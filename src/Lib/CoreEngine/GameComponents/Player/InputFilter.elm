@@ -1,7 +1,8 @@
 module Lib.CoreEngine.GameComponents.Player.InputFilter exposing (..)
 
+import Lib.CoreEngine.GameComponent.Base exposing (Data)
 import Lib.CoreEngine.GameComponents.Player.Base exposing (Model, SpaceLog(..))
-import Lib.CoreEngine.GameComponents.Player.FSM exposing (queryIsState)
+import Lib.CoreEngine.GameComponents.Player.FSM exposing (queryIsState, queryStateStarttime)
 
 
 
@@ -33,8 +34,8 @@ afterMove model =
     { model | lastOriginKeys = model.originKeys }
 
 
-preCheck : Int -> Model -> Model
-preCheck t model =
+preCheck : Int -> Model -> Data -> ( Model, Data )
+preCheck t model d =
     let
         --- First Update Space
         cs =
@@ -48,13 +49,18 @@ preCheck t model =
             else
                 model.jStartTime
 
-        -- delta = Debug.log "delta" (model.jStartTime)
+        stt =
+            queryStateStarttime model "inair"
+
         nspace =
             if cs == 1 then
                 if queryIsState model "inair" && not (isNope model) then
                     1
 
-                else if queryIsState model "onground" && t - jst <= 15 then
+                else if queryIsState model "onground" && t - jst <= 10 then
+                    1
+
+                else if iswolfJump then
                     1
 
                 else
@@ -63,10 +69,24 @@ preCheck t model =
             else
                 cs
 
+        iswolfJump =
+            cs == 1 && queryIsState model "inair" && t - stt <= 10 && isNope model
+
+        newd =
+            if iswolfJump then
+                let
+                    ( vx, _ ) =
+                        d.velocity
+                in
+                { d | velocity = ( vx, 0 ) }
+
+            else
+                d
+
         mok =
             model.originKeys
 
         newkeys =
             { mok | space = nspace }
     in
-    { model | jStartTime = jst, currentKeys = newkeys }
+    ( { model | jStartTime = jst, currentKeys = newkeys }, newd )
