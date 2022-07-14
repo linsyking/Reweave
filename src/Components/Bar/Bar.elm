@@ -12,7 +12,11 @@ import Lib.Coordinate.Coordinates exposing (..)
 
 
 initBar : Int -> ComponentTMsg -> Data
-initBar _ _ =
+initBar energy _ =
+    let
+        angle = 90 - 180 / 100 * toFloat energy
+    in
+    
     Dict.fromList
         [ ( "cx", CDFloat 120 ) -- center of circle
         , ( "cy", CDFloat 120 )
@@ -23,7 +27,7 @@ initBar _ _ =
         , ( "cp2y", CDFloat 179 )
         , ( "t", CDFloat 0 ) -- duration
         , ( "clockwise", CDInt 0 ) -- 4 states of the curve
-        , ( "angle", CDFloat -90 )
+        , ( "angle", CDFloat angle )
         ]
 
 
@@ -120,10 +124,12 @@ updateBar msg gMsg globalData ( d, t ) =
     in
     case gMsg of
         ComponentIntMsg num ->
-            ( d |> dsetfloat "angle" (90 - 180 / 100 * toFloat num), NullComponentMsg, globalData )
+            ( ( d |> dsetfloat "angle" (90 - 180 / 100 * toFloat num) )
+            |> bezier (modBy 4 (ceiling time)) (time - toFloat (floor time)) 
+            , NullComponentMsg
+            , globalData )
 
-        _ ->
-            ( bezier (modBy 4 (ceiling time)) (time - toFloat (floor time)) d, NullComponentMsg, globalData )
+        _ -> ( d, NullComponentMsg, globalData )
 
 
 viewBar : ( Data, Int ) -> GlobalData -> Renderable
