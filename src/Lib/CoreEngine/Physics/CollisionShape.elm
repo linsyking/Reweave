@@ -54,11 +54,14 @@ judgeShape d ls =
         ysame =
             judgeYSame ls
 
+        dsds =
+            Debug.log "same" ( xsame, ysame )
+
         ( ( x1, y1 ), ( x2, y2 ) ) =
             getBoxPos d.position d.simplecheck
     in
     case ls of
-        ( lfx, lfy ) :: _ ->
+        [ ( lfx, lfy ) ] ->
             if x2 < lfx * brickSize then
                 CRIGHT
 

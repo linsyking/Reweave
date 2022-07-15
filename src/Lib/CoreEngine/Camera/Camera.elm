@@ -202,9 +202,6 @@ judgeInBox ggd d =
 
         ( ( ix1, iy1 ), ( ix2, iy2 ) ) =
             getCameraInbox ggd
-
-        dsjsd =
-            Debug.log "Ds" ( getCameraInbox ggd, getBoxPos d.position d.simplecheck, x1 > ix1 && x2 < ix2 && y1 > iy1 && y2 < iy2 )
     in
     if x1 > ix1 && x2 < ix2 && y1 > iy1 && y2 < iy2 then
         True

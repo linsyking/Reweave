@@ -9,6 +9,7 @@ import Lib.CoreEngine.Camera.Camera exposing (getNewCamera)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Data, GameComponent, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (isAlive, sendManyGameComponentMsg, simpleUpdateAllGameComponent, splitPlayerObjs, updateOneGameComponent)
+import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameLayer.Common exposing (Model)
 import Lib.CoreEngine.Physics.InterCollision exposing (gonnaInterColllide)
@@ -21,7 +22,7 @@ import Math.Vector2 exposing (vec2)
 
 initModel : Int -> GameGlobalData -> Model
 initModel _ _ =
-    { player = Player.gameComponent, actors = Array.empty }
+    { player = Player.gameComponent, actors = Array.fromList [ Goomba.gameComponent ] }
 
 
 deleteObjects : GameGlobalData -> Array.Array GameComponent -> Array.Array GameComponent
@@ -97,7 +98,11 @@ clearWrongVelocity ggd gcs =
                 newdata =
                     { player | velocity = fv }
             in
-            { gc | data = newdata }
+            if isAlive gc.data then
+                { gc | data = newdata }
+
+            else
+                gc
         )
         gcs
 
@@ -111,7 +116,7 @@ solidCollision msg t ggd gd gcs =
                     gonnaSolidCollide g.data ggd
 
                 ( newsol, newmsg, newggd ) =
-                    if List.isEmpty checksolid || not (isAlive g) then
+                    if List.isEmpty checksolid || not (isAlive g.data) then
                         -- Update Position
                         ( { g | data = playerMove g.data }, [], lggd )
 
@@ -130,7 +135,7 @@ solidCollision msg t ggd gd gcs =
 
 
 interCollision : Msg -> Int -> GameGlobalData -> GlobalData -> Array.Array GameComponent -> ( Array.Array GameComponent, List GameComponentMsgType, GameGlobalData )
-interCollision msg t ggd gd gcs =
+interCollision _ t ggd gd gcs =
     let
         elenum =
             Array.length gcs
@@ -163,19 +168,25 @@ interCollision msg t ggd gd gcs =
                             in
                             case ( gci, gcj ) of
                                 ( Just ( gc1, gc1msg ), Just ( gc2, gc2msg ) ) ->
-                                    let
-                                        ( am1, am2 ) =
-                                            gonnaInterColllide gc1 gc2
+                                    if isAlive gc1.data && isAlive gc2.data then
+                                        let
+                                            ( am1, am2 ) =
+                                                gonnaInterColllide gc1 gc2
 
-                                        ud1 =
-                                            ( gc1, am1 :: gc1msg )
+                                            ( ud1, ud2 ) =
+                                                case ( am1, am2 ) of
+                                                    ( NullGameComponentMsg, NullGameComponentMsg ) ->
+                                                        ( ( gc1, gc1msg ), ( gc2, gc2msg ) )
 
-                                        ud2 =
-                                            ( gc2, am2 :: gc2msg )
-                                    in
-                                    mms
-                                        |> Array.set i ud1
-                                        |> Array.set j ud2
+                                                    _ ->
+                                                        ( ( gc1, am1 :: gc1msg ), ( gc2, am2 :: gc2msg ) )
+                                        in
+                                        mms
+                                            |> Array.set i ud1
+                                            |> Array.set j ud2
+
+                                    else
+                                        mms
 
                                 _ ->
                                     mms
@@ -195,7 +206,7 @@ interCollision msg t ggd gd gcs =
                                 (\cmsg ( ccc, mmm, ggg ) ->
                                     let
                                         ( updgc, updmsg, updggg ) =
-                                            updateOneGameComponent msg cmsg ggg gd t ccc
+                                            updateOneGameComponent UnknownMsg cmsg ggg gd t ccc
                                     in
                                     ( updgc, updmsg ++ mmm, updggg )
                                 )
@@ -321,7 +332,7 @@ updateModel msg gd _ ( model, t ) ggd =
                                             searchNameGC s ao
 
                                         ( res, _, newgg ) =
-                                            sendManyGameComponentMsg msg mm ai gd rid t ao
+                                            sendManyGameComponentMsg UnknownMsg mm ai gd rid t ao
                                     in
                                     ( res, newgg )
 
@@ -331,7 +342,7 @@ updateModel msg gd _ ( model, t ) ggd =
                                             searchUIDGC s ao
 
                                         ( res, _, newgg ) =
-                                            sendManyGameComponentMsg msg mm ai gd [ rid ] t ao
+                                            sendManyGameComponentMsg UnknownMsg mm ai gd [ rid ] t ao
                                     in
                                     ( res, newgg )
 
@@ -358,7 +369,7 @@ updateModel msg gd _ ( model, t ) ggd =
 
                         ( newplayer, _, newggd ) =
                             if k > 300 then
-                                updateOneGameComponent UnknownMsg ClearVelocity ggd gd t model.player
+                                updateOneGameComponent UnknownMsg GameClearVelocity ggd gd t model.player
 
                             else
                                 ( model.player, [], ggd )
@@ -388,7 +399,7 @@ updateModel msg gd _ ( model, t ) ggd =
 
                                 ( newactor, _, newggd ) =
                                     if k > 300 then
-                                        updateOneGameComponent UnknownMsg ClearVelocity ggd gd t thisactor
+                                        updateOneGameComponent UnknownMsg GameClearVelocity ggd gd t thisactor
 
                                     else
                                         ( thisactor, [], ggd )
@@ -448,7 +459,7 @@ updateModel msg gd _ ( model, t ) ggd =
                             if xsable > 0 then
                                 let
                                     ( up, _, _ ) =
-                                        updateOneGameComponent UnknownMsg (UseEnergy ( mx - px, my - py ) xsable) ggd gd t model.player
+                                        updateOneGameComponent UnknownMsg (GameUseEnergy ( mx - px, my - py ) xsable) ggd gd t model.player
                                 in
                                 up
 
@@ -487,7 +498,7 @@ updateModel msg gd _ ( model, t ) ggd =
                                     if xsable > 0 then
                                         let
                                             ( up, _, _ ) =
-                                                updateOneGameComponent UnknownMsg (UseEnergy ( mx - px, my - py ) xsable) ggd gd t thisactor
+                                                updateOneGameComponent UnknownMsg (GameUseEnergy ( mx - px, my - py ) xsable) ggd gd t thisactor
                                         in
                                         up
 

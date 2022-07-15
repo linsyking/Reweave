@@ -5,7 +5,7 @@ import Array.Extra
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
-import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentMsgType, GameComponentTMsg(..), LifeStatus(..))
+import Lib.CoreEngine.GameComponent.Base exposing (Data, GameComponent, GameComponentMsgType, GameComponentTMsg(..), LifeStatus(..))
 
 
 updateOneGameComponent : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> Int -> GameComponent -> ( GameComponent, List GameComponentMsgType, GameGlobalData )
@@ -65,9 +65,9 @@ simpleUpdateAllGameComponent msg gct ggd gd t gcs =
         gcs
 
 
-isAlive : GameComponent -> Bool
-isAlive gc =
-    case gc.data.status of
+isAlive : Data -> Bool
+isAlive d =
+    case d.status of
         Alive ->
             True
 

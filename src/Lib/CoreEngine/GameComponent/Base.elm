@@ -29,9 +29,10 @@ type GameComponentMsgType
 
 type GameComponentTMsg
     = GameSolidCollisionMsg (List ( Int, Int ))
-    | GameInterCollisionMsg String Int (List Box)
-    | ClearVelocity
-    | UseEnergy ( Float, Float ) Float
+    | GameInterCollisionMsg String Int ( Int, Int ) (List Box)
+    | GameClearVelocity
+    | GameUseEnergy ( Float, Float ) Float
+    | GameStringMsg String
     | NullGameComponentMsg
 
 
