@@ -3,8 +3,8 @@ module Lib.CoreEngine.GameComponent.Base exposing (..)
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
 import Dict exposing (Dict)
+import Lib.Component.Base exposing (DefinedTypes)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
-import Lib.DefinedTypes.Base exposing (DefinedTypes)
 
 
 
