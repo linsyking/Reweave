@@ -32,7 +32,7 @@ initTrans _ _ =
 
 
 updateTrans : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
-updateTrans msg gMsg globalData ( d, t ) =
+updateTrans _ gMsg globalData ( d, t ) =
     let
         localtime =
             t - dgetint d "rt"

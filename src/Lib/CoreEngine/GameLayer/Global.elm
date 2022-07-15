@@ -26,9 +26,9 @@ ctTod ldt =
 getLayerCT : Layer GameGlobalData Data -> LayerCT
 getLayerCT layer =
     let
-        init : Int -> GameGlobalData -> LayerDataType
-        init t cd =
-            dToCT (layer.init t cd)
+        init : Int -> LayerMsg -> GameGlobalData -> LayerDataType
+        init t lm cd =
+            dToCT (layer.init t lm cd)
 
         update : Msg -> GlobalData -> LayerMsg -> ( LayerDataType, Int ) -> GameGlobalData -> ( ( LayerDataType, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
         update m gd lm ( ldt, t ) cd =

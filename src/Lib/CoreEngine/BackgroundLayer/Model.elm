@@ -1,4 +1,4 @@
-module Lib.CoreEngine.FrontgroundLayer.Model exposing (..)
+module Lib.CoreEngine.BackgroundLayer.Model exposing (..)
 
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (group)

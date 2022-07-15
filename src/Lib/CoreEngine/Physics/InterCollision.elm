@@ -26,6 +26,10 @@ gonnaInterColllide gc1 gc2 =
         ( NullGameComponentMsg, NullGameComponentMsg )
 
 
+
+-- Send information to gc1
+
+
 genInterFromOneSide : GameComponent -> GameComponent -> GameComponentTMsg
 genInterFromOneSide gc1 gc2 =
     let
@@ -43,6 +47,7 @@ genInterFromOneSide gc1 gc2 =
     in
     GameInterCollisionMsg gc2.name
         gc2.data.uid
+        tp
         (List.foldl
             (\x o ->
                 o ++ List.filter (\y -> judgeCollision (getBoxPos op x) (getBoxPos tp y)) target

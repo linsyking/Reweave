@@ -26,9 +26,9 @@ ctTod ldt =
 getLayerCT : Layer CommonData Data -> LayerCT
 getLayerCT layer =
     let
-        init : Int -> CommonData -> LayerDataType
-        init t cd =
-            dToCT (layer.init t cd)
+        init : Int -> LayerMsg -> CommonData -> LayerDataType
+        init t lm cd =
+            dToCT (layer.init t lm cd)
 
         update : Msg -> GlobalData -> LayerMsg -> ( LayerDataType, Int ) -> CommonData -> ( ( LayerDataType, CommonData, List ( LayerTarget, LayerMsg ) ), GlobalData )
         update m gd lm ( ldt, t ) cd =

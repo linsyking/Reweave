@@ -23,13 +23,13 @@ initModel t _ =
             L1.layer
 
         l1ct =
-            L1G.getLayerCT { l1l | data = L1.layer.init t icd }
+            L1G.getLayerCT { l1l | data = L1.layer.init t NullLayerMsg icd }
 
         l2l =
             L2.layer
 
         l2ct =
-            L2G.getLayerCT { l2l | data = L2.layer.init t icd }
+            L2G.getLayerCT { l2l | data = L2.layer.init t NullLayerMsg icd }
     in
     { commonData = icd
     , layers =

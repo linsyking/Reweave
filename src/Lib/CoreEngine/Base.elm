@@ -2,6 +2,7 @@ module Lib.CoreEngine.Base exposing (..)
 
 import Array2D exposing (Array2D)
 import Lib.CoreEngine.Camera.Base exposing (CameraData)
+import Lib.Map.Poly exposing (buildrect)
 
 
 type alias GameGlobalData =
@@ -20,7 +21,7 @@ brickSize =
 
 nullGameGlobalData : GameGlobalData
 nullGameGlobalData =
-    { camera = CameraData ( 0, 0 ) ( 0, 0 )
+    { camera = CameraData ( 0, 0 ) ( 0, 0 ) ( ( 0, 0 ), ( 0, 0 ) )
     , solidmap = Array2D.empty
     , mapsize = ( 0, 0 )
     , selectobj = -1
@@ -30,7 +31,7 @@ nullGameGlobalData =
 
 testGameGlobalData : GameGlobalData
 testGameGlobalData =
-    { camera = CameraData ( 0, 1120 ) ( 0, 0 )
+    { camera = CameraData ( 0, 1120 ) ( 0, 0 ) ( ( 0, 0 ), ( 32 * 120 - 1, 70 * 32 - 1 ) )
     , solidmap = ps
     , mapsize = ( 120, 70 )
     , selectobj = -1
@@ -59,29 +60,3 @@ ps =
         |> buildrect ( 60, 50 ) ( 13, 3 )
         |> buildrect ( 0, 68 ) ( 120, 2 )
         |> buildrect ( 0, 0 ) ( 120, 2 )
-
-
-
--- |> buildrect ( 0, 35 ) ( 29, 1 )
-
-
-buildrect : ( Int, Int ) -> ( Int, Int ) -> Array2D.Array2D Int -> Array2D.Array2D Int
-buildrect ( x, y ) ( w, h ) ss =
-    let
-        xs =
-            List.range x (x + w - 1)
-
-        ys =
-            List.range y (y + h - 1)
-    in
-    List.foldl
-        (\i arr ->
-            List.foldl
-                (\j arr2 ->
-                    Array2D.set i j 1 arr2
-                )
-                arr
-                ys
-        )
-        ss
-        xs

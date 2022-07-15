@@ -12,8 +12,8 @@ import Scenes.Scene1.Layer1.Common exposing (..)
 import Scenes.Scene1.LayerBase exposing (CommonData)
 
 
-initModel : Int -> CommonData -> ModelX
-initModel _ _ =
+initModel : Int -> LayerMsg -> CommonData -> ModelX
+initModel _ _ _ =
     { s = 0
     }
 
