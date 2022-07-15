@@ -1,0 +1,16 @@
+module Lib.CoreEngine.GameComponents.Goomba.Export exposing (..)
+
+import Lib.CoreEngine.GameComponent.Base exposing (GameComponent)
+import Lib.CoreEngine.GameComponents.Goomba.Display exposing (view)
+import Lib.CoreEngine.GameComponents.Goomba.Model exposing (initData, initModel, queryModel, updateModel)
+
+
+gameComponent : GameComponent
+gameComponent =
+    { name = "goomba"
+    , data = initData
+    , init = initModel
+    , update = updateModel
+    , view = view
+    , query = queryModel
+    }

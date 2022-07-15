@@ -8,6 +8,8 @@ import Lib.Scene.Base exposing (SceneMsg(..), SceneOutputMsg(..))
 import Scenes.Scene1.Common exposing (XModel)
 import Scenes.Scene1.Layer1.Export as L1
 import Scenes.Scene1.Layer1.Global as L1G
+import Scenes.Scene1.Layer2.Export as L2
+import Scenes.Scene1.Layer2.Global as L2G
 
 
 initModel : Int -> SceneMsg -> XModel
@@ -21,10 +23,19 @@ initModel t _ =
             L1.layer
 
         l1ct =
-            L1G.getLayerCT { l1l | data = L1.layer.init t icd }
+            L1G.getLayerCT { l1l | data = L1.layer.init t NullLayerMsg icd }
+
+        l2l =
+            L2.layer
+
+        l2ct =
+            L2G.getLayerCT { l2l | data = L2.layer.init t NullLayerMsg icd }
     in
     { commonData = icd
-    , layers = [ ( "Layer1", l1ct ) ]
+    , layers =
+        [ ( "Layer1", l1ct )
+        , ( "Layer2", l2ct )
+        ]
     }
 
 

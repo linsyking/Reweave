@@ -8,7 +8,6 @@ import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos, judgeCollision
 import Lib.Tools.Array exposing (delSame)
 import Lib.Tools.Math exposing (rfint)
 import Math.Vector2 exposing (Vec2, vec2)
-import Quantity exposing (times)
 
 
 pointIsSolid : ( Int, Int ) -> GameGlobalData -> Bool
@@ -406,3 +405,43 @@ moveTilCollide d xs =
             Maybe.withDefault d.position (List.head (List.reverse alls))
     in
     { d | position = qh }
+
+
+getNearBySolid : GameGlobalData -> Data -> List ( Int, Int )
+getNearBySolid ggd d =
+    let
+        ( ( px, py ), ( p2x, p2y ) ) =
+            getBoxPos d.position d.simplecheck
+
+        ( pb1, pb2 ) =
+            ( px // brickSize - 2, py // brickSize - 2 )
+
+        ( pb3, pb4 ) =
+            ( p2x // brickSize + 2, p2y // brickSize + 2 )
+
+        ir =
+            List.range pb1 pb3
+
+        jr =
+            List.range pb2 pb4
+    in
+    List.foldl
+        (\i all ->
+            List.foldl
+                (\j all2 ->
+                    case Array2D.get i j ggd.solidmap of
+                        Just v ->
+                            if v > 0 then
+                                all2 ++ [ ( i, j ) ]
+
+                            else
+                                all2
+
+                        Nothing ->
+                            all2
+                )
+                all
+                jr
+        )
+        []
+        ir

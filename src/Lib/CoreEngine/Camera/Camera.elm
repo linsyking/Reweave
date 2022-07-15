@@ -48,13 +48,14 @@ moveCamera ggd =
         ( vx, vy ) =
             ggd.camera.velocity
 
+        -- ddsd = Debug.log "Da" (vx, vy)
         ( px, py ) =
             ggd.camera.position
 
         rv =
             vec2 vx vy
 
-        np =
+        ( npx, npy ) =
             if Math.Vector2.length rv < 3 then
                 ( px, py )
 
@@ -68,13 +69,25 @@ moveCamera ggd =
             else
                 ( vx, vy )
 
-        nc =
-            { c | position = np, velocity = newv }
+        movex =
+            { c | position = ( npx, py ), velocity = newv }
 
         newggd =
-            { ggd | camera = nc }
+            { ggd | camera = movex }
+
+        dkd =
+            judgeInBound newggd
+
+        ( newdx, _ ) =
+            dkd.position
+
+        movey =
+            { dkd | position = ( newdx, npy ) }
+
+        ffggd =
+            { newggd | camera = movey }
     in
-    judgeInBound newggd
+    judgeInBound ffggd
 
 
 judgeInBound : GameGlobalData -> CameraData
@@ -83,11 +96,8 @@ judgeInBound ggd =
         ( mw, mh ) =
             ggd.mapsize
 
-        mapw =
-            mw * brickSize
-
-        maph =
-            mh * brickSize
+        ( ( lpx1, lpy1 ), ( mapw, maph ) ) =
+            ggd.camera.visible
 
         ( cx, cy ) =
             ggd.camera.position
@@ -95,17 +105,17 @@ judgeInBound ggd =
         ( cx2, cy2 ) =
             ( cx + cameraWidth - 1, cy + cameraHeight - 1 )
     in
-    if cx >= 0 && cy >= 0 && cx2 < mapw && cy2 < maph then
+    if cx >= lpx1 && cy >= lpy1 && cx2 <= mapw && cy2 <= maph then
         ggd.camera
 
     else
         let
             horizonD =
-                if cx < 0 then
-                    changeCP ggd.camera ( 0, cy )
+                if cx < lpx1 then
+                    changeCP ggd.camera ( lpx1, cy )
 
-                else if cx2 >= mapw then
-                    changeCP ggd.camera ( mapw - cameraWidth, cy )
+                else if cx2 > mapw then
+                    changeCP ggd.camera ( mapw - cameraWidth + 1, cy )
 
                 else
                     ggd.camera
@@ -114,11 +124,11 @@ judgeInBound ggd =
                 horizonD.position
 
             verticalD =
-                if cy < 0 then
+                if cy < lpy1 then
                     changeCP horizonD ( ncx, 0 )
 
-                else if cy2 >= maph then
-                    changeCP horizonD ( ncx, maph - cameraHeight )
+                else if cy2 > maph then
+                    changeCP horizonD ( ncx, maph - cameraHeight + 1 )
 
                 else
                     horizonD
@@ -157,7 +167,7 @@ calcMoveVec ggd d =
             getPlayerCenter d
 
         cc =
-            getCameraCenter ggd
+            getCameraInboxCenter ggd
 
         subv =
             Math.Vector2.sub cp cc
@@ -210,10 +220,10 @@ getCameraInbox ggd =
             toFloat cy
 
         p =
-            ( floor (crx + 0.4 * toFloat cameraWidth), floor (cry + 0.1 * toFloat cameraHeight) )
+            ( floor (crx + 0.2 * toFloat cameraWidth), floor (cry + 0.3 * toFloat cameraHeight) )
 
         q =
-            ( floor (crx + 0.6 * toFloat cameraWidth), floor (cry + 0.9 * toFloat cameraHeight) )
+            ( floor (crx + 0.4 * toFloat cameraWidth), floor (cry + 0.4 * toFloat cameraHeight) )
     in
     ( p, q )
 
@@ -233,16 +243,16 @@ getPlayerCenter d =
     vec2 cx cy
 
 
-getCameraCenter : GameGlobalData -> Vec2
-getCameraCenter ggd =
+getCameraInboxCenter : GameGlobalData -> Vec2
+getCameraInboxCenter ggd =
     let
-        ( cx, cy ) =
-            ggd.camera.position
+        ( ( cx1, cy1 ), ( cx2, cy2 ) ) =
+            getCameraInbox ggd
 
         vx =
-            toFloat cx + toFloat cameraWidth / 2
+            (toFloat cx1 + toFloat cx2) / 2
 
         vy =
-            toFloat cy + toFloat cameraHeight / 2
+            (toFloat cy1 + toFloat cy2) / 2
     in
     vec2 vx vy

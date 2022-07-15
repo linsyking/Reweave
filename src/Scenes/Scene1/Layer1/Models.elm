@@ -12,8 +12,8 @@ import Scenes.Scene1.Layer1.Common exposing (..)
 import Scenes.Scene1.LayerBase exposing (CommonData)
 
 
-initModel : Int -> CommonData -> ModelX
-initModel _ _ =
+initModel : Int -> LayerMsg -> CommonData -> ModelX
+initModel _ _ _ =
     { s = 0
     }
 
@@ -30,7 +30,11 @@ updateModel msg gd _ ( model, t ) cd =
                 ( ( model, cd, [] ), gd )
 
         _ ->
-            ( ( model, cd, [] ), gd )
+            if t == 200 then
+                Debug.log "Audio" ( ( model, cd, [ ( LayerParentScene, LayerSoundMsg "bgm" "./assets/audio/main.ogg" ALoop ) ] ), gd )
+
+            else
+                ( ( model, cd, [] ), gd )
 
 
 

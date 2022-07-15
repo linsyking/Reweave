@@ -23,7 +23,11 @@ view ( model, t ) ggd gd =
             Array.push model.player model.actors
     in
     group []
-        (Array.toList (Array.Extra.filterMap (\x -> renderSingleObject t x ggd gd) allobjs) ++ [ renderSolids ggd gd ])
+        (Array.toList (Array.Extra.filterMap (\x -> renderSingleObject t x ggd gd) allobjs)
+            ++ [ renderSolids ggd gd
+               , renderChartlets model ggd gd
+               ]
+        )
 
 
 renderSingleObject : Int -> GameComponent -> GameGlobalData -> GlobalData -> Maybe Renderable
@@ -84,3 +88,8 @@ renderSolids ggd gd =
 renderSingleBlock : Int -> ( Int, Int ) -> GameGlobalData -> GlobalData -> Renderable
 renderSingleBlock _ p ggd gd =
     shapes [ fill Color.red ] [ rect (posToReal gd (getPositionUnderCamera p ggd)) (widthToReal gd brickSize) (heightToReal gd brickSize) ]
+
+
+renderChartlets : Model -> GameGlobalData -> GlobalData -> Renderable
+renderChartlets model ggd gd =
+    group [] (List.map (\x -> x gd ggd) model.chartlets)

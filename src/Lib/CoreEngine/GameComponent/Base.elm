@@ -3,8 +3,8 @@ module Lib.CoreEngine.GameComponent.Base exposing (..)
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
 import Dict exposing (Dict)
+import Lib.Component.Base exposing (DefinedTypes)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
-import Lib.DefinedTypes.Base exposing (DefinedTypes)
 
 
 
@@ -29,9 +29,25 @@ type GameComponentMsgType
 
 type GameComponentTMsg
     = GameSolidCollisionMsg (List ( Int, Int ))
-    | GameInterCollisionMsg String Int (List Box)
-    | ClearVelocity
+    | GameInterCollisionMsg String Int ( Int, Int ) (List Box)
+    | GameClearVelocity
+    | GameUseEnergy ( Float, Float ) Float
+    | GameStringMsg String
+    | GamePlayerInit PlayerInit
+    | GameGoombaInit GoombaInit
     | NullGameComponentMsg
+
+
+type alias PlayerInit =
+    { initPosition : ( Int, Int )
+    }
+
+
+type alias GoombaInit =
+    { initPosition : ( Int, Int )
+    , initVelocity : ( Float, Float )
+    , uid : Int
+    }
 
 
 type alias Data =

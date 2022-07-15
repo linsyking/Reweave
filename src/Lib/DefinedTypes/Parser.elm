@@ -1,8 +1,8 @@
 module Lib.DefinedTypes.Parser exposing (..)
 
 import Dict exposing (Dict)
+import Lib.Component.Base exposing (Component, DefinedTypes(..), nullComponent)
 import Lib.CoreEngine.GameComponents.Player.Base as PlayerBase
-import Lib.DefinedTypes.Base exposing (DefinedTypes(..))
 
 
 dgetint : Dict String DefinedTypes -> String -> Int
@@ -113,3 +113,78 @@ dgetPlayer f s =
 dsetPlayer : String -> PlayerBase.Model -> Dict String DefinedTypes -> Dict String DefinedTypes
 dsetPlayer s t f =
     Dict.update s (\_ -> Just (CDPlayerModel t)) f
+
+
+dgetLComponent : Dict String DefinedTypes -> String -> List ( String, Component )
+dgetLComponent f s =
+    let
+        other =
+            []
+    in
+    case Dict.get s f of
+        Just (CDLComponent x) ->
+            x
+
+        _ ->
+            other
+
+
+dsetLComponent : String -> List ( String, Component ) -> Dict String DefinedTypes -> Dict String DefinedTypes
+dsetLComponent s t f =
+    Dict.update s (\_ -> Just (CDLComponent t)) f
+
+
+findComponentsInList : String -> List ( String, Component ) -> List ( String, Component )
+findComponentsInList name comList =
+    List.filter
+        (\( comName, _ ) ->
+            if comName == name then
+                True
+
+            else
+                False
+        )
+        comList
+
+
+findFirstFitComponentInList : String -> List ( String, Component ) -> ( String, Component )
+findFirstFitComponentInList name comList =
+    Maybe.withDefault ( "NONE", nullComponent ) (List.head (findComponentsInList name comList))
+
+
+setComponentsInList : String -> ( String, Component ) -> List ( String, Component ) -> List ( String, Component )
+setComponentsInList name newCom comList =
+    List.map
+        (\( comName, comData ) ->
+            if comName == name then
+                newCom
+
+            else
+                ( comName, comData )
+        )
+        comList
+
+
+setFirstFitComponentInList : String -> ( String, Component ) -> List ( String, Component ) -> List ( String, Component )
+setFirstFitComponentInList name newCom comList =
+    let
+        ( comExist, comID ) =
+            List.foldl
+                (\( comName, _ ) cnt ->
+                    if comName == name then
+                        ( True, Tuple.second cnt )
+
+                    else if Tuple.first cnt == True then
+                        cnt
+
+                    else
+                        ( False, Tuple.second cnt + 1 )
+                )
+                ( False, 0 )
+                comList
+    in
+    if comExist then
+        List.concat [ List.take (comID - 1) comList, [ newCom ], List.drop comID comList ]
+
+    else
+        comList
