@@ -10,7 +10,6 @@ import Lib.CoreEngine.GameComponent.Base exposing (Data, GameComponent, GameComp
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (isAlive, sendManyGameComponentMsg, simpleUpdateAllGameComponent, splitPlayerObjs, updateOneGameComponent)
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameLayer.Common exposing (Model)
-import Lib.CoreEngine.Physics.Ground exposing (isOnground)
 import Lib.CoreEngine.Physics.InterCollision exposing (gonnaInterColllide)
 import Lib.CoreEngine.Physics.NaiveCollision exposing (judgeInCamera)
 import Lib.CoreEngine.Physics.SolidCollision exposing (canMove, gonnaSolidCollide, movePointPlain)

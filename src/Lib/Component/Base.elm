@@ -3,7 +3,7 @@ module Lib.Component.Base exposing (..)
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
 import Dict exposing (Dict)
-import Lib.DefinedTypes.Base exposing (DefinedTypes)
+import Lib.CoreEngine.GameComponents.Player.Base as PlayerBase
 
 
 
@@ -30,3 +30,12 @@ type ComponentTMsg
 
 type alias Data =
     Dict String DefinedTypes
+
+
+type DefinedTypes
+    = CDInt Int
+    | CDBool Bool
+    | CDFloat Float
+    | CDString String
+    | CDLString (List String)
+    | CDPlayerModel PlayerBase.Model

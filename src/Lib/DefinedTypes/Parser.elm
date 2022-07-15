@@ -1,8 +1,8 @@
 module Lib.DefinedTypes.Parser exposing (..)
 
 import Dict exposing (Dict)
+import Lib.Component.Base exposing (DefinedTypes(..))
 import Lib.CoreEngine.GameComponents.Player.Base as PlayerBase
-import Lib.DefinedTypes.Base exposing (DefinedTypes(..))
 
 
 dgetint : Dict String DefinedTypes -> String -> Int
