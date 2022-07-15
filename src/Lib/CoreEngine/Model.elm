@@ -22,19 +22,19 @@ initModel t _ =
             FGL.layer
 
         fgct =
-            FGLG.getLayerCT { fgl | data = FGL.layer.init t nullGameGlobalData }
+            FGLG.getLayerCT { fgl | data = FGL.layer.init t NullLayerMsg nullGameGlobalData }
 
         bgl =
             BGL.layer
 
         bgct =
-            BGLG.getLayerCT { bgl | data = BGL.layer.init t nullGameGlobalData }
+            BGLG.getLayerCT { bgl | data = BGL.layer.init t NullLayerMsg nullGameGlobalData }
 
         gl =
             GL.layer
 
         gct =
-            GLG.getLayerCT { gl | data = GL.layer.init t nullGameGlobalData }
+            GLG.getLayerCT { gl | data = GL.layer.init t NullLayerMsg nullGameGlobalData }
     in
     { gameGlobalData = testGameGlobalData
     , layers = [ ( "Background", bgct ), ( "Game", gct ), ( "Frontground", fgct ) ]

@@ -6,8 +6,8 @@ import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.Layer.Base exposing (LayerMsg, LayerTarget)
 
 
-initModel : Int -> GameGlobalData -> Model
-initModel _ _ =
+initModel : Int -> LayerMsg -> GameGlobalData -> Model
+initModel _ _ _ =
     { k = 0 }
 
 

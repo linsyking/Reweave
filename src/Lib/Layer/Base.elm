@@ -8,7 +8,7 @@ import Lib.Audio.Base exposing (AudioOption)
 type alias Layer a b =
     --- b is the layer data, a is the common data that shares between layers
     { data : b
-    , init : Int -> a -> b
+    , init : Int -> LayerMsg -> a -> b
     , update : Msg -> GlobalData -> LayerMsg -> ( b, Int ) -> a -> ( ( b, a, List ( LayerTarget, LayerMsg ) ), GlobalData )
     , view : ( b, Int ) -> a -> GlobalData -> Renderable
     }

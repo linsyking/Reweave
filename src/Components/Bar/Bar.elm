@@ -117,7 +117,7 @@ bezier clockwise t d =
 
 
 updateBar : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
-updateBar msg gMsg globalData ( d, t ) =
+updateBar _ gMsg globalData ( d, t ) =
     let
         time =
             dgetfloat d "t"

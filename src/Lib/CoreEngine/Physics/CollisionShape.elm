@@ -54,10 +54,7 @@ judgeShape d ls =
         ysame =
             judgeYSame ls
 
-        dsds =
-            Debug.log "same" ( xsame, ysame )
-
-        ( ( x1, y1 ), ( x2, y2 ) ) =
+        ( ( x1, y1 ), ( x2, _ ) ) =
             getBoxPos d.position d.simplecheck
     in
     case ls of

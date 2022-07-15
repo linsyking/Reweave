@@ -20,8 +20,8 @@ import Lib.Tools.Array exposing (locate)
 import Math.Vector2 exposing (vec2)
 
 
-initModel : Int -> GameGlobalData -> Model
-initModel _ _ =
+initModel : Int -> LayerMsg -> GameGlobalData -> Model
+initModel _ _ _ =
     { player = Player.gameComponent, actors = Array.fromList [ Goomba.gameComponent ] }
 
 
