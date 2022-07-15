@@ -15,14 +15,19 @@ import Lib.CoreEngine.GameLayer.Common exposing (Model)
 import Lib.CoreEngine.Physics.InterCollision exposing (gonnaInterColllide)
 import Lib.CoreEngine.Physics.NaiveCollision exposing (judgeInCamera)
 import Lib.CoreEngine.Physics.SolidCollision exposing (canMove, gonnaSolidCollide, movePointPlain)
-import Lib.Layer.Base exposing (LayerMsg, LayerTarget)
+import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget)
 import Lib.Tools.Array exposing (locate)
 import Math.Vector2 exposing (vec2)
 
 
 initModel : Int -> LayerMsg -> GameGlobalData -> Model
-initModel _ _ _ =
-    { player = Player.gameComponent, actors = Array.fromList [ Goomba.gameComponent ] }
+initModel _ lm _ =
+    case lm of
+        LayerInitGameLayer info ->
+            info
+
+        _ ->
+            { player = Player.gameComponent, actors = Array.fromList [ Goomba.gameComponent ] }
 
 
 deleteObjects : GameGlobalData -> Array.Array GameComponent -> Array.Array GameComponent

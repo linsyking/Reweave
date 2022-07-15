@@ -130,5 +130,10 @@ splitPlayerObjs gcs defaultplayer =
     ( newplayer, Array.Extra.pop gcs )
 
 
+initGameComponent : Int -> GameComponentTMsg -> GameComponent -> GameComponent
+initGameComponent t gct gc =
+    { gc | data = gc.init t gct }
+
+
 
 -- TODO: Write recursive message transform system like layer

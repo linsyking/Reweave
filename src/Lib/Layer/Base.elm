@@ -1,8 +1,11 @@
 module Lib.Layer.Base exposing (..)
 
+import Array exposing (Array)
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
 import Lib.Audio.Base exposing (AudioOption)
+import Lib.CoreEngine.Base exposing (GameGlobalData)
+import Lib.CoreEngine.GameComponent.Base exposing (GameComponent)
 
 
 type alias Layer a b =
@@ -19,7 +22,15 @@ type LayerMsg
     | LayerIntMsg Int
     | LayerSoundMsg String String AudioOption
     | LayerStopSoundMsg String
+    | LayerInitGameLayer GameLayerInit
+    | LayerTimeSeries (Int -> GameGlobalData -> GlobalData -> Renderable)
     | NullLayerMsg
+
+
+type alias GameLayerInit =
+    { player : GameComponent
+    , actors : Array GameComponent
+    }
 
 
 type LayerTarget

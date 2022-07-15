@@ -96,11 +96,8 @@ judgeInBound ggd =
         ( mw, mh ) =
             ggd.mapsize
 
-        mapw =
-            mw * brickSize
-
-        maph =
-            mh * brickSize
+        ( ( lpx1, lpy1 ), ( mapw, maph ) ) =
+            ggd.camera.visible
 
         ( cx, cy ) =
             ggd.camera.position
@@ -108,17 +105,17 @@ judgeInBound ggd =
         ( cx2, cy2 ) =
             ( cx + cameraWidth - 1, cy + cameraHeight - 1 )
     in
-    if cx >= 0 && cy >= 0 && cx2 < mapw && cy2 < maph then
+    if cx >= lpx1 && cy >= lpy1 && cx2 <= mapw && cy2 <= maph then
         ggd.camera
 
     else
         let
             horizonD =
-                if cx < 0 then
-                    changeCP ggd.camera ( 0, cy )
+                if cx < lpx1 then
+                    changeCP ggd.camera ( lpx1, cy )
 
-                else if cx2 >= mapw then
-                    changeCP ggd.camera ( mapw - cameraWidth, cy )
+                else if cx2 > mapw then
+                    changeCP ggd.camera ( mapw - cameraWidth + 1, cy )
 
                 else
                     ggd.camera
@@ -127,11 +124,11 @@ judgeInBound ggd =
                 horizonD.position
 
             verticalD =
-                if cy < 0 then
+                if cy < lpy1 then
                     changeCP horizonD ( ncx, 0 )
 
-                else if cy2 >= maph then
-                    changeCP horizonD ( ncx, maph - cameraHeight )
+                else if cy2 > maph then
+                    changeCP horizonD ( ncx, maph - cameraHeight + 1 )
 
                 else
                     horizonD

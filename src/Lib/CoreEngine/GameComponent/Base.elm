@@ -33,7 +33,21 @@ type GameComponentTMsg
     | GameClearVelocity
     | GameUseEnergy ( Float, Float ) Float
     | GameStringMsg String
+    | GamePlayerInit PlayerInit
+    | GameGoombaInit GoombaInit
     | NullGameComponentMsg
+
+
+type alias PlayerInit =
+    { initPosition : ( Int, Int )
+    }
+
+
+type alias GoombaInit =
+    { initPosition : ( Int, Int )
+    , initVelocity : ( Float, Float )
+    , uid : Int
+    }
 
 
 type alias Data =

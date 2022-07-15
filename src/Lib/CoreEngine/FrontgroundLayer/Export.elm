@@ -1,5 +1,6 @@
 module Lib.CoreEngine.FrontgroundLayer.Export exposing (..)
 
+import Canvas exposing (group)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.FrontgroundLayer.Common exposing (Model)
 import Lib.CoreEngine.FrontgroundLayer.Display exposing (view)
@@ -13,7 +14,7 @@ type alias Data =
 
 nullData : Data
 nullData =
-    { k = 0 }
+    { render = \_ _ _ -> group [] [] }
 
 
 layer : Layer GameGlobalData Data

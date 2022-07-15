@@ -10,35 +10,61 @@ import Lib.CoreEngine.FrontgroundLayer.Export as FGL
 import Lib.CoreEngine.FrontgroundLayer.Global as FGLG
 import Lib.CoreEngine.GameLayer.Export as GL
 import Lib.CoreEngine.GameLayer.Global as GLG
-import Lib.Layer.Base exposing (LayerMsg(..))
+import Lib.Layer.Base exposing (GameLayerInit, LayerMsg(..))
 import Lib.Layer.LayerHandler exposing (updateLayer, viewLayer)
 import Lib.Scene.Base exposing (SceneMsg(..), SceneOutputMsg(..))
 
 
 initModel : Int -> SceneMsg -> Model
-initModel t _ =
-    let
-        fgl =
-            FGL.layer
+initModel t sm =
+    case sm of
+        SceneEngineMsg engine ->
+            let
+                fgl =
+                    FGL.layer
 
-        fgct =
-            FGLG.getLayerCT { fgl | data = FGL.layer.init t NullLayerMsg nullGameGlobalData }
+                fgct =
+                    FGLG.getLayerCT { fgl | data = FGL.layer.init t (LayerTimeSeries engine.frontground) nullGameGlobalData }
 
-        bgl =
-            BGL.layer
+                bgl =
+                    BGL.layer
 
-        bgct =
-            BGLG.getLayerCT { bgl | data = BGL.layer.init t NullLayerMsg nullGameGlobalData }
+                bgct =
+                    BGLG.getLayerCT { bgl | data = BGL.layer.init t (LayerTimeSeries engine.background) nullGameGlobalData }
 
-        gl =
-            GL.layer
+                gl =
+                    GL.layer
 
-        gct =
-            GLG.getLayerCT { gl | data = GL.layer.init t NullLayerMsg nullGameGlobalData }
-    in
-    { gameGlobalData = testGameGlobalData
-    , layers = [ ( "Background", bgct ), ( "Game", gct ), ( "Frontground", fgct ) ]
-    }
+                gct =
+                    GLG.getLayerCT { gl | data = GL.layer.init t (LayerInitGameLayer (GameLayerInit engine.player engine.actors)) nullGameGlobalData }
+            in
+            { gameGlobalData = engine.globalData
+            , layers = [ ( "Background", bgct ), ( "Game", gct ), ( "Frontground", fgct ) ]
+            }
+
+        _ ->
+            let
+                fgl =
+                    FGL.layer
+
+                fgct =
+                    FGLG.getLayerCT { fgl | data = FGL.layer.init t NullLayerMsg nullGameGlobalData }
+
+                bgl =
+                    BGL.layer
+
+                bgct =
+                    BGLG.getLayerCT { bgl | data = BGL.layer.init t NullLayerMsg nullGameGlobalData }
+
+                gl =
+                    GL.layer
+
+                gct =
+                    GLG.getLayerCT { gl | data = GL.layer.init t NullLayerMsg nullGameGlobalData }
+            in
+            { gameGlobalData = testGameGlobalData
+            , layers = [ ( "Background", bgct ), ( "Game", gct ), ( "Frontground", fgct ) ]
+            }
 
 
 handleLayerMsg : LayerMsg -> ( Model, Int ) -> ( Model, SceneOutputMsg )

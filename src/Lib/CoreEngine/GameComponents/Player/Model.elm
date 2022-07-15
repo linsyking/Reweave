@@ -50,8 +50,22 @@ collisionBox =
 
 
 initModel : Int -> GameComponentTMsg -> Data
-initModel _ _ =
-    initData
+initModel _ gcm =
+    case gcm of
+        GamePlayerInit info ->
+            { status = Alive
+            , position = info.initPosition
+            , velocity = ( 0, 0 )
+            , mass = 50
+            , acceleration = ( 0, -8 )
+            , simplecheck = collisionBox
+            , collisionbox = [ collisionBox ]
+            , extra = initExtraData
+            , uid = 1
+            }
+
+        _ ->
+            initData
 
 
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )

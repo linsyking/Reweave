@@ -1,14 +1,20 @@
-module Lib.CoreEngine.BackgroundLayer.Modle exposing (..)
+module Lib.CoreEngine.BackgroundLayer.Model exposing (..)
 
 import Base exposing (GlobalData, Msg)
-import Lib.CoreEngine.BackgroundLayer.Common exposing (Model)
+import Canvas exposing (group)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
-import Lib.Layer.Base exposing (LayerMsg, LayerTarget)
+import Lib.CoreEngine.FrontgroundLayer.Common exposing (Model)
+import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget)
 
 
 initModel : Int -> LayerMsg -> GameGlobalData -> Model
-initModel _ _ _ =
-    { k = 0 }
+initModel _ lm _ =
+    case lm of
+        LayerTimeSeries f ->
+            { render = f }
+
+        _ ->
+            { render = \_ _ _ -> group [] [] }
 
 
 updateModel : Msg -> GlobalData -> LayerMsg -> ( Model, Int ) -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )

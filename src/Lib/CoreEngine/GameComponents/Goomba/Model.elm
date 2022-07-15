@@ -57,8 +57,22 @@ simplecheckBox =
 
 
 initModel : Int -> GameComponentTMsg -> Data
-initModel _ _ =
-    initData
+initModel _ gcm =
+    case gcm of
+        GameGoombaInit info ->
+            { status = Alive
+            , position = info.initPosition
+            , velocity = info.initVelocity
+            , mass = 70
+            , acceleration = ( 0, -8 )
+            , simplecheck = simplecheckBox
+            , collisionbox = [ collisionBox, reboundBox ]
+            , extra = Dict.empty
+            , uid = info.uid
+            }
+
+        _ ->
+            initData
 
 
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )

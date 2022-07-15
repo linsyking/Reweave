@@ -1,8 +1,11 @@
 module Lib.Scene.Base exposing (..)
 
+import Array exposing (Array)
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable, group)
 import Lib.Audio.Base exposing (AudioOption)
+import Lib.CoreEngine.Base exposing (GameGlobalData)
+import Lib.CoreEngine.GameComponent.Base exposing (GameComponent)
 
 
 type alias Scene a =
@@ -23,6 +26,8 @@ nullScene =
 type SceneMsg
     = SceneStringMsg String
     | SceneIntMsg Int
+    | SceneEngineMsg EngineInit
+    | SceneEngineTMsg EngineT
     | NullSceneMsg
 
 
@@ -32,3 +37,18 @@ type SceneOutputMsg
     | SOStopAudio String
     | SOSetVolume Float
     | NullSceneOutputMsg
+
+
+type alias EngineInit =
+    { player : GameComponent
+    , actors : Array GameComponent
+    , globalData : GameGlobalData
+    , background : Int -> GameGlobalData -> GlobalData -> Renderable
+    , frontground : Int -> GameGlobalData -> GlobalData -> Renderable
+    }
+
+
+type alias EngineT =
+    { energy : Float
+    , originLevel : String
+    }

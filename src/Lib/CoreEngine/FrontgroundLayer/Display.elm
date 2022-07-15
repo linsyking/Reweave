@@ -10,7 +10,7 @@ import Lib.Render.Render exposing (renderText)
 
 
 view : ( Model, Int ) -> GameGlobalData -> GlobalData -> Renderable
-view ( _, _ ) ggd gd =
+view ( model, t ) ggd gd =
     group []
         [ shapes [ alpha 0.3 ] [ rect ( 0, 0 ) (widthToReal gd 200) (heightToReal gd 100) ]
         , if ggd.selectobj > 0 then
@@ -19,4 +19,5 @@ view ( _, _ ) ggd gd =
           else
             group [] []
         , renderText gd 20 ("Energy:" ++ String.fromFloat ggd.energy) "sans-serif" ( 10, 40 )
+        , model.render t ggd gd
         ]
