@@ -15,7 +15,7 @@ type alias Data =
 
 nullData : Data
 nullData =
-    { player = Player.gameComponent, actors = Array.empty }
+    { player = Player.gameComponent, actors = Array.empty, chartlets = [] }
 
 
 layer : Layer GameGlobalData Data

@@ -1,12 +1,16 @@
 module Scenes.Level1.Config exposing (..)
 
 import Array exposing (Array)
+import Base exposing (GlobalData)
+import Canvas exposing (Renderable)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Base exposing (CameraData)
+import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentTMsg(..), GoombaInit, PlayerInit)
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (initGameComponent)
 import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
 import Lib.CoreEngine.GameComponents.Player.Export as Player
+import Lib.Render.Render exposing (renderSprite, renderText)
 import Scenes.Level1.Map exposing (mymap)
 
 
@@ -38,3 +42,10 @@ initGameGlobalData =
     , selectobj = -1
     , energy = 0
     }
+
+
+allChartlets : List (GlobalData -> GameGlobalData -> Renderable)
+allChartlets =
+    [ \gd ggd -> renderText gd 50 "Chartlet Test" "Times New Roman" (getPositionUnderCamera ( 800, 2100 ) ggd)
+    , \gd ggd -> renderSprite gd [] (getPositionUnderCamera ( 0, 2176 ) ggd) ( 3840, 64 ) "background" gd.sprites
+    ]

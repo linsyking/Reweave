@@ -36,7 +36,7 @@ initModel t sm =
                     GL.layer
 
                 gct =
-                    GLG.getLayerCT { gl | data = GL.layer.init t (LayerInitGameLayer (GameLayerInit engine.player engine.actors)) nullGameGlobalData }
+                    GLG.getLayerCT { gl | data = GL.layer.init t (LayerInitGameLayer (GameLayerInit engine.player engine.actors engine.chartlets)) nullGameGlobalData }
             in
             { gameGlobalData = engine.globalData
             , layers = [ ( "Background", bgct ), ( "Game", gct ), ( "Frontground", fgct ) ]

@@ -4,7 +4,7 @@ import Canvas exposing (group)
 import Lib.CoreEngine.Export exposing (Data, genEngineScene, initEngine)
 import Lib.Scene.Base exposing (Scene, SceneMsg(..))
 import Scenes.Level1.Background exposing (background)
-import Scenes.Level1.Config exposing (initActors, initGameGlobalData, initPlayer)
+import Scenes.Level1.Config exposing (allChartlets, initActors, initGameGlobalData, initPlayer)
 
 
 game : SceneMsg -> Data
@@ -13,6 +13,7 @@ game _ =
         (SceneEngineMsg
             { player = initPlayer
             , actors = initActors
+            , chartlets = allChartlets
             , globalData = initGameGlobalData
             , background = background
             , frontground = \_ _ _ -> group [] []

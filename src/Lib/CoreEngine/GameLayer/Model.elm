@@ -27,7 +27,7 @@ initModel _ lm _ =
             info
 
         _ ->
-            { player = Player.gameComponent, actors = Array.fromList [ Goomba.gameComponent ] }
+            { player = Player.gameComponent, actors = Array.fromList [ Goomba.gameComponent ], chartlets = [] }
 
 
 deleteObjects : GameGlobalData -> Array.Array GameComponent -> Array.Array GameComponent
@@ -284,6 +284,11 @@ getDSEnergy p m gd ggd =
         ( gpc, { ggd | energy = curenergy - gpc } )
 
 
+dealParentMsg : GameComponentTMsg -> GlobalData -> ( Model, Int ) -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
+dealParentMsg _ gd ( model, _ ) ggd =
+    ( ( model, ggd, [] ), gd )
+
+
 updateModel : Msg -> GlobalData -> LayerMsg -> ( Model, Int ) -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
 updateModel msg gd _ ( model, t ) ggd =
     case msg of
@@ -315,14 +320,14 @@ updateModel msg gd _ ( model, t ) ggd =
                     updatedmsg ++ solidmsg ++ intermsg
 
                 allparentmsg =
-                    List.filter
+                    List.filterMap
                         (\x ->
                             case x of
-                                GameParentMsg _ ->
-                                    True
+                                GameParentMsg tmsg ->
+                                    Just tmsg
 
                                 _ ->
-                                    False
+                                    Nothing
                         )
                         allmsg
 
@@ -362,8 +367,23 @@ updateModel msg gd _ ( model, t ) ggd =
 
                 newcamera =
                     getNewCamera finalggd newplayer.data
+
+                newmodel =
+                    { model | player = newplayer, actors = newactors }
+
+                newggd =
+                    { finalggd | camera = newcamera }
             in
-            ( ( { model | player = newplayer, actors = newactors }, { finalggd | camera = newcamera }, [] ), gd )
+            List.foldl
+                (\tm ( ( cm, cggd, cam ), cgd ) ->
+                    let
+                        ( ( nnm, nnggd, nndmd ), nngd ) =
+                            dealParentMsg tm cgd ( cm, t ) cggd
+                    in
+                    ( ( nnm, nnggd, cam ++ nndmd ), nngd )
+                )
+                ( ( newmodel, newggd, [] ), gd )
+                allparentmsg
 
         KeyDown 67 ->
             if ggd.selectobj > 0 then

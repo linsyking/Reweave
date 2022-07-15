@@ -42,6 +42,7 @@ type SceneOutputMsg
 type alias EngineInit =
     { player : GameComponent
     , actors : Array GameComponent
+    , chartlets : List (GlobalData -> GameGlobalData -> Renderable)
     , globalData : GameGlobalData
     , background : Int -> GameGlobalData -> GlobalData -> Renderable
     , frontground : Int -> GameGlobalData -> GlobalData -> Renderable

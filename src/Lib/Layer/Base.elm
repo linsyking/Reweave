@@ -30,6 +30,7 @@ type LayerMsg
 type alias GameLayerInit =
     { player : GameComponent
     , actors : Array GameComponent
+    , chartlets : List (GlobalData -> GameGlobalData -> Renderable)
     }
 
 
