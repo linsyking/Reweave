@@ -13,6 +13,7 @@ import Lib.CoreEngine.GameComponents.Player.InputFilter exposing (afterMove, pre
 import Lib.CoreEngine.GameComponents.Player.InputHandler exposing (changePlayerVelocity)
 import Lib.CoreEngine.GameComponents.Player.Movement exposing (solidCollisionMove)
 import Lib.CoreEngine.GameComponents.Player.StatesControl exposing (stateControl)
+import Lib.CoreEngine.Physics.Velocity exposing (changeCVel)
 import Lib.DefinedTypes.Parser exposing (dgetPlayer, dsetPlayer)
 
 
@@ -135,13 +136,17 @@ updateModel msg gct ggd gd ( d, t ) =
             else
                 ( d, [], ggd )
 
-        MouseDown 2 mp ->
-            ( d, [], ggd )
-
         _ ->
             case gct of
                 ClearVelocity ->
                     ( { d | velocity = ( 0, 0 ) }, [], ggd )
+
+                UseEnergy mp e ->
+                    let
+                        ndd =
+                            changeCVel d mp e
+                    in
+                    ( ndd, [], ggd )
 
                 _ ->
                     ( d, [], ggd )

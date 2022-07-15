@@ -6,6 +6,7 @@ import Base exposing (GlobalData, Msg(..))
 import Lib.Coordinate.Coordinates exposing (fromMouseToReal, posToReal)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Camera exposing (getNewCamera)
+import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Data, GameComponent, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (isAlive, sendManyGameComponentMsg, simpleUpdateAllGameComponent, splitPlayerObjs, updateOneGameComponent)
 import Lib.CoreEngine.GameComponents.Player.Export as Player
@@ -228,41 +229,43 @@ searchUIDGC s gcs =
             -1
 
 
-changeCVel : GameComponent -> ( Float, Float ) -> Float -> GameComponent
-changeCVel c ( px, py ) k =
-    let
-        cm =
-            c.data.mass
-
-        punit =
-            Math.Vector2.normalize (vec2 px py)
-
-        nm =
-            Math.Vector2.scale (sqrt (k / toFloat cm) * 300) punit
-
-        newvx =
-            Math.Vector2.getX nm
-
-        newvy =
-            Math.Vector2.getY nm
-
-        odata =
-            c.data
-
-        ( ovx, ovy ) =
-            odata.velocity
-
-        -- das =
-        --     Debug.log "newv" ( newvx, newvy )
-        newdata =
-            { odata | velocity = ( newvx + ovx, newvy + ovy ) }
-    in
-    { c | data = newdata }
-
-
 kineticCalc : Int -> ( Float, Float ) -> Float
 kineticCalc mass ( vx, vy ) =
     toFloat mass * (vx * vx + vy * vy) / 10000
+
+
+calcRPer : ( Float, Float ) -> ( Float, Float ) -> GlobalData -> Float
+calcRPer ( px, py ) ( mx, my ) gd =
+    let
+        dis =
+            sqrt ((mx - px) ^ 2 + (my - py) ^ 2)
+
+        sl =
+            sqrt (toFloat gd.realHeight ^ 2 + toFloat gd.realWidth ^ 2)
+    in
+    dis / sl * 2
+
+
+getDSEnergy : ( Float, Float ) -> ( Float, Float ) -> GlobalData -> GameGlobalData -> ( Float, GameGlobalData )
+getDSEnergy p m gd ggd =
+    let
+        curenergy =
+            ggd.energy
+
+        pc =
+            calcRPer p m gd
+
+        gpc =
+            curenergy * pc
+    in
+    if pc < 0.2 then
+        ( 0, ggd )
+
+    else if pc >= 1 then
+        ( curenergy, { ggd | energy = 0 } )
+
+    else
+        ( gpc, { ggd | energy = curenergy - gpc } )
 
 
 updateModel : Msg -> GlobalData -> LayerMsg -> ( Model, Int ) -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
@@ -354,9 +357,20 @@ updateModel msg gd _ ( model, t ) ggd =
                             kineticCalc model.player.data.mass model.player.data.velocity
 
                         ( newplayer, _, newggd ) =
-                            updateOneGameComponent UnknownMsg ClearVelocity ggd gd t model.player
+                            if k > 300 then
+                                updateOneGameComponent UnknownMsg ClearVelocity ggd gd t model.player
+
+                            else
+                                ( model.player, [], ggd )
+
+                        tcggd =
+                            if k > 300 then
+                                { newggd | energy = newggd.energy + k }
+
+                            else
+                                newggd
                     in
-                    ( ( { model | player = newplayer }, { newggd | energy = newggd.energy + k }, [] ), gd )
+                    ( ( { model | player = newplayer }, tcggd, [] ), gd )
 
                 else
                     let
@@ -373,12 +387,23 @@ updateModel msg gd _ ( model, t ) ggd =
                                     kineticCalc thisactor.data.mass thisactor.data.velocity
 
                                 ( newactor, _, newggd ) =
-                                    updateOneGameComponent UnknownMsg ClearVelocity ggd gd t thisactor
+                                    if k > 300 then
+                                        updateOneGameComponent UnknownMsg ClearVelocity ggd gd t thisactor
+
+                                    else
+                                        ( thisactor, [], ggd )
+
+                                onew =
+                                    if k > 300 then
+                                        { newggd | energy = newggd.energy + k }
+
+                                    else
+                                        newggd
 
                                 newactors =
                                     Array.set tn newactor model.actors
                             in
-                            ( ( { model | actors = newactors }, { newggd | energy = newggd.energy + k }, [] ), gd )
+                            ( ( { model | actors = newactors }, onew, [] ), gd )
 
                         Nothing ->
                             ( ( model, ggd, [] ), gd )
@@ -404,19 +429,33 @@ updateModel msg gd _ ( model, t ) ggd =
             if ggd.selectobj > 0 then
                 if ggd.selectobj == model.player.data.uid then
                     let
-                        ( rpx, rpy ) =
-                            posToReal gd model.player.data.position
+                        ( px, py ) =
+                            posToReal gd (getPositionUnderCamera model.player.data.position ggd)
 
-                        ( mpx, mpy ) =
+                        ( mx, my ) =
                             fromMouseToReal gd mp
 
-                        pov =
-                            ( mpx - rpx, rpy - mpy )
+                        pp =
+                            ( px, py )
+
+                        mm =
+                            ( mx, my )
+
+                        ( xsable, updss ) =
+                            getDSEnergy pp mm gd ggd
 
                         newplayer =
-                            changeCVel model.player pov ggd.energy
+                            if xsable > 0 then
+                                let
+                                    ( up, _, _ ) =
+                                        updateOneGameComponent UnknownMsg (UseEnergy ( mx - px, my - py ) xsable) ggd gd t model.player
+                                in
+                                up
+
+                            else
+                                model.player
                     in
-                    ( ( { model | player = newplayer }, { ggd | energy = 0 }, [] ), gd )
+                    ( ( { model | player = newplayer }, updss, [] ), gd )
 
                 else
                     let
@@ -429,22 +468,36 @@ updateModel msg gd _ ( model, t ) ggd =
                     case tac of
                         Just thisactor ->
                             let
-                                ( rpx, rpy ) =
-                                    posToReal gd thisactor.data.position
+                                ( px, py ) =
+                                    posToReal gd (getPositionUnderCamera thisactor.data.position ggd)
 
-                                ( mpx, mpy ) =
+                                ( mx, my ) =
                                     fromMouseToReal gd mp
 
-                                pov =
-                                    ( mpx - rpx, rpy - mpy )
+                                pp =
+                                    ( px, py )
 
-                                newactor =
-                                    changeCVel thisactor pov ggd.energy
+                                mm =
+                                    ( mx, my )
+
+                                ( xsable, updss ) =
+                                    getDSEnergy pp mm gd ggd
+
+                                newplayer =
+                                    if xsable > 0 then
+                                        let
+                                            ( up, _, _ ) =
+                                                updateOneGameComponent UnknownMsg (UseEnergy ( mx - px, my - py ) xsable) ggd gd t thisactor
+                                        in
+                                        up
+
+                                    else
+                                        thisactor
 
                                 newactors =
-                                    Array.set tn newactor model.actors
+                                    Array.set tn newplayer model.actors
                             in
-                            ( ( { model | actors = newactors }, { ggd | energy = 0 }, [] ), gd )
+                            ( ( { model | actors = newactors }, updss, [] ), gd )
 
                         Nothing ->
                             ( ( model, ggd, [] ), gd )

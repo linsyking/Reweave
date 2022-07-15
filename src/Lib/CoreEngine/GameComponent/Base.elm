@@ -31,6 +31,7 @@ type GameComponentTMsg
     = GameSolidCollisionMsg (List ( Int, Int ))
     | GameInterCollisionMsg String Int (List Box)
     | ClearVelocity
+    | UseEnergy ( Float, Float ) Float
     | NullGameComponentMsg
 
 
