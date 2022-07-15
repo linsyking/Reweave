@@ -8,7 +8,6 @@ import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos, judgeCollision
 import Lib.Tools.Array exposing (delSame)
 import Lib.Tools.Math exposing (rfint)
 import Math.Vector2 exposing (Vec2, vec2)
-import Quantity exposing (times)
 
 
 pointIsSolid : ( Int, Int ) -> GameGlobalData -> Bool

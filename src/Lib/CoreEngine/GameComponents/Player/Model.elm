@@ -2,6 +2,7 @@ module Lib.CoreEngine.GameComponents.Player.Model exposing (..)
 
 import Base exposing (GlobalData, Msg(..))
 import Dict exposing (Dict)
+import Lib.Component.Base exposing (DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (judgeMouse)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
@@ -12,7 +13,6 @@ import Lib.CoreEngine.GameComponents.Player.InputFilter exposing (afterMove, pre
 import Lib.CoreEngine.GameComponents.Player.InputHandler exposing (changePlayerVelocity)
 import Lib.CoreEngine.GameComponents.Player.Movement exposing (solidCollisionMove)
 import Lib.CoreEngine.GameComponents.Player.StatesControl exposing (stateControl)
-import Lib.DefinedTypes.Base exposing (DefinedTypes(..))
 import Lib.DefinedTypes.Parser exposing (dgetPlayer, dsetPlayer)
 
 
