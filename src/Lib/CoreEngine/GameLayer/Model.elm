@@ -289,6 +289,11 @@ kineticCalc mass ( vx, vy ) =
     toFloat mass * (vx * vx + vy * vy) / 10000
 
 
+calcDRate : ( Float, Float ) -> ( Float, Float ) -> ( Float, Float ) -> Float
+calcDRate p1 p2 ( w, h ) =
+    0
+
+
 calcRPer : ( Float, Float ) -> ( Float, Float ) -> GlobalData -> Float
 calcRPer ( px, py ) ( mx, my ) gd =
     let
