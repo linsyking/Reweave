@@ -11,22 +11,34 @@ import Lib.Coordinate.Coordinates exposing (heightToReal, posToReal, widthToReal
 import Lib.CoreEngine.Base exposing (GameGlobalData, brickSize)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent)
+import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
 import Lib.CoreEngine.GameLayer.Common exposing (Model)
 import Lib.CoreEngine.Physics.NaiveCollision exposing (judgeInCamera)
+import Lib.Render.Render exposing (renderBrickSheet)
 import Lib.Tools.Math exposing (rfint)
 
 
 view : ( Model, Int ) -> GameGlobalData -> GlobalData -> Renderable
-view ( model, t ) ggd gd =
+view ( model, ot ) ggd gd =
     let
         allobjs =
             Array.push model.player model.actors
+
+        t =
+            if ggd.ingamepause then
+                0
+
+            else
+                ot
     in
     group []
-        (Array.toList (Array.Extra.filterMap (\x -> renderSingleObject t x ggd gd) allobjs)
-            ++ [ renderSolids ggd gd
-               , renderChartlets model ggd gd
-               ]
+        (renderChartletsBehindActor model ggd gd
+            :: (Array.toList (Array.Extra.filterMap (\x -> renderSingleObject t x ggd gd) allobjs)
+                    ++ [ renderChartletsBehindSolids model ggd gd
+                       , renderSolids ggd gd
+                       , renderChartletsFront model ggd gd
+                       ]
+               )
         )
 
 
@@ -86,10 +98,63 @@ renderSolids ggd gd =
 
 
 renderSingleBlock : Int -> ( Int, Int ) -> GameGlobalData -> GlobalData -> Renderable
-renderSingleBlock _ p ggd gd =
-    shapes [ fill Color.red ] [ rect (posToReal gd (getPositionUnderCamera p ggd)) (widthToReal gd brickSize) (heightToReal gd brickSize) ]
+renderSingleBlock tp p ggd gd =
+    case tp of
+        1 ->
+            shapes [ fill Color.red ] [ rect (posToReal gd (getPositionUnderCamera p ggd)) (widthToReal gd brickSize) (heightToReal gd brickSize) ]
+
+        k ->
+            renderBrickSheet gd [] (getPositionUnderCamera p ggd) ( k, 3 ) "bricksheet" gd.sprites
 
 
-renderChartlets : Model -> GameGlobalData -> GlobalData -> Renderable
-renderChartlets model ggd gd =
-    group [] (List.map (\x -> x gd ggd) model.chartlets)
+
+-- _ ->
+--     group [] []
+
+
+renderChartletsFront : Model -> GameGlobalData -> GlobalData -> Renderable
+renderChartletsFront model ggd gd =
+    group []
+        (List.filterMap
+            (\( x, dtype ) ->
+                case dtype of
+                    FrontSolids ->
+                        Just (x gd ggd)
+
+                    _ ->
+                        Nothing
+            )
+            model.chartlets
+        )
+
+
+renderChartletsBehindActor : Model -> GameGlobalData -> GlobalData -> Renderable
+renderChartletsBehindActor model ggd gd =
+    group []
+        (List.filterMap
+            (\( x, dtype ) ->
+                case dtype of
+                    BehindActors ->
+                        Just (x gd ggd)
+
+                    _ ->
+                        Nothing
+            )
+            model.chartlets
+        )
+
+
+renderChartletsBehindSolids : Model -> GameGlobalData -> GlobalData -> Renderable
+renderChartletsBehindSolids model ggd gd =
+    group []
+        (List.filterMap
+            (\( x, dtype ) ->
+                case dtype of
+                    BehindSolids ->
+                        Just (x gd ggd)
+
+                    _ ->
+                        Nothing
+            )
+            model.chartlets
+        )

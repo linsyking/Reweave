@@ -5,9 +5,10 @@ import Canvas exposing (Point, Renderable, text, texture)
 import Canvas.Settings exposing (Setting)
 import Canvas.Settings.Advanced exposing (scale, transform, translate)
 import Canvas.Settings.Text exposing (TextAlign(..), align, font)
-import Canvas.Texture exposing (Texture, dimensions)
+import Canvas.Texture exposing (Texture, dimensions, sprite)
 import Dict exposing (Dict)
 import Lib.Coordinate.Coordinates exposing (heightToReal, posToReal, widthToReal)
+import Lib.CoreEngine.Base exposing (brickSize)
 import Lib.Resources.Base exposing (igetSprite)
 
 
@@ -84,6 +85,43 @@ renderSprite gd ls p ( w, h ) name dst =
                     ls
                     ( newx, newy )
                     t
+
+        Nothing ->
+            text [] (transPoint gd p) "Wrong Sprite"
+
+
+renderBrickSheet : GlobalData -> List Setting -> ( Int, Int ) -> ( Int, Int ) -> String -> Dict String Texture -> Renderable
+renderBrickSheet gd ls p ( x, y ) name dst =
+    case igetSprite name dst of
+        Just t ->
+            let
+                rw =
+                    widthToReal gd brickSize
+
+                rh =
+                    heightToReal gd brickSize
+
+                ( newx, newy ) =
+                    transPoint gd p
+
+                thisTexture =
+                    sprite { x = toFloat x * 32, y = toFloat y * 32, width = 32, height = 32 } t
+
+                w_s =
+                    rw / 32
+
+                h_s =
+                    rh / 32
+            in
+            texture
+                (transform
+                    [ translate newx newy
+                    , scale w_s h_s
+                    ]
+                    :: ls
+                )
+                ( 0, 0 )
+                thisTexture
 
         Nothing ->
             text [] (transPoint gd p) "Wrong Sprite"

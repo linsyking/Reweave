@@ -30,9 +30,9 @@ initEngine t sm =
     initModel t sm
 
 
-genEngineScene : (SceneMsg -> Data) -> Scene Data
+genEngineScene : (Int -> SceneMsg -> Data) -> Scene Data
 genEngineScene f =
-    { init = \_ m -> f m
+    { init = \t m -> f t m
     , update = updateModel
     , view = viewModel
     }
