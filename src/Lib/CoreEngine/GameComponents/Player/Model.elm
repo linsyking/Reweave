@@ -55,7 +55,7 @@ initModel _ gcm =
         GamePlayerInit info ->
             { status = Alive
             , position = info.initPosition
-            , velocity = ( 0, 0 )
+            , velocity = ( 1000, 0 )
             , mass = 50
             , acceleration = ( 0, -8 )
             , simplecheck = collisionBox
