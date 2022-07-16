@@ -59,7 +59,11 @@ releaseObjects ggd gcs =
                         False
 
                     Dead _ ->
-                        True
+                        if x.data.uid == ggd.selectobj then
+                            True
+
+                        else
+                            False
             )
             gcs
     then

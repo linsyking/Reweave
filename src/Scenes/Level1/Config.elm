@@ -27,9 +27,9 @@ initPlayer =
 initActors : Array GameComponent
 initActors =
     Array.fromList
-        [ initGameComponent 0 (GameGoombaInit (GoombaInit ( 750, 800 ) ( 0, 0 ) 4)) Goomba.gameComponent
-        , initGameComponent 0 (GameExitInit (ExitInit ( 1000, 1200 ) ( 10, 200 ) "Scene1" 9999)) Exit.gameComponent
-        , initGameComponent 0 (GameGoombaInit (GoombaInit ( 1000, 2000 ) ( 0, 0 ) 5)) Goomba.gameComponent
+        [ initGameComponent 0 (GameGoombaInit (GoombaInit ( 1200, 1800 ) ( 0, 0 ) 4)) Goomba.gameComponent
+        , initGameComponent 0 (GameExitInit (ExitInit ( 3800, 1600 ) ( 10, 160 ) "Scene1" 9999)) Exit.gameComponent
+        , initGameComponent 0 (GameGoombaInit (GoombaInit ( 1000, 1800 ) ( 0, 0 ) 5)) Goomba.gameComponent
         ]
 
 
@@ -52,6 +52,6 @@ initGameGlobalData e =
 
 allChartlets : List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
 allChartlets =
-    [ ( \gd ggd -> renderText gd 50 "Chartlet Test" "Times New Roman" (getPositionUnderCamera ( 800, 2100 ) ggd), BehindActors )
+    [ ( \gd ggd -> renderText gd 50 "Hit those goombas!" "Times New Roman" (getPositionUnderCamera ( 900, 2100 ) ggd), BehindActors )
     , ( \gd ggd -> renderSprite gd [] (getPositionUnderCamera ( 0, 2176 ) ggd) ( 3840, 64 ) "background" gd.sprites, FrontSolids )
     ]
