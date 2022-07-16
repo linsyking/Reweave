@@ -1,11 +1,8 @@
 module Scenes.Home.Layer1.Models exposing (..)
 
---- Init a model, and update it
-
 import Base exposing (..)
 import Constants exposing (..)
 import Lib.Component.Base exposing (ComponentTMsg(..))
-import Lib.Component.ComponentHandler exposing (updateSingleComponent)
 import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget(..))
 import Lib.Scene.Base exposing (..)
 import Scenes.Home.Layer1.Common exposing (..)

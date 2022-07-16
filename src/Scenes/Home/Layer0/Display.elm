@@ -1,13 +1,11 @@
 module Scenes.Home.Layer0.Display exposing (..)
 
 import Base exposing (..)
-import Canvas exposing (Renderable, group, rect, shapes)
-import Canvas.Settings exposing (fill)
+import Canvas exposing (Renderable, group)
 import Canvas.Settings.Advanced exposing (GlobalCompositeOperationMode(..))
 import Canvas.Settings.Text exposing (TextAlign(..))
-import Color
 import Lib.Coordinate.Coordinates exposing (..)
-import Lib.Render.Render exposing (renderSprite, renderText)
+import Lib.Render.Render exposing (renderSprite)
 import Scenes.Home.Layer0.Common exposing (..)
 import Scenes.Home.LayerBase exposing (CommonData)
 

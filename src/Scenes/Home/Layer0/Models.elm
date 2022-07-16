@@ -1,11 +1,8 @@
 module Scenes.Home.Layer0.Models exposing (..)
 
---- Init a model, and update it
-
 import Base exposing (..)
 import Constants exposing (..)
 import Lib.Audio.Base exposing (AudioOption(..))
-import Lib.Coordinate.Coordinates exposing (judgeMouse)
 import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget(..))
 import Lib.Scene.Base exposing (..)
 import Scenes.Home.Layer0.Common exposing (..)
@@ -19,6 +16,6 @@ initModel _ _ _ =
 
 
 updateModel : Msg -> GlobalData -> LayerMsg -> SModel -> CommonData -> ( ( ModelX, CommonData, List ( LayerTarget, LayerMsg ) ), GlobalData )
-updateModel msg gd _ ( model, t ) cd =
+updateModel _ gd _ ( model, t ) cd =
     ( ( model, cd, [] ), gd )
 

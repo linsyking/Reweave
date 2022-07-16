@@ -7,12 +7,6 @@ import Scenes.SceneSettings exposing (..)
 import Scenes.Home.Export exposing (..)
 import Base exposing (GlobalData)
 
-
-
---- Global environment: Can use Common
---- In this file, we have to convert our own designed scene to SceneCT
-
-
 sdata : Data -> SceneDataTypes
 sdata d =
     HDataT d
@@ -26,10 +20,6 @@ dtToT dt =
 
         _ ->
             nullData
-
-
-
---- Only modify variables above
 
 
 toCT : Scene Data -> SceneCT
