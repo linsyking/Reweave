@@ -48,6 +48,26 @@ deleteObjects ggd gcs =
         gcs
 
 
+releaseObjects : GameGlobalData -> Array.Array GameComponent -> GameGlobalData
+releaseObjects ggd gcs =
+    if
+        Array.Extra.any
+            (\x ->
+                case x.data.status of
+                    Alive ->
+                        False
+
+                    Dead _ ->
+                        True
+            )
+            gcs
+    then
+        { ggd | selectobj = -1 }
+
+    else
+        ggd
+
+
 playerMove : Data -> Data
 playerMove player =
     let
@@ -298,11 +318,14 @@ updateModel msg gd _ ( model, t ) ggd =
                 allobjs =
                     Array.push model.player model.actors
 
+                clearSel =
+                    releaseObjects ggd allobjs
+
                 removedobjs =
-                    deleteObjects ggd allobjs
+                    deleteObjects clearSel allobjs
 
                 ( updatedobjs, updatedmsg, updatedggd ) =
-                    simpleUpdateAllGameComponent msg NullGameComponentMsg ggd gd t removedobjs
+                    simpleUpdateAllGameComponent msg NullGameComponentMsg clearSel gd t removedobjs
 
                 clearedobjs =
                     clearWrongVelocity updatedggd updatedobjs

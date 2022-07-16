@@ -42,6 +42,7 @@ initGameGlobalData =
     , mapsize = ( 120, 70 )
     , selectobj = -1
     , energy = 0
+    , ingamepause = False
     }
 
 
