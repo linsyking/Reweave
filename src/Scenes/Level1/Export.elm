@@ -8,13 +8,21 @@ import Scenes.Level1.Config exposing (allChartlets, initActors, initGameGlobalDa
 
 
 game : SceneMsg -> Data
-game _ =
+game sm =
     initEngine 0
         (SceneEngineMsg
             { player = initPlayer
             , actors = initActors
             , chartlets = allChartlets
-            , globalData = initGameGlobalData
+            , globalData =
+                initGameGlobalData
+                    (case sm of
+                        SceneEngineTMsg et ->
+                            et.energy
+
+                        _ ->
+                            0
+                    )
             , background = background
             , frontground = \_ _ _ -> group [] []
             }

@@ -4,7 +4,8 @@ import Base exposing (GlobalData, Msg(..))
 import Dict
 import Lib.Component.Base exposing (DefinedTypes(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
-import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, ExitInit, GameComponentMsgType, GameComponentTMsg(..), LifeStatus(..))
+import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
+import Lib.DefinedTypes.Parser exposing (dgetString)
 
 
 initData : Data
@@ -26,8 +27,8 @@ simplecheckBox =
     { name = "sp"
     , offsetX = 0
     , offsetY = 0
-    , width = 10
-    , height = 90
+    , width = 40
+    , height = 900
     }
 
 
@@ -54,18 +55,13 @@ initModel _ gcm =
 
 
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
-updateModel msg gct ggd gd ( d, t ) =
-    case msg of
-        Tick _ ->
-            ( d, [], ggd )
+updateModel _ gct ggd _ ( d, t ) =
+    case gct of
+        GameInterCollisionMsg "player" _ _ _ ->
+            ( d, [ GameParentMsg (GameExitScene (dgetString d.extra "togo")) ], ggd )
 
         _ ->
-            case gct of
-                GameInterCollisionMsg "player" _ _ _ ->
-                    ( d, [], ggd )
-
-                _ ->
-                    ( d, [], ggd )
+            ( d, [], ggd )
 
 
 queryModel : String -> ( Data, Int ) -> GameComponentTMsg

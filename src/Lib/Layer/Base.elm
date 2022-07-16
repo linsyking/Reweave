@@ -7,6 +7,7 @@ import Lib.Audio.Base exposing (AudioOption)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent)
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth)
+import Lib.Scene.Base exposing (EngineT)
 
 
 type alias Layer a b =
@@ -25,6 +26,7 @@ type LayerMsg
     | LayerStopSoundMsg String
     | LayerInitGameLayer GameLayerInit
     | LayerTimeSeries (Int -> GameGlobalData -> GlobalData -> Renderable)
+    | LayerExitMsg EngineT String
     | NullLayerMsg
 
 

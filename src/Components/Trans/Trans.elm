@@ -6,29 +6,35 @@ import Canvas.Settings exposing (..)
 import Canvas.Settings.Advanced exposing (..)
 import Constants exposing (..)
 import Dict
-import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..), dgetString, dgetbool, dgetint, dsetbool, dsetint, dsetstring)
+import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
+import Lib.DefinedTypes.Parser exposing (dgetLString, dgetString, dgetbool, dgetint, dsetbool, dsetint, dsetlstring)
 import Lib.Render.Render exposing (renderSprite)
-
-
-pausetime : Int
 
 
 
 --the length of the movement time
 
 
+pausetime : Int
 pausetime =
-    100
+    50
 
 
 initTrans : Int -> ComponentTMsg -> Data
-initTrans _ _ =
-    Dict.fromList
-        [ ( "rt", CDInt 0 ) --reference time
-        , ( "mode", CDString "start" )
-        , ( "state", CDBool False )
-        ]
+initTrans _ ct =
+    case ct of
+        ComponentLStringMsg (mode :: method :: _) ->
+            Dict.fromList
+                [ ( "rt", CDInt 0 ) --reference time
+                , ( "mode", CDString mode )
+                , ( "method", CDString method ) -- `plain` method to be implemented
+                , ( "msg", CDLString [] )
+                , ( "state", CDBool False )
+                ]
+
+        _ ->
+            Dict.empty
 
 
 updateTrans : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
@@ -38,29 +44,19 @@ updateTrans _ gMsg globalData ( d, t ) =
             t - dgetint d "rt"
     in
     case gMsg of
-        ComponentStringMsg "start" ->
+        ComponentLStringMsg msg ->
             let
                 newd =
                     d
-                        |> dsetstring "mode" "start"
                         |> dsetbool "state" True
-                        |> dsetint "rt" t
-            in
-            ( newd, NullComponentMsg, globalData )
-
-        ComponentStringMsg "end" ->
-            let
-                newd =
-                    d
-                        |> dsetstring "mode" "end"
-                        |> dsetbool "state" True
+                        |> dsetlstring "msg" msg
                         |> dsetint "rt" t
             in
             ( newd, NullComponentMsg, globalData )
 
         _ ->
             if localtime == pausetime && dgetString d "mode" == "start" then
-                ( d, ComponentStringMsg "transEnd", globalData )
+                ( d, ComponentLStringMsg (dgetLString d "msg"), globalData )
 
             else if localtime == pausetime && dgetString d "mode" == "end" then
                 ( d |> dsetbool "state" False, NullComponentMsg, globalData )

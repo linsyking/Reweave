@@ -6,9 +6,13 @@ import Canvas exposing (Renderable)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Base exposing (CameraData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
-import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentTMsg(..), GoombaInit, PlayerInit)
+import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentTMsg(..))
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (initGameComponent)
+import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
+import Lib.CoreEngine.GameComponents.Exit.Export as Exit
+import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
 import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
+import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit)
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
 import Lib.Render.Render exposing (renderSprite, renderText)
@@ -27,6 +31,7 @@ initActors =
         , initGameComponent 0 (GameGoombaInit (GoombaInit ( 350, 800 ) ( 0, 0 ) 3)) Goomba.gameComponent
         , initGameComponent 0 (GameGoombaInit (GoombaInit ( 750, 800 ) ( 0, 0 ) 4)) Goomba.gameComponent
         , initGameComponent 0 (GameGoombaInit (GoombaInit ( 1000, 2000 ) ( 0, 0 ) 5)) Goomba.gameComponent
+        , initGameComponent 0 (GameExitInit (ExitInit ( 1000, 1200 ) "Scene1" 9999)) Exit.gameComponent
         ]
 
 
@@ -35,14 +40,15 @@ initCamera =
     CameraData ( 0, 1120 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * 119 - 1, 70 * 32 - 1 ) )
 
 
-initGameGlobalData : GameGlobalData
-initGameGlobalData =
+initGameGlobalData : Float -> GameGlobalData
+initGameGlobalData e =
     { camera = initCamera
     , solidmap = mymap
     , mapsize = ( 120, 70 )
     , selectobj = -1
-    , energy = 0
+    , energy = e
     , ingamepause = False
+    , currentScene = "Level1"
     }
 
 

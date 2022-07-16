@@ -19,10 +19,17 @@ import Lib.Tools.Math exposing (rfint)
 
 
 view : ( Model, Int ) -> GameGlobalData -> GlobalData -> Renderable
-view ( model, t ) ggd gd =
+view ( model, ot ) ggd gd =
     let
         allobjs =
             Array.push model.player model.actors
+
+        t =
+            if ggd.ingamepause then
+                0
+
+            else
+                ot
     in
     group []
         (renderChartletsBehindActor model ggd gd

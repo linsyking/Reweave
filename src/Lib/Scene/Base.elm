@@ -52,5 +52,5 @@ type alias EngineInit =
 
 type alias EngineT =
     { energy : Float
-    , originLevel : String
+    , thisLevel : String
     }
