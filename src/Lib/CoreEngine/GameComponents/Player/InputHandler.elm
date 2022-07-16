@@ -123,7 +123,7 @@ delVelocityFunction f vel =
         newVel =
             vel + delVel
     in
-    if newVel <= 8 && newVel >= -8 then
+    if newVel <= 9 && newVel >= -9 then
         -vel
 
     else
