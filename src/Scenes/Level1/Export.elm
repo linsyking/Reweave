@@ -21,7 +21,7 @@ game t sm =
                             et.energy
 
                         _ ->
-                            0
+                            100
                     )
             , background = background
             , frontground = \_ _ _ -> group [] []
