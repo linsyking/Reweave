@@ -6,8 +6,8 @@ import Base exposing (..)
 type alias Button =
     { description : String
     , pos : ( Int, Int )
+    , length : Int
     , width : Int
-    , height : Int
     }
 
 type alias ModelX =

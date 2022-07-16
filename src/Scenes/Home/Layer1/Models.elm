@@ -9,19 +9,21 @@ import Scenes.Home.Layer1.Common exposing (..)
 import Scenes.Home.LayerBase exposing (CommonData)
 import Lib.Coordinate.Coordinates exposing (..)
 
-width = 60
-height = 40
+-- The length of the button is length * 2
+-- The width of the button is width * 2
+length = 60
+width = 40
 
 initButton : String -> ( Int, Int ) -> Int -> Int -> Button
-initButton description ( w, h ) wid hgt =
-    Button description ( w, h ) wid hgt
+initButton description ( x, y ) len wid =
+    Button description ( x, y ) len wid
 
 initModel : Int -> LayerMsg -> CommonData -> ModelX
 initModel _ _ _ =
     { ico = 1
-    , start = initButton "Start" ( 930, 500 ) width height
-    , help = initButton "Help" ( 930, 600 ) width height
-    , map = initButton "Map" ( 930, 700 ) width height
+    , start = initButton "Start" ( 930, 500 ) length width
+    , help = initButton "Help" ( 930, 600 ) length width
+    , map = initButton "Map" ( 930, 700 ) length width
     }
 
 updateModel : Msg -> GlobalData -> LayerMsg -> (ModelX, Int) -> CommonData -> ( ( ModelX, CommonData, List ( LayerTarget, LayerMsg ) ), GlobalData )
@@ -29,13 +31,13 @@ updateModel msg gd _ ( model, t ) cd =
     case msg of
 
         MouseDown 0 ( x, y ) ->
-            if judgeMouse gd ( x, y ) ( Tuple.first model.start.pos, Tuple.second model.start.pos ) ( width * 2, height * 2 ) then
+            if judgeMouse gd ( x, y ) ( Tuple.first model.start.pos, Tuple.second model.start.pos ) ( length * 2, width * 2 ) then
                 ( ( model, cd, [( LayerParentScene, LayerIntMsg 1 )] ), gd )
 
-            else if judgeMouse gd ( x, y ) ( Tuple.first model.help.pos, Tuple.second model.help.pos ) ( width * 2, height * 2 ) then
+            else if judgeMouse gd ( x, y ) ( Tuple.first model.help.pos, Tuple.second model.help.pos ) ( length * 2, width * 2 ) then
                 ( ( model, cd, [( LayerParentScene, LayerIntMsg 2 )] ), gd)
             
-            else if judgeMouse gd ( x, y ) ( Tuple.first model.map.pos, Tuple.second model.map.pos ) ( width * 2, height * 2 ) then
+            else if judgeMouse gd ( x, y ) ( Tuple.first model.map.pos, Tuple.second model.map.pos ) ( length * 2, width * 2 ) then
                 ( ( model, cd, [( LayerParentScene, LayerIntMsg 3 )] ), gd)
             
             else
