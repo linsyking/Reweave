@@ -10,6 +10,7 @@ import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentT
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (initGameComponent)
 import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
 import Lib.CoreEngine.GameComponents.Player.Export as Player
+import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
 import Lib.Render.Render exposing (renderSprite, renderText)
 import Scenes.Level1.Map exposing (mymap)
 
@@ -44,8 +45,8 @@ initGameGlobalData =
     }
 
 
-allChartlets : List (GlobalData -> GameGlobalData -> Renderable)
+allChartlets : List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
 allChartlets =
-    [ \gd ggd -> renderText gd 50 "Chartlet Test" "Times New Roman" (getPositionUnderCamera ( 800, 2100 ) ggd)
-    , \gd ggd -> renderSprite gd [] (getPositionUnderCamera ( 0, 2176 ) ggd) ( 3840, 64 ) "background" gd.sprites
+    [ ( \gd ggd -> renderText gd 50 "Chartlet Test" "Times New Roman" (getPositionUnderCamera ( 800, 2100 ) ggd), BehindActors )
+    , ( \gd ggd -> renderSprite gd [] (getPositionUnderCamera ( 0, 2176 ) ggd) ( 3840, 64 ) "background" gd.sprites, FrontSolids )
     ]

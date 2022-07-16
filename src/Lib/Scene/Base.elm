@@ -6,6 +6,7 @@ import Canvas exposing (Renderable, group)
 import Lib.Audio.Base exposing (AudioOption)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent)
+import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth)
 
 
 type alias Scene a =
@@ -42,7 +43,7 @@ type SceneOutputMsg
 type alias EngineInit =
     { player : GameComponent
     , actors : Array GameComponent
-    , chartlets : List (GlobalData -> GameGlobalData -> Renderable)
+    , chartlets : List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
     , globalData : GameGlobalData
     , background : Int -> GameGlobalData -> GlobalData -> Renderable
     , frontground : Int -> GameGlobalData -> GlobalData -> Renderable

@@ -35,6 +35,7 @@ type GameComponentTMsg
     | GameStringMsg String
     | GamePlayerInit PlayerInit
     | GameGoombaInit GoombaInit
+    | GameExitInit ExitInit
     | NullGameComponentMsg
 
 
@@ -46,6 +47,13 @@ type alias PlayerInit =
 type alias GoombaInit =
     { initPosition : ( Int, Int )
     , initVelocity : ( Float, Float )
+    , uid : Int
+    }
+
+
+type alias ExitInit =
+    { initPosition : ( Int, Int )
+    , togo : String
     , uid : Int
     }
 
