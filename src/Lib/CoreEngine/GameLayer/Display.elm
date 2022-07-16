@@ -14,6 +14,7 @@ import Lib.CoreEngine.GameComponent.Base exposing (GameComponent)
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
 import Lib.CoreEngine.GameLayer.Common exposing (Model)
 import Lib.CoreEngine.Physics.NaiveCollision exposing (judgeInCamera)
+import Lib.Render.Render exposing (renderBrickSheet)
 import Lib.Tools.Math exposing (rfint)
 
 
@@ -90,8 +91,18 @@ renderSolids ggd gd =
 
 
 renderSingleBlock : Int -> ( Int, Int ) -> GameGlobalData -> GlobalData -> Renderable
-renderSingleBlock _ p ggd gd =
-    shapes [ fill Color.red ] [ rect (posToReal gd (getPositionUnderCamera p ggd)) (widthToReal gd brickSize) (heightToReal gd brickSize) ]
+renderSingleBlock tp p ggd gd =
+    case tp of
+        1 ->
+            shapes [ fill Color.red ] [ rect (posToReal gd (getPositionUnderCamera p ggd)) (widthToReal gd brickSize) (heightToReal gd brickSize) ]
+
+        k ->
+            renderBrickSheet gd [] (getPositionUnderCamera p ggd) ( k, 3 ) "bricksheet" gd.sprites
+
+
+
+-- _ ->
+--     group [] []
 
 
 renderChartletsFront : Model -> GameGlobalData -> GlobalData -> Renderable

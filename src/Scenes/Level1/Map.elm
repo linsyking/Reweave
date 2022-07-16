@@ -1,7 +1,7 @@
 module Scenes.Level1.Map exposing (..)
 
 import Array2D
-import Lib.Map.Poly exposing (buildrect)
+import Lib.Map.Poly exposing (buildrect, buildrectT)
 
 
 sds : Array2D.Array2D Int
@@ -13,7 +13,7 @@ mymap : Array2D.Array2D Int
 mymap =
     sds
         |> buildrect ( 0, 0 ) ( 1, 70 )
-        |> buildrect ( 20, 64 ) ( 3, 3 )
+        |> buildrectT ( 20, 64 ) ( 3, 3 )
         |> buildrect ( 25, 61 ) ( 3, 3 )
         |> buildrect ( 29, 58 ) ( 3, 3 )
         |> buildrect ( 35, 54 ) ( 3, 3 )
