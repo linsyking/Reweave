@@ -8,7 +8,7 @@ import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Camera exposing (getNewCamera)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Data, GameComponent, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
-import Lib.CoreEngine.GameComponent.ComponentHandler exposing (isAlive, sendManyGameComponentMsg, simpleUpdateAllGameComponent, splitPlayerObjs, updateOneGameComponent)
+import Lib.CoreEngine.GameComponent.ComponentHandler exposing (getGameComponentCenter, isAlive, sendManyGameComponentMsg, simpleUpdateAllGameComponent, splitPlayerObjs, updateOneGameComponent)
 import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameLayer.Common exposing (Model)
@@ -577,7 +577,7 @@ updateModel msg gd _ ( model, t ) ggd =
                     if ggd.selectobj == model.player.data.uid then
                         let
                             ( px, py ) =
-                                posToReal gd (getPositionUnderCamera model.player.data.position ggd)
+                                posToReal gd (getPositionUnderCamera (getGameComponentCenter model.player) ggd)
 
                             ( mx, my ) =
                                 fromMouseToReal gd mp
@@ -616,7 +616,7 @@ updateModel msg gd _ ( model, t ) ggd =
                             Just thisactor ->
                                 let
                                     ( px, py ) =
-                                        posToReal gd (getPositionUnderCamera thisactor.data.position ggd)
+                                        posToReal gd (getPositionUnderCamera (getGameComponentCenter thisactor) ggd)
 
                                     ( mx, my ) =
                                         fromMouseToReal gd mp
