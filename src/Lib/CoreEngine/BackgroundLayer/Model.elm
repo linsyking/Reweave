@@ -2,8 +2,8 @@ module Lib.CoreEngine.BackgroundLayer.Model exposing (..)
 
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (group)
+import Lib.CoreEngine.BackgroundLayer.Common exposing (Model)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
-import Lib.CoreEngine.FrontgroundLayer.Common exposing (Model)
 import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget)
 
 

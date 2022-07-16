@@ -3,6 +3,7 @@ module Lib.CoreEngine.FrontgroundLayer.Display exposing (..)
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable, group, rect, shapes)
 import Canvas.Settings.Advanced exposing (alpha)
+import Lib.Component.ComponentHandler exposing (genView)
 import Lib.Coordinate.Coordinates exposing (heightToReal, widthToReal)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.FrontgroundLayer.Common exposing (Model)
@@ -19,5 +20,6 @@ view ( model, t ) ggd gd =
           else
             group [] []
         , renderText gd 20 ("Energy:" ++ String.fromFloat ggd.energy) "sans-serif" ( 10, 40 )
+        , genView gd t model.components
         , model.render t ggd gd
         ]
