@@ -111,10 +111,10 @@ delVelocityFunction : DelVelocityFunction -> Float -> Float
 delVelocityFunction f vel =
     let
         delVel =
-            if vel <= 8 && vel > 0 then
+            if vel <= 9 && vel > 0 then
                 -vel
 
-            else if vel >= -8 && vel < 0 then
+            else if vel >= -9 && vel < 0 then
                 vel
 
             else
@@ -123,7 +123,7 @@ delVelocityFunction f vel =
         newVel =
             vel + delVel
     in
-    if newVel <= 8 && newVel >= -8 then
+    if newVel <= 9 && newVel >= -9 then
         -vel
 
     else
