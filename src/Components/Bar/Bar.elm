@@ -7,8 +7,9 @@ import Canvas.Settings.Advanced exposing (..)
 import Color
 import Constants exposing (..)
 import Dict
-import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..), dgetfloat, dsetfloat)
+import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
+import Lib.DefinedTypes.Parser exposing (dgetfloat, dsetfloat)
 
 
 initBar : Int -> ComponentTMsg -> Data

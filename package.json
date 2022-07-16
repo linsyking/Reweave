@@ -1,6 +1,6 @@
 {
   "name": "p2",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "scripts": {
     "release": "standard-version",
     "publish": "standard-version && git push --follow-tags origin dev",

@@ -1,6 +1,11 @@
 module Lib.CoreEngine.GameComponents.Player.Base exposing (..)
 
 
+type alias PlayerInit =
+    { initPosition : ( Int, Int )
+    }
+
+
 type SpaceLog
     = PressTime Int
     | Nope

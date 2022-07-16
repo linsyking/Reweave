@@ -10,9 +10,9 @@ import Components.Menu.Settings.Export as MenuSettingsE
 import Components.Menu.Status.Export as MenuStatusE
 import Constants exposing (..)
 import Dict
-import Lib.Component.Base exposing (Component, ComponentTMsg(..), Data, DefinedTypes(..), dgetbool, dsetbool)
+import Lib.Component.Base exposing (Component, ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
-import Lib.DefinedTypes.Parser exposing (dgetLComponent, dsetLComponent)
+import Lib.DefinedTypes.Parser exposing (dgetLComponent, dgetbool, dsetLComponent, dsetbool)
 import Lib.Render.Render exposing (renderText)
 
 
