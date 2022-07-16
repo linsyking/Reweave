@@ -7,9 +7,9 @@ import Scenes.Level1.Background exposing (background)
 import Scenes.Level1.Config exposing (allChartlets, initActors, initGameGlobalData, initPlayer)
 
 
-game : SceneMsg -> Data
-game sm =
-    initEngine 0
+game : Int -> SceneMsg -> Data
+game t sm =
+    initEngine t
         (SceneEngineMsg
             { player = initPlayer
             , actors = initActors

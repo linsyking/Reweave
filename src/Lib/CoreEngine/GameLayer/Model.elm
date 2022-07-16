@@ -90,6 +90,20 @@ playerMove player =
     newplayer
 
 
+judgePlayerOK : GameGlobalData -> GameComponent -> Bool
+judgePlayerOK ggd player =
+    case player.data.status of
+        Alive ->
+            True
+
+        Dead _ ->
+            if judgeInCamera player ggd then
+                True
+
+            else
+                False
+
+
 clearWrongVelocity : GameGlobalData -> Array.Array GameComponent -> Array.Array GameComponent
 clearWrongVelocity ggd gcs =
     Array.map
@@ -309,9 +323,12 @@ dealParentMsg : GameComponentTMsg -> GlobalData -> ( Model, Int ) -> GameGlobalD
 dealParentMsg gct gd ( model, _ ) ggd =
     case gct of
         GameExitScene s ->
-            ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerExitMsg (EngineT ggd.energy ggd.currentScene) s ) ] ), gd )
+            ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerExitMsg (EngineT 0 "") s ) ] ), gd )
 
         -- ( ( model, { ggd | ingamepause = True }, [ ( LayerParentScene, LayerExitMsg (EngineT ggd.energy ggd.currentScene) s ) ] ), gd )
+        GameStringMsg "restart" ->
+            ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerRestartMsg ) ] ), gd )
+
         _ ->
             ( ( model, ggd, [] ), gd )
 
@@ -349,6 +366,13 @@ updateModel msg gd _ ( model, t ) ggd =
                     ( afterinterobjs, intermsg, afterinterggd ) =
                         interCollision msg t aftersolidggd gd aftersolidobjs
 
+                    restartmsg =
+                        if judgePlayerOK ggd model.player then
+                            []
+
+                        else
+                            [ GameStringMsg "restart" ]
+
                     -- No recursive support
                     allmsg =
                         updatedmsg ++ solidmsg ++ intermsg
@@ -364,6 +388,7 @@ updateModel msg gd _ ( model, t ) ggd =
                                         Nothing
                             )
                             allmsg
+                            ++ restartmsg
 
                     -- TODO: handle parentmsg
                     ( finalobjs, finalggd ) =
@@ -407,6 +432,13 @@ updateModel msg gd _ ( model, t ) ggd =
 
                     newggd =
                         { finalggd | camera = newcamera }
+
+                    newiter =
+                        if judgePlayerOK ggd model.player then
+                            ( ( newmodel, newggd, [] ), gd )
+
+                        else
+                            ( ( model, ggd, [] ), gd )
                 in
                 List.foldl
                     (\tm ( ( cm, cggd, cam ), cgd ) ->
@@ -416,7 +448,7 @@ updateModel msg gd _ ( model, t ) ggd =
                         in
                         ( ( nnm, nnggd, cam ++ nndmd ), nngd )
                     )
-                    ( ( newmodel, newggd, [] ), gd )
+                    newiter
                     allparentmsg
 
             KeyDown 67 ->

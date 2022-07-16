@@ -27,6 +27,7 @@ type LayerMsg
     | LayerInitGameLayer GameLayerInit
     | LayerTimeSeries (Int -> GameGlobalData -> GlobalData -> Renderable)
     | LayerExitMsg EngineT String
+    | LayerRestartMsg
     | NullLayerMsg
 
 

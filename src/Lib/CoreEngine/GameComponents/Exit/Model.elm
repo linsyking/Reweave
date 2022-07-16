@@ -15,20 +15,20 @@ initData =
     , velocity = ( 0, 0 )
     , mass = 0
     , acceleration = ( 0, 0 )
-    , simplecheck = simplecheckBox
-    , collisionbox = [ simplecheckBox ]
+    , simplecheck = simplecheckBox ( 0, 0 )
+    , collisionbox = [ simplecheckBox ( 0, 0 ) ]
     , extra = Dict.empty
     , uid = 999
     }
 
 
-simplecheckBox : Box
-simplecheckBox =
+simplecheckBox : ( Int, Int ) -> Box
+simplecheckBox ( w, h ) =
     { name = "sp"
     , offsetX = 0
     , offsetY = 0
-    , width = 40
-    , height = 900
+    , width = w
+    , height = h
     }
 
 
@@ -41,8 +41,8 @@ initModel _ gcm =
             , velocity = ( 0, 0 )
             , mass = 70
             , acceleration = ( 0, 0 )
-            , simplecheck = simplecheckBox
-            , collisionbox = [ simplecheckBox ]
+            , simplecheck = simplecheckBox info.initSize
+            , collisionbox = [ simplecheckBox info.initSize ]
             , extra =
                 Dict.fromList
                     [ ( "togo", CDString info.togo )

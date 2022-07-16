@@ -27,11 +27,9 @@ initPlayer =
 initActors : Array GameComponent
 initActors =
     Array.fromList
-        [ initGameComponent 0 (GameGoombaInit (GoombaInit ( 50, 1500 ) ( 0, 0 ) 2)) Goomba.gameComponent
-        , initGameComponent 0 (GameGoombaInit (GoombaInit ( 350, 800 ) ( 0, 0 ) 3)) Goomba.gameComponent
-        , initGameComponent 0 (GameGoombaInit (GoombaInit ( 750, 800 ) ( 0, 0 ) 4)) Goomba.gameComponent
+        [ initGameComponent 0 (GameGoombaInit (GoombaInit ( 750, 800 ) ( 0, 0 ) 4)) Goomba.gameComponent
+        , initGameComponent 0 (GameExitInit (ExitInit ( 1000, 1200 ) ( 10, 200 ) "Scene1" 9999)) Exit.gameComponent
         , initGameComponent 0 (GameGoombaInit (GoombaInit ( 1000, 2000 ) ( 0, 0 ) 5)) Goomba.gameComponent
-        , initGameComponent 0 (GameExitInit (ExitInit ( 1000, 1200 ) "Scene1" 9999)) Exit.gameComponent
         ]
 
 

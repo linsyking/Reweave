@@ -8,8 +8,9 @@ import Constants exposing (..)
 import Dict
 import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
-import Lib.DefinedTypes.Parser exposing (dgetLString, dgetString, dgetbool, dgetint, dsetbool, dsetint, dsetlstring)
+import Lib.DefinedTypes.Parser exposing (dgetLString, dgetString, dgetbool, dgetint, dsetbool, dsetint, dsetlstring, dsetstring)
 import Lib.Render.Render exposing (renderSprite)
+import String exposing (toInt)
 
 
 
@@ -18,23 +19,31 @@ import Lib.Render.Render exposing (renderSprite)
 
 pausetime : Int
 pausetime =
-    50
+    40
 
 
 initTrans : Int -> ComponentTMsg -> Data
-initTrans _ ct =
+initTrans t ct =
     case ct of
-        ComponentLStringMsg (mode :: method :: _) ->
+        ComponentLStringMsg (mode :: method :: dur :: _) ->
             Dict.fromList
-                [ ( "rt", CDInt 0 ) --reference time
+                [ ( "rt", CDInt t ) --reference time
                 , ( "mode", CDString mode )
                 , ( "method", CDString method ) -- `plain` method to be implemented
                 , ( "msg", CDLString [] )
-                , ( "state", CDBool False )
+                , ( "duration", CDInt (Maybe.withDefault 0 (toInt dur)) )
+                , ( "state", CDBool True )
                 ]
 
         _ ->
-            Dict.empty
+            Dict.fromList
+                [ ( "rt", CDInt 0 ) --reference time
+                , ( "mode", CDString "start" )
+                , ( "method", CDString "cloud" ) -- `plain` method to be implemented
+                , ( "msg", CDLString [] )
+                , ( "duration", CDInt 0 )
+                , ( "state", CDBool False )
+                ]
 
 
 updateTrans : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
@@ -42,23 +51,29 @@ updateTrans _ gMsg globalData ( d, t ) =
     let
         localtime =
             t - dgetint d "rt"
+
+        duration =
+            dgetint d "duration"
     in
     case gMsg of
-        ComponentLStringMsg msg ->
+        ComponentLStringMsg (mode :: method :: dur :: msg) ->
             let
                 newd =
                     d
                         |> dsetbool "state" True
                         |> dsetlstring "msg" msg
+                        |> dsetstring "mode" mode
+                        |> dsetstring "method" method
+                        |> dsetint "duration" (Maybe.withDefault 0 (toInt dur))
                         |> dsetint "rt" t
             in
             ( newd, NullComponentMsg, globalData )
 
         _ ->
-            if localtime == pausetime && dgetString d "mode" == "start" then
+            if localtime == duration + pausetime && dgetString d "mode" == "start" then
                 ( d, ComponentLStringMsg (dgetLString d "msg"), globalData )
 
-            else if localtime == pausetime && dgetString d "mode" == "end" then
+            else if localtime == duration + pausetime && dgetString d "mode" == "end" then
                 ( d |> dsetbool "state" False, NullComponentMsg, globalData )
 
             else
