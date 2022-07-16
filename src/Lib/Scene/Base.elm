@@ -52,5 +52,17 @@ type alias EngineInit =
 
 type alias EngineT =
     { energy : Float
-    , thisLevel : String
+    , playerPosition : PlayerInitPosition
     }
+
+
+nullEngineT : EngineT
+nullEngineT =
+    { energy = 0
+    , playerPosition = DefaultPlayerPosition
+    }
+
+
+type PlayerInitPosition
+    = DefaultPlayerPosition
+    | CustomPlayerPosition ( Int, Int )

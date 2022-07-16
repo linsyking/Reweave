@@ -6,6 +6,7 @@ import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Data, GameComponent, GameComponentMsgType, GameComponentTMsg(..), LifeStatus(..))
+import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos)
 
 
 updateOneGameComponent : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> Int -> GameComponent -> ( GameComponent, List GameComponentMsgType, GameGlobalData )
@@ -137,3 +138,21 @@ initGameComponent t gct gc =
 
 
 -- TODO: Write recursive message transform system like layer
+
+
+getGameComponentCenter : GameComponent -> ( Int, Int )
+getGameComponentCenter gc =
+    let
+        d =
+            gc.data
+
+        ( ( x1, y1 ), ( x2, y2 ) ) =
+            getBoxPos d.position d.simplecheck
+
+        cx =
+            (toFloat x1 + toFloat x2) / 2
+
+        cy =
+            (toFloat y1 + toFloat y2) / 2
+    in
+    ( floor cx, floor cy )

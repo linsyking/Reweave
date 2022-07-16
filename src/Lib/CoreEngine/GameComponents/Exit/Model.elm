@@ -57,7 +57,7 @@ initModel _ gcm =
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
 updateModel _ gct ggd _ ( d, t ) =
     case gct of
-        GameInterCollisionMsg "player" _ _ _ ->
+        GameInterCollisionMsg "player" _ _ ->
             ( d, [ GameParentMsg (GameExitScene (dgetString d.extra "togo")) ], ggd )
 
         _ ->

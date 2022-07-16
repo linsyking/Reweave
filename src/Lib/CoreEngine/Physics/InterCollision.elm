@@ -46,8 +46,7 @@ genInterFromOneSide gc1 gc2 =
             gc2.data.collisionbox
     in
     GameInterCollisionMsg gc2.name
-        gc2.data.uid
-        tp
+        gc2.data
         (List.foldl
             (\x o ->
                 o ++ List.filter (\y -> judgeCollision (getBoxPos op x) (getBoxPos tp y)) target
