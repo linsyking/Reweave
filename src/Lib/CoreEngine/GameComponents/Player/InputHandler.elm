@@ -57,7 +57,10 @@ changePlayerVelocity t char ggd model =
         curTime =
             t
     in
-    if space == 0 then
+    if Tuple.first char.velocity > 80 then
+        ( model, char )
+
+    else if space == 0 then
         if canJump char ggd == False then
             ( model, changePlayerVelocityHelper char (boundXY (changePlayerVelocityX char model Ydir) char.velocity) )
 
