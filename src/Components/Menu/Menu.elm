@@ -124,7 +124,17 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                 ( model, NullComponentMsg, globalData )
 
         _ ->
-            ( model, NullComponentMsg, globalData )
+            case comMsg of
+                ComponentStringMsg demand ->
+                    case demand of
+                        "Activate" ->
+                            ( model |> dsetbool "Show" True, NullComponentMsg, globalData )
+
+                        _ ->
+                            ( model, NullComponentMsg, globalData )
+
+                _ ->
+                    ( model, NullComponentMsg, globalData )
 
 
 viewMenu : ( Data, Int ) -> GlobalData -> Renderable
