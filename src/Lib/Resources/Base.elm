@@ -14,6 +14,9 @@ getResourcePath x =
 allTexture : List ( String, String )
 allTexture =
     [ ( "background", getResourcePath "img/bg.jpg" )
+    , ( "rcloud", getResourcePath "img/rcloud.png" )
+    , ( "lcloud", getResourcePath "img/lcloud.png" )
+    , ( "bricksheet", getResourcePath "img/bricks.png" )
     ]
 
 
