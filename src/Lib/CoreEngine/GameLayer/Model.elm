@@ -16,7 +16,7 @@ import Lib.CoreEngine.Physics.InterCollision exposing (gonnaInterColllide)
 import Lib.CoreEngine.Physics.NaiveCollision exposing (judgeInCamera)
 import Lib.CoreEngine.Physics.SolidCollision exposing (canMove, gonnaSolidCollide, movePointPlain)
 import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget(..))
-import Lib.Scene.Base exposing (EngineT)
+import Lib.Scene.Base exposing (EngineT, PlayerInitPosition(..))
 import Lib.Tools.Array exposing (locate)
 import Math.Vector2 exposing (vec2)
 
@@ -332,13 +332,14 @@ calcDRate p1 p2 ( w, h ) =
 calcRPer : ( Float, Float ) -> ( Float, Float ) -> GlobalData -> Float
 calcRPer ( px, py ) ( mx, my ) gd =
     let
-        dis =
-            sqrt ((mx - px) ^ 2 + (my - py) ^ 2)
-
-        sl =
-            sqrt (toFloat gd.realHeight ^ 2 + toFloat gd.realWidth ^ 2)
+        ds =
+            calcDRate ( px, py ) ( mx, my ) ( toFloat gd.realWidth, toFloat gd.realHeight )
     in
-    dis / sl * 2
+    if ds > 0.9 then
+        1
+
+    else
+        ds
 
 
 getDSEnergy : ( Float, Float ) -> ( Float, Float ) -> GlobalData -> GameGlobalData -> ( Float, GameGlobalData )
@@ -367,7 +368,7 @@ dealParentMsg : GameComponentTMsg -> GlobalData -> ( Model, Int ) -> GameGlobalD
 dealParentMsg gct gd ( model, _ ) ggd =
     case gct of
         GameExitScene s ->
-            ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerExitMsg (EngineT 0 "") s ) ] ), gd )
+            ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerExitMsg (EngineT 0 DefaultPlayerPosition) s ) ] ), gd )
 
         -- ( ( model, { ggd | ingamepause = True }, [ ( LayerParentScene, LayerExitMsg (EngineT ggd.energy ggd.currentScene) s ) ] ), gd )
         GameStringMsg "restart" ->

@@ -9,7 +9,7 @@ import Lib.Component.ComponentHandler exposing (updateSingleComponent)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.FrontgroundLayer.Common exposing (Model)
 import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget(..))
-import Lib.Scene.Base exposing (EngineT)
+import Lib.Scene.Base exposing (EngineT, PlayerInitPosition(..))
 
 
 initModel : Int -> LayerMsg -> GameGlobalData -> Model
@@ -48,10 +48,10 @@ updateModel msg gd lm ( model, t ) ggd =
                     in
                     case rmsg of
                         ComponentLStringMsg ("nextscene" :: s :: _) ->
-                            ( ( { model | components = newcs }, ggd, [ ( LayerParentScene, LayerExitMsg (EngineT ggd.energy s) s ) ] ), newgd )
+                            ( ( { model | components = newcs }, ggd, [ ( LayerParentScene, LayerExitMsg (EngineT ggd.energy DefaultPlayerPosition) s ) ] ), newgd )
 
                         ComponentLStringMsg ("restart" :: _) ->
-                            ( ( { model | components = newcs }, ggd, [ ( LayerParentScene, LayerExitMsg (EngineT 0 ggd.currentScene) ggd.currentScene ) ] ), newgd )
+                            ( ( { model | components = newcs }, ggd, [ ( LayerParentScene, LayerExitMsg (EngineT 0 DefaultPlayerPosition) ggd.currentScene ) ] ), newgd )
 
                         _ ->
                             ( ( { model | components = newcs }, ggd, [] ), newgd )

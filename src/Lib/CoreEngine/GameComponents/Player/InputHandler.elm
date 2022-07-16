@@ -59,7 +59,7 @@ changePlayerVelocity t char ggd model =
     in
     if Tuple.first char.velocity > 80 then
         -- TODO
-        ( model, { char | velocity = ( Tuple.first char.velocity - 2.0, Tuple.second char.velocity ) } )
+        ( model, { char | velocity = ( Tuple.first char.velocity / 1.01, Tuple.second char.velocity ) } )
 
     else if space == 0 then
         if canJump char ggd == False then

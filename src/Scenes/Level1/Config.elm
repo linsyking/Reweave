@@ -16,20 +16,26 @@ import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit)
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
 import Lib.Render.Render exposing (renderSprite, renderText)
+import Lib.Scene.Base exposing (PlayerInitPosition(..))
 import Scenes.Level1.Map exposing (mymap)
 
 
-initPlayer : GameComponent
-initPlayer =
-    initGameComponent 0 (GamePlayerInit (PlayerInit ( 50, 2000 ))) Player.gameComponent
+initPlayer : Int -> PlayerInitPosition -> GameComponent
+initPlayer t pos =
+    case pos of
+        DefaultPlayerPosition ->
+            initGameComponent t (GamePlayerInit (PlayerInit ( 50, 2000 ))) Player.gameComponent
+
+        CustomPlayerPosition x ->
+            initGameComponent t (GamePlayerInit (PlayerInit x)) Player.gameComponent
 
 
-initActors : Array GameComponent
-initActors =
+initActors : Int -> Array GameComponent
+initActors t =
     Array.fromList
-        [ initGameComponent 0 (GameGoombaInit (GoombaInit ( 1200, 1800 ) ( 0, 0 ) 4)) Goomba.gameComponent
-        , initGameComponent 0 (GameExitInit (ExitInit ( 3800, 1600 ) ( 10, 160 ) "Scene1" 9999)) Exit.gameComponent
-        , initGameComponent 0 (GameGoombaInit (GoombaInit ( 1000, 1800 ) ( 0, 0 ) 5)) Goomba.gameComponent
+        [ initGameComponent t (GameGoombaInit (GoombaInit ( 1200, 1800 ) ( 0, 0 ) 4)) Goomba.gameComponent
+        , initGameComponent t (GameExitInit (ExitInit ( 3800, 1600 ) ( 10, 160 ) "Scene1" 9999)) Exit.gameComponent
+        , initGameComponent t (GameGoombaInit (GoombaInit ( 1000, 1800 ) ( 0, 0 ) 5)) Goomba.gameComponent
         ]
 
 
