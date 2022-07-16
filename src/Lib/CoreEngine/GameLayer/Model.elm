@@ -288,10 +288,45 @@ kineticCalc : Int -> ( Float, Float ) -> Float
 kineticCalc mass ( vx, vy ) =
     toFloat mass * (vx * vx + vy * vy) / 10000
 
-
 calcDRate : ( Float, Float ) -> ( Float, Float ) -> ( Float, Float ) -> Float
 calcDRate p1 p2 ( w, h ) =
-    0
+    let
+        ( p1X, p1Y ) =
+            p1
+
+        ( p2X, p2Y ) = 
+            p2
+        
+        k =
+            ( p2X - p1X ) / ( p2Y - p1Y )
+
+        k1 =
+            p1X  / ( p1Y - h )
+
+        k2 = 
+            ( w - p1X ) / ( h - p1Y )
+
+        k3 = 
+            p1X / p1Y
+
+        k4 = 
+            ( p1X - w ) / p1Y
+
+    in
+    if p2Y > p1Y && k >= k1 && k <= k2 then
+        1 - ( h - p2Y ) / ( h - p1Y )
+
+    else if p2Y < p1Y && k >= k4 && k <= k3 then
+        1 - p2Y / p1Y
+
+    else if p2X < p1X && k < k1 || k > k3 then
+        1 - p2X / p1X
+
+    else if p2X > p1X && k < k4 || k > k2 then
+        1 - ( w - p2X ) / ( w - p1X )
+
+    else
+        0
 
 
 calcRPer : ( Float, Float ) -> ( Float, Float ) -> GlobalData -> Float
