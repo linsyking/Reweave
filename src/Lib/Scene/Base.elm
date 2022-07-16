@@ -4,6 +4,7 @@ import Array exposing (Array)
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable, group)
 import Lib.Audio.Base exposing (AudioOption)
+import Lib.Component.Base exposing (Component)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent)
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth)
@@ -45,8 +46,8 @@ type alias EngineInit =
     , actors : Array GameComponent
     , chartlets : List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
     , globalData : GameGlobalData
-    , background : Int -> GameGlobalData -> GlobalData -> Renderable
-    , frontground : Int -> GameGlobalData -> GlobalData -> Renderable
+    , background : ( Array Component, Int -> GameGlobalData -> GlobalData -> Renderable )
+    , frontground : ( Array Component, Int -> GameGlobalData -> GlobalData -> Renderable )
     }
 
 

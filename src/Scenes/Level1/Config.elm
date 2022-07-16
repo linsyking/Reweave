@@ -3,6 +3,8 @@ module Scenes.Level1.Config exposing (..)
 import Array exposing (Array)
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable)
+import Components.Hints.Export as Hints
+import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Base exposing (CameraData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
@@ -18,6 +20,13 @@ import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
 import Lib.Render.Render exposing (renderSprite, renderText)
 import Lib.Scene.Base exposing (PlayerInitPosition(..))
 import Scenes.Level1.Map exposing (mymap)
+
+
+initFrontGroundComponents : Int -> Array Component
+initFrontGroundComponents t =
+    Array.fromList
+        [ Hints.initComponent t (ComponentLStringMsg [ "Use W,A,D to move and jump", "Use Esc to call the menu" ])
+        ]
 
 
 initPlayer : Int -> PlayerInitPosition -> GameComponent

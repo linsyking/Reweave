@@ -1,6 +1,6 @@
 module Lib.CoreEngine.Camera.Camera exposing (..)
 
-import Lib.CoreEngine.Base exposing (GameGlobalData, brickSize)
+import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Base exposing (CameraData)
 import Lib.CoreEngine.GameComponent.Base exposing (Data)
 import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos)
@@ -93,9 +93,6 @@ moveCamera ggd =
 judgeInBound : GameGlobalData -> CameraData
 judgeInBound ggd =
     let
-        ( mw, mh ) =
-            ggd.mapsize
-
         ( ( lpx1, lpy1 ), ( mapw, maph ) ) =
             ggd.camera.visible
 

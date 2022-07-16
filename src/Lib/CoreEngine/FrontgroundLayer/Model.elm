@@ -15,8 +15,8 @@ import Lib.Scene.Base exposing (EngineT, PlayerInitPosition(..))
 initModel : Int -> LayerMsg -> GameGlobalData -> Model
 initModel t lm _ =
     case lm of
-        LayerTimeSeries f ->
-            { render = f, components = Array.fromList [ Trans.initComponent t (ComponentLStringMsg [ "end", "cloud", "0" ]) ] }
+        LayerCTMsg f ->
+            { render = f.timeseries, components = Array.append (Array.fromList [ Trans.initComponent t (ComponentLStringMsg [ "end", "cloud", "0" ]) ]) f.components }
 
         _ ->
             { render = \_ _ _ -> group [] [], components = Array.empty }

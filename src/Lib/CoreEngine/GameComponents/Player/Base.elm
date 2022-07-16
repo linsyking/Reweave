@@ -60,13 +60,7 @@ changebk key status bk =
         68 ->
             { bk | right = status }
 
-        87 ->
-            { bk | up = status }
-
-        83 ->
-            { bk | down = status }
-
-        32 ->
+        67 ->
             { bk | space = status }
 
         _ ->

@@ -496,7 +496,7 @@ updateModel msg gd _ ( model, t ) ggd =
                     newiter
                     allparentmsg
 
-            KeyDown 67 ->
+            KeyDown 87 ->
                 if ggd.selectobj > 0 then
                     if ggd.selectobj == model.player.data.uid then
                         let

@@ -2,10 +2,10 @@ module Lib.CoreEngine.GameComponents.Goomba.Display exposing (..)
 
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable, group)
-import Canvas.Settings.Advanced exposing (alpha)
+import Canvas.Settings.Advanced exposing (alpha, rotate, transform)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
-import Lib.CoreEngine.GameComponent.Base exposing (Data)
+import Lib.CoreEngine.GameComponent.Base exposing (Data, LifeStatus(..))
 import Lib.Render.Render exposing (renderSprite, renderText)
 
 
@@ -19,6 +19,14 @@ view ( d, t ) ggd gd =
 
                  else
                     0.5
+                )
+            , transform
+                (case d.status of
+                    Dead kd ->
+                        [ rotate (degrees (toFloat (t - kd))) ]
+
+                    _ ->
+                        []
                 )
             ]
             (getPositionUnderCamera d.position ggd)
