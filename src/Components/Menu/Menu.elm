@@ -27,6 +27,7 @@ initMenu _ _ =
                 , ( "Map", MenuMapE.initComponent 0 NullComponentMsg )
                 ]
           )
+        , ( "Data", CDString "" )
         ]
 
 
