@@ -21,6 +21,8 @@ testData =
     Dict.fromList
         [ ( "CharLife", CDInt 5 )
         , ( "CharEnergy", CDFloat 50.5 )
+        , ( "CharPositionX", CDFloat 40 )
+        , ( "CharPositionY", CDFloat 30 )
         ]
 
 
@@ -133,7 +135,17 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                 ( model, NullComponentMsg, globalData )
 
         _ ->
-            ( model, NullComponentMsg, globalData )
+            case comMsg of
+                ComponentStringMsg demand ->
+                    case demand of
+                        "Activate" ->
+                            ( model |> dsetbool "Show" True, NullComponentMsg, globalData )
+
+                        _ ->
+                            ( model, NullComponentMsg, globalData )
+
+                _ ->
+                    ( model, NullComponentMsg, globalData )
 
 
 viewMenu : ( Data, Int ) -> GlobalData -> Renderable
