@@ -41,6 +41,7 @@ type ComponentTMsg
     | ComponentIntMsg Int
     | ComponentLStringMsg (List String)
     | ComponentLSStringMsg String (List String)
+    | ComponentDictMsg (Dict String DefinedTypes)
     | NullComponentMsg
 
 
@@ -56,3 +57,4 @@ type DefinedTypes
     | CDLString (List String)
     | CDPlayerModel PlayerBase.Model
     | CDLComponent (List ( String, Component ))
+    | CDDict (Dict String DefinedTypes)

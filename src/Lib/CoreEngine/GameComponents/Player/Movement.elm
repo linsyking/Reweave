@@ -36,9 +36,6 @@ solidCollisionMove ls ggd d =
                 _ ->
                     ( mvdx, mvdy )
 
-        dasada =
-            Debug.log "shape" jshape
-
         newvel =
             case jshape of
                 CTOP ->

@@ -62,7 +62,7 @@ judgeShape d ls =
     case ls of
         [ ( lfx, lfy ) ] ->
             let
-                ( blx1, bly1 ) =
+                ( blx1, _ ) =
                     ( lfx * brickSize, lfy * brickSize )
 
                 ( blx2, bly2 ) =
