@@ -138,7 +138,7 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
 
         _ ->
             case comMsg of
-                ComponentLStringMsg (demand :: data :: _) ->
+                ComponentLStringMsg (demand :: _ :: _) ->
                     case demand of
                         "Activate" ->
                             let
