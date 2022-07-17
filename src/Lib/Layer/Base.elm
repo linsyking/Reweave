@@ -5,6 +5,7 @@ import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
 import Lib.Audio.Base exposing (AudioOption)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
+import Lib.CoreEngine.FrontgroundLayer.Base exposing (CTInfo)
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent)
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth)
 import Lib.Scene.Base exposing (EngineT)
@@ -25,7 +26,7 @@ type LayerMsg
     | LayerSoundMsg String String AudioOption
     | LayerStopSoundMsg String
     | LayerInitGameLayer GameLayerInit
-    | LayerTimeSeries (Int -> GameGlobalData -> GlobalData -> Renderable)
+    | LayerCTMsg CTInfo
     | LayerExitMsg EngineT String
     | LayerRestartMsg
     | NullLayerMsg

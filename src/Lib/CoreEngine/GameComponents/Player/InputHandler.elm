@@ -57,9 +57,8 @@ changePlayerVelocity t char ggd model =
         curTime =
             t
     in
-    if Tuple.first char.velocity > 80 then
-        -- TODO
-        ( model, { char | velocity = ( Tuple.first char.velocity / 1.01, Tuple.second char.velocity ) } )
+    if abs (Tuple.first char.velocity) > 80 then
+        delLargeVelocity t model char (canJump char ggd)
 
     else if space == 0 then
         if canJump char ggd == False then
@@ -81,13 +80,85 @@ changePlayerVelocity t char ggd model =
                     ( { model | keyPressed = Nope }, changePlayerVelocityHelper char (boundXY (changePlayerVelocityX char model Xdir) char.velocity) )
 
             Nope ->
-                ( { model | keyPressed = PressTime curTime }, changePlayerVelocityHelper char (boundXY (changePlayerVelocityX char model Ydir) (changePlayerVelocityY char 1)) )
+                if canJump char ggd == False then
+                    ( { model | keyPressed = PressTime curTime }, changePlayerVelocityHelper char (boundXY (changePlayerVelocityX char model Ydir) (changePlayerVelocityY char 1)) )
+
+                else
+                    ( model, changePlayerVelocityHelper char (boundXY (changePlayerVelocityX char model Ydir) (changePlayerVelocityY char 1)) )
 
     else if canJump char ggd == False then
         ( { model | keyPressed = Nope }, changePlayerVelocityHelper char (boundXY (changePlayerVelocityX char model Ydir) char.velocity) )
 
     else
         ( { model | keyPressed = Nope }, changePlayerVelocityHelper char (boundXY (changePlayerVelocityX char model Xdir) char.velocity) )
+
+
+delLargeVelocity : Int -> Model -> Data -> Bool -> ( Model, Data )
+delLargeVelocity ct model d cj =
+    let
+        left =
+            model.currentKeys.left
+
+        right =
+            model.currentKeys.right
+
+        space =
+            model.currentKeys.space
+
+        ( vx, vy ) =
+            d.velocity
+    in
+    if space == 0 then
+        if cj then
+            if vx > 0 then
+                if left == 1 && left == 0 then
+                    ( model, { d | velocity = ( vx / 1.1, vy ) } )
+
+                else if right == 1 && left == 0 then
+                    ( model, { d | velocity = ( vx / 1.04, vy ) } )
+
+                else
+                    ( model, { d | velocity = ( vx / 1.05, vy ) } )
+
+            else if left == 1 && left == 0 then
+                ( model, { d | velocity = ( vx / 1.04, vy ) } )
+
+            else if right == 1 && left == 0 then
+                ( model, { d | velocity = ( vx / 1.1, vy ) } )
+
+            else
+                ( model, { d | velocity = ( vx / 1.05, vy ) } )
+
+        else if vx > 0 then
+            if left == 1 && left == 0 then
+                ( model, { d | velocity = ( vx / 1.1, vy ) } )
+
+            else if right == 1 && left == 0 then
+                ( model, { d | velocity = ( vx / 1.01, vy ) } )
+
+            else
+                ( model, { d | velocity = ( vx / 1.05, vy ) } )
+
+        else if left == 1 && left == 0 then
+            ( model, { d | velocity = ( vx / 1.01, vy ) } )
+
+        else if right == 1 && left == 0 then
+            ( model, { d | velocity = ( vx / 1.1, vy ) } )
+
+        else
+            ( model, { d | velocity = ( vx / 1.05, vy ) } )
+
+    else
+        case model.keyPressed of
+            PressTime t ->
+                if ct - t <= 20 then
+                    ( { model | keyPressed = PressTime ct }, { d | velocity = ( vx, vy + 5 ) } )
+
+                else
+                    ( { model | keyPressed = Nope }, d )
+
+            Nope ->
+                ( { model | keyPressed = PressTime ct }, { d | velocity = ( vx, vy + 120 ) } )
 
 
 type VelDirMsg
@@ -112,10 +183,10 @@ delVelocityFunction : DelVelocityFunction -> Float -> Float
 delVelocityFunction f vel =
     let
         delVel =
-            if vel <= 9 && vel > 0 then
+            if vel <= 10 && vel > 0 then
                 -vel
 
-            else if vel >= -9 && vel < 0 then
+            else if vel >= -10 && vel < 0 then
                 vel
 
             else

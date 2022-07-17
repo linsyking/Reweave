@@ -1,7 +1,6 @@
 module Lib.CoreEngine.GameLayer.Display exposing (..)
 
 import Array
-import Array.Extra
 import Array2D
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable, group, rect, shapes)
@@ -10,10 +9,9 @@ import Color
 import Lib.Coordinate.Coordinates exposing (heightToReal, posToReal, widthToReal)
 import Lib.CoreEngine.Base exposing (GameGlobalData, brickSize)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
-import Lib.CoreEngine.GameComponent.Base exposing (GameComponent)
+import Lib.CoreEngine.GameComponent.ComponentHandler exposing (genView)
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
 import Lib.CoreEngine.GameLayer.Common exposing (Model)
-import Lib.CoreEngine.Physics.NaiveCollision exposing (judgeInCamera)
 import Lib.Render.Render exposing (renderBrickSheet)
 import Lib.Tools.Math exposing (rfint)
 
@@ -32,24 +30,12 @@ view ( model, ot ) ggd gd =
                 ot
     in
     group []
-        (renderChartletsBehindActor model ggd gd
-            :: (Array.toList (Array.Extra.filterMap (\x -> renderSingleObject t x ggd gd) allobjs)
-                    ++ [ renderChartletsBehindSolids model ggd gd
-                       , renderSolids ggd gd
-                       , renderChartletsFront model ggd gd
-                       ]
-               )
-        )
-
-
-renderSingleObject : Int -> GameComponent -> GameGlobalData -> GlobalData -> Maybe Renderable
-renderSingleObject t gc ggd gd =
-    if judgeInCamera gc ggd then
-        -- Should show
-        Just (gc.view ( gc.data, t ) ggd gd)
-
-    else
-        Nothing
+        [ renderChartletsBehindActor model ggd gd
+        , genView ggd gd t allobjs
+        , renderChartletsBehindSolids model ggd gd
+        , renderSolids ggd gd
+        , renderChartletsFront model ggd gd
+        ]
 
 
 renderSolids : GameGlobalData -> GlobalData -> Renderable

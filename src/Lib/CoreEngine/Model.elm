@@ -6,6 +6,7 @@ import Lib.CoreEngine.BackgroundLayer.Export as BGL
 import Lib.CoreEngine.BackgroundLayer.Global as BGLG
 import Lib.CoreEngine.Base exposing (nullGameGlobalData, testGameGlobalData)
 import Lib.CoreEngine.Common exposing (Model)
+import Lib.CoreEngine.FrontgroundLayer.Base exposing (CTInfo)
 import Lib.CoreEngine.FrontgroundLayer.Export as FGL
 import Lib.CoreEngine.FrontgroundLayer.Global as FGLG
 import Lib.CoreEngine.GameLayer.Export as GL
@@ -24,13 +25,13 @@ initModel t sm =
                     FGL.layer
 
                 fgct =
-                    FGLG.getLayerCT { fgl | data = FGL.layer.init t (LayerTimeSeries engine.frontground) nullGameGlobalData }
+                    FGLG.getLayerCT { fgl | data = FGL.layer.init t (LayerCTMsg (CTInfo (Tuple.first engine.frontground) (Tuple.second engine.frontground))) nullGameGlobalData }
 
                 bgl =
                     BGL.layer
 
                 bgct =
-                    BGLG.getLayerCT { bgl | data = BGL.layer.init t (LayerTimeSeries engine.background) nullGameGlobalData }
+                    BGLG.getLayerCT { bgl | data = BGL.layer.init t (LayerCTMsg (CTInfo (Tuple.first engine.background) (Tuple.second engine.background))) nullGameGlobalData }
 
                 gl =
                     GL.layer

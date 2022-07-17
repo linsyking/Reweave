@@ -70,7 +70,7 @@ preCheck t model d =
                 cs
 
         iswolfJump =
-            cs == 1 && queryIsState model "inair" && t - stt <= 10 && isNope model
+            cs == 1 && queryIsState model "inair" && t - stt <= 10 && isNope model && t - jst <= 10
 
         newd =
             if iswolfJump then

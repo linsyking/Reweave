@@ -2,10 +2,8 @@ module Lib.CoreEngine.BackgroundLayer.Display exposing (..)
 
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable, group)
-import Canvas.Settings.Advanced exposing (alpha)
 import Lib.CoreEngine.BackgroundLayer.Common exposing (Model)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
-import Lib.Render.Render exposing (renderSprite)
 
 
 view : ( Model, Int ) -> GameGlobalData -> GlobalData -> Renderable

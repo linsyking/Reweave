@@ -10,13 +10,15 @@ import Lib.CoreEngine.GameComponent.Base exposing (Data)
 import Lib.Render.Render exposing (renderSprite)
 
 
-view : ( Data, Int ) -> GameGlobalData -> GlobalData -> Renderable
+view : ( Data, Int ) -> GameGlobalData -> GlobalData -> List ( Renderable, Int )
 view ( d, t ) ggd gd =
-    group []
-        [ renderSprite gd
-            []
-            (getPositionUnderCamera d.position ggd)
-            ( d.simplecheck.width, d.simplecheck.height )
-            "background"
-            gd.sprites
-        ]
+    [ ( group []
+            [ renderSprite gd
+                []
+                (getPositionUnderCamera d.position ggd)
+                ( d.simplecheck.width, d.simplecheck.height )
+                "background"
+            ]
+      , 0
+      )
+    ]

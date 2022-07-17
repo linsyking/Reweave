@@ -22,6 +22,8 @@ type CShape
     | CBOOSTTOPLEFT
     | CBOOSTBOTTOMLEFT
     | CBOOSTBOTTOMRIGHT
+    | CRCORNERBOOST
+    | CLCORNERBOOST
 
 
 judgeYSame : List ( Int, Int ) -> Bool
@@ -59,14 +61,42 @@ judgeShape d ls =
     in
     case ls of
         [ ( lfx, lfy ) ] ->
-            if x2 < lfx * brickSize then
-                CRIGHT
+            let
+                ( blx1, _ ) =
+                    ( lfx * brickSize, lfy * brickSize )
 
-            else if x1 >= (lfx + 1) * brickSize then
-                CLEFT
+                ( blx2, bly2 ) =
+                    ( (lfx + 1) * brickSize - 1, (lfy + 1) * brickSize - 1 )
+            in
+            if x2 < blx1 then
+                if x > 200 then
+                    CRCORNERBOOST
 
-            else if y1 > lfy * brickSize then
-                CTOP
+                else
+                    CRIGHT
+
+            else if x1 > blx2 then
+                if x < -200 then
+                    CLCORNERBOOST
+
+                else
+                    CLEFT
+
+            else if y1 > bly2 then
+                if x1 >= blx2 - 12 then
+                    CBOOSTTOPRIGHT
+
+                else if x2 <= blx1 + 12 then
+                    CBOOSTTOPLEFT
+
+                else
+                    CTOP
+
+            else if x1 >= blx2 - 12 then
+                CBOOSTBOTTOMRIGHT
+
+            else if x2 <= blx1 + 12 then
+                CBOOSTBOTTOMLEFT
 
             else
                 CBOTTOM

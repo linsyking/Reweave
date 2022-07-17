@@ -11,24 +11,26 @@ import Lib.DefinedTypes.Parser exposing (dgetPlayer)
 import Lib.Render.Render exposing (renderSprite, renderText)
 
 
-view : ( Data, Int ) -> GameGlobalData -> GlobalData -> Renderable
+view : ( Data, Int ) -> GameGlobalData -> GlobalData -> List ( Renderable, Int )
 view ( d, t ) ggd gd =
-    group []
-        [ renderSprite gd
-            [ alpha
-                (if ggd.selectobj == d.uid then
-                    1
+    [ ( group []
+            [ renderSprite gd
+                [ alpha
+                    (if ggd.selectobj == d.uid then
+                        1
 
-                 else
-                    0.5
-                )
+                     else
+                        0.5
+                    )
+                ]
+                (getPositionUnderCamera d.position ggd)
+                ( d.simplecheck.width, d.simplecheck.height )
+                "background"
+            , renderText gd 20 (getStateNumber t d) "sans-serif" (getPositionUnderCamera d.position ggd)
             ]
-            (getPositionUnderCamera d.position ggd)
-            ( d.simplecheck.width, d.simplecheck.height )
-            "background"
-            gd.sprites
-        , renderText gd 20 (getStateNumber t d) "sans-serif" (getPositionUnderCamera d.position ggd)
-        ]
+      , 0
+      )
+    ]
 
 
 getStateNumber : Int -> Data -> String

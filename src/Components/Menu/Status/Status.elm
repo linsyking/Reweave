@@ -9,7 +9,7 @@ import Constants exposing (..)
 import Dict
 import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
-import Lib.DefinedTypes.Parser exposing (dgetbool, dgetint, dsetbool)
+import Lib.DefinedTypes.Parser exposing (dgetDict, dgetbool, dgetfloat, dgetint, dsetDict, dsetbool)
 import Lib.Render.Render exposing (..)
 
 
@@ -17,11 +17,10 @@ initStatus : Int -> ComponentTMsg -> Data
 initStatus _ _ =
     Dict.fromList
         [ ( "show", CDBool False )
-        , ( "life", CDInt 10 )
-        , ( "kinetic energy", CDInt 0 )
         , ( "posX", CDInt 700 )
         , ( "posY", CDInt 400 )
         , ( "radius", CDInt 30 )
+        , ( "Data", CDDict Dict.empty )
         ]
 
 
@@ -81,6 +80,9 @@ updateStatus mainMsg comMsg globalData ( model, t ) =
                         _ ->
                             ( model, NullComponentMsg, globalData )
 
+                ComponentDictMsg dict ->
+                    ( model |> dsetDict "Data" dict, NullComponentMsg, globalData )
+
                 _ ->
                     ( model, NullComponentMsg, globalData )
 
@@ -106,7 +108,20 @@ viewStatus ( model, _ ) globalData =
             , renderText globalData 50 "Status" "sans-serif" ( posX - 20, posY - 30 )
             ]
             (if showStatus then
-                [ renderText globalData 50 "Status" "sans-serif" ( 500, 500 ) ]
+                let
+                    data =
+                        dgetDict model "Data"
+
+                    charLife =
+                        dgetint data "CharLife"
+
+                    charEnergy =
+                        dgetfloat data "CharEnergy"
+                in
+                [ renderText globalData 30 "Status" "sans-serif" ( 500, 500 )
+                , renderText globalData 30 ("Life: " ++ String.fromInt charLife) "sans-serif" ( 500, 530 )
+                , renderText globalData 30 ("Energy: " ++ String.fromFloat charEnergy) "sans-serif" ( 500, 560 )
+                ]
 
              else
                 []

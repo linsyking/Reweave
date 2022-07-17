@@ -3,10 +3,10 @@ module Lib.CoreEngine.GameComponent.ComponentHandler exposing (..)
 import Array exposing (Array)
 import Array.Extra
 import Base exposing (GlobalData, Msg)
-import Canvas exposing (Renderable)
+import Canvas exposing (Renderable, group)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Data, GameComponent, GameComponentMsgType, GameComponentTMsg(..), LifeStatus(..))
-import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos)
+import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos, judgeInCamera)
 
 
 updateOneGameComponent : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> Int -> GameComponent -> ( GameComponent, List GameComponentMsgType, GameGlobalData )
@@ -33,23 +33,40 @@ updateSingleGameComponent msg ct ggd gd t n xs =
 
 
 genView : GameGlobalData -> GlobalData -> Int -> Array GameComponent -> Renderable
-genView ggd vp t xs =
-    Canvas.group [] (Array.toList (Array.map (\x -> x.view ( x.data, t ) ggd vp) xs))
+genView ggd gd t xs =
+    let
+        allrs =
+            Array.foldl
+                (\x als ->
+                    case renderSingleObject t x ggd gd of
+                        Just tr ->
+                            tr ++ als
+
+                        Nothing ->
+                            als
+                )
+                []
+                xs
+
+        res =
+            List.sortWith (\( _, a ) ( _, b ) -> compare a b) allrs
+    in
+    group [] (List.map (\( x, _ ) -> x) res)
+
+
+renderSingleObject : Int -> GameComponent -> GameGlobalData -> GlobalData -> Maybe (List ( Renderable, Int ))
+renderSingleObject t gc ggd gd =
+    if judgeInCamera gc ggd then
+        -- Should show
+        Just (gc.view ( gc.data, t ) ggd gd)
+
+    else
+        Nothing
 
 
 getGameComponent : Int -> Array GameComponent -> Maybe GameComponent
 getGameComponent n xs =
     Array.get n xs
-
-
-queryGameComponent : Int -> String -> Int -> Array GameComponent -> GameComponentTMsg
-queryGameComponent n s t xs =
-    case getGameComponent n xs of
-        Just k ->
-            k.query s ( k.data, t )
-
-        Nothing ->
-            NullGameComponentMsg
 
 
 simpleUpdateAllGameComponent : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> Int -> Array GameComponent -> ( Array GameComponent, List GameComponentMsgType, GameGlobalData )
