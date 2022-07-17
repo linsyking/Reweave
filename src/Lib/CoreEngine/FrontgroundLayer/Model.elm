@@ -11,6 +11,7 @@ import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.FrontgroundLayer.Common exposing (Model)
 import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget(..))
 import Lib.Scene.Base exposing (EngineT, PlayerInitPosition(..))
+import Time exposing (posixToMillis)
 
 
 initModel : Int -> LayerMsg -> GameGlobalData -> Model
@@ -26,10 +27,11 @@ initModel t lm _ =
                         ]
                     )
                     f.components
+            , fpsrepo = []
             }
 
         _ ->
-            { render = \_ _ _ -> group [] [], components = Array.empty }
+            { render = \_ _ _ -> group [] [], components = Array.empty, fpsrepo = [] }
 
 
 dealComponentsMsg : ComponentTMsg -> Model -> GlobalData -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
@@ -64,10 +66,23 @@ updateModel msg gd lm ( model, t ) ggd =
 
         _ ->
             case msg of
-                Tick _ ->
+                Tick tick ->
                     let
                         ( newcs, rmsg, newgd ) =
                             updateComponents t msg gd model.components
+
+                        curtime =
+                            posixToMillis tick
+
+                        newfpsrepo =
+                            if List.length model.fpsrepo >= 10 then
+                                List.drop 1 model.fpsrepo ++ [ curtime ]
+
+                            else
+                                model.fpsrepo ++ [ curtime ]
+
+                        addfpsmodel =
+                            { model | fpsrepo = newfpsrepo }
                     in
                     List.foldl
                         (\lmt ( ( xm, xggd, xlm ), xgd ) ->
@@ -77,7 +92,7 @@ updateModel msg gd lm ( model, t ) ggd =
                             in
                             ( ( nm, nggd, xlm ++ nlm ), ngd )
                         )
-                        ( ( { model | components = newcs }, ggd, [] ), newgd )
+                        ( ( { addfpsmodel | components = newcs }, ggd, [] ), newgd )
                         rmsg
 
                 KeyDown 27 ->
