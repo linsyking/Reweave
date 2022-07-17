@@ -8,7 +8,8 @@ import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Camera exposing (getNewCamera)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Data, GameComponent, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
-import Lib.CoreEngine.GameComponent.ComponentHandler exposing (getGameComponentCenter, isAlive, sendManyGameComponentMsg, simpleUpdateAllGameComponent, splitPlayerObjs, updateOneGameComponent)
+import Lib.CoreEngine.GameComponent.ComponentHandler exposing (getGameComponentCenter, initGameComponent, isAlive, sendManyGameComponentMsg, simpleUpdateAllGameComponent, splitPlayerObjs, updateOneGameComponent)
+import Lib.CoreEngine.GameComponent.GenUID exposing (genUID)
 import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameLayer.Common exposing (Model)
@@ -365,7 +366,7 @@ getDSEnergy p m gd ggd =
 
 
 dealParentMsg : GameComponentTMsg -> GlobalData -> ( Model, Int ) -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
-dealParentMsg gct gd ( model, _ ) ggd =
+dealParentMsg gct gd ( model, t ) ggd =
     case gct of
         GameExitScene s ->
             ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerExitMsg (EngineT 0 DefaultPlayerPosition) s ) ] ), gd )
@@ -373,6 +374,14 @@ dealParentMsg gct gd ( model, _ ) ggd =
         -- ( ( model, { ggd | ingamepause = True }, [ ( LayerParentScene, LayerExitMsg (EngineT ggd.energy ggd.currentScene) s ) ] ), gd )
         GameStringMsg "restart" ->
             ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerRestartMsg ) ] ), gd )
+
+        GameGoombaInit info ->
+            -- Create a goomba
+            let
+                newinfo =
+                    { info | uid = genUID model }
+            in
+            ( ( { model | actors = Array.push (initGameComponent t (GameGoombaInit newinfo) Goomba.gameComponent) model.actors }, ggd, [] ), gd )
 
         _ ->
             ( ( model, ggd, [] ), gd )

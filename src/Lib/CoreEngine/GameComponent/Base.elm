@@ -7,6 +7,7 @@ import Lib.Component.Base exposing (DefinedTypes)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
 import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
+import Lib.CoreEngine.GameComponents.GoombaEmitter.Base exposing (GoombaEmitterInit)
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit)
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeInit)
 
@@ -39,6 +40,7 @@ type GameComponentTMsg
     | GameStringMsg String
     | GamePlayerInit PlayerInit
     | GameGoombaInit GoombaInit
+    | GameGoombaEmitterInit GoombaEmitterInit
     | GameSpikeInit SpikeInit
     | GameExitInit ExitInit
     | GameExitScene String

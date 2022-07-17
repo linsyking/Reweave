@@ -83,19 +83,19 @@ judgeShape d ls =
                     CLEFT
 
             else if y1 > bly2 then
-                if x1 >= blx2 - 15 then
+                if x1 >= blx2 - 12 then
                     CBOOSTTOPRIGHT
 
-                else if x2 <= blx1 + 15 then
+                else if x2 <= blx1 + 12 then
                     CBOOSTTOPLEFT
 
                 else
                     CTOP
 
-            else if x1 >= blx2 - 15 then
+            else if x1 >= blx2 - 12 then
                 CBOOSTBOTTOMRIGHT
 
-            else if x2 <= blx1 + 15 then
+            else if x2 <= blx1 + 12 then
                 CBOOSTBOTTOMLEFT
 
             else

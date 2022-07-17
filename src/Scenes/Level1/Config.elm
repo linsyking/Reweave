@@ -14,6 +14,8 @@ import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
 import Lib.CoreEngine.GameComponents.Exit.Export as Exit
 import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
 import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
+import Lib.CoreEngine.GameComponents.GoombaEmitter.Base exposing (GoombaEmitterInit)
+import Lib.CoreEngine.GameComponents.GoombaEmitter.Export as GoombaEmitter
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit)
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..), SpikeInit)
@@ -45,13 +47,14 @@ initActors : Int -> Array GameComponent
 initActors t =
     Array.fromList
         [ initGameComponent t (GameGoombaInit (GoombaInit ( 1200, 1800 ) ( 0, 0 ) 4)) Goomba.gameComponent
-        , initGameComponent t (GameExitInit (ExitInit ( 3800, 1600 ) ( 10, 160 ) "Scene1" 9999)) Exit.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 1000, 1800 ) ( 0, 0 ) 5)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 2000, 800 ) ( 0, 0 ) 2)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 3500, 500 ) ( 0, 0 ) 3)) Goomba.gameComponent
+        , initGameComponent t (GameExitInit (ExitInit ( 3800, 1600 ) ( 10, 160 ) "Scene1" 9)) Exit.gameComponent
+        , initGameComponent t (GameGoombaEmitterInit (GoombaEmitterInit ( 900, 1800 ) 200 ( -50, 0 ) 6)) GoombaEmitter.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 704, 2028 ) HorUp 1 10)) Spike.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 736, 2048 ) VerRight 3 11)) Spike.gameComponent
-        , initGameComponent t (GameSpikeInit (SpikeInit ( 864, 2016 ) HorDown 15 11)) Spike.gameComponent
+        , initGameComponent t (GameSpikeInit (SpikeInit ( 864, 2016 ) HorDown 15 12)) Spike.gameComponent
         ]
 
 
