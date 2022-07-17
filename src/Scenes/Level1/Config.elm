@@ -20,6 +20,8 @@ import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit)
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..), SpikeInit)
 import Lib.CoreEngine.GameComponents.Spike.Export as Spike
+import Lib.CoreEngine.GameComponents.Bullet.Base exposing (BulletInit)
+import Lib.CoreEngine.GameComponents.Bullet.Export as Bullet
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
 import Lib.Render.Render exposing (renderSprite, renderText)
 import Lib.Scene.Base exposing (PlayerInitPosition(..))
@@ -55,6 +57,7 @@ initActors t =
         , initGameComponent t (GameSpikeInit (SpikeInit ( 704, 2028 ) HorUp 1 10)) Spike.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 736, 2048 ) VerRight 3 11)) Spike.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 864, 2016 ) HorDown 15 12)) Spike.gameComponent
+        , initGameComponent t (GameBulletInit (BulletInit ( 1300, 1900 ) ( -50, 0 ) 15 13)) Bullet.gameComponent
         ]
 
 

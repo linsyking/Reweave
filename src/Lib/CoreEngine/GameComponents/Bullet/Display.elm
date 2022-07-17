@@ -13,7 +13,7 @@ import Lib.DefinedTypes.Parser exposing (dgetfloat, dgetint)
 import Canvas.Settings exposing (fill)
 import Lib.CoreEngine.GameComponent.Base exposing (LifeStatus(..))
 
-view : ( Data, Int ) -> GameGlobalData -> GlobalData -> Renderable
+view : ( Data, Int ) -> GameGlobalData -> GlobalData -> List ( Renderable, Int )
 view ( d, t ) ggd gd =
     let
         r = 
@@ -26,9 +26,10 @@ view ( d, t ) ggd gd =
             toFloat ( Tuple.second (getPositionUnderCamera d.position ggd) )
     in
     if d.status == Alive then
-        group []
+        [(group []
             [ shapes [ fill Color.red ] [ circle ( x, y ) r ]
             ]
+        , 0)]
     else
-        group [] []
+        [(group [] [],0)]
 
