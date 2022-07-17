@@ -60,7 +60,7 @@ initActors t =
 
 initCamera : CameraData
 initCamera =
-    CameraData ( 0, 1120 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * 119 - 1, 70 * 32 - 1 ) )
+    CameraData ( 0, 1120 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * 119 - 1, 70 * 32 - 1 ) ) ( ( 0.2, 0.3 ), ( 0.4, 0.4 ) )
 
 
 initGameGlobalData : Float -> GameGlobalData

@@ -23,7 +23,7 @@ brickSize =
 
 nullGameGlobalData : GameGlobalData
 nullGameGlobalData =
-    { camera = CameraData ( 0, 0 ) ( 0, 0 ) ( ( 0, 0 ), ( 0, 0 ) )
+    { camera = CameraData ( 0, 0 ) ( 0, 0 ) ( ( 0, 0 ), ( 0, 0 ) ) ( ( 0, 0 ), ( 0, 0 ) )
     , solidmap = Array2D.empty
     , mapsize = ( 0, 0 )
     , selectobj = 1
@@ -35,7 +35,7 @@ nullGameGlobalData =
 
 testGameGlobalData : GameGlobalData
 testGameGlobalData =
-    { camera = CameraData ( 0, 1120 ) ( 0, 0 ) ( ( 0, 0 ), ( 32 * 120 - 1, 70 * 32 - 1 ) )
+    { camera = CameraData ( 0, 1120 ) ( 0, 0 ) ( ( 0, 0 ), ( 32 * 120 - 1, 70 * 32 - 1 ) ) ( ( 0.2, 0.3 ), ( 0.4, 0.4 ) )
     , solidmap = ps
     , mapsize = ( 120, 70 )
     , selectobj = -1
