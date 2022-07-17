@@ -95,6 +95,13 @@ updateModel msg gd lm ( model, t ) ggd =
                         ( ( { addfpsmodel | components = newcs }, ggd, [] ), newgd )
                         rmsg
 
+                MouseDown _ _ ->
+                    let
+                        ( newcs, _, newgd ) =
+                            updateSingleComponent msg NullComponentMsg gd t 1 model.components
+                    in
+                    ( ( { model | components = newcs }, ggd, [] ), newgd )
+
                 KeyDown 27 ->
                     let
                         ( newcs, _, newgd ) =
