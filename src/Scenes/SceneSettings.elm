@@ -5,7 +5,7 @@ import Canvas exposing (group)
 import Lib.CoreEngine.Export as CoreEngine
 import Lib.Scene.Base exposing (..)
 import Scenes.Scene1.Export as S1
-
+import Scenes.Home.Export as H
 
 
 --- Set Scenes
@@ -13,6 +13,7 @@ import Scenes.Scene1.Export as S1
 
 type SceneDataTypes
     = S1DataT S1.Data
+    | HDataT H.Data
     | CoreEngineDataT CoreEngine.Data
     | NullSceneData
 

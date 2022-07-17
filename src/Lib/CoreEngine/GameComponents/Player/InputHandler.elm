@@ -57,7 +57,10 @@ changePlayerVelocity t char ggd model =
         curTime =
             t
     in
-    if space == 0 then
+    if Tuple.first char.velocity > 80 then
+        ( model, { char | velocity = ( Tuple.first char.velocity - 10.0, Tuple.second char.velocity ) } )
+
+    else if space == 0 then
         if canJump char ggd == False then
             ( model, changePlayerVelocityHelper char (boundXY (changePlayerVelocityX char model Ydir) char.velocity) )
 
@@ -108,10 +111,10 @@ delVelocityFunction : DelVelocityFunction -> Float -> Float
 delVelocityFunction f vel =
     let
         delVel =
-            if vel <= 8 && vel > 0 then
+            if vel <= 9 && vel > 0 then
                 -vel
 
-            else if vel >= -8 && vel < 0 then
+            else if vel >= -9 && vel < 0 then
                 vel
 
             else
@@ -120,7 +123,7 @@ delVelocityFunction f vel =
         newVel =
             vel + delVel
     in
-    if newVel <= 8 && newVel >= -8 then
+    if newVel <= 9 && newVel >= -9 then
         -vel
 
     else

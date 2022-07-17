@@ -8,9 +8,9 @@ import Color
 import Components.Menu.Settings.Audio.Export as MenuSetAudioE
 import Constants exposing (..)
 import Dict
-import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..), dgetbool, dgetint, dsetbool)
+import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
-import Lib.DefinedTypes.Parser exposing (dgetLComponent, dsetLComponent)
+import Lib.DefinedTypes.Parser exposing (dgetLComponent, dgetbool, dgetint, dsetLComponent, dsetbool)
 import Lib.Render.Render exposing (..)
 
 

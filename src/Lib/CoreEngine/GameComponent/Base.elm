@@ -5,6 +5,9 @@ import Canvas exposing (Renderable)
 import Dict exposing (Dict)
 import Lib.Component.Base exposing (DefinedTypes)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
+import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
+import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
+import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit)
 
 
 
@@ -35,19 +38,9 @@ type GameComponentTMsg
     | GameStringMsg String
     | GamePlayerInit PlayerInit
     | GameGoombaInit GoombaInit
+    | GameExitInit ExitInit
+    | GameExitScene String
     | NullGameComponentMsg
-
-
-type alias PlayerInit =
-    { initPosition : ( Int, Int )
-    }
-
-
-type alias GoombaInit =
-    { initPosition : ( Int, Int )
-    , initVelocity : ( Float, Float )
-    , uid : Int
-    }
 
 
 type alias Data =

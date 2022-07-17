@@ -11,6 +11,8 @@ type alias GameGlobalData =
     , mapsize : ( Int, Int )
     , selectobj : Int
     , energy : Float
+    , ingamepause : Bool
+    , currentScene : String
     }
 
 
@@ -26,6 +28,8 @@ nullGameGlobalData =
     , mapsize = ( 0, 0 )
     , selectobj = -1
     , energy = 0
+    , ingamepause = False
+    , currentScene = ""
     }
 
 
@@ -36,6 +40,8 @@ testGameGlobalData =
     , mapsize = ( 120, 70 )
     , selectobj = -1
     , energy = 0
+    , ingamepause = False
+    , currentScene = "Level1"
     }
 
 

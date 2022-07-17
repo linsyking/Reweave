@@ -7,14 +7,22 @@ import Scenes.Level1.Background exposing (background)
 import Scenes.Level1.Config exposing (allChartlets, initActors, initGameGlobalData, initPlayer)
 
 
-game : SceneMsg -> Data
-game _ =
-    initEngine 0
+game : Int -> SceneMsg -> Data
+game t sm =
+    initEngine t
         (SceneEngineMsg
             { player = initPlayer
             , actors = initActors
             , chartlets = allChartlets
-            , globalData = initGameGlobalData
+            , globalData =
+                initGameGlobalData
+                    (case sm of
+                        SceneEngineTMsg et ->
+                            et.energy
+
+                        _ ->
+                            0
+                    )
             , background = background
             , frontground = \_ _ _ -> group [] []
             }
