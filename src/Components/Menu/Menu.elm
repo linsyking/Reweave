@@ -12,8 +12,20 @@ import Constants exposing (..)
 import Dict
 import Lib.Component.Base exposing (Component, ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
-import Lib.DefinedTypes.Parser exposing (dgetLComponent, dgetbool, dsetLComponent, dsetbool)
+import Lib.DefinedTypes.Parser exposing (dgetDict, dgetLComponent, dgetbool, dsetLComponent, dsetbool)
 import Lib.Render.Render exposing (renderText)
+
+
+testData : Dict.Dict String DefinedTypes
+testData =
+    Dict.fromList
+        [ ( "CharLife", CDInt 5 )
+        , ( "CharEnergy", CDFloat 50.5 )
+        , ( "CharPositionX", CDFloat 400 )
+        , ( "CharPositionY", CDFloat 30 )
+        , ( "MapWidth", CDFloat 1000 )
+        , ( "MapHeight", CDFloat 500 )
+        ]
 
 
 initMenu : Int -> ComponentTMsg -> Data
@@ -27,6 +39,7 @@ initMenu _ _ =
                 , ( "Map", MenuMapE.initComponent 0 NullComponentMsg )
                 ]
           )
+        , ( "Data", CDDict testData )
         ]
 
 
@@ -124,7 +137,38 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                 ( model, NullComponentMsg, globalData )
 
         _ ->
-            ( model, NullComponentMsg, globalData )
+            case comMsg of
+                ComponentLStringMsg (demand :: data :: _) ->
+                    case demand of
+                        "Activate" ->
+                            let
+                                tmpData =
+                                    dgetDict model "Data"
+
+                                ( newChildComponentsList, _, newGlobalData ) =
+                                    List.foldl
+                                        (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
+                                            let
+                                                ( tmpCom, tmpComMsg, gD ) =
+                                                    comModel.update mainMsg (ComponentDictMsg tmpData) tmpGData ( comModel.data, t )
+                                            in
+                                            ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
+                                        )
+                                        ( [], [], globalData )
+                                        childComponentsList
+                            in
+                            ( model
+                                |> dsetbool "Show" True
+                                |> dsetLComponent "Child" newChildComponentsList
+                            , NullComponentMsg
+                            , newGlobalData
+                            )
+
+                        _ ->
+                            ( model, NullComponentMsg, globalData )
+
+                _ ->
+                    ( model, NullComponentMsg, globalData )
 
 
 viewMenu : ( Data, Int ) -> GlobalData -> Renderable
