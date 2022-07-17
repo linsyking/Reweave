@@ -53,10 +53,10 @@ solidCollisionMove ls ggd d =
                     ( pvx, 0 )
 
                 CRIGHT ->
-                    ( -pvx, pvy )
+                    ( -50, pvy )
 
                 CLEFT ->
-                    ( -pvx, pvy )
+                    ( 50, pvy )
 
                 CBOTTOMLEFT ->
                     ( 0, 0 )

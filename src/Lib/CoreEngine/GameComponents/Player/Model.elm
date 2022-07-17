@@ -164,6 +164,9 @@ updateModel msg gct ggd gd ( d, t ) =
                 GameClearVelocity ->
                     ( { d | velocity = ( 0, 0 ) }, [], ggd )
 
+                GameStringMsg "die" ->
+                    ( { d | status = Dead t }, [], ggd )
+
                 GameUseEnergy mp e ->
                     let
                         ndd =

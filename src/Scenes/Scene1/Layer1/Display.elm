@@ -16,6 +16,6 @@ dview : SModel -> CommonData -> GlobalData -> Renderable
 dview ( _, _ ) _ gd =
     group []
         [ renderSprite gd [] ( 0, 0 ) ( 1920, 1080 ) "background" gd.sprites
-        , shapes [ fill Color.red ] [ rect (posToReal gd ( 100, 100 )) (widthToReal gd 100) (heightToReal gd 100) ]
+        , shapes [ fill Color.red ] [ rect (posToReal gd ( 100, 100 )) (widthToReal gd 100) (heightToReal gd 200) ]
         , renderText gd 50 "ohohoh" "sans-serif" ( 0, 50 )
         ]

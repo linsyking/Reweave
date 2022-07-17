@@ -17,6 +17,10 @@ allTexture =
     , ( "rcloud", getResourcePath "img/rcloud.png" )
     , ( "lcloud", getResourcePath "img/lcloud.png" )
     , ( "bricksheet", getResourcePath "img/bricks.png" )
+    , ( "spikeL", getResourcePath "img/spikeL.png" )
+    , ( "spikeR", getResourcePath "img/spikeR.png" )
+    , ( "spikeT", getResourcePath "img/spikeT.png" )
+    , ( "spikeB", getResourcePath "img/spikeB.png" )
     ]
 
 
