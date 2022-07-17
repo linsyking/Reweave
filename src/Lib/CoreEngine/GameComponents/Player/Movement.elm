@@ -19,8 +19,28 @@ solidCollisionMove ls ggd d =
         moved =
             moveTilCollide d (getNearBySolid ggd d)
 
+        ( mvdx, mvdy ) =
+            moved.position
+
+        jshape =
+            judgeShape d ls
+
+        newpos =
+            case jshape of
+                CRCORNERBOOST ->
+                    ( mvdx, mvdy - 20 )
+
+                CLCORNERBOOST ->
+                    ( mvdx, mvdy - 20 )
+
+                _ ->
+                    ( mvdx, mvdy )
+
+        dasada =
+            Debug.log "shape" jshape
+
         newvel =
-            case judgeShape d ls of
+            case jshape of
                 CTOP ->
                     ( pvx, 0 )
 
@@ -46,15 +66,29 @@ solidCollisionMove ls ggd d =
                     ( 0, 0 )
 
                 CBOOSTBOTTOMLEFT ->
-                    ( -10, 0 )
+                    if pvy > -100 then
+                        ( -40, 0 )
+
+                    else
+                        ( -40 + pvy, 0 )
 
                 CBOOSTBOTTOMRIGHT ->
-                    ( 10, 0 )
+                    if pvy > -100 then
+                        ( 40, 0 )
+
+                    else
+                        ( 40 - pvy, 0 )
 
                 CBOOSTTOPLEFT ->
-                    ( -10, 0 )
+                    ( -40, 0 )
 
                 CBOOSTTOPRIGHT ->
-                    ( 10, 0 )
+                    ( 40, 0 )
+
+                CRCORNERBOOST ->
+                    ( pvx + 30, pvy )
+
+                CLCORNERBOOST ->
+                    ( pvx - 30, pvy )
     in
-    { moved | velocity = newvel }
+    { moved | velocity = newvel, position = newpos }

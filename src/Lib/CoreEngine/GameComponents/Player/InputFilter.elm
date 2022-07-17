@@ -38,9 +38,6 @@ preCheck : Int -> Model -> Data -> ( Model, Data )
 preCheck t model d =
     let
         --- First Update Space
-        dsada =
-            Debug.log "key" ( queryIsState model "onground", nspace )
-
         cs =
             model.originKeys.space
 
@@ -73,7 +70,7 @@ preCheck t model d =
                 cs
 
         iswolfJump =
-            cs == 1 && queryIsState model "inair" && t - stt <= 10 && isNope model
+            cs == 1 && queryIsState model "inair" && t - stt <= 10 && isNope model && t - jst <= 10
 
         newd =
             if iswolfJump then

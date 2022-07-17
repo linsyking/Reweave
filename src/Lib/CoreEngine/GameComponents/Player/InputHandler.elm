@@ -115,13 +115,13 @@ delLargeVelocity ct model d cj =
                     ( model, { d | velocity = ( vx / 1.1, vy ) } )
 
                 else if right == 1 && left == 0 then
-                    ( model, { d | velocity = ( vx / 1.01, vy ) } )
+                    ( model, { d | velocity = ( vx / 1.03, vy ) } )
 
                 else
                     ( model, { d | velocity = ( vx / 1.05, vy ) } )
 
             else if left == 1 && left == 0 then
-                ( model, { d | velocity = ( vx / 1.05, vy ) } )
+                ( model, { d | velocity = ( vx / 1.03, vy ) } )
 
             else if right == 1 && left == 0 then
                 ( model, { d | velocity = ( vx / 1.1, vy ) } )
