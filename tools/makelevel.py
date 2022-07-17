@@ -29,39 +29,33 @@ import Lib.Render.Render exposing (renderSprite)
 background : Int -> GameGlobalData -> GlobalData -> Renderable
 background _ _ gd =
     renderSprite gd [ alpha 0.3 ] ( 0, 0 ) ( 1920, 1080 ) "background"
-
-'''
+'''.replace("$!", levelname)
 
 config = '''module Scenes.$!.Config exposing (..)
 
 import Array exposing (Array)
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable)
-import Components.Hints.Export as Hints
 import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Base exposing (CameraData)
-import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentTMsg(..))
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (initGameComponent)
 import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
 import Lib.CoreEngine.GameComponents.Exit.Export as Exit
 import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
 import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
-import Lib.CoreEngine.GameComponents.GoombaEmitter.Base exposing (GoombaEmitterInit)
-import Lib.CoreEngine.GameComponents.GoombaEmitter.Export as GoombaEmitter
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit)
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..), SpikeInit)
 import Lib.CoreEngine.GameComponents.Spike.Export as Spike
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
-import Lib.Render.Render exposing (renderSprite, renderText)
 import Lib.Scene.Base exposing (PlayerInitPosition(..))
 import Scenes.$!.Map exposing (mymap)
 
 
 initFrontGroundComponents : Int -> Array Component
-initFrontGroundComponents t =
+initFrontGroundComponents _ =
     Array.fromList
         []
 
@@ -152,7 +146,7 @@ scene =
 map = '''module Scenes.$!.Map exposing (..)
 
 import Array2D
-import Lib.Map.Poly exposing (buildrect, buildrectT)
+import Lib.Map.Poly exposing (buildrect)
 
 
 sds : Array2D.Array2D Int
