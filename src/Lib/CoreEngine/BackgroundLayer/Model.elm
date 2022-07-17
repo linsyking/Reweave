@@ -10,8 +10,8 @@ import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget)
 initModel : Int -> LayerMsg -> GameGlobalData -> Model
 initModel _ lm _ =
     case lm of
-        LayerTimeSeries f ->
-            { render = f }
+        LayerCTMsg f ->
+            { render = f.timeseries }
 
         _ ->
             { render = \_ _ _ -> group [] [] }

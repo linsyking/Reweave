@@ -26,6 +26,19 @@ changeCVel c ( px, py ) k =
             c.velocity
 
         newdata =
-            { c | velocity = ( newvx + ovx, newvy + ovy ) }
+            { c
+                | velocity =
+                    ( if newvx * ovx > 0 then
+                        newvx + ovx
+
+                      else
+                        newvx
+                    , if newvy * ovy > 0 then
+                        newvy + ovy
+
+                      else
+                        newvy
+                    )
+            }
     in
     newdata

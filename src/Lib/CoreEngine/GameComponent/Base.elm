@@ -7,7 +7,9 @@ import Lib.Component.Base exposing (DefinedTypes)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
 import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
+import Lib.CoreEngine.GameComponents.GoombaEmitter.Base exposing (GoombaEmitterInit)
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit)
+import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeInit)
 
 
 
@@ -19,8 +21,7 @@ type alias GameComponent =
     , data : Data
     , init : Int -> GameComponentTMsg -> Data
     , update : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
-    , view : ( Data, Int ) -> GameGlobalData -> GlobalData -> Renderable
-    , query : String -> ( Data, Int ) -> GameComponentTMsg
+    , view : ( Data, Int ) -> GameGlobalData -> GlobalData -> List ( Renderable, Int )
     }
 
 
@@ -38,6 +39,8 @@ type GameComponentTMsg
     | GameStringMsg String
     | GamePlayerInit PlayerInit
     | GameGoombaInit GoombaInit
+    | GameGoombaEmitterInit GoombaEmitterInit
+    | GameSpikeInit SpikeInit
     | GameExitInit ExitInit
     | GameExitScene String
     | NullGameComponentMsg

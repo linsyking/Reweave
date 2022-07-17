@@ -8,7 +8,8 @@ import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Camera exposing (getNewCamera)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Data, GameComponent, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
-import Lib.CoreEngine.GameComponent.ComponentHandler exposing (getGameComponentCenter, isAlive, sendManyGameComponentMsg, simpleUpdateAllGameComponent, splitPlayerObjs, updateOneGameComponent)
+import Lib.CoreEngine.GameComponent.ComponentHandler exposing (getGameComponentCenter, initGameComponent, isAlive, sendManyGameComponentMsg, simpleUpdateAllGameComponent, splitPlayerObjs, updateOneGameComponent)
+import Lib.CoreEngine.GameComponent.GenUID exposing (genUID)
 import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameLayer.Common exposing (Model)
@@ -25,10 +26,10 @@ initModel : Int -> LayerMsg -> GameGlobalData -> Model
 initModel _ lm _ =
     case lm of
         LayerInitGameLayer info ->
-            info
+            { player = info.player, actors = info.actors, chartlets = info.chartlets, lastuseEnergyTime = 0 }
 
         _ ->
-            { player = Player.gameComponent, actors = Array.fromList [ Goomba.gameComponent ], chartlets = [] }
+            { player = Player.gameComponent, actors = Array.fromList [ Goomba.gameComponent ], chartlets = [], lastuseEnergyTime = 0 }
 
 
 deleteObjects : GameGlobalData -> Array.Array GameComponent -> Array.Array GameComponent
@@ -365,7 +366,7 @@ getDSEnergy p m gd ggd =
 
 
 dealParentMsg : GameComponentTMsg -> GlobalData -> ( Model, Int ) -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
-dealParentMsg gct gd ( model, _ ) ggd =
+dealParentMsg gct gd ( model, t ) ggd =
     case gct of
         GameExitScene s ->
             ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerExitMsg (EngineT 0 DefaultPlayerPosition) s ) ] ), gd )
@@ -373,6 +374,14 @@ dealParentMsg gct gd ( model, _ ) ggd =
         -- ( ( model, { ggd | ingamepause = True }, [ ( LayerParentScene, LayerExitMsg (EngineT ggd.energy ggd.currentScene) s ) ] ), gd )
         GameStringMsg "restart" ->
             ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerRestartMsg ) ] ), gd )
+
+        GameGoombaInit info ->
+            -- Create a goomba
+            let
+                newinfo =
+                    { info | uid = genUID model }
+            in
+            ( ( { model | actors = Array.push (initGameComponent t (GameGoombaInit newinfo) Goomba.gameComponent) model.actors }, ggd, [] ), gd )
 
         _ ->
             ( ( model, ggd, [] ), gd )
@@ -496,7 +505,7 @@ updateModel msg gd _ ( model, t ) ggd =
                     newiter
                     allparentmsg
 
-            KeyDown 67 ->
+            KeyDown 87 ->
                 if ggd.selectobj > 0 then
                     if ggd.selectobj == model.player.data.uid then
                         let
@@ -573,7 +582,10 @@ updateModel msg gd _ ( model, t ) ggd =
                 ( ( { model | player = newplayer }, newggd, [] ), gd )
 
             MouseDown 2 mp ->
-                if ggd.selectobj > 0 then
+                if t - model.lastuseEnergyTime < 15 then
+                    ( ( model, ggd, [] ), gd )
+
+                else if ggd.selectobj > 0 then
                     if ggd.selectobj == model.player.data.uid then
                         let
                             ( px, py ) =
@@ -602,7 +614,7 @@ updateModel msg gd _ ( model, t ) ggd =
                                 else
                                     model.player
                         in
-                        ( ( { model | player = newplayer }, updss, [] ), gd )
+                        ( ( { model | player = newplayer, lastuseEnergyTime = t }, updss, [] ), gd )
 
                     else
                         let
@@ -644,7 +656,7 @@ updateModel msg gd _ ( model, t ) ggd =
                                     newactors =
                                         Array.set tn newplayer model.actors
                                 in
-                                ( ( { model | actors = newactors }, updss, [] ), gd )
+                                ( ( { model | actors = newactors, lastuseEnergyTime = t }, updss, [] ), gd )
 
                             Nothing ->
                                 ( ( model, ggd, [] ), gd )

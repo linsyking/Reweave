@@ -12,4 +12,5 @@ type alias Model =
     { player : GameComponent
     , actors : Array GameComponent
     , chartlets : List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
+    , lastuseEnergyTime : Int
     }

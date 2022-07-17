@@ -132,8 +132,3 @@ updateModel msg gct ggd gd ( d, t ) =
 
                 _ ->
                     ( d, [], ggd )
-
-
-queryModel : String -> ( Data, Int ) -> GameComponentTMsg
-queryModel _ _ =
-    NullGameComponentMsg

@@ -9,4 +9,4 @@ import Lib.Render.Render exposing (renderSprite)
 
 background : Int -> GameGlobalData -> GlobalData -> Renderable
 background _ _ gd =
-    renderSprite gd [ alpha 0.3 ] ( 0, 0 ) ( 1920, 1080 ) "background" gd.sprites
+    renderSprite gd [ alpha 0.3 ] ( 0, 0 ) ( 1920, 1080 ) "background"

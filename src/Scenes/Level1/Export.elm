@@ -1,10 +1,11 @@
 module Scenes.Level1.Export exposing (..)
 
+import Array
 import Canvas exposing (group)
 import Lib.CoreEngine.Export exposing (Data, genEngineScene, initEngine)
 import Lib.Scene.Base exposing (Scene, SceneMsg(..), nullEngineT)
 import Scenes.Level1.Background exposing (background)
-import Scenes.Level1.Config exposing (allChartlets, initActors, initGameGlobalData, initPlayer)
+import Scenes.Level1.Config exposing (allChartlets, initActors, initFrontGroundComponents, initGameGlobalData, initPlayer)
 
 
 game : Int -> SceneMsg -> Data
@@ -25,8 +26,8 @@ game t sm =
             , chartlets = allChartlets
             , globalData =
                 initGameGlobalData engineMsg.energy
-            , background = background
-            , frontground = \_ _ _ -> group [] []
+            , background = ( Array.empty, background )
+            , frontground = ( initFrontGroundComponents t, \_ _ _ -> group [] [] )
             }
         )
 
