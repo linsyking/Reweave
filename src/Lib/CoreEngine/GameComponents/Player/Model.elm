@@ -171,17 +171,21 @@ updateModel msg gct ggd gd ( d, t ) =
                     in
                     ( ndd, [], ggd )
 
-                GameInterCollisionMsg s uid _ bs ->
+                GameInterCollisionMsg s icd bs ->
                     case s of
                         "goomba" ->
+                            let
+                                ( _, gbvy ) =
+                                    icd.velocity
+                            in
                             if List.length bs >= 2 then
                                 let
                                     ( _, pvy ) =
                                         d.velocity
                                 in
-                                if pvy < -200 then
+                                if pvy < -200 || gbvy > 100 then
                                     -- Rebound!
-                                    ( reboundPlayer d, [ GameActorUidMsg uid (GameStringMsg "die") ], ggd )
+                                    ( reboundPlayer gbvy d, [ GameActorUidMsg icd.uid (GameStringMsg "die") ], ggd )
 
                                 else
                                     -- Die
@@ -195,7 +199,7 @@ updateModel msg gct ggd gd ( d, t ) =
                                                 ( { d | status = Dead t }, [], ggd )
 
                                             "reb" ->
-                                                ( reboundPlayer d, [ GameActorUidMsg uid (GameStringMsg "die") ], ggd )
+                                                ( reboundPlayer gbvy d, [ GameActorUidMsg icd.uid (GameStringMsg "die") ], ggd )
 
                                             _ ->
                                                 ( d, [], ggd )
@@ -215,8 +219,8 @@ queryModel _ _ =
     NullGameComponentMsg
 
 
-reboundPlayer : Data -> Data
-reboundPlayer d =
+reboundPlayer : Float -> Data -> Data
+reboundPlayer rbv d =
     let
         ( pvx, pvy ) =
             d.velocity
@@ -234,4 +238,4 @@ reboundPlayer d =
             else
                 400
     in
-    { d | velocity = ( pvx, nv ), position = ( px, py - 10 ) }
+    { d | velocity = ( pvx, nv + abs rbv ), position = ( px, py - 10 ) }

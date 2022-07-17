@@ -5,7 +5,6 @@ import Canvas exposing (Renderable)
 import Lib.Layer.Base exposing (..)
 import Scenes.Home.Layer1.Export exposing (Data, nullData)
 import Scenes.Home.LayerBase exposing (CommonData)
-import Scenes.Home.Layer1.Export exposing (Data)
 import Scenes.Home.LayerSettings exposing (..)
 
 

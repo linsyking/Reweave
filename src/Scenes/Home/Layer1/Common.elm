@@ -10,6 +10,7 @@ type alias Button =
     , width : Int
     }
 
+
 type alias ModelX =
     { ico : Int
     , start : Button

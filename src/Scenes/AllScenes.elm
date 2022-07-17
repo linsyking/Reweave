@@ -2,11 +2,11 @@ module Scenes.AllScenes exposing (allScenes)
 
 import Lib.CoreEngine.Export as CE
 import Lib.CoreEngine.Global as CEG
+import Scenes.Home.Export as H
+import Scenes.Home.Global as HG
 import Scenes.Level1.Export as LV1
 import Scenes.Scene1.Export as S1
 import Scenes.Scene1.Global as S1G
-import Scenes.Home.Export as H
-import Scenes.Home.Global as HG
 import Scenes.SceneSettings exposing (..)
 
 

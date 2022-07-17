@@ -1,6 +1,7 @@
 module Scenes.Home.Model exposing (..)
 
-import Base exposing (Msg)
+import Base exposing (GlobalData, Msg)
+import Canvas exposing (Renderable)
 import Lib.Layer.Base exposing (LayerMsg(..))
 import Lib.Layer.LayerHandler exposing (updateLayer, viewLayer)
 import Lib.Scene.Base exposing (SceneMsg(..), SceneOutputMsg(..))
@@ -9,8 +10,7 @@ import Scenes.Home.Layer0.Export as L0
 import Scenes.Home.Layer0.Global as L0G
 import Scenes.Home.Layer1.Export as L1
 import Scenes.Home.Layer1.Global as L1G
-import Base exposing (GlobalData)
-import Canvas exposing (Renderable)
+
 
 initModel : Int -> SceneMsg -> XModel
 initModel t _ =
@@ -48,7 +48,7 @@ handleLayerMsg lmsg ( model, _ ) =
 
             else if i == 2 then
                 ( model, SOChangeScene ( NullSceneMsg, "Level1" ) )
-            
+
             else if i == 3 then
                 ( model, SOChangeScene ( NullSceneMsg, "Scene1" ) )
 

@@ -18,4 +18,3 @@ initModel _ _ _ =
 updateModel : Msg -> GlobalData -> LayerMsg -> SModel -> CommonData -> ( ( ModelX, CommonData, List ( LayerTarget, LayerMsg ) ), GlobalData )
 updateModel _ gd _ ( model, t ) cd =
     ( ( model, cd, [] ), gd )
-

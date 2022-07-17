@@ -10,7 +10,7 @@ import Lib.Component.ComponentHandler exposing (updateSingleComponent)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.FrontgroundLayer.Common exposing (Model)
 import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget(..))
-import Lib.Scene.Base exposing (EngineT)
+import Lib.Scene.Base exposing (EngineT, PlayerInitPosition(..))
 
 
 initModel : Int -> LayerMsg -> GameGlobalData -> Model
@@ -43,11 +43,8 @@ updateModel msg gd lm ( model, t ) ggd =
             let
                 ( newcs, _, newgd ) =
                     updateSingleComponent UnknownMsg (ComponentLStringMsg [ "start", "cloud", "10", "restart" ]) gd t 0 model.components
-
-                ( newcs2, _, newgd2 ) =
-                    updateSingleComponent UnknownMsg (ComponentLStringMsg [ "Activate", "NONE" ]) newgd t 1 newcs
             in
-            ( ( { model | components = newcs2 }, ggd, [] ), newgd2 )
+            ( ( { model | components = newcs }, ggd, [] ), newgd )
 
         _ ->
             case msg of
@@ -61,17 +58,20 @@ updateModel msg gd lm ( model, t ) ggd =
                     in
                     case rmsg of
                         ComponentLStringMsg ("nextscene" :: s :: _) ->
-                            ( ( { model | components = newcs1 }, ggd, [ ( LayerParentScene, LayerExitMsg (EngineT ggd.energy s) s ) ] ), newgd1 )
+                            ( ( { model | components = newcs }, ggd, [ ( LayerParentScene, LayerExitMsg (EngineT ggd.energy DefaultPlayerPosition) s ) ] ), newgd )
 
                         ComponentLStringMsg ("restart" :: _) ->
-                            ( ( { model | components = newcs1 }, ggd, [ ( LayerParentScene, LayerExitMsg (EngineT 0 ggd.currentScene) ggd.currentScene ) ] ), newgd1 )
+                            ( ( { model | components = newcs }, ggd, [ ( LayerParentScene, LayerExitMsg (EngineT 0 DefaultPlayerPosition) ggd.currentScene ) ] ), newgd )
 
                         _ ->
                             ( ( { model | components = newcs1 }, ggd, [] ), newgd1 )
 
-                _ ->
+                KeyDown 27 ->
                     let
                         ( newcs, _, newgd ) =
-                            updateSingleComponent msg NullComponentMsg gd t 1 model.components
+                            updateSingleComponent UnknownMsg (ComponentLStringMsg [ "Activate", "NONE" ]) gd t 1 model.components
                     in
-                    ( ( { model | components = newcs }, ggd, [] ), gd )
+                    ( ( { model | components = newcs }, ggd, [] ), newgd )
+
+                _ ->
+                    ( ( model, ggd, [] ), gd )

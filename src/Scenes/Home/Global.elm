@@ -1,11 +1,11 @@
 module Scenes.Home.Global exposing (..)
 
-import Base exposing (Msg)
+import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
 import Lib.Scene.Base exposing (..)
-import Scenes.SceneSettings exposing (..)
 import Scenes.Home.Export exposing (..)
-import Base exposing (GlobalData)
+import Scenes.SceneSettings exposing (..)
+
 
 sdata : Data -> SceneDataTypes
 sdata d =

@@ -6,5 +6,5 @@ import Scenes.Home.LayerSettings exposing (LayerCT)
 
 type alias XModel =
     { commonData : CommonData
-    , layers : List ( String,  LayerCT )
+    , layers : List ( String, LayerCT )
     }
