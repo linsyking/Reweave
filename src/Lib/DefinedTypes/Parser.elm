@@ -188,3 +188,22 @@ setFirstFitComponentInList name newCom comList =
 
     else
         comList
+
+
+dgetDict : Dict String DefinedTypes -> String -> Dict String DefinedTypes
+dgetDict f s =
+    let
+        other =
+            Dict.empty
+    in
+    case Dict.get s f of
+        Just (CDDict x) ->
+            x
+
+        _ ->
+            other
+
+
+dsetDict : String -> Dict String DefinedTypes -> Dict String DefinedTypes -> Dict String DefinedTypes
+dsetDict s dict f =
+    Dict.update s (\_ -> Just (CDDict dict)) f

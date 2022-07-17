@@ -45,7 +45,7 @@ updateModel msg gd lm ( model, t ) ggd =
                     updateSingleComponent UnknownMsg (ComponentLStringMsg [ "start", "cloud", "10", "restart" ]) gd t 0 model.components
 
                 ( newcs2, _, newgd2 ) =
-                    updateSingleComponent UnknownMsg (ComponentStringMsg "Activate") newgd t 1 newcs
+                    updateSingleComponent UnknownMsg (ComponentLStringMsg [ "Activate", "NONE" ]) newgd t 1 newcs
             in
             ( ( { model | components = newcs2 }, ggd, [] ), newgd2 )
 

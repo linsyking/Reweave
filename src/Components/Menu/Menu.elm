@@ -12,7 +12,7 @@ import Constants exposing (..)
 import Dict
 import Lib.Component.Base exposing (Component, ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
-import Lib.DefinedTypes.Parser exposing (dgetLComponent, dgetbool, dsetLComponent, dsetbool)
+import Lib.DefinedTypes.Parser exposing (dgetDict, dgetLComponent, dgetbool, dsetLComponent, dsetbool)
 import Lib.Render.Render exposing (renderText)
 
 
@@ -136,10 +136,31 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
 
         _ ->
             case comMsg of
-                ComponentStringMsg demand ->
+                ComponentLStringMsg (demand :: data :: _) ->
                     case demand of
                         "Activate" ->
-                            ( model |> dsetbool "Show" True, NullComponentMsg, globalData )
+                            let
+                                tmpData =
+                                    dgetDict model "Data"
+
+                                ( newChildComponentsList, _, newGlobalData ) =
+                                    List.foldl
+                                        (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
+                                            let
+                                                ( tmpCom, tmpComMsg, gD ) =
+                                                    comModel.update mainMsg (ComponentDictMsg tmpData) tmpGData ( comModel.data, t )
+                                            in
+                                            ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
+                                        )
+                                        ( [], [], globalData )
+                                        childComponentsList
+                            in
+                            ( model
+                                |> dsetbool "Show" True
+                                |> dsetLComponent "Child" newChildComponentsList
+                            , NullComponentMsg
+                            , newGlobalData
+                            )
 
                         _ ->
                             ( model, NullComponentMsg, globalData )
