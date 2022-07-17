@@ -217,11 +217,6 @@ updateModel msg gct ggd gd ( d, t ) =
                     ( d, [], ggd )
 
 
-queryModel : String -> ( Data, Int ) -> GameComponentTMsg
-queryModel _ _ =
-    NullGameComponentMsg
-
-
 reboundPlayer : Float -> Data -> Data
 reboundPlayer rbv d =
     let

@@ -13,5 +13,5 @@ import Scenes.Home.LayerBase exposing (CommonData)
 dview : ( ModelX, Int ) -> CommonData -> GlobalData -> Renderable
 dview ( _, _ ) _ gd =
     group []
-        [ renderSprite gd [] ( 0, 0 ) ( 1920, 1080 ) "background" gd.sprites
+        [ renderSprite gd [] ( 0, 0 ) ( 1920, 1080 ) "background"
         ]

@@ -125,7 +125,7 @@ viewMap ( model, _ ) globalData =
                         dgetfloat data "MapHeight"
                 in
                 [ renderText globalData 30 "Map" "sans-serif" ( 500, 500 )
-                , renderSprite globalData [] ( 500, 550 ) ( 400, 200 ) "background" globalData.sprites
+                , renderSprite globalData [] ( 500, 550 ) ( 400, 200 ) "background"
                 , shapes []
                     (case ( floor mapWidth, floor mapHeight ) of
                         ( 0, _ ) ->

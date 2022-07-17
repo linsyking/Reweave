@@ -17,8 +17,12 @@ transPoint gd p =
     posToReal gd p
 
 
-renderSprite : GlobalData -> List Setting -> ( Int, Int ) -> ( Int, Int ) -> String -> Dict String Texture -> Renderable
-renderSprite gd ls p ( w, h ) name dst =
+renderSprite : GlobalData -> List Setting -> ( Int, Int ) -> ( Int, Int ) -> String -> Renderable
+renderSprite gd ls p ( w, h ) name =
+    let
+        dst =
+            gd.sprites
+    in
     case igetSprite name dst of
         Just t ->
             let

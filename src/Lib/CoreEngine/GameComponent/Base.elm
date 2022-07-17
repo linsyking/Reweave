@@ -21,8 +21,7 @@ type alias GameComponent =
     , data : Data
     , init : Int -> GameComponentTMsg -> Data
     , update : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
-    , view : ( Data, Int ) -> GameGlobalData -> GlobalData -> Renderable
-    , query : String -> ( Data, Int ) -> GameComponentTMsg
+    , view : ( Data, Int ) -> GameGlobalData -> GlobalData -> List ( Renderable, Int )
     }
 
 

@@ -140,8 +140,3 @@ updateModel _ gct ggd _ ( d, t ) =
 
         _ ->
             ( d, [], ggd )
-
-
-queryModel : String -> ( Data, Int ) -> GameComponentTMsg
-queryModel _ _ =
-    NullGameComponentMsg
