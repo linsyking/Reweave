@@ -38,6 +38,9 @@ preCheck : Int -> Model -> Data -> ( Model, Data )
 preCheck t model d =
     let
         --- First Update Space
+        dsada =
+            Debug.log "key" ( queryIsState model "onground", nspace )
+
         cs =
             model.originKeys.space
 
