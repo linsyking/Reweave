@@ -21,8 +21,10 @@ testData =
     Dict.fromList
         [ ( "CharLife", CDInt 5 )
         , ( "CharEnergy", CDFloat 50.5 )
-        , ( "CharPositionX", CDFloat 40 )
+        , ( "CharPositionX", CDFloat 400 )
         , ( "CharPositionY", CDFloat 30 )
+        , ( "MapWidth", CDFloat 1000 )
+        , ( "MapHeight", CDFloat 500 )
         ]
 
 
