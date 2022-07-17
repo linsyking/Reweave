@@ -28,10 +28,18 @@ solidCollisionMove ls ggd d =
         newpos =
             case jshape of
                 CRCORNERBOOST ->
-                    ( mvdx, mvdy - 20 )
+                    if pvy > -50 then
+                        ( mvdx, mvdy )
+
+                    else
+                        ( mvdx, mvdy - 20 )
 
                 CLCORNERBOOST ->
-                    ( mvdx, mvdy - 20 )
+                    if pvy > -50 then
+                        ( mvdx, mvdy )
+
+                    else
+                        ( mvdx, mvdy - 20 )
 
                 _ ->
                     ( mvdx, mvdy )
@@ -63,18 +71,24 @@ solidCollisionMove ls ggd d =
                     ( 0, 0 )
 
                 CBOOSTBOTTOMLEFT ->
-                    if pvy > -100 then
+                    if pvy > -50 then
+                        ( pvx, 0 )
+
+                    else if pvy > -150 then
                         ( -40, 0 )
 
                     else
-                        ( -40 + pvy, 0 )
+                        ( -10 + pvy, 0 )
 
                 CBOOSTBOTTOMRIGHT ->
-                    if pvy > -100 then
+                    if pvy > -50 then
+                        ( pvx, 0 )
+
+                    else if pvy > -150 then
                         ( 40, 0 )
 
                     else
-                        ( 40 - pvy, 0 )
+                        ( 10 - pvy, 0 )
 
                 CBOOSTTOPLEFT ->
                     ( -40, 0 )

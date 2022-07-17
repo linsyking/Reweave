@@ -115,13 +115,13 @@ delLargeVelocity ct model d cj =
                     ( model, { d | velocity = ( vx / 1.1, vy ) } )
 
                 else if right == 1 && left == 0 then
-                    ( model, { d | velocity = ( vx / 1.03, vy ) } )
+                    ( model, { d | velocity = ( vx / 1.04, vy ) } )
 
                 else
                     ( model, { d | velocity = ( vx / 1.05, vy ) } )
 
             else if left == 1 && left == 0 then
-                ( model, { d | velocity = ( vx / 1.03, vy ) } )
+                ( model, { d | velocity = ( vx / 1.04, vy ) } )
 
             else if right == 1 && left == 0 then
                 ( model, { d | velocity = ( vx / 1.1, vy ) } )
@@ -151,14 +151,14 @@ delLargeVelocity ct model d cj =
     else
         case model.keyPressed of
             PressTime t ->
-                if ct - t < 20 then
+                if ct - t <= 20 then
                     ( { model | keyPressed = PressTime ct }, { d | velocity = ( vx, vy + 5 ) } )
 
                 else
                     ( { model | keyPressed = Nope }, d )
 
             Nope ->
-                ( { model | keyPressed = PressTime ct }, { d | velocity = ( vx, vy + 100 ) } )
+                ( { model | keyPressed = PressTime ct }, { d | velocity = ( vx, vy + 120 ) } )
 
 
 type VelDirMsg

@@ -25,10 +25,10 @@ initModel : Int -> LayerMsg -> GameGlobalData -> Model
 initModel _ lm _ =
     case lm of
         LayerInitGameLayer info ->
-            info
+            { player = info.player, actors = info.actors, chartlets = info.chartlets, lastuseEnergyTime = 0 }
 
         _ ->
-            { player = Player.gameComponent, actors = Array.fromList [ Goomba.gameComponent ], chartlets = [] }
+            { player = Player.gameComponent, actors = Array.fromList [ Goomba.gameComponent ], chartlets = [], lastuseEnergyTime = 0 }
 
 
 deleteObjects : GameGlobalData -> Array.Array GameComponent -> Array.Array GameComponent
@@ -573,7 +573,10 @@ updateModel msg gd _ ( model, t ) ggd =
                 ( ( { model | player = newplayer }, newggd, [] ), gd )
 
             MouseDown 2 mp ->
-                if ggd.selectobj > 0 then
+                if t - model.lastuseEnergyTime < 15 then
+                    ( ( model, ggd, [] ), gd )
+
+                else if ggd.selectobj > 0 then
                     if ggd.selectobj == model.player.data.uid then
                         let
                             ( px, py ) =
@@ -602,7 +605,7 @@ updateModel msg gd _ ( model, t ) ggd =
                                 else
                                     model.player
                         in
-                        ( ( { model | player = newplayer }, updss, [] ), gd )
+                        ( ( { model | player = newplayer, lastuseEnergyTime = t }, updss, [] ), gd )
 
                     else
                         let
@@ -644,7 +647,7 @@ updateModel msg gd _ ( model, t ) ggd =
                                     newactors =
                                         Array.set tn newplayer model.actors
                                 in
-                                ( ( { model | actors = newactors }, updss, [] ), gd )
+                                ( ( { model | actors = newactors, lastuseEnergyTime = t }, updss, [] ), gd )
 
                             Nothing ->
                                 ( ( model, ggd, [] ), gd )
