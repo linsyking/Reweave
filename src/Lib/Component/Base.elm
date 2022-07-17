@@ -56,6 +56,7 @@ type DefinedTypes
     | CDLString (List String)
     | CDPlayerModel PlayerBase.Model
     | CDLComponent (List ( String, Component ))
+    | CDDict (Dict String DefinedTypes)
 
 
 dgetint : Dict String DefinedTypes -> String -> Int

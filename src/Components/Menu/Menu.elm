@@ -16,6 +16,14 @@ import Lib.DefinedTypes.Parser exposing (dgetLComponent, dsetLComponent)
 import Lib.Render.Render exposing (renderText)
 
 
+testData : Dict.Dict String DefinedTypes
+testData =
+    Dict.fromList
+        [ ( "CharLife", CDInt 5 )
+        , ( "CharEnergy", CDFloat 50.5 )
+        ]
+
+
 initMenu : Int -> ComponentTMsg -> Data
 initMenu _ _ =
     Dict.fromList
@@ -27,7 +35,7 @@ initMenu _ _ =
                 , ( "Map", MenuMapE.initComponent 0 NullComponentMsg )
                 ]
           )
-        , ( "Data", CDString "" )
+        , ( "Data", CDDict testData )
         ]
 
 
