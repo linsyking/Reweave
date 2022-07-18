@@ -21,11 +21,13 @@ import Lib.Render.Render exposing (renderText)
 initText : Int -> ComponentTMsg -> Data
 initText _ comMsg =
     case comMsg of
-        ComponentDictMsg dict ->
-            dict
-                |> dsetstring "_Status" "OnBuild"
-                |> dsetint "_Timer" 0
-                |> dsetLComponent "_Child" []
+        ComponentStringMsg str ->
+            Dict.fromList
+                [ ( "_Status", CDString "OnBuild" )
+                , ( "_Timer", CDInt 0 )
+                , ( "Text", CDString str )
+                , ( "_Child", CDLComponent [] )
+                ]
 
         _ ->
             Dict.empty

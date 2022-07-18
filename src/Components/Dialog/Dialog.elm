@@ -34,7 +34,7 @@ initDialog _ comMsg =
 
 
 checkStatusReport : List String -> List ( String, Component ) -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
-checkStatusReport list newChildComponentsList globalData ( model, t ) =
+checkStatusReport list childComponentsList globalData ( model, t ) =
     let
         statusReport =
             Maybe.withDefault "" (List.head list)
@@ -49,7 +49,7 @@ checkStatusReport list newChildComponentsList globalData ( model, t ) =
         "OnBuild" ->
             ( model
                 |> dsetint "_Timer" timer
-                |> dsetLComponent "_Child" newChildComponentsList
+                |> dsetLComponent "_Child" childComponentsList
             , NullComponentMsg
             , globalData
             )
@@ -57,7 +57,7 @@ checkStatusReport list newChildComponentsList globalData ( model, t ) =
         "OnShow" ->
             ( model
                 |> dsetint "_Timer" timer
-                |> dsetLComponent "_Child" newChildComponentsList
+                |> dsetLComponent "_Child" childComponentsList
             , NullComponentMsg
             , globalData
             )
@@ -65,23 +65,51 @@ checkStatusReport list newChildComponentsList globalData ( model, t ) =
         "OnDeBuild" ->
             ( model
                 |> dsetint "_Timer" timer
-                |> dsetLComponent "_Child" newChildComponentsList
+                |> dsetLComponent "_Child" childComponentsList
             , NullComponentMsg
             , globalData
             )
 
         "OnEnd" ->
-            ( model
-                |> dsetint "_Timer" timer
-                |> dsetLComponent "_Child" newChildComponentsList
-            , NullComponentMsg
-            , globalData
-            )
+            let
+                newChildComponentsList =
+                    List.filter
+                        (\( comName, _ ) ->
+                            if comName == "Text" then
+                                True
+
+                            else
+                                False
+                        )
+                        childComponentsList
+
+                index =
+                    dgetint model "_Index" + 1
+            in
+            if dgetbool model (String.fromInt index ++ "textExist") then
+                ( model
+                    |> dsetint "_Timer" timer
+                    |> dsetLComponent "_Child"
+                        (List.append newChildComponentsList
+                            [ ( "Text", DialTextE.initComponent 0 (ComponentStringMsg (dgetString model (String.fromInt index ++ "Text"))) ) ]
+                        )
+                , NullComponentMsg
+                , globalData
+                )
+
+            else
+                ( model
+                    |> dsetint "_Timer" timer
+                    |> dsetstring "_Status" "OnDeBuild"
+                    |> dsetLComponent "_Child" newChildComponentsList
+                , NullComponentMsg
+                , globalData
+                )
 
         _ ->
             ( model
                 |> dsetint "_Timer" timer
-                |> dsetLComponent "_Child" newChildComponentsList
+                |> dsetLComponent "_Child" childComponentsList
             , NullComponentMsg
             , globalData
             )
@@ -100,10 +128,14 @@ updateDialog mainMsg comMsg globalData ( model, t ) =
             in
             case ( status, timer ) of
                 ( "OnBuild", 10 ) ->
+                    let
+                        index =
+                            dgetint model "_Index"
+                    in
                     ( model
                         |> dsetint "_Timer" timer
                         |> dsetstring "_Status" "OnShow"
-                        |> dsetLComponent "_Child" [ ( "Text", DialTextE.initComponent 0 NullComponentMsg ) ]
+                        |> dsetLComponent "_Child" [ ( "Text", DialTextE.initComponent 0 (ComponentStringMsg (dgetString model (String.fromInt index ++ "Text"))) ) ]
                     , NullComponentMsg
                     , globalData
                     )
