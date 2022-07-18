@@ -1,11 +1,12 @@
 module Lib.CoreEngine.GameComponents.CutScene.Model exposing (..)
 
 import Base exposing (GlobalData, Msg(..))
+import Components.Dialog.Export as DialogE
 import Dict
-import Lib.Component.Base exposing (DefinedTypes(..))
+import Lib.Component.Base exposing (Component, DefinedTypes(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
-import Lib.DefinedTypes.Parser exposing (dgetString, dgetbool, dsetbool)
+import Lib.DefinedTypes.Parser exposing (dgetLComponent, dgetString, dgetbool, dgetint, dsetLComponent, dsetbool)
 
 
 initData : Data
@@ -88,20 +89,35 @@ updateModel msg gct ggd _ ( d, t ) =
         GameInterCollisionMsg "player" _ _ ->
             ( { d
                 | extra =
-                    d.extra |> dsetbool "onShow" True
+                    d.extra
+                        |> dsetLComponent "_Child"
+                            [ ( "Dialog", DialogE.initComponent 0 NullComponentMsg ) ]
               }
             , []
             , ggd
             )
 
         _ ->
-            if dgetbool d.extra "onShow" then
-                case msg of
-                    Tick _ ->
-                        ( d, [], ggd )
+            let
+                data =
+                    d.extra
 
-                    _ ->
-                        ( d, [], ggd )
+                componentsList =
+                    dgetLComponent data "_Child"
 
-            else
-                ( d, [], ggd )
+                ( tmpChildComponentsList, tmpChildComponentsMsg, _ ) =
+                    List.foldl
+                        (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
+                            let
+                                ( tmpCom, tmpComMsg, gD ) =
+                                    comModel.update msg gct tmpGData ( comModel.data, t )
+                            in
+                            ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
+                        )
+                        ( [], [], ggd )
+                        componentsList
+            in
+            ( { d | extra = d.extra |> dsetLComponent "_Child" tmpChildComponentsList }
+            , []
+            , ggd
+            )
