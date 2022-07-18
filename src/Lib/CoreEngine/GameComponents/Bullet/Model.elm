@@ -2,12 +2,11 @@ module Lib.CoreEngine.GameComponents.Bullet.Model exposing (..)
 
 import Base exposing (GlobalData, Msg(..))
 import Dict
-import Lib.CoreEngine.Base exposing (GameGlobalData)
-import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType, GameComponentTMsg(..), LifeStatus(..))
 import Lib.Component.Base exposing (DefinedTypes(..))
-import Lib.CoreEngine.GameComponent.Base exposing (GameComponentMsgType(..))
-import Lib.DefinedTypes.Parser exposing (dgetfloat)
+import Lib.CoreEngine.Base exposing (GameGlobalData)
+import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
 import Lib.CoreEngine.Physics.SolidCollision exposing (canMove)
+import Lib.DefinedTypes.Parser exposing (dgetfloat)
 import Math.Vector2 exposing (vec2)
 
 
@@ -18,10 +17,10 @@ initData =
     , velocity = ( -50, 0 )
     , mass = 5
     , acceleration = ( 0, 0 )
-    , simplecheck = simplecheckBox 
+    , simplecheck = simplecheckBox
     , collisionbox = [ collisionBox ]
     , extra = Dict.empty
-    , uid = 50 
+    , uid = 50
     }
 
 
@@ -56,7 +55,7 @@ initModel _ gcm =
             , acceleration = ( 0, 0 )
             , simplecheck = simplecheckBox
             , collisionbox = [ collisionBox ]
-            , extra = 
+            , extra =
                 Dict.fromList
                     [ ( "radius", CDFloat info.radius )
                     ]
@@ -70,13 +69,12 @@ initModel _ gcm =
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
 updateModel msg gct ggd gd ( d, t ) =
     case gct of
-        GameInterCollisionMsg _ pd _  ->
-            ( { d| status = Dead t }, [ GameActorUidMsg pd.uid (GameStringMsg "die") ], ggd )
+        GameInterCollisionMsg _ pd _ ->
+            ( { d | status = Dead t }, [ GameActorUidMsg pd.uid (GameStringMsg "die") ], ggd )
 
         _ ->
-
             let
-                r = 
+                r =
                     dgetfloat d.extra "radius"
 
                 ( vx, vy ) =
@@ -84,15 +82,12 @@ updateModel msg gct ggd gd ( d, t ) =
 
                 ( x, y ) =
                     d.position
-
             in
-            if (vx < 0 && not (canMove d ggd (vec2 -1 0))) || (vx > 0 && not (canMove d ggd (vec2 1 0))) then 
+            if (vx < 0 && not (canMove d ggd (vec2 -1 0))) || (vx > 0 && not (canMove d ggd (vec2 1 0))) then
                 ( { d | status = Dead t }, [], ggd )
-                
+
             else
                 ( { d | position = ( x + ceiling (vx / 1000), y + ceiling (vy / 1000) ) }, [], ggd )
-
-                
 
 
 queryModel : String -> ( Data, Int ) -> GameComponentTMsg
