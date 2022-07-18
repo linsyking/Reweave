@@ -4,12 +4,11 @@ import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (..)
 import Canvas.Settings exposing (..)
 import Canvas.Settings.Advanced exposing (..)
-import Color
 import Constants exposing (..)
 import Dict
-import Lib.Component.Base exposing (Component, ComponentTMsg(..), Data, DefinedTypes(..))
+import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
-import Lib.DefinedTypes.Parser exposing (dgetDict, dgetLComponent, dgetString, dgetbool, dgetint, dsetLComponent, dsetbool, dsetint, dsetstring)
+import Lib.DefinedTypes.Parser exposing (dgetString, dgetint, dsetint, dsetstring)
 import Lib.Render.Render exposing (renderText)
 
 

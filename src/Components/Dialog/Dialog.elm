@@ -11,8 +11,7 @@ import Constants exposing (..)
 import Dict
 import Lib.Component.Base exposing (Component, ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
-import Lib.DefinedTypes.Parser exposing (dgetDict, dgetLComponent, dgetString, dgetbool, dgetint, dsetLComponent, dsetbool, dsetint, dsetstring)
-import Lib.Render.Render exposing (renderText)
+import Lib.DefinedTypes.Parser exposing (dgetLComponent, dgetString, dgetint, dsetLComponent, dsetint, dsetstring)
 
 
 
@@ -42,9 +41,6 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
 
         timer =
             dgetint model "_Timer" + 1
-
-        status =
-            dgetString model "_Status"
     in
     case statusReport of
         "OnBuild" ->
@@ -122,7 +118,7 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
 
 
 updateDialog : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
-updateDialog mainMsg comMsg globalData ( model, t ) =
+updateDialog mainMsg _ globalData ( model, t ) =
     case mainMsg of
         Tick _ ->
             let
@@ -219,9 +215,6 @@ updateDialog mainMsg comMsg globalData ( model, t ) =
                         )
                         ( [], NullComponentMsg )
                         childComponetsList
-
-                tmp1 =
-                    Debug.log (Debug.toString newChildComponentMsg) 1
             in
             case newChildComponentMsg of
                 ComponentLSStringMsg demand list ->
@@ -230,9 +223,6 @@ updateDialog mainMsg comMsg globalData ( model, t ) =
                             let
                                 request =
                                     Maybe.withDefault "" (List.head list)
-
-                                tmp =
-                                    Debug.log request 1
                             in
                             if request == "OnDeBuild" then
                                 let

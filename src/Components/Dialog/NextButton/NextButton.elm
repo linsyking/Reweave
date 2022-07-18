@@ -7,9 +7,9 @@ import Canvas.Settings.Advanced exposing (..)
 import Color
 import Constants exposing (..)
 import Dict
-import Lib.Component.Base exposing (Component, ComponentTMsg(..), Data, DefinedTypes(..))
+import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
-import Lib.DefinedTypes.Parser exposing (dgetDict, dgetLComponent, dgetString, dgetbool, dgetint, dsetLComponent, dsetbool, dsetint, dsetstring)
+import Lib.DefinedTypes.Parser exposing (dgetString, dgetint, dsetint, dsetstring)
 
 
 
@@ -20,7 +20,7 @@ import Lib.DefinedTypes.Parser exposing (dgetDict, dgetLComponent, dgetString, d
 initButton : Int -> ComponentTMsg -> Data
 initButton _ comMsg =
     case comMsg of
-        ComponentStringMsg str ->
+        ComponentStringMsg _ ->
             Dict.fromList
                 [ ( "_Status", CDString "OnShow" )
                 , ( "_Timer", CDInt 0 )
@@ -32,7 +32,7 @@ initButton _ comMsg =
 
 
 updateButton : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
-updateButton mainMsg comMsg globalData ( model, t ) =
+updateButton mainMsg _ globalData ( model, t ) =
     case mainMsg of
         Tick _ ->
             let
