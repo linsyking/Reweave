@@ -74,9 +74,6 @@ updateModel msg gct ggd gd ( d, t ) =
 
         _ ->
             let
-                r =
-                    dgetfloat d.extra "radius"
-
                 ( vx, vy ) =
                     d.velocity
 
@@ -89,7 +86,3 @@ updateModel msg gct ggd gd ( d, t ) =
             else
                 ( { d | position = ( x + ceiling (vx / 1000), y + ceiling (vy / 1000) ) }, [], ggd )
 
-
-queryModel : String -> ( Data, Int ) -> GameComponentTMsg
-queryModel _ _ =
-    NullGameComponentMsg

@@ -25,7 +25,7 @@ view ( d, t ) ggd gd =
     in
     if d.status == Alive then
         [ ( group []
-                [ shapes [ fill Color.red ] [ circle ( x, y ) r ]
+                [ renderSprite gd [] (getPositionUnderCamera d.position ggd) (d.simplecheck.width, 0) "bullet"
                 ]
           , 0
           )
