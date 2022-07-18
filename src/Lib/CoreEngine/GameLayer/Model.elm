@@ -8,7 +8,7 @@ import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Camera exposing (getNewCamera)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Data, GameComponent, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
-import Lib.CoreEngine.GameComponent.ComponentHandler exposing (getGameComponentCenter, initGameComponent, isAlive, sendManyGameComponentMsg, simpleUpdateAllGameComponent, splitPlayerObjs, updateOneGameComponent)
+import Lib.CoreEngine.GameComponent.ComponentHandler exposing (getGameComponentCenter, initGameComponent, isAlive, sendManyGameComponentMsg, simpleUpdateAllGameComponent, splitPlayerObjs, updateOneGameComponent, updateSingleGameComponentByName)
 import Lib.CoreEngine.GameComponent.GenUID exposing (genUID)
 import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
 import Lib.CoreEngine.GameComponents.Player.Export as Player
@@ -599,12 +599,12 @@ updateModel msg gd lm ( model, t ) ggd =
                             ( ( model, ggd, [] ), gd )
 
                     KeyDown 13 ->
-                        -- Special, don't block this!
+                        -- For cutscene
                         let
-                            ( newplayer, _, newggd ) =
-                                updateOneGameComponent msg NullGameComponentMsg ggd gd t model.player
+                            ( newactors, _, newggd ) =
+                                updateSingleGameComponentByName msg NullGameComponentMsg ggd gd t "CutScene" model.actors
                         in
-                        ( ( { model | player = newplayer }, newggd, [] ), gd )
+                        ( ( { model | actors = newactors }, newggd, [] ), gd )
 
                     KeyDown _ ->
                         if model.ignoreInput then
