@@ -77,15 +77,5 @@ updateText mainMsg comMsg globalData ( model, t ) =
 
 viewText : ( Data, Int ) -> GlobalData -> Renderable
 viewText ( model, t ) globalData =
-    let
-        status =
-            dgetString model "_Status"
-
-        timer =
-            dgetint model "_Timer"
-
-        childComponentsList =
-            dgetLComponent model "_Child"
-    in
     group []
         [ renderText globalData 30 (dgetString model "ScreenText") "sans-serif" ( 650, 100 ) ]
