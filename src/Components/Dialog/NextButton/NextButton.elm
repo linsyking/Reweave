@@ -13,8 +13,8 @@ import Lib.DefinedTypes.Parser exposing (dgetString, dgetint, dsetint, dsetstrin
 
 
 
--- OnBuild -> OnShow -> OnDeBuild
--- OnShow : OnLoadChild -> (OnShowChild ->) OnDeChild (OnDeconstructChild)
+-- OnBuild -> OnShow -> OnDeBuild -> OnEnd
+-- OnShow : OnLoadChild -> (OnShowChild ->) OnDeChild (OnDeconstructChild) -> OnEnd
 
 
 initButton : Int -> ComponentTMsg -> Data
