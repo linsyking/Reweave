@@ -32,6 +32,27 @@ simplecheckBox ( w, h ) =
     }
 
 
+decodeTalkings : List ( String, String, Bool ) -> List ( String, DefinedTypes )
+decodeTalkings talkings =
+    List.concat
+        [ Tuple.second
+            (List.foldl
+                (\( charSprite, text, dir ) ( index, list ) ->
+                    ( index + 1
+                    , List.append list
+                        [ ( String.fromInt index ++ "textExist", CDInt 100 )
+                        , ( String.fromInt index ++ "CharSprite", CDString charSprite )
+                        , ( String.fromInt index ++ "Text", CDString text )
+                        , ( String.fromInt index ++ "Direction", CDBool dir )
+                        ]
+                    )
+                )
+                ( 0, [] )
+                talkings
+            )
+        ]
+
+
 initModel : Int -> GameComponentTMsg -> Data
 initModel _ gcm =
     case gcm of
@@ -46,21 +67,13 @@ initModel _ gcm =
             , extra =
                 Dict.fromList
                     (List.concat
-                        (Tuple.second
-                            (List.foldl
-                                (\( charSprite, text, dir ) ( index, list ) ->
-                                    ( index + 1
-                                    , List.append list
-                                        [ ( "CharSprite" ++ String.fromInt index, CDString charSprite )
-                                        , ( "Text" ++ String.fromInt index, CDString text )
-                                        , ( "Direction" ++ String.fromInt index, CDBool dir )
-                                        ]
-                                    )
-                                )
-                                ( 0, [] )
-                                info.talkings
-                            )
-                        )
+                        [ decodeTalkings info.talkings
+                        , [ ( "index", CDInt -1 )
+                          , ( "timer", CDInt 0 )
+                          , ( "textTyperCount", CDInt 0 )
+                          , ( "onShow", CDBool False )
+                          ]
+                        ]
                     )
             , uid = info.uid
             }
@@ -70,7 +83,7 @@ initModel _ gcm =
 
 
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
-updateModel _ gct ggd _ ( d, t ) =
+updateModel msg gct ggd _ ( d, t ) =
     case gct of
         GameInterCollisionMsg "player" _ _ ->
             ( d, [ GameParentMsg (GameExitScene (dgetString d.extra "togo")) ], ggd )

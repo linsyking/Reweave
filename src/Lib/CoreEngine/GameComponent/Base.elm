@@ -45,7 +45,7 @@ type GameComponentTMsg
     | GameSpikeInit SpikeInit
     | GameBulletInit BulletInit
     | GameExitInit ExitInit
-    | GameCutSceneInt CutSceneInit
+    | GameCutSceneInit CutSceneInit
     | GameExitScene String
     | NullGameComponentMsg
 
