@@ -207,9 +207,6 @@ updateDialog mainMsg comMsg globalData ( model, t ) =
                 childComponetsList =
                     dgetLComponent model "_Child"
 
-                tmp =
-                    Debug.log (Debug.toString mainMsg) 1
-
                 ( newChildComponentsList, newChildComponentMsg ) =
                     List.foldl
                         (\( comName, comModel ) ( tmpComponentsList, tmpComponentsMsg ) ->

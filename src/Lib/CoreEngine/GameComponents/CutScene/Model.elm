@@ -96,14 +96,6 @@ updateModel msg gct ggd globalData ( d, t ) =
                 data =
                     d.extra
 
-                tmp =
-                    case msg of
-                        Tick _ ->
-                            2
-
-                        _ ->
-                            Debug.log (Debug.toString msg) 1
-
                 componentsList =
                     dgetLComponent data "_Child"
 
