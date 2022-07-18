@@ -1,14 +1,8 @@
 module Lib.CoreEngine.GameComponents.CutScene.Base exposing (..)
 
 
-type TalkingDir
-    = Left
-    | Right
-
-
-type alias ExitInit =
+type alias CutSceneInit =
     { initPosition : ( Int, Int )
-    , initWidth : Int
-    , initHeight : Int
-    , talkings : List ( String, String, TalkingDir )
+    , initSize : ( Int, Int )
+    , talkings : List ( String, String, Bool )
     }

@@ -18,7 +18,7 @@ initData =
     , simplecheck = simplecheckBox ( 0, 0 )
     , collisionbox = [ simplecheckBox ( 0, 0 ) ]
     , extra = Dict.empty
-    , uid = 999
+    , uid = 888
     }
 
 
@@ -35,7 +35,7 @@ simplecheckBox ( w, h ) =
 initModel : Int -> GameComponentTMsg -> Data
 initModel _ gcm =
     case gcm of
-        GameExitInit info ->
+        GameCutSceneInit info ->
             { status = Alive
             , position = info.initPosition
             , velocity = ( 0, 0 )
@@ -45,8 +45,23 @@ initModel _ gcm =
             , collisionbox = [ simplecheckBox info.initSize ]
             , extra =
                 Dict.fromList
-                    [ ( "togo", CDString info.togo )
-                    ]
+                    (List.concat
+                        (Tuple.second
+                            (List.foldl
+                                (\( charSprite, text, dir ) ( index, list ) ->
+                                    ( index + 1
+                                    , List.append list
+                                        [ ( "CharSprite" ++ String.fromInt index, CDString charSprite )
+                                        , ( "Text" ++ String.fromInt index, CDString text )
+                                        , ( "Direction" ++ String.fromInt index, CDBool dir )
+                                        ]
+                                    )
+                                )
+                                ( 0, [] )
+                                info.talkings
+                            )
+                        )
+                    )
             , uid = info.uid
             }
 
