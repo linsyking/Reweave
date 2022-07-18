@@ -98,7 +98,7 @@ viewModel ( d, t ) gd =
     if state then
         group []
             [ shapes [ alpha 0.1 ] [ rect (posToReal gd ( 20, 970 )) (widthToReal gd 1850) (heightToReal gd 40) ]
-            , renderText gd 30 ("> " ++ command) "sans-seif" ( 20, 975 )
+            , renderText gd 30 ("> " ++ command ++ "_") "sans-seif" ( 30, 975 )
             ]
 
     else
