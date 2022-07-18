@@ -95,7 +95,7 @@ updateModel msg gd lm ( model, t ) ggd =
                         ( ( { addfpsmodel | components = newcs }, ggd, [] ), newgd )
                         rmsg
 
-                MouseDown _ _ ->
+                MouseDown 0 _ ->
                     let
                         ( newcs, _, newgd ) =
                             updateSingleComponent msg NullComponentMsg gd t 1 model.components
