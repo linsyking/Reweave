@@ -5,6 +5,7 @@ import Canvas exposing (..)
 import Canvas.Settings exposing (..)
 import Canvas.Settings.Advanced exposing (..)
 import Color
+import Components.Dialog.Text.Export as DialTextE
 import Constants exposing (..)
 import Dict
 import Lib.Component.Base exposing (Component, ComponentTMsg(..), Data, DefinedTypes(..))
@@ -15,7 +16,7 @@ import Lib.Render.Render exposing (renderText)
 
 
 -- OnBuild -> OnShow -> OnDeBuild
--- OnShow : OnLoadChild -> (OnShowChild ->) OnDeChild (OnDeconstructChild)
+-- OnShow : OnLoadChild -> (OnShowChild ->) OnDeChild (OnDeconstructChild) -> OnEnd
 
 
 initDialog : Int -> ComponentTMsg -> Data
@@ -25,10 +26,65 @@ initDialog _ comMsg =
             dict
                 |> dsetstring "_Status" "OnBuild"
                 |> dsetint "_Timer" 0
+                |> dsetint "_Index" 0
                 |> dsetLComponent "_Child" []
 
         _ ->
             Dict.empty
+
+
+checkStatusReport : List String -> List ( String, Component ) -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
+checkStatusReport list newChildComponentsList globalData ( model, t ) =
+    let
+        statusReport =
+            Maybe.withDefault "" (List.head list)
+
+        timer =
+            dgetint model "_Timer" + 1
+
+        status =
+            dgetString model "_Status"
+    in
+    case statusReport of
+        "OnBuild" ->
+            ( model
+                |> dsetint "_Timer" timer
+                |> dsetLComponent "_Child" newChildComponentsList
+            , NullComponentMsg
+            , globalData
+            )
+
+        "OnShow" ->
+            ( model
+                |> dsetint "_Timer" timer
+                |> dsetLComponent "_Child" newChildComponentsList
+            , NullComponentMsg
+            , globalData
+            )
+
+        "OnDeBuild" ->
+            ( model
+                |> dsetint "_Timer" timer
+                |> dsetLComponent "_Child" newChildComponentsList
+            , NullComponentMsg
+            , globalData
+            )
+
+        "OnEnd" ->
+            ( model
+                |> dsetint "_Timer" timer
+                |> dsetLComponent "_Child" newChildComponentsList
+            , NullComponentMsg
+            , globalData
+            )
+
+        _ ->
+            ( model
+                |> dsetint "_Timer" timer
+                |> dsetLComponent "_Child" newChildComponentsList
+            , NullComponentMsg
+            , globalData
+            )
 
 
 updateDialog : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
@@ -38,17 +94,68 @@ updateDialog mainMsg comMsg globalData ( model, t ) =
             let
                 timer =
                     dgetint model "_Timer" + 1
-            in
-            if timer > 10 then
-                ( model
-                    |> dsetint "_Timer" timer
-                    |> dsetstring "_Status" "Onshow"
-                , NullComponentMsg
-                , globalData
-                )
 
-            else
-                ( model |> dsetint "_Timer" timer, NullComponentMsg, globalData )
+                status =
+                    dgetString model "_Status"
+            in
+            case ( status, timer ) of
+                ( "OnBuild", 10 ) ->
+                    ( model
+                        |> dsetint "_Timer" timer
+                        |> dsetstring "_Status" "OnShow"
+                        |> dsetLComponent "_Child" [ ( "Text", DialTextE.initComponent 0 NullComponentMsg ) ]
+                    , NullComponentMsg
+                    , globalData
+                    )
+
+                ( "OnBuild", _ ) ->
+                    ( model |> dsetint "_Timer" timer, NullComponentMsg, globalData )
+
+                ( "OnShow", _ ) ->
+                    let
+                        childComponetsList =
+                            dgetLComponent model "_Child"
+
+                        ( newChildComponentsList, newChildComponentMsg ) =
+                            List.foldl
+                                (\( comName, comModel ) ( tmpComponentsList, tmpComponentsMsg ) ->
+                                    if comName == "Text" then
+                                        let
+                                            ( tmpData, tmpMsg, _ ) =
+                                                comModel.update mainMsg NullComponentMsg globalData ( comModel.data, t )
+                                        in
+                                        ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], tmpMsg )
+
+                                    else
+                                        ( List.append tmpComponentsList [ ( comName, comModel ) ], tmpComponentsMsg )
+                                )
+                                ( [], NullComponentMsg )
+                                childComponetsList
+                    in
+                    case newChildComponentMsg of
+                        ComponentLSStringMsg demand list ->
+                            case demand of
+                                "StatusReport" ->
+                                    checkStatusReport list newChildComponentsList globalData ( model, t )
+
+                                _ ->
+                                    ( model
+                                        |> dsetint "_Timer" timer
+                                        |> dsetLComponent "_Child" newChildComponentsList
+                                    , NullComponentMsg
+                                    , globalData
+                                    )
+
+                        _ ->
+                            ( model
+                                |> dsetint "_Timer" timer
+                                |> dsetLComponent "_Child" newChildComponentsList
+                            , NullComponentMsg
+                            , globalData
+                            )
+
+                ( _, _ ) ->
+                    ( model |> dsetint "_Timer" timer, NullComponentMsg, globalData )
 
         _ ->
             ( model, NullComponentMsg, globalData )
