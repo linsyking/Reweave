@@ -157,7 +157,7 @@ sds =
 mymap : Array2D.Array2D Int
 mymap =
     sds
-        |> buildrect ( 0, 0 ) ( 1, 70 )
+        |> buildrect ( 0, 0 ) ( 1, 70 ) 1
 '''.replace("$!", levelname)
 
 
