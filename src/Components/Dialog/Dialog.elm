@@ -9,7 +9,7 @@ import Constants exposing (..)
 import Dict
 import Lib.Component.Base exposing (Component, ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
-import Lib.DefinedTypes.Parser exposing (dgetDict, dgetLComponent, dgetbool, dsetLComponent, dsetbool, dsetstring)
+import Lib.DefinedTypes.Parser exposing (dgetDict, dgetLComponent, dgetString, dgetbool, dgetint, dsetLComponent, dsetbool, dsetint, dsetstring)
 import Lib.Render.Render exposing (renderText)
 
 
@@ -24,150 +24,61 @@ initDialog _ comMsg =
         ComponentDictMsg dict ->
             dict
                 |> dsetstring "_Status" "OnBuild"
+                |> dsetint "_Timer" 0
                 |> dsetLComponent "_Child" []
 
         _ ->
             Dict.empty
 
 
-componentInteract : List ( String, Component ) -> List ComponentTMsg -> ComponentTMsg -> GlobalData -> ( List ( String, Component ), ComponentTMsg, GlobalData )
-componentInteract comList comMsgList newMsg globalData =
-    case comMsgList of
-        tmpMsg :: restMsgList ->
-            case tmpMsg of
-                ComponentLSStringMsg demand listStr ->
-                    case demand of
-                        "OnShow" ->
-                            let
-                                showItemName =
-                                    Maybe.withDefault "None" (List.head listStr)
-
-                                newComListWithComMsgs =
-                                    List.map
-                                        (\( comName, comModel ) ->
-                                            let
-                                                ( tmpData, tmpComMsg, _ ) =
-                                                    if comName == showItemName then
-                                                        ( comModel.data, NullComponentMsg, globalData )
-
-                                                    else
-                                                        comModel.update UnknownMsg (ComponentStringMsg "Display:HIDE") globalData ( comModel.data, 0 )
-                                            in
-                                            ( ( comName, { comModel | data = tmpData } ), tmpComMsg )
-                                        )
-                                        comList
-
-                                newComList =
-                                    List.map (\( tmpCom, _ ) -> tmpCom) newComListWithComMsgs
-
-                                newComMsg =
-                                    Maybe.withDefault NullComponentMsg (List.head (List.map (\( _, tmpComMsg ) -> tmpComMsg) newComListWithComMsgs))
-                            in
-                            if newMsg == NullComponentMsg then
-                                componentInteract newComList restMsgList newComMsg globalData
-
-                            else
-                                componentInteract newComList restMsgList newMsg globalData
-
-                        _ ->
-                            componentInteract comList restMsgList newMsg globalData
-
-                _ ->
-                    componentInteract comList restMsgList newMsg globalData
-
-        _ ->
-            ( comList, newMsg, globalData )
-
-
 updateDialog : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
 updateDialog mainMsg comMsg globalData ( model, t ) =
-    let
-        childComponentsList =
-            dgetLComponent model "Child"
-
-        showStatus =
-            dgetbool model "Show"
-    in
     case mainMsg of
-        MouseDown _ ( x, y ) ->
+        Tick _ ->
             let
-                ( tmpChildComponentsList, tmpChildComponentsMsg, tmpGlobalData ) =
-                    List.foldl
-                        (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
-                            let
-                                ( tmpCom, tmpComMsg, gD ) =
-                                    comModel.update mainMsg comMsg tmpGData ( comModel.data, t )
-                            in
-                            ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
-                        )
-                        ( [], [], globalData )
-                        childComponentsList
-
-                ( newChildComponentsList, newChildComponentsMsg, newGlobalData ) =
-                    componentInteract tmpChildComponentsList tmpChildComponentsMsg NullComponentMsg tmpGlobalData
+                timer =
+                    dgetint model "_Timer" + 1
             in
-            if judgeMouse globalData ( x, y ) ( 1100 - 30, 400 - 30 ) ( 2 * 30, 2 * 30 ) then
+            if timer > 10 then
                 ( model
-                    |> dsetbool "Show" False
+                    |> dsetint "_Timer" timer
+                    |> dsetstring "_Status" "Onshow"
                 , NullComponentMsg
                 , globalData
                 )
 
-            else if showStatus then
-                ( model
-                    |> dsetLComponent "Child" newChildComponentsList
-                , newChildComponentsMsg
-                , newGlobalData
-                )
-
             else
-                ( model, NullComponentMsg, globalData )
+                ( model |> dsetint "_Timer" timer, NullComponentMsg, globalData )
 
         _ ->
-            case comMsg of
-                ComponentLStringMsg (demand :: _ :: _) ->
-                    case demand of
-                        "Activate" ->
-                            let
-                                tmpData =
-                                    dgetDict model "Data"
-
-                                ( newChildComponentsList, _, newGlobalData ) =
-                                    List.foldl
-                                        (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
-                                            let
-                                                ( tmpCom, tmpComMsg, gD ) =
-                                                    comModel.update mainMsg (ComponentDictMsg tmpData) tmpGData ( comModel.data, t )
-                                            in
-                                            ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
-                                        )
-                                        ( [], [], globalData )
-                                        childComponentsList
-                            in
-                            ( model
-                                |> dsetbool "Show" True
-                                |> dsetLComponent "Child" newChildComponentsList
-                            , NullComponentMsg
-                            , newGlobalData
-                            )
-
-                        _ ->
-                            ( model, NullComponentMsg, globalData )
-
-                _ ->
-                    ( model, NullComponentMsg, globalData )
+            ( model, NullComponentMsg, globalData )
 
 
 viewDialog : ( Data, Int ) -> GlobalData -> Renderable
 viewDialog ( model, t ) globalData =
     let
-        childComponentsList =
-            dgetLComponent model "Child"
+        status =
+            dgetString model "_Status"
 
-        showStatus =
-            dgetbool model "Show"
+        timer =
+            dgetint model "_Timer"
+
+        childComponentsList =
+            dgetLComponent model "_Child"
     in
-    if showStatus then
+    if status == "OnBuild" then
+        group []
+            (List.append
+                [ shapes [ stroke Color.black ]
+                    [ rect (posToReal globalData ( 400, 300 )) (widthToReal globalData 800) (heightToReal globalData (50 * timer))
+                    , circle (posToReal globalData ( 1100, 400 )) (widthToReal globalData 30)
+                    ]
+                , renderText globalData 50 "X" "sans-serif" ( 1100 - 15, 400 - 30 )
+                ]
+                (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
+            )
+
+    else
         group []
             (List.append
                 [ shapes [ stroke Color.black ]
@@ -178,6 +89,3 @@ viewDialog ( model, t ) globalData =
                 ]
                 (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
             )
-
-    else
-        group [] []
