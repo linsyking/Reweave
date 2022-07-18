@@ -77,11 +77,15 @@ updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data
 updateModel msg gct ggd globalData ( d, t ) =
     case gct of
         GameInterCollisionMsg "player" _ _ ->
+            let
+                talkings =
+                    d.extra
+            in
             ( { d
                 | extra =
                     d.extra
                         |> dsetLComponent "_Child"
-                            [ ( "Dialog", DialogE.initComponent 0 NullComponentMsg ) ]
+                            [ ( "Dialog", DialogE.initComponent 0 (ComponentDictMsg talkings) ) ]
               }
             , []
             , ggd
