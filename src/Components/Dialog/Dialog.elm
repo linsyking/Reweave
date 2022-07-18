@@ -44,6 +44,9 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
 
         status =
             dgetString model "_Status"
+
+        tmp =
+            Debug.log (Debug.toString statusReport) 1
     in
     case statusReport of
         "OnBuild" ->
@@ -76,19 +79,20 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
                     List.filter
                         (\( comName, _ ) ->
                             if comName == "Text" then
-                                True
+                                False
 
                             else
-                                False
+                                True
                         )
                         childComponentsList
 
                 index =
                     dgetint model "_Index" + 1
             in
-            if dgetbool model (String.fromInt index ++ "textExist") then
+            if dgetint model (String.fromInt index ++ "textExist") == 100 then
                 ( model
                     |> dsetint "_Timer" timer
+                    |> dsetint "_Index" index
                     |> dsetLComponent "_Child"
                         (List.append newChildComponentsList
                             [ ( "Text", DialTextE.initComponent 0 (ComponentStringMsg (dgetString model (String.fromInt index ++ "Text"))) ) ]
@@ -100,6 +104,7 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
             else
                 ( model
                     |> dsetint "_Timer" timer
+                    |> dsetint "_Index" index
                     |> dsetstring "_Status" "OnDeBuild"
                     |> dsetLComponent "_Child" newChildComponentsList
                 , NullComponentMsg

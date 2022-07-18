@@ -53,8 +53,8 @@ updateText mainMsg comMsg globalData ( model, t ) =
             if currentPos > wholeLength then
                 ( model
                     |> dsetint "_Timer" timer
-                    |> dsetstring "_Status" "Onshow"
-                , NullComponentMsg
+                    |> dsetstring "_Status" "OnShow"
+                , ComponentLSStringMsg "StatusReport" [ "OnEnd" ]
                 , globalData
                 )
 
@@ -63,12 +63,16 @@ updateText mainMsg comMsg globalData ( model, t ) =
                     |> dsetint "_Timer" timer
                     |> dsetint "_currentPos" currentPos
                     |> dsetstring "ScreenText" (String.slice 0 currentPos (dgetString model "_wholeText"))
-                , NullComponentMsg
+                , ComponentLSStringMsg "StatusReport" [ "OnBuild" ]
                 , globalData
                 )
 
         _ ->
-            ( model, NullComponentMsg, globalData )
+            let
+                status =
+                    dgetString model "_Status"
+            in
+            ( model, ComponentLSStringMsg "StatusReport" [ status ], globalData )
 
 
 viewText : ( Data, Int ) -> GlobalData -> Renderable
