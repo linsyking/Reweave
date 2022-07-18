@@ -44,9 +44,6 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
 
         status =
             dgetString model "_Status"
-
-        tmp =
-            Debug.log (Debug.toString statusReport) 1
     in
     case statusReport of
         "OnBuild" ->
