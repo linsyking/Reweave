@@ -1,9 +1,9 @@
 module Lib.CoreEngine.GameComponents.CutScene.Model exposing (..)
 
 import Base exposing (GlobalData, Msg(..))
-import Components.Dialog.Export as DialogE
+import Components.Dailog.Export as DialogE
 import Dict
-import Lib.Component.Base exposing (Component, DefinedTypes(..))
+import Lib.Component.Base exposing (Component, ComponentTMsg(..), DefinedTypes(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
 import Lib.DefinedTypes.Parser exposing (dgetLComponent, dgetString, dgetbool, dgetint, dsetLComponent, dsetbool)
