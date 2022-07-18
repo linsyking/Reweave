@@ -393,6 +393,20 @@ dealParentMsg gct gd ( model, t ) ggd =
             ( ( model, ggd, [] ), gd )
 
 
+dealAllParentMsg : List GameComponentTMsg -> GlobalData -> ( Model, Int ) -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
+dealAllParentMsg allparentmsg gd ( model, t ) ggd =
+    List.foldl
+        (\tm ( ( cm, cggd, cam ), cgd ) ->
+            let
+                ( ( nnm, nnggd, nndmd ), nngd ) =
+                    dealParentMsg tm cgd ( cm, t ) cggd
+            in
+            ( ( nnm, nnggd, cam ++ nndmd ), nngd )
+        )
+        ( ( model, ggd, [] ), gd )
+        allparentmsg
+
+
 updateModel : Msg -> GlobalData -> LayerMsg -> ( Model, Int ) -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
 updateModel msg gd lm ( model, t ) ggd =
     case lm of

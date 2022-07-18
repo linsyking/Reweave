@@ -4,6 +4,7 @@ import Array exposing (Array)
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
 import Lib.Component.Base exposing (Component, ComponentTMsg(..))
+import Lib.Tools.Array exposing (locate)
 
 
 updateComponents : Int -> Msg -> GlobalData -> Array Component -> ( Array Component, List ComponentTMsg, GlobalData )
@@ -43,6 +44,24 @@ updateSingleComponent msg ct gd t n xs =
             ( xs, NullComponentMsg, gd )
 
 
+updateSingleComponentByName : Msg -> ComponentTMsg -> GlobalData -> Int -> String -> Array Component -> ( Array Component, ComponentTMsg, GlobalData )
+updateSingleComponentByName msg ct gd t s xs =
+    let
+        n =
+            getComponentFromName s xs
+    in
+    case getComponent n xs of
+        Just k ->
+            let
+                ( newx, newmsg, newgd ) =
+                    k.update msg ct gd ( k.data, t )
+            in
+            ( Array.set n { k | data = newx } xs, newmsg, newgd )
+
+        Nothing ->
+            ( xs, NullComponentMsg, gd )
+
+
 genView : GlobalData -> Int -> Array Component -> Renderable
 genView vp t xs =
     Canvas.group [] (Array.toList (Array.map (\x -> x.view ( x.data, t ) vp) xs))
@@ -51,6 +70,11 @@ genView vp t xs =
 getComponent : Int -> Array Component -> Maybe Component
 getComponent n xs =
     Array.get n xs
+
+
+getComponentFromName : String -> Array Component -> Int
+getComponentFromName s xs =
+    Maybe.withDefault -1 (List.head (locate (\x -> x.name == s) xs))
 
 
 queryComponent : Int -> String -> Int -> Array Component -> ComponentTMsg
