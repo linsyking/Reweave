@@ -54,7 +54,7 @@ updateText mainMsg comMsg globalData ( model, t ) =
                 ( model
                     |> dsetint "_Timer" timer
                     |> dsetstring "_Status" "OnShow"
-                , ComponentLSStringMsg "StatusReport" [ "OnEnd" ]
+                , ComponentLSStringMsg "StatusReport" [ "OnShow" ]
                 , globalData
                 )
 
@@ -72,7 +72,21 @@ updateText mainMsg comMsg globalData ( model, t ) =
                 status =
                     dgetString model "_Status"
             in
-            ( model, ComponentLSStringMsg "StatusReport" [ status ], globalData )
+            case comMsg of
+                ComponentStringMsg demand ->
+                    case demand of
+                        "OnDeBuild" ->
+                            ( model
+                                |> dsetstring "_Status" "OnEnd"
+                            , ComponentLSStringMsg "StatusReport" [ "OnEnd" ]
+                            , globalData
+                            )
+
+                        _ ->
+                            ( model, ComponentLSStringMsg "StatusReport" [ status ], globalData )
+
+                _ ->
+                    ( model, ComponentLSStringMsg "StatusReport" [ status ], globalData )
 
 
 viewText : ( Data, Int ) -> GlobalData -> Renderable

@@ -5,6 +5,7 @@ import Canvas exposing (..)
 import Canvas.Settings exposing (..)
 import Canvas.Settings.Advanced exposing (..)
 import Color
+import Components.Dialog.NextButton.Export as DialNextButtonE
 import Components.Dialog.Text.Export as DialTextE
 import Constants exposing (..)
 import Dict
@@ -44,6 +45,9 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
 
         status =
             dgetString model "_Status"
+
+        tmp =
+            Debug.log statusReport 1
     in
     case statusReport of
         "OnBuild" ->
@@ -57,7 +61,10 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
         "OnShow" ->
             ( model
                 |> dsetint "_Timer" timer
-                |> dsetLComponent "_Child" childComponentsList
+                |> dsetLComponent "_Child"
+                    (List.append childComponentsList
+                        [ ( "NextButton", DialNextButtonE.initComponent 0 (ComponentStringMsg "") ) ]
+                    )
             , NullComponentMsg
             , globalData
             )
@@ -161,7 +168,11 @@ updateDialog mainMsg comMsg globalData ( model, t ) =
                                         ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], tmpMsg )
 
                                     else
-                                        ( List.append tmpComponentsList [ ( comName, comModel ) ], tmpComponentsMsg )
+                                        let
+                                            ( tmpData, _, _ ) =
+                                                comModel.update mainMsg NullComponentMsg globalData ( comModel.data, t )
+                                        in
+                                        ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], tmpComponentsMsg )
                                 )
                                 ( [], NullComponentMsg )
                                 childComponetsList
@@ -192,7 +203,65 @@ updateDialog mainMsg comMsg globalData ( model, t ) =
                     ( model |> dsetint "_Timer" timer, NullComponentMsg, globalData )
 
         _ ->
-            ( model, NullComponentMsg, globalData )
+            let
+                childComponetsList =
+                    dgetLComponent model "_Child"
+
+                tmp =
+                    Debug.log (Debug.toString mainMsg) 1
+
+                ( newChildComponentsList, newChildComponentMsg ) =
+                    List.foldl
+                        (\( comName, comModel ) ( tmpComponentsList, tmpComponentsMsg ) ->
+                            if comName == "NextButton" then
+                                let
+                                    ( tmpData, tmpMsg, _ ) =
+                                        comModel.update mainMsg NullComponentMsg globalData ( comModel.data, t )
+                                in
+                                ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], tmpMsg )
+
+                            else
+                                ( List.append tmpComponentsList [ ( comName, comModel ) ], tmpComponentsMsg )
+                        )
+                        ( [], NullComponentMsg )
+                        childComponetsList
+            in
+            case newChildComponentMsg of
+                ComponentLSStringMsg demand list ->
+                    case demand of
+                        "Interaction" ->
+                            let
+                                request =
+                                    Maybe.withDefault "" (List.head list)
+                            in
+                            if request == "OnDeBuild" then
+                                let
+                                    ( tmpChildComponentsList, _ ) =
+                                        List.foldl
+                                            (\( comName, comModel ) ( tmpComponentsList, tmpComponentsMsg ) ->
+                                                if comName == "Text" then
+                                                    let
+                                                        ( tmpData, tmpMsg, _ ) =
+                                                            comModel.update UnknownMsg (ComponentStringMsg "OnDeBuild") globalData ( comModel.data, t )
+                                                    in
+                                                    ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], tmpMsg )
+
+                                                else
+                                                    ( List.append tmpComponentsList [ ( comName, comModel ) ], tmpComponentsMsg )
+                                            )
+                                            ( [], NullComponentMsg )
+                                            childComponetsList
+                                in
+                                ( model |> dsetLComponent "_Child" tmpChildComponentsList, NullComponentMsg, globalData )
+
+                            else
+                                ( model |> dsetLComponent "_Child" newChildComponentsList, NullComponentMsg, globalData )
+
+                        _ ->
+                            ( model |> dsetLComponent "_Child" newChildComponentsList, NullComponentMsg, globalData )
+
+                _ ->
+                    ( model |> dsetLComponent "_Child" newChildComponentsList, NullComponentMsg, globalData )
 
 
 viewDialog : ( Data, Int ) -> GlobalData -> Renderable

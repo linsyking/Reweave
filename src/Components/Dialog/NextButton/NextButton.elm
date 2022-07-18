@@ -48,7 +48,7 @@ updateButton mainMsg comMsg globalData ( model, t ) =
         KeyDown 13 ->
             ( model
                 |> dsetstring "_Status" "OnEnd"
-            , ComponentLSStringMsg "Interaction" [ "Text", "OnDeBuild" ]
+            , ComponentLSStringMsg "Interaction" [ "OnDeBuild" ]
             , globalData
             )
 
@@ -64,7 +64,10 @@ viewButton : ( Data, Int ) -> GlobalData -> Renderable
 viewButton ( model, t ) globalData =
     if dgetString model "_Status" == "OnShow" then
         group []
-            [ shapes [ fill Color.blue ] [] ]
+            [ shapes
+                [ fill Color.blue ]
+                [ rect (posToReal globalData ( 400, 300 )) (widthToReal globalData 800) (heightToReal globalData 500) ]
+            ]
 
     else
         group [] []
