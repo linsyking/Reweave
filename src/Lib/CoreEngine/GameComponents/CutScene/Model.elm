@@ -1,12 +1,12 @@
 module Lib.CoreEngine.GameComponents.CutScene.Model exposing (..)
 
 import Base exposing (GlobalData, Msg(..))
-import Components.Dailog.Export as DialogE
+import Components.Dialog.Export as DialogE
 import Dict
-import Lib.Component.Base exposing (Component, ComponentTMsg(..), DefinedTypes(..))
+import Lib.Component.Base exposing (ComponentTMsg(..), DefinedTypes(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
-import Lib.DefinedTypes.Parser exposing (dgetLComponent, dgetString, dgetbool, dgetint, dsetLComponent, dsetbool)
+import Lib.DefinedTypes.Parser exposing (dgetLComponent, dsetLComponent)
 
 
 initData : Data
@@ -100,7 +100,7 @@ updateModel msg gct ggd globalData ( d, t ) =
                         (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
                             let
                                 ( tmpCom, tmpComMsg, gD ) =
-                                    comModel.update msg NullComponentMsg globalData ( comModel.data, t )
+                                    comModel.update msg NullComponentMsg tmpGData ( comModel.data, t )
                             in
                             ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
                         )

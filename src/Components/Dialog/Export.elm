@@ -1,16 +1,16 @@
-module Components.Dailog.Export exposing (..)
+module Components.Dialog.Export exposing (..)
 
-import Components.Menu.Menu exposing (initMenu, updateMenu, viewMenu)
+import Components.Dialog.Dialog exposing (initDialog, updateDialog, viewDialog)
 import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 
 
 component : Component
 component =
     { name = "Menu"
-    , data = initMenu 0 NullComponentMsg
-    , init = initMenu
-    , update = updateMenu
-    , view = viewMenu
+    , data = initDialog 0 NullComponentMsg
+    , init = initDialog
+    , update = updateDialog
+    , view = viewDialog
     , query = \_ _ -> NullComponentMsg
     }
 

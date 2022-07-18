@@ -1,4 +1,4 @@
-module Components.Dailog.Dailog exposing (..)
+module Components.Dialog.Dialog exposing (..)
 
 import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (..)
@@ -28,10 +28,10 @@ testData =
         ]
 
 
-initMenu : Int -> ComponentTMsg -> Data
-initMenu _ _ =
+initDialog : Int -> ComponentTMsg -> Data
+initDialog _ _ =
     Dict.fromList
-        [ ( "Show", CDBool False )
+        [ ( "Show", CDBool True )
         , ( "Child"
           , CDLComponent
                 [ ( "Status", MenuStatusE.initComponent 0 NullComponentMsg )
@@ -92,8 +92,8 @@ componentInteract comList comMsgList newMsg globalData =
             ( comList, newMsg, globalData )
 
 
-updateMenu : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
-updateMenu mainMsg comMsg globalData ( model, t ) =
+updateDialog : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
+updateDialog mainMsg comMsg globalData ( model, t ) =
     let
         childComponentsList =
             dgetLComponent model "Child"
@@ -171,8 +171,8 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                     ( model, NullComponentMsg, globalData )
 
 
-viewMenu : ( Data, Int ) -> GlobalData -> Renderable
-viewMenu ( model, t ) globalData =
+viewDialog : ( Data, Int ) -> GlobalData -> Renderable
+viewDialog ( model, t ) globalData =
     let
         childComponentsList =
             dgetLComponent model "Child"

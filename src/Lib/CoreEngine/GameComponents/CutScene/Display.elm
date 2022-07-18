@@ -1,10 +1,8 @@
 module Lib.CoreEngine.GameComponents.CutScene.Display exposing (..)
 
 import Base exposing (GlobalData)
-import Canvas exposing (Renderable, group, rect, shapes)
-import Canvas.Settings exposing (fill)
-import Color
-import Lib.Component.Base exposing (Component, ComponentTMsg(..))
+import Canvas exposing (Renderable, group)
+import Lib.Component.Base exposing (ComponentTMsg(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Data)
