@@ -7,7 +7,7 @@ import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 component : Component
 component =
     { name = "Word"
-    , data = initButton 0 NullComponentMsg
+    , data = initButton 1 NullComponentMsg
     , init = initButton
     , update = updateButton
     , view = viewButton
