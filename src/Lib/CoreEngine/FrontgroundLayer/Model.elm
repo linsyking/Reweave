@@ -43,6 +43,12 @@ dealComponentsMsg rmsg model gd ggd =
         ComponentLStringMsg ("restart" :: _) ->
             ( ( model, ggd, [ ( LayerParentScene, LayerExitMsg (EngineT 0 DefaultPlayerPosition) ggd.currentScene ) ] ), gd )
 
+        ComponentStringMsg "stopGameInput" ->
+            ( ( model, ggd, [ ( LayerName "Game", LayerStringMsg "stopinput" ) ] ), gd )
+
+        ComponentStringMsg "startGameInput" ->
+            ( ( model, ggd, [ ( LayerName "Game", LayerStringMsg "startinput" ) ] ), gd )
+
         _ ->
             ( ( model, ggd, [] ), gd )
 
