@@ -70,7 +70,7 @@ viewDialog ( model, t ) globalData =
         group []
             (List.append
                 [ shapes [ stroke Color.black ]
-                    [ rect (posToReal globalData ( 400, 300 )) (widthToReal globalData 800) (heightToReal globalData (50 * timer))
+                    [ rect (posToReal globalData ( 600, 200 - 15 * timer )) (widthToReal globalData 800) (heightToReal globalData (30 * timer))
                     ]
                 ]
                 (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
@@ -80,7 +80,7 @@ viewDialog ( model, t ) globalData =
         group []
             (List.append
                 [ shapes [ stroke Color.black ]
-                    [ rect (posToReal globalData ( 400, 300 )) (widthToReal globalData 800) (heightToReal globalData 500)
+                    [ rect (posToReal globalData ( 600, 50 )) (widthToReal globalData 800) (heightToReal globalData 300)
                     ]
                 ]
                 (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
