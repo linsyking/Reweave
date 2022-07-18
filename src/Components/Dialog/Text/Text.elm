@@ -25,7 +25,10 @@ initText _ comMsg =
             Dict.fromList
                 [ ( "_Status", CDString "OnBuild" )
                 , ( "_Timer", CDInt 0 )
-                , ( "Text", CDString str )
+                , ( "_wholeText", CDString str )
+                , ( "ScreenText", CDString "" )
+                , ( "_wholeTextLength", CDInt (String.length str) )
+                , ( "_currentPos", CDInt 0 )
                 , ( "_Child", CDLComponent [] )
                 ]
 
@@ -40,8 +43,14 @@ updateText mainMsg comMsg globalData ( model, t ) =
             let
                 timer =
                     dgetint model "_Timer" + 1
+
+                currentPos =
+                    dgetint model "_currentPos" + 1
+
+                wholeLength =
+                    dgetint model "_wholeTextLength"
             in
-            if timer > 10 then
+            if currentPos > wholeLength then
                 ( model
                     |> dsetint "_Timer" timer
                     |> dsetstring "_Status" "Onshow"
@@ -50,7 +59,13 @@ updateText mainMsg comMsg globalData ( model, t ) =
                 )
 
             else
-                ( model |> dsetint "_Timer" timer, NullComponentMsg, globalData )
+                ( model
+                    |> dsetint "_Timer" timer
+                    |> dsetint "_currentPos" currentPos
+                    |> dsetstring "ScreenText" (String.slice 0 currentPos (dgetString model "_wholeText"))
+                , NullComponentMsg
+                , globalData
+                )
 
         _ ->
             ( model, NullComponentMsg, globalData )
@@ -68,22 +83,5 @@ viewText ( model, t ) globalData =
         childComponentsList =
             dgetLComponent model "_Child"
     in
-    if status == "OnBuild" then
-        group []
-            (List.append
-                [ shapes [ stroke Color.black ]
-                    [ rect (posToReal globalData ( 400, 300 )) (widthToReal globalData 800) (heightToReal globalData (50 * timer))
-                    ]
-                ]
-                (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
-            )
-
-    else
-        group []
-            (List.append
-                [ shapes [ stroke Color.black ]
-                    [ rect (posToReal globalData ( 400, 300 )) (widthToReal globalData 800) (heightToReal globalData 500)
-                    ]
-                ]
-                (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
-            )
+    group []
+        [ renderText globalData 30 (dgetString model "ScreenText") "sans-serif" ( 650, 100 ) ]
