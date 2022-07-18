@@ -1,4 +1,4 @@
-module Components.Dialog.Dialog exposing (..)
+module Components.Dialog.Text.Text exposing (..)
 
 import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (..)
@@ -18,8 +18,8 @@ import Lib.Render.Render exposing (renderText)
 -- OnShow : OnLoadChild -> (OnShowChild ->) OnDeChild (OnDeconstructChild)
 
 
-initDialog : Int -> ComponentTMsg -> Data
-initDialog _ comMsg =
+initText : Int -> ComponentTMsg -> Data
+initText _ comMsg =
     case comMsg of
         ComponentDictMsg dict ->
             dict
@@ -31,8 +31,8 @@ initDialog _ comMsg =
             Dict.empty
 
 
-updateDialog : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
-updateDialog mainMsg comMsg globalData ( model, t ) =
+updateText : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
+updateText mainMsg comMsg globalData ( model, t ) =
     case mainMsg of
         Tick _ ->
             let
@@ -54,8 +54,8 @@ updateDialog mainMsg comMsg globalData ( model, t ) =
             ( model, NullComponentMsg, globalData )
 
 
-viewDialog : ( Data, Int ) -> GlobalData -> Renderable
-viewDialog ( model, t ) globalData =
+viewText : ( Data, Int ) -> GlobalData -> Renderable
+viewText ( model, t ) globalData =
     let
         status =
             dgetString model "_Status"
