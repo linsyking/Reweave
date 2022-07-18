@@ -28,8 +28,8 @@ collisionBox =
     { name = "col"
     , offsetX = 0
     , offsetY = 0
-    , width = 15
-    , height = 15
+    , width = 10
+    , height = 10
     }
 
 
@@ -38,8 +38,8 @@ simplecheckBox =
     { name = "sp"
     , offsetX = 0
     , offsetY = 0
-    , width = 15
-    , height = 15
+    , width = 10
+    , height = 10
     }
 
 
