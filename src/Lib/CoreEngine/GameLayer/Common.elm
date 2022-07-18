@@ -13,4 +13,5 @@ type alias Model =
     , actors : Array GameComponent
     , chartlets : List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
     , lastuseEnergyTime : Int
+    , ignoreInput : Bool
     }

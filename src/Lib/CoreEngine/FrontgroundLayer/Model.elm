@@ -43,6 +43,12 @@ dealComponentsMsg rmsg model gd ggd =
         ComponentLStringMsg ("restart" :: _) ->
             ( ( model, ggd, [ ( LayerParentScene, LayerExitMsg (EngineT 0 DefaultPlayerPosition) ggd.currentScene ) ] ), gd )
 
+        ComponentStringMsg "stopGameInput" ->
+            ( ( model, ggd, [ ( LayerName "Game", LayerStringMsg "stopinput" ) ] ), gd )
+
+        ComponentStringMsg "startGameInput" ->
+            ( ( model, ggd, [ ( LayerName "Game", LayerStringMsg "startinput" ) ] ), gd )
+
         _ ->
             ( ( model, ggd, [] ), gd )
 
@@ -95,7 +101,7 @@ updateModel msg gd lm ( model, t ) ggd =
                         ( ( { addfpsmodel | components = newcs }, ggd, [] ), newgd )
                         rmsg
 
-                MouseDown _ _ ->
+                MouseDown 0 _ ->
                     let
                         ( newcs, _, newgd ) =
                             updateSingleComponent msg NullComponentMsg gd t 1 model.components
