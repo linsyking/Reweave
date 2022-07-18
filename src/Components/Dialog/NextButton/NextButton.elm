@@ -13,7 +13,7 @@ import Lib.DefinedTypes.Parser exposing (dgetString, dgetint, dsetint, dsetstrin
 
 
 
--- OnBuild -> OnShow -> OnDeBuild -> OnEn
+-- OnBuild -> OnShow -> OnDeBuild -> OnEnd
 -- OnShow : OnLoadChild -> (OnShowChild ->) OnDeChild (OnDeconstructChild) -> OnEnd
 
 
