@@ -1,7 +1,9 @@
 module Lib.CoreEngine.GameComponents.CutScene.Display exposing (..)
 
 import Base exposing (GlobalData)
-import Canvas exposing (Renderable, group)
+import Canvas exposing (Renderable, group, rect, shapes)
+import Canvas.Settings exposing (fill)
+import Color
 import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
@@ -28,5 +30,5 @@ view ( d, t ) ggd gd =
             ]
       , 0
       )
-    , ( group [] (List.map (\( comName, comModel ) -> comModel.view ( comModel.data, t ) ggd) componentsList), 0 )
+    , ( group [] (List.map (\( comName, comModel ) -> comModel.view ( comModel.data, t ) gd) componentsList), 0 )
     ]

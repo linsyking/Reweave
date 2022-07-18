@@ -12,6 +12,8 @@ import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentT
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (initGameComponent)
 import Lib.CoreEngine.GameComponents.Bullet.Base exposing (BulletInit)
 import Lib.CoreEngine.GameComponents.Bullet.Export as Bullet
+import Lib.CoreEngine.GameComponents.CutScene.Base exposing (CutSceneInit)
+import Lib.CoreEngine.GameComponents.CutScene.Export as CutScene
 import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
 import Lib.CoreEngine.GameComponents.Exit.Export as Exit
 import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
@@ -53,6 +55,7 @@ initActors t =
         , initGameComponent t (GameGoombaInit (GoombaInit ( 2000, 800 ) ( 0, 0 ) 2)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 3500, 500 ) ( 0, 0 ) 3)) Goomba.gameComponent
         , initGameComponent t (GameExitInit (ExitInit ( 3800, 1600 ) ( 10, 160 ) "Scene1" 9)) Exit.gameComponent
+        , initGameComponent t (GameCutSceneInit (CutSceneInit ( 100, 1800 ) ( 100, 160 ) 88 [ ( "1", "1", True ) ])) CutScene.gameComponent
         , initGameComponent t (GameGoombaEmitterInit (GoombaEmitterInit ( 900, 1800 ) 200 ( -50, 0 ) 6)) GoombaEmitter.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 704, 2028 ) HorUp 1 10)) Spike.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 736, 2048 ) VerRight 3 11)) Spike.gameComponent

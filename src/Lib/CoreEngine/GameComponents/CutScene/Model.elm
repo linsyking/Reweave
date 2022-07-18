@@ -84,7 +84,7 @@ initModel _ gcm =
 
 
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
-updateModel msg gct ggd _ ( d, t ) =
+updateModel msg gct ggd globalData ( d, t ) =
     case gct of
         GameInterCollisionMsg "player" _ _ ->
             ( { d
@@ -110,11 +110,11 @@ updateModel msg gct ggd _ ( d, t ) =
                         (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
                             let
                                 ( tmpCom, tmpComMsg, gD ) =
-                                    comModel.update msg gct tmpGData ( comModel.data, t )
+                                    comModel.update msg NullComponentMsg globalData ( comModel.data, t )
                             in
                             ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
                         )
-                        ( [], [], ggd )
+                        ( [], [], globalData )
                         componentsList
             in
             ( { d | extra = d.extra |> dsetLComponent "_Child" tmpChildComponentsList }
