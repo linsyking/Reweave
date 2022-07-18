@@ -28,8 +28,8 @@ collisionBox =
     { name = "col"
     , offsetX = 0
     , offsetY = 0
-    , width = 30
-    , height = 30
+    , width = 15
+    , height = 15
     }
 
 
@@ -38,8 +38,8 @@ simplecheckBox =
     { name = "sp"
     , offsetX = 0
     , offsetY = 0
-    , width = 30
-    , height = 30
+    , width = 15
+    , height = 15
     }
 
 
@@ -64,11 +64,8 @@ initModel _ gcm =
 
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
 updateModel msg gct ggd gd ( d, t ) =
-    case gct of
-        GameInterCollisionMsg _ pd _ ->
-            ( { d | status = Dead t }, [ GameActorUidMsg pd.uid (GameStringMsg "die") ], ggd )
-
-        _ ->
+    case msg of
+        Tick _ ->
             let
                 ( vx, vy ) =
                     d.velocity
@@ -81,4 +78,15 @@ updateModel msg gct ggd gd ( d, t ) =
 
             else
                 ( { d | position = ( x + ceiling (vx / 1000), y + ceiling (vy / 1000) ) }, [], ggd )
+
+        _ ->
+            case gct of
+                GameInterCollisionMsg _ pd _ ->
+                    ( { d | status = Dead t }, [ GameActorUidMsg pd.uid (GameStringMsg "die") ], ggd )
+
+                GameSolidCollisionMsg _ ->
+                    ( { d | status = Dead t }, [], ggd )
+
+                _ ->
+                    ( d, [], ggd )
 
