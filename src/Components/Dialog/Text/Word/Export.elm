@@ -1,12 +1,12 @@
-module Components.Dialog.NextButton.Export exposing (..)
+module Components.Dialog.Text.Word.Export exposing (..)
 
-import Components.Dialog.NextButton.NextButton exposing (initButton, updateButton, viewButton)
+import Components.Dialog.Text.Word.Word exposing (initButton, updateButton, viewButton)
 import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 
 
 component : Component
 component =
-    { name = "NextButton"
+    { name = "Word"
     , data = initButton 0 NullComponentMsg
     , init = initButton
     , update = updateButton
