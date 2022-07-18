@@ -5,7 +5,7 @@ import Dict
 import Lib.Component.Base exposing (DefinedTypes(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
-import Lib.DefinedTypes.Parser exposing (dgetString)
+import Lib.DefinedTypes.Parser exposing (dgetString, dgetbool, dsetbool)
 
 
 initData : Data
@@ -86,7 +86,22 @@ updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data
 updateModel msg gct ggd _ ( d, t ) =
     case gct of
         GameInterCollisionMsg "player" _ _ ->
-            ( d, [ GameParentMsg (GameExitScene (dgetString d.extra "togo")) ], ggd )
+            ( { d
+                | extra =
+                    d.extra |> dsetbool "onShow" True
+              }
+            , []
+            , ggd
+            )
 
         _ ->
-            ( d, [], ggd )
+            if dgetbool d.extra "onShow" then
+                case msg of
+                    Tick _ ->
+                        ( d, [], ggd )
+
+                    _ ->
+                        ( d, [], ggd )
+
+            else
+                ( d, [], ggd )
