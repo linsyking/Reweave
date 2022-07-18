@@ -66,7 +66,7 @@ viewButton ( model, t ) globalData =
         group []
             [ shapes
                 [ fill Color.blue ]
-                [ rect (posToReal globalData ( 400, 300 )) (widthToReal globalData 800) (heightToReal globalData 500) ]
+                [ rect (posToReal globalData ( 1350, 320 )) (widthToReal globalData 10) (heightToReal globalData 10) ]
             ]
 
     else
