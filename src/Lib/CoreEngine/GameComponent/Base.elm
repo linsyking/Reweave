@@ -6,6 +6,7 @@ import Dict exposing (Dict)
 import Lib.Component.Base exposing (DefinedTypes)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponents.Bullet.Base exposing (BulletInit)
+import Lib.CoreEngine.GameComponents.CutScene.Base exposing (CutSceneInit)
 import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
 import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
 import Lib.CoreEngine.GameComponents.GoombaEmitter.Base exposing (GoombaEmitterInit)
@@ -44,6 +45,7 @@ type GameComponentTMsg
     | GameSpikeInit SpikeInit
     | GameBulletInit BulletInit
     | GameExitInit ExitInit
+    | GameCutSceneInt CutSceneInit
     | GameExitScene String
     | NullGameComponentMsg
 
