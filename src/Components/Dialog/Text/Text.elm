@@ -51,12 +51,20 @@ updateText mainMsg comMsg globalData ( model, t ) =
                     dgetint model "_wholeTextLength"
             in
             if currentPos > wholeLength then
-                ( model
-                    |> dsetint "_Timer" timer
-                    |> dsetstring "_Status" "OnShow"
-                , ComponentLSStringMsg "StatusReport" [ "OnShow" ]
-                , globalData
-                )
+                if dgetString model "_Status" == "OnBuild" then
+                    ( model
+                        |> dsetint "_Timer" timer
+                        |> dsetstring "_Status" "OnShow"
+                    , ComponentLSStringMsg "StatusReport" [ "OnShow" ]
+                    , globalData
+                    )
+
+                else
+                    ( model
+                        |> dsetint "_Timer" timer
+                    , ComponentLSStringMsg "StatusReport" [ dgetString model "_Status" ]
+                    , globalData
+                    )
 
             else
                 ( model

@@ -45,9 +45,6 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
 
         status =
             dgetString model "_Status"
-
-        tmp =
-            Debug.log statusReport 1
     in
     case statusReport of
         "OnBuild" ->
@@ -82,7 +79,7 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
                 newChildComponentsList =
                     List.filter
                         (\( comName, _ ) ->
-                            if comName == "Text" then
+                            if comName == "Text" || comName == "NextButton" then
                                 False
 
                             else
@@ -222,6 +219,9 @@ updateDialog mainMsg comMsg globalData ( model, t ) =
                         )
                         ( [], NullComponentMsg )
                         childComponetsList
+
+                tmp1 =
+                    Debug.log (Debug.toString newChildComponentMsg) 1
             in
             case newChildComponentMsg of
                 ComponentLSStringMsg demand list ->
@@ -230,6 +230,9 @@ updateDialog mainMsg comMsg globalData ( model, t ) =
                             let
                                 request =
                                     Maybe.withDefault "" (List.head list)
+
+                                tmp =
+                                    Debug.log request 1
                             in
                             if request == "OnDeBuild" then
                                 let
