@@ -65,17 +65,7 @@ initModel _ gcm =
             , acceleration = ( 0, 0 )
             , simplecheck = simplecheckBox info.initSize
             , collisionbox = [ simplecheckBox info.initSize ]
-            , extra =
-                Dict.fromList
-                    (List.concat
-                        [ decodeTalkings info.talkings
-                        , [ ( "index", CDInt -1 )
-                          , ( "timer", CDInt 0 )
-                          , ( "textTyperCount", CDInt 0 )
-                          , ( "onShow", CDBool False )
-                          ]
-                        ]
-                    )
+            , extra = Dict.fromList (decodeTalkings info.talkings)
             , uid = info.uid
             }
 
