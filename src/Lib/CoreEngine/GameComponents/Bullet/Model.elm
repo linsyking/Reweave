@@ -6,7 +6,6 @@ import Lib.Component.Base exposing (DefinedTypes(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
 import Lib.CoreEngine.Physics.SolidCollision exposing (canMove)
-import Lib.DefinedTypes.Parser exposing (dgetfloat)
 import Math.Vector2 exposing (vec2)
 
 
@@ -55,10 +54,7 @@ initModel _ gcm =
             , acceleration = ( 0, 0 )
             , simplecheck = simplecheckBox
             , collisionbox = [ collisionBox ]
-            , extra =
-                Dict.fromList
-                    [ ( "radius", CDFloat info.radius )
-                    ]
+            , extra = Dict.empty
             , uid = info.uid
             }
 
