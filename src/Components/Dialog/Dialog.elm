@@ -100,7 +100,7 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
 
             else
                 ( model
-                    |> dsetint "_Timer" timer
+                    |> dsetint "_Timer" 0
                     |> dsetint "_Index" index
                     |> dsetstring "_Status" "OnDeBuild"
                     |> dsetLComponent "_Child" newChildComponentsList
@@ -192,6 +192,27 @@ updateDialog mainMsg _ globalData ( model, t ) =
                             , globalData
                             )
 
+                ( "OnDeBuild", 10 ) ->
+                    ( model
+                        |> dsetint "_Timer" timer
+                        |> dsetstring "_Status" "OnEnd"
+                    , NullComponentMsg
+                    , globalData
+                    )
+
+                ( "OnDeBuild", _ ) ->
+                    ( model
+                        |> dsetint "_Timer" timer
+                    , NullComponentMsg
+                    , globalData
+                    )
+
+                ( "OnEnd", _ ) ->
+                    ( model
+                    , ComponentStringMsg "OnEnd"
+                    , globalData
+                    )
+
                 ( _, _ ) ->
                     ( model |> dsetint "_Timer" timer, NullComponentMsg, globalData )
 
@@ -266,22 +287,36 @@ viewDialog ( model, t ) globalData =
         childComponentsList =
             dgetLComponent model "_Child"
     in
-    if status == "OnBuild" then
-        group []
-            (List.append
-                [ shapes [ stroke Color.black ]
-                    [ rect (posToReal globalData ( 600, 200 - 15 * timer )) (widthToReal globalData 800) (heightToReal globalData (30 * timer))
+    case status of
+        "OnBuild" ->
+            group []
+                (List.append
+                    [ shapes [ stroke Color.black ]
+                        [ rect (posToReal globalData ( 600, 200 - 15 * timer )) (widthToReal globalData 800) (heightToReal globalData (30 * timer))
+                        ]
                     ]
-                ]
-                (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
-            )
+                    (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
+                )
 
-    else
-        group []
-            (List.append
-                [ shapes [ stroke Color.black ]
-                    [ rect (posToReal globalData ( 600, 50 )) (widthToReal globalData 800) (heightToReal globalData 300)
+        "OnDeBuild" ->
+            group []
+                (List.append
+                    [ shapes [ stroke Color.black ]
+                        [ rect (posToReal globalData ( 600, 50 + 15 * timer )) (widthToReal globalData 800) (heightToReal globalData (300 - 30 * timer))
+                        ]
                     ]
-                ]
-                (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
-            )
+                    (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
+                )
+
+        "OnEnd" ->
+            group [] []
+
+        _ ->
+            group []
+                (List.append
+                    [ shapes [ stroke Color.black ]
+                        [ rect (posToReal globalData ( 600, 50 )) (widthToReal globalData 800) (heightToReal globalData 300)
+                        ]
+                    ]
+                    (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
+                )
