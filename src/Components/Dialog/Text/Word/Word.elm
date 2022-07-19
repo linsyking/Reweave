@@ -17,17 +17,15 @@ import Lib.Render.Render exposing (renderText)
 -- OnShow : OnLoadChild -> (OnShowChild ->) OnDeChild (OnDeconstructChild)
 
 
-initText : Int -> ComponentTMsg -> Data
-initText _ comMsg =
+initWord : Int -> ComponentTMsg -> Data
+initWord pos comMsg =
     case comMsg of
         ComponentStringMsg str ->
             Dict.fromList
                 [ ( "_Status", CDString "OnBuild" )
                 , ( "_Timer", CDInt 0 )
-                , ( "_wholeText", CDString str )
-                , ( "ScreenText", CDString "" )
-                , ( "_wholeTextLength", CDInt (String.length str) )
-                , ( "_currentPos", CDInt 0 )
+                , ( "_Position", CDInt pos )
+                , ( "Word", CDString str )
                 , ( "_Child", CDLComponent [] )
                 ]
 
@@ -35,21 +33,15 @@ initText _ comMsg =
             Dict.empty
 
 
-updateText : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
-updateText mainMsg comMsg globalData ( model, t ) =
+updateWord : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
+updateWord mainMsg comMsg globalData ( model, t ) =
     case mainMsg of
         Tick _ ->
             let
                 timer =
                     dgetint model "_Timer" + 1
-
-                currentPos =
-                    dgetint model "_currentPos" + 1
-
-                wholeLength =
-                    dgetint model "_wholeTextLength"
             in
-            if currentPos > wholeLength then
+            if timer > 10 then
                 if dgetString model "_Status" == "OnBuild" then
                     ( model
                         |> dsetint "_Timer" timer
@@ -68,8 +60,6 @@ updateText mainMsg comMsg globalData ( model, t ) =
             else
                 ( model
                     |> dsetint "_Timer" timer
-                    |> dsetint "_currentPos" currentPos
-                    |> dsetstring "ScreenText" (String.slice 0 currentPos (dgetString model "_wholeText"))
                 , ComponentLSStringMsg "StatusReport" [ "OnBuild" ]
                 , globalData
                 )
@@ -96,7 +86,11 @@ updateText mainMsg comMsg globalData ( model, t ) =
                     ( model, ComponentLSStringMsg "StatusReport" [ status ], globalData )
 
 
-viewText : ( Data, Int ) -> GlobalData -> Renderable
-viewText ( model, t ) globalData =
+viewWord : ( Data, Int ) -> GlobalData -> Renderable
+viewWord ( model, t ) globalData =
+    let
+        position =
+            dgetint model "_Position"
+    in
     group []
-        [ renderText globalData 30 (dgetString model "ScreenText") "sans-serif" ( 650, 100 ) ]
+        [ renderText globalData 30 (dgetString model "Word") "sans-serif" ( 650 + position, 100 ) ]

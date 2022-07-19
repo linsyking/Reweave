@@ -4,11 +4,12 @@ import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (..)
 import Canvas.Settings exposing (..)
 import Canvas.Settings.Advanced exposing (..)
+import Components.Dialog.Text.Word.Export as DialTextWordE
 import Constants exposing (..)
 import Dict
 import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
-import Lib.DefinedTypes.Parser exposing (dgetString, dgetint, dsetint, dsetstring)
+import Lib.DefinedTypes.Parser exposing (dgetLComponent, dgetString, dgetint, dsetLComponent, dsetint, dsetstring)
 import Lib.Render.Render exposing (renderText)
 
 
@@ -27,7 +28,7 @@ initText _ comMsg =
                 , ( "_wholeText", CDString str )
                 , ( "ScreenText", CDString "" )
                 , ( "_wholeTextLength", CDInt (String.length str) )
-                , ( "_currentPos", CDInt 0 )
+                , ( "_currentPos", CDInt -1 )
                 , ( "_Child", CDLComponent [] )
                 ]
 
@@ -48,6 +49,9 @@ updateText mainMsg comMsg globalData ( model, t ) =
 
                 wholeLength =
                     dgetint model "_wholeTextLength"
+
+                currentLength =
+                    dgetint model "_currentLength" + 30
             in
             if currentPos > wholeLength then
                 if dgetString model "_Status" == "OnBuild" then
@@ -66,10 +70,21 @@ updateText mainMsg comMsg globalData ( model, t ) =
                     )
 
             else
+                let
+                    tmpChar =
+                        String.slice currentPos (currentPos + 1) (dgetString model "_wholeText")
+
+                    childComponentsList =
+                        dgetLComponent model "_Child"
+                in
                 ( model
                     |> dsetint "_Timer" timer
                     |> dsetint "_currentPos" currentPos
-                    |> dsetstring "ScreenText" (String.slice 0 currentPos (dgetString model "_wholeText"))
+                    |> dsetint "_currentLength" currentLength
+                    |> dsetLComponent "_Child"
+                        (List.append childComponentsList
+                            [ ( "Word" ++ String.fromInt currentPos, DialTextWordE.initComponent currentLength (ComponentStringMsg tmpChar) ) ]
+                        )
                 , ComponentLSStringMsg "StatusReport" [ "OnBuild" ]
                 , globalData
                 )
@@ -98,5 +113,9 @@ updateText mainMsg comMsg globalData ( model, t ) =
 
 viewText : ( Data, Int ) -> GlobalData -> Renderable
 viewText ( model, t ) globalData =
+    let
+        childComponentsList =
+            dgetLComponent model "_Child"
+    in
     group []
-        [ renderText globalData 30 (dgetString model "ScreenText") "sans-serif" ( 650, 100 ) ]
+        (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
