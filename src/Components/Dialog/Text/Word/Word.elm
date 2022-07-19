@@ -4,12 +4,13 @@ import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (..)
 import Canvas.Settings exposing (..)
 import Canvas.Settings.Advanced exposing (..)
+import Color
 import Constants exposing (..)
 import Dict
 import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
 import Lib.DefinedTypes.Parser exposing (dgetLString, dgetString, dgetint, dsetint, dsetlstring, dsetstring)
-import Lib.Render.Render exposing (renderText)
+import Lib.Render.Render exposing (renderTextWithColor)
 import Random
 
 
@@ -119,7 +120,7 @@ updateWord mainMsg comMsg globalData ( model, t ) =
                             ( model
                                 |> dsetstring "_Status" "OnDeBuild"
                                 |> dsetint "_Timer" 0
-                                |> dsetlstring "CrashPos" (List.repeat 20 (String.fromInt (dgetint model "_Position" + 650) ++ "_" ++ String.fromInt 120))
+                                |> dsetlstring "CrashPos" (List.repeat 20 (String.fromInt (dgetint model "_Position" + 400) ++ "_" ++ String.fromInt 150))
                             , ComponentLSStringMsg "StatusReport" [ "OnDeBuild" ]
                             , globalData
                             )
@@ -142,19 +143,22 @@ viewWord ( model, t ) globalData =
 
         status =
             dgetString model "_Status"
+
+        dashds =
+            Debug.log "pos" position
     in
     case status of
         "OnBuild" ->
             group [ alpha (toFloat timer / 20.0) ]
-                [ renderText globalData 30 (dgetString model "Word") "Times New Roman" ( 650 + position, 100 ) ]
+                [ renderTextWithColor globalData 40 (dgetString model "Word") "Courier New" Color.white ( 400 + position, 130 ) ]
 
         "OnShow" ->
             group []
-                [ renderText globalData 30 (dgetString model "Word") "Times New Roman" ( 650 + position, 100 ) ]
+                [ renderTextWithColor globalData 40 (dgetString model "Word") "Courier New" Color.white ( 400 + position, 130 ) ]
 
         "OnDeBuild" ->
             group [ alpha (1.0 - toFloat timer / 20.0) ]
-                (List.append [ renderText globalData 30 (dgetString model "Word") "Times New Roman" ( 650 + position, 100 ) ]
+                (List.append [ renderTextWithColor globalData 40 (dgetString model "Word") "Courier New" Color.white ( 400 + position, 130 ) ]
                     (List.map
                         (\str ->
                             let
@@ -167,7 +171,7 @@ viewWord ( model, t ) globalData =
                                 posY =
                                     Maybe.withDefault 0 (String.toInt (Maybe.withDefault "" (List.head (List.reverse list))))
                             in
-                            shapes [ alpha (1.0 - toFloat timer / 10.0) ] [ rect (posToReal globalData ( posX, posY )) (widthToReal globalData 2) (heightToReal globalData 2) ]
+                            shapes [ alpha (1.0 - toFloat timer / 10.0), fill Color.white ] [ rect (posToReal globalData ( posX, posY )) (widthToReal globalData 2) (heightToReal globalData 2) ]
                         )
                         (dgetLString model "CrashPos")
                     )

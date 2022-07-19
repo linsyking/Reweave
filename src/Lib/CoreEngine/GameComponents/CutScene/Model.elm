@@ -12,7 +12,7 @@ import Lib.DefinedTypes.Parser exposing (dgetLComponent, dsetLComponent)
 initData : Data
 initData =
     { status = Alive
-    , position = ( 300, 1100 )
+    , position = ( 100, 1100 )
     , velocity = ( 0, 0 )
     , mass = 0
     , acceleration = ( 0, 0 )

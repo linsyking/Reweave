@@ -10,6 +10,7 @@ import Dict
 import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
 import Lib.DefinedTypes.Parser exposing (dgetString, dgetint, dsetint, dsetstring)
+import Lib.Render.Render exposing (renderSprite)
 
 
 
@@ -63,11 +64,24 @@ updateButton mainMsg _ globalData ( model, t ) =
 viewButton : ( Data, Int ) -> GlobalData -> Renderable
 viewButton ( model, t ) globalData =
     if dgetString model "_Status" == "OnShow" then
-        group []
-            [ shapes
-                [ fill Color.blue ]
-                [ rect (posToReal globalData ( 1350, 320 )) (widthToReal globalData 10) (heightToReal globalData 10) ]
-            ]
+        -- group []
+        -- [ shapes
+        --     [ fill Color.blue ]
+        --     -- [ rect (posToReal globalData ( 1350, 320 )) (widthToReal globalData 10) (heightToReal globalData 10) ]
+        -- ]
+        renderSprite globalData
+            []
+            ( 1600
+            , 280
+                + (if modBy 30 t <= 15 then
+                    2
+
+                   else
+                    -2
+                  )
+            )
+            ( 20, 13 )
+            "downbutton"
 
     else
         group [] []

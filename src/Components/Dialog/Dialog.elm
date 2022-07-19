@@ -12,6 +12,7 @@ import Dict
 import Lib.Component.Base exposing (Component, ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
 import Lib.DefinedTypes.Parser exposing (dgetLComponent, dgetString, dgetint, dsetLComponent, dsetint, dsetstring)
+import Lib.Render.Render exposing (renderSprite)
 
 
 
@@ -291,20 +292,19 @@ viewDialog ( model, t ) globalData =
         "OnBuild" ->
             group []
                 (List.append
-                    [ shapes [ stroke Color.black ]
-                        [ rect (posToReal globalData ( 600, 200 - 15 * timer )) (widthToReal globalData 800) (heightToReal globalData (30 * timer))
-                        ]
-                    ]
+                    (if timer == 0 then
+                        []
+
+                     else
+                        [ renderSprite globalData [] ( 189, 200 - 15 * timer ) ( 1542, 30 * timer ) "dialogue" ]
+                    )
                     (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
                 )
 
         "OnDeBuild" ->
             group []
                 (List.append
-                    [ shapes [ stroke Color.black ]
-                        [ rect (posToReal globalData ( 600, 50 + 15 * timer )) (widthToReal globalData 800) (heightToReal globalData (300 - 30 * timer))
-                        ]
-                    ]
+                    [ renderSprite globalData [] ( 189, 50 + 15 * timer ) ( 1542, 300 - 30 * timer ) "dialogue" ]
                     (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
                 )
 
@@ -314,9 +314,6 @@ viewDialog ( model, t ) globalData =
         _ ->
             group []
                 (List.append
-                    [ shapes [ stroke Color.black ]
-                        [ rect (posToReal globalData ( 600, 50 )) (widthToReal globalData 800) (heightToReal globalData 300)
-                        ]
-                    ]
+                    [ renderSprite globalData [] ( 189, 50 ) ( 1542, 300 ) "dialogue" ]
                     (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
                 )
