@@ -89,6 +89,7 @@ updateText mainMsg comMsg globalData ( model, t ) =
                 else
                     ( model
                         |> dsetint "_Timer" timer
+                        |> dsetstring "_Status" "OnEnd"
                         |> dsetLComponent "_Child" newChildComponentsList
                     , ComponentLSStringMsg "StatusReport" [ dgetString model "_Status" ]
                     , globalData
