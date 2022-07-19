@@ -47,7 +47,7 @@ updateWord mainMsg comMsg globalData ( model, t ) =
                 timer =
                     dgetint model "_Timer" + 1
             in
-            if timer > 10 then
+            if timer > 20 then
                 if dgetString model "_Status" == "OnBuild" then
                     ( model
                         |> dsetint "_Timer" timer
@@ -89,7 +89,7 @@ updateWord mainMsg comMsg globalData ( model, t ) =
                                     posY =
                                         Maybe.withDefault 0 (String.toInt (Maybe.withDefault "" (List.head (List.reverse list))))
                                 in
-                                String.fromInt (posX + randomPos t -8 0) ++ "_" ++ String.fromInt (posY + randomPos t -3 3)
+                                String.fromInt (posX + randomPos (t + posY) -10 0) ++ "_" ++ String.fromInt (posY + randomPos (t + posX) -2 2)
                             )
                             tmpCrashPos
                 in
@@ -119,7 +119,7 @@ updateWord mainMsg comMsg globalData ( model, t ) =
                             ( model
                                 |> dsetstring "_Status" "OnDeBuild"
                                 |> dsetint "_Timer" 0
-                                |> dsetlstring "CrashPos" (List.repeat 10 (String.fromInt (dgetint model "_Position" + 650) ++ "_" ++ String.fromInt 120))
+                                |> dsetlstring "CrashPos" (List.repeat 20 (String.fromInt (dgetint model "_Position" + 650) ++ "_" ++ String.fromInt 120))
                             , ComponentLSStringMsg "StatusReport" [ "OnDeBuild" ]
                             , globalData
                             )
@@ -145,7 +145,7 @@ viewWord ( model, t ) globalData =
     in
     case status of
         "OnBuild" ->
-            group [ alpha (toFloat timer / 10.0) ]
+            group [ alpha (toFloat timer / 20.0) ]
                 [ renderText globalData 30 (dgetString model "Word") "Times New Roman" ( 650 + position, 100 ) ]
 
         "OnShow" ->
@@ -153,7 +153,7 @@ viewWord ( model, t ) globalData =
                 [ renderText globalData 30 (dgetString model "Word") "Times New Roman" ( 650 + position, 100 ) ]
 
         "OnDeBuild" ->
-            group [ alpha (1.0 - toFloat timer / 10.0) ]
+            group [ alpha (1.0 - toFloat timer / 20.0) ]
                 (List.append [ renderText globalData 30 (dgetString model "Word") "Times New Roman" ( 650 + position, 100 ) ]
                     (List.map
                         (\str ->
@@ -167,7 +167,7 @@ viewWord ( model, t ) globalData =
                                 posY =
                                     Maybe.withDefault 0 (String.toInt (Maybe.withDefault "" (List.head (List.reverse list))))
                             in
-                            shapes [] [ rect (posToReal globalData ( posX, posY )) (widthToReal globalData 2) (heightToReal globalData 2) ]
+                            shapes [ alpha (1.0 - toFloat timer / 10.0) ] [ rect (posToReal globalData ( posX, posY )) (widthToReal globalData 2) (heightToReal globalData 2) ]
                         )
                         (dgetLString model "CrashPos")
                     )
