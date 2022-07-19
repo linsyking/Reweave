@@ -147,7 +147,7 @@ updateDialog mainMsg _ globalData ( model, t ) =
 
                 ( "OnShow", _ ) ->
                     let
-                        childComponetsList =
+                        childComponentsList =
                             dgetLComponent model "_Child"
 
                         ( newChildComponentsList, newChildComponentMsg ) =
@@ -168,7 +168,7 @@ updateDialog mainMsg _ globalData ( model, t ) =
                                         ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], tmpComponentsMsg )
                                 )
                                 ( [], NullComponentMsg )
-                                childComponetsList
+                                childComponentsList
                     in
                     case newChildComponentMsg of
                         ComponentLSStringMsg demand list ->

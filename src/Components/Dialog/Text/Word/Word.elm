@@ -50,6 +50,14 @@ updateWord mainMsg comMsg globalData ( model, t ) =
                     , globalData
                     )
 
+                else if dgetString model "_Status" == "OnDeBuild" then
+                    ( model
+                        |> dsetint "_Timer" timer
+                        |> dsetstring "_Status" "OnEnd"
+                    , ComponentLSStringMsg "StatusReport" [ "OnEnd" ]
+                    , globalData
+                    )
+
                 else
                     ( model
                         |> dsetint "_Timer" timer
@@ -74,8 +82,9 @@ updateWord mainMsg comMsg globalData ( model, t ) =
                     case demand of
                         "OnDeBuild" ->
                             ( model
-                                |> dsetstring "_Status" "OnEnd"
-                            , ComponentLSStringMsg "StatusReport" [ "OnEnd" ]
+                                |> dsetstring "_Status" "OnDeBuild"
+                                |> dsetint "_Timer" 0
+                            , ComponentLSStringMsg "StatusReport" [ "OnDeBuild" ]
                             , globalData
                             )
 
@@ -89,8 +98,24 @@ updateWord mainMsg comMsg globalData ( model, t ) =
 viewWord : ( Data, Int ) -> GlobalData -> Renderable
 viewWord ( model, t ) globalData =
     let
+        timer =
+            dgetint model "_Timer"
+
         position =
             dgetint model "_Position"
+
+        status =
+            dgetString model "_Status"
     in
-    group []
-        [ renderText globalData 30 (dgetString model "Word") "sans-serif" ( 650 + position, 100 ) ]
+    case status of
+        "OnBuild" ->
+            group [ alpha (toFloat timer / 10.0) ]
+                [ renderText globalData 30 (dgetString model "Word") "Times New Roman" ( 650 + position, 100 ) ]
+
+        "OnShow" ->
+            group []
+                [ renderText globalData 30 (dgetString model "Word") "Times New Roman" ( 650 + position, 100 ) ]
+
+        _ ->
+            group [ alpha (1.0 - toFloat timer / 10.0) ]
+                [ renderText globalData 30 (dgetString model "Word") "Times New Roman" ( 650 + position, 100 ) ]

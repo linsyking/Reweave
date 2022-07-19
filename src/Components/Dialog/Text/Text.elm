@@ -51,20 +51,46 @@ updateText mainMsg comMsg globalData ( model, t ) =
                     dgetint model "_wholeTextLength"
 
                 currentLength =
-                    dgetint model "_currentLength" + 30
+                    dgetint model "_currentLength" + floor (heightToReal globalData 30)
+
+                childComponentsList =
+                    dgetLComponent model "_Child"
+
+                ( newChildComponentsList, allChildComponentsMsg ) =
+                    List.foldl
+                        (\( comName, comModel ) ( tmpComponentsList, tmpComponentsMsg ) ->
+                            let
+                                ( tmpData, tmpMsg, _ ) =
+                                    comModel.update mainMsg NullComponentMsg globalData ( comModel.data, t )
+                            in
+                            ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], tmpMsg :: tmpComponentsMsg )
+                        )
+                        ( [], [] )
+                        childComponentsList
             in
             if currentPos > wholeLength then
                 if dgetString model "_Status" == "OnBuild" then
                     ( model
                         |> dsetint "_Timer" timer
                         |> dsetstring "_Status" "OnShow"
+                        |> dsetLComponent "_Child" newChildComponentsList
                     , ComponentLSStringMsg "StatusReport" [ "OnShow" ]
+                    , globalData
+                    )
+
+                else if List.all (\x -> x == ComponentLSStringMsg "StatusReport" [ "OnEnd" ]) allChildComponentsMsg then
+                    ( model
+                        |> dsetint "_Timer" timer
+                        |> dsetstring "_Status" "OnEnd"
+                        |> dsetLComponent "_Child" newChildComponentsList
+                    , ComponentLSStringMsg "StatusReport" [ "OnEnd" ]
                     , globalData
                     )
 
                 else
                     ( model
                         |> dsetint "_Timer" timer
+                        |> dsetLComponent "_Child" newChildComponentsList
                     , ComponentLSStringMsg "StatusReport" [ dgetString model "_Status" ]
                     , globalData
                     )
@@ -73,16 +99,13 @@ updateText mainMsg comMsg globalData ( model, t ) =
                 let
                     tmpChar =
                         String.slice currentPos (currentPos + 1) (dgetString model "_wholeText")
-
-                    childComponentsList =
-                        dgetLComponent model "_Child"
                 in
                 ( model
                     |> dsetint "_Timer" timer
                     |> dsetint "_currentPos" currentPos
                     |> dsetint "_currentLength" currentLength
                     |> dsetLComponent "_Child"
-                        (List.append childComponentsList
+                        (List.append newChildComponentsList
                             [ ( "Word" ++ String.fromInt currentPos, DialTextWordE.initComponent currentLength (ComponentStringMsg tmpChar) ) ]
                         )
                 , ComponentLSStringMsg "StatusReport" [ "OnBuild" ]
@@ -98,9 +121,23 @@ updateText mainMsg comMsg globalData ( model, t ) =
                 ComponentStringMsg demand ->
                     case demand of
                         "OnDeBuild" ->
+                            let
+                                ( newChildComponentsList, _ ) =
+                                    List.foldl
+                                        (\( comName, comModel ) ( tmpComponentsList, tmpComponentsMsg ) ->
+                                            let
+                                                ( tmpData, tmpMsg, _ ) =
+                                                    comModel.update UnknownMsg (ComponentStringMsg "OnDeBuild") globalData ( comModel.data, t )
+                                            in
+                                            ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], tmpMsg :: tmpComponentsMsg )
+                                        )
+                                        ( [], [] )
+                                        (dgetLComponent model "_Child")
+                            in
                             ( model
-                                |> dsetstring "_Status" "OnEnd"
-                            , ComponentLSStringMsg "StatusReport" [ "OnEnd" ]
+                                |> dsetstring "_Status" "OnDeBuild"
+                                |> dsetLComponent "_Child" newChildComponentsList
+                            , ComponentLSStringMsg "StatusReport" [ "OnDeBuild" ]
                             , globalData
                             )
 
