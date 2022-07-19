@@ -86,10 +86,17 @@ updateText mainMsg comMsg globalData ( model, t ) =
                     , globalData
                     )
 
+                else if dgetString model "_Status" == "OnDeBuild" then
+                    ( model
+                        |> dsetint "_Timer" timer
+                        |> dsetLComponent "_Child" newChildComponentsList
+                    , ComponentLSStringMsg "StatusReport" [ dgetString model "_Status" ]
+                    , globalData
+                    )
+
                 else
                     ( model
                         |> dsetint "_Timer" timer
-                        |> dsetstring "_Status" "OnEnd"
                         |> dsetLComponent "_Child" newChildComponentsList
                     , ComponentLSStringMsg "StatusReport" [ dgetString model "_Status" ]
                     , globalData
