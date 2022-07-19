@@ -81,15 +81,19 @@ updateModel msg gct ggd globalData ( d, t ) =
                 talkings =
                     d.extra
             in
-            ( { d
-                | extra =
-                    d.extra
-                        |> dsetLComponent "_Child"
-                            [ ( "Dialog", DialogE.initComponent 0 (ComponentDictMsg talkings) ) ]
-              }
-            , []
-            , ggd
-            )
+            if dgetLComponent d.extra "_Child" == [] then
+                ( { d
+                    | extra =
+                        d.extra
+                            |> dsetLComponent "_Child"
+                                [ ( "Dialog", DialogE.initComponent 0 (ComponentDictMsg talkings) ) ]
+                  }
+                , []
+                , ggd
+                )
+
+            else
+                ( d, [], ggd )
 
         _ ->
             let
@@ -111,7 +115,15 @@ updateModel msg gct ggd globalData ( d, t ) =
                         ( [], [], globalData )
                         componentsList
             in
-            ( { d | extra = d.extra |> dsetLComponent "_Child" tmpChildComponentsList }
-            , []
-            , ggd
-            )
+            case tmpChildComponentsMsg of
+                [ ComponentStringMsg "OnEnd" ] ->
+                    ( { d | extra = d.extra |> dsetLComponent "_Child" [] }
+                    , []
+                    , ggd
+                    )
+
+                _ ->
+                    ( { d | extra = d.extra |> dsetLComponent "_Child" tmpChildComponentsList }
+                    , []
+                    , ggd
+                    )
