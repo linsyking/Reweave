@@ -89,7 +89,7 @@ updateWord mainMsg comMsg globalData ( model, t ) =
                                     posY =
                                         Maybe.withDefault 0 (String.toInt (Maybe.withDefault "" (List.head (List.reverse list))))
                                 in
-                                String.fromInt (posX + randomPos t -15 0) ++ "_" ++ String.fromInt (posY + randomPos t -7 0)
+                                String.fromInt (posX + randomPos t -8 0) ++ "_" ++ String.fromInt (posY + randomPos t -3 3)
                             )
                             tmpCrashPos
                 in
