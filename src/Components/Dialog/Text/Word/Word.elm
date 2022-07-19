@@ -68,7 +68,7 @@ updateWord mainMsg comMsg globalData ( model, t ) =
             else
                 ( model
                     |> dsetint "_Timer" timer
-                , ComponentLSStringMsg "StatusReport" [ "OnBuild" ]
+                , ComponentLSStringMsg "StatusReport" [ dgetString model "_Status" ]
                 , globalData
                 )
 
@@ -116,6 +116,9 @@ viewWord ( model, t ) globalData =
             group []
                 [ renderText globalData 30 (dgetString model "Word") "Times New Roman" ( 650 + position, 100 ) ]
 
-        _ ->
+        "OnDeBuild" ->
             group [ alpha (1.0 - toFloat timer / 10.0) ]
                 [ renderText globalData 30 (dgetString model "Word") "Times New Roman" ( 650 + position, 100 ) ]
+
+        _ ->
+            group [] []

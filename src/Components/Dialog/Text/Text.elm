@@ -62,7 +62,7 @@ updateText mainMsg comMsg globalData ( model, t ) =
                                 ( tmpData, tmpMsg, _ ) =
                                     comModel.update mainMsg NullComponentMsg globalData ( comModel.data, t )
                             in
-                            ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], tmpMsg :: tmpComponentsMsg )
+                            ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], List.append tmpComponentsMsg [ tmpMsg ] )
                         )
                         ( [], [] )
                         childComponentsList
@@ -87,9 +87,34 @@ updateText mainMsg comMsg globalData ( model, t ) =
                     )
 
                 else if dgetString model "_Status" == "OnDeBuild" then
+                    let
+                        ( tmpChildComponentsList, _, _ ) =
+                            List.foldl
+                                (\( comName, comModel ) ( tmpComponentsList, tmpAllMsg, tmpFlag ) ->
+                                    let
+                                        tmpMsg =
+                                            Maybe.withDefault NullComponentMsg (List.head tmpAllMsg)
+                                    in
+                                    let
+                                        ( tmpData, _, _ ) =
+                                            if tmpMsg == ComponentLSStringMsg "StatusReport" [ "OnShow" ] && tmpFlag == True then
+                                                comModel.update UnknownMsg (ComponentStringMsg "OnDeBuild") globalData ( comModel.data, t )
+
+                                            else
+                                                comModel.update mainMsg NullComponentMsg globalData ( comModel.data, t )
+                                    in
+                                    if tmpMsg == ComponentLSStringMsg "StatusReport" [ "OnShow" ] && tmpFlag == True then
+                                        ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], List.drop 1 tmpAllMsg, False )
+
+                                    else
+                                        ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], List.drop 1 tmpAllMsg, tmpFlag )
+                                )
+                                ( [], allChildComponentsMsg, True )
+                                childComponentsList
+                    in
                     ( model
                         |> dsetint "_Timer" timer
-                        |> dsetLComponent "_Child" newChildComponentsList
+                        |> dsetLComponent "_Child" tmpChildComponentsList
                     , ComponentLSStringMsg "StatusReport" [ dgetString model "_Status" ]
                     , globalData
                     )
@@ -128,22 +153,22 @@ updateText mainMsg comMsg globalData ( model, t ) =
                 ComponentStringMsg demand ->
                     case demand of
                         "OnDeBuild" ->
-                            let
-                                ( newChildComponentsList, _ ) =
-                                    List.foldl
-                                        (\( comName, comModel ) ( tmpComponentsList, tmpComponentsMsg ) ->
-                                            let
-                                                ( tmpData, tmpMsg, _ ) =
-                                                    comModel.update UnknownMsg (ComponentStringMsg "OnDeBuild") globalData ( comModel.data, t )
-                                            in
-                                            ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], tmpMsg :: tmpComponentsMsg )
-                                        )
-                                        ( [], [] )
-                                        (dgetLComponent model "_Child")
-                            in
+                            -- let
+                            --     ( newChildComponentsList, _ ) =
+                            --         List.foldl
+                            --             (\( comName, comModel ) ( tmpComponentsList, tmpComponentsMsg ) ->
+                            --                 let
+                            --                     ( tmpData, tmpMsg, _ ) =
+                            --                         comModel.update UnknownMsg (ComponentStringMsg "OnDeBuild") globalData ( comModel.data, t )
+                            --                 in
+                            --                 ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], tmpMsg :: tmpComponentsMsg )
+                            --             )
+                            --             ( [], [] )
+                            --             (dgetLComponent model "_Child")
+                            -- in
                             ( model
                                 |> dsetstring "_Status" "OnDeBuild"
-                                |> dsetLComponent "_Child" newChildComponentsList
+                              -- |> dsetLComponent "_Child" newChildComponentsList
                             , ComponentLSStringMsg "StatusReport" [ "OnDeBuild" ]
                             , globalData
                             )
