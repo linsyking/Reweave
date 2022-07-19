@@ -8,8 +8,9 @@ import Constants exposing (..)
 import Dict
 import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
-import Lib.DefinedTypes.Parser exposing (dgetString, dgetint, dsetint, dsetstring)
+import Lib.DefinedTypes.Parser exposing (dgetLString, dgetString, dgetint, dsetint, dsetlstring, dsetstring)
 import Lib.Render.Render exposing (renderText)
+import Random
 
 
 
@@ -31,6 +32,11 @@ initWord pos comMsg =
 
         _ ->
             Dict.empty
+
+
+randomPos : Int -> Int -> Int -> Int
+randomPos t l r =
+    Tuple.first (Random.step (Random.int l r) (Random.initialSeed t))
 
 
 updateWord : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
@@ -65,6 +71,35 @@ updateWord mainMsg comMsg globalData ( model, t ) =
                     , globalData
                     )
 
+            else if dgetString model "_Status" == "OnDeBuild" then
+                let
+                    tmpCrashPos =
+                        dgetLString model "CrashPos"
+
+                    newCrashPos =
+                        List.map
+                            (\str ->
+                                let
+                                    list =
+                                        String.split "_" str
+
+                                    posX =
+                                        Maybe.withDefault 0 (String.toInt (Maybe.withDefault "" (List.head list)))
+
+                                    posY =
+                                        Maybe.withDefault 0 (String.toInt (Maybe.withDefault "" (List.head (List.reverse list))))
+                                in
+                                String.fromInt (posX + randomPos t -15 0) ++ "_" ++ String.fromInt (posY + randomPos t -7 0)
+                            )
+                            tmpCrashPos
+                in
+                ( model
+                    |> dsetint "_Timer" timer
+                    |> dsetlstring "CrashPos" newCrashPos
+                , ComponentLSStringMsg "StatusReport" [ dgetString model "_Status" ]
+                , globalData
+                )
+
             else
                 ( model
                     |> dsetint "_Timer" timer
@@ -84,6 +119,7 @@ updateWord mainMsg comMsg globalData ( model, t ) =
                             ( model
                                 |> dsetstring "_Status" "OnDeBuild"
                                 |> dsetint "_Timer" 0
+                                |> dsetlstring "CrashPos" (List.repeat 10 (String.fromInt (dgetint model "_Position" + 650) ++ "_" ++ String.fromInt 120))
                             , ComponentLSStringMsg "StatusReport" [ "OnDeBuild" ]
                             , globalData
                             )
@@ -118,7 +154,24 @@ viewWord ( model, t ) globalData =
 
         "OnDeBuild" ->
             group [ alpha (1.0 - toFloat timer / 10.0) ]
-                [ renderText globalData 30 (dgetString model "Word") "Times New Roman" ( 650 + position, 100 ) ]
+                (List.append [ renderText globalData 30 (dgetString model "Word") "Times New Roman" ( 650 + position, 100 ) ]
+                    (List.map
+                        (\str ->
+                            let
+                                list =
+                                    String.split "_" str
+
+                                posX =
+                                    Maybe.withDefault 0 (String.toInt (Maybe.withDefault "" (List.head list)))
+
+                                posY =
+                                    Maybe.withDefault 0 (String.toInt (Maybe.withDefault "" (List.head (List.reverse list))))
+                            in
+                            shapes [] [ rect (posToReal globalData ( posX, posY )) (widthToReal globalData 2) (heightToReal globalData 2) ]
+                        )
+                        (dgetLString model "CrashPos")
+                    )
+                )
 
         _ ->
             group [] []
