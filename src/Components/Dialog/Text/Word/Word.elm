@@ -143,9 +143,6 @@ viewWord ( model, t ) globalData =
 
         status =
             dgetString model "_Status"
-
-        dashds =
-            Debug.log "pos" position
     in
     case status of
         "OnBuild" ->
