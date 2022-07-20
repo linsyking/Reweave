@@ -21,7 +21,6 @@ import Lib.CoreEngine.Physics.SolidCollision exposing (canMove, gonnaSolidCollid
 import Lib.DefinedTypes.Parser exposing (dgetPlayer, dsetPlayer)
 import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget(..))
 import Lib.Scene.Base exposing (EngineT, PlayerInitPosition(..))
-import Lib.Tools.Array exposing (locate)
 import Math.Vector2 exposing (vec2)
 
 
@@ -374,8 +373,11 @@ dealParentMsg gct gd ( model, t ) ggd =
                 odata =
                     model.player.data
 
+                ( ovx, ovy ) =
+                    odata.velocity
+
                 newdata =
-                    { odata | extra = newplayer }
+                    { odata | extra = newplayer, velocity = ( ovx / 5, ovy / 5 ) }
 
                 opp =
                     model.player

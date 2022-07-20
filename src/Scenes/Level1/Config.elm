@@ -3,7 +3,6 @@ module Scenes.Level1.Config exposing (..)
 import Array exposing (Array)
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable)
-import Color
 import Components.Hints.Export as Hints
 import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
@@ -21,14 +20,12 @@ import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
 import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
 import Lib.CoreEngine.GameComponents.GoombaEmitter.Base exposing (GoombaEmitterInit)
 import Lib.CoreEngine.GameComponents.GoombaEmitter.Export as GoombaEmitter
-import Lib.CoreEngine.GameComponents.Monster.Base exposing (MonsterInit)
-import Lib.CoreEngine.GameComponents.Monster.Export as Monster
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit)
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..), SpikeInit)
 import Lib.CoreEngine.GameComponents.Spike.Export as Spike
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
-import Lib.Render.Render exposing (renderSprite, renderText, renderTextWithColor)
+import Lib.Render.Render exposing (renderSprite, renderText)
 import Lib.Scene.Base exposing (PlayerInitPosition(..))
 import Scenes.Level1.Map exposing (mymap)
 

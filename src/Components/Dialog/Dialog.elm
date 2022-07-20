@@ -4,7 +4,6 @@ import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (..)
 import Canvas.Settings exposing (..)
 import Canvas.Settings.Advanced exposing (..)
-import Color
 import Components.Dialog.NextButton.Export as DialNextButtonE
 import Components.Dialog.Text.Export as DialTextE
 import Constants exposing (..)
