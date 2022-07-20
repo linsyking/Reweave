@@ -86,7 +86,7 @@ bulletInterval : String -> Int
 bulletInterval method =
     case method of
         "default" ->
-            10
+            50
 
         _ ->
             10
