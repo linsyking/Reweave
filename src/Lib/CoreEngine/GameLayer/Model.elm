@@ -14,14 +14,13 @@ import Lib.CoreEngine.GameComponents.Bullet.Export as Bullet
 import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
 import Lib.CoreEngine.GameComponents.Player.Base exposing (BoundKey)
 import Lib.CoreEngine.GameComponents.Player.Export as Player
-import Lib.CoreEngine.GameLayer.Common exposing (Model)
+import Lib.CoreEngine.GameLayer.Common exposing (Model, kineticCalc, searchNameGC, searchUIDGC)
 import Lib.CoreEngine.Physics.InterCollision exposing (gonnaInterColllide)
 import Lib.CoreEngine.Physics.NaiveCollision exposing (judgeInCamera)
 import Lib.CoreEngine.Physics.SolidCollision exposing (canMove, gonnaSolidCollide, movePointPlain)
 import Lib.DefinedTypes.Parser exposing (dgetPlayer, dsetPlayer)
 import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget(..))
 import Lib.Scene.Base exposing (EngineT, PlayerInitPosition(..))
-import Lib.Tools.Array exposing (locate)
 import Math.Vector2 exposing (vec2)
 
 
@@ -269,30 +268,6 @@ interCollision _ t ggd gd gcs =
     ( appliedgc, appliedmsg, appliedggc )
 
 
-searchNameGC : String -> Array.Array GameComponent -> List Int
-searchNameGC s gcs =
-    locate (\x -> x.name == s) gcs
-
-
-searchUIDGC : Int -> Array.Array GameComponent -> Int
-searchUIDGC s gcs =
-    let
-        res =
-            locate (\x -> x.data.uid == s) gcs
-    in
-    case res of
-        [ x ] ->
-            x
-
-        _ ->
-            -1
-
-
-kineticCalc : Int -> ( Float, Float ) -> Float
-kineticCalc mass ( vx, vy ) =
-    toFloat mass * (vx * vx + vy * vy) / 10000
-
-
 calcDRate : ( Float, Float ) -> ( Float, Float ) -> ( Float, Float ) -> Float
 calcDRate p1 p2 ( w, h ) =
     let
@@ -398,8 +373,11 @@ dealParentMsg gct gd ( model, t ) ggd =
                 odata =
                     model.player.data
 
+                ( ovx, ovy ) =
+                    odata.velocity
+
                 newdata =
-                    { odata | extra = newplayer }
+                    { odata | extra = newplayer, velocity = ( ovx / 5, ovy / 5 ) }
 
                 opp =
                     model.player

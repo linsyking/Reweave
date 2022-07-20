@@ -3,7 +3,6 @@ module Scenes.Level1.Config exposing (..)
 import Array exposing (Array)
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable)
-import Color
 import Components.Hints.Export as Hints
 import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
@@ -21,14 +20,12 @@ import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
 import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
 import Lib.CoreEngine.GameComponents.GoombaEmitter.Base exposing (GoombaEmitterInit)
 import Lib.CoreEngine.GameComponents.GoombaEmitter.Export as GoombaEmitter
-import Lib.CoreEngine.GameComponents.Monster.Base exposing (MonsterInit)
-import Lib.CoreEngine.GameComponents.Monster.Export as Monster
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit)
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..), SpikeInit)
 import Lib.CoreEngine.GameComponents.Spike.Export as Spike
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
-import Lib.Render.Render exposing (renderSprite, renderText, renderTextWithColor)
+import Lib.Render.Render exposing (renderSprite, renderText)
 import Lib.Scene.Base exposing (PlayerInitPosition(..))
 import Scenes.Level1.Map exposing (mymap)
 
@@ -58,14 +55,17 @@ initActors t =
         , initGameComponent t (GameGoombaInit (GoombaInit ( 2000, 800 ) ( 0, 0 ) 2)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 3500, 500 ) ( 0, 0 ) 3)) Goomba.gameComponent
         , initGameComponent t (GameExitInit (ExitInit ( 3800, 1600 ) ( 10, 160 ) "Scene1" 9)) Exit.gameComponent
-        , initGameComponent t (GameCutSceneInit (CutSceneInit ( 100, 1800 ) ( 100, 160 ) 88 [ ( "1", "Dear master, I want learn something from you" ), ( "1", "Yes, please go ahead." ) ])) CutScene.gameComponent
+        , initGameComponent t (GameCutSceneInit (CutSceneInit ( 100, 1800 ) ( 100, 160 ) 88 [ ( "1", "Dear master, I want learn something from you" ), ( "1", "Yes, please go ahead." ) ] True)) CutScene.gameComponent
         , initGameComponent t (GameGoombaEmitterInit (GoombaEmitterInit ( 900, 1800 ) 200 ( -50, 0 ) 6)) GoombaEmitter.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 704, 2028 ) HorUp 1 10)) Spike.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 736, 2048 ) VerRight 3 11)) Spike.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 864, 2016 ) HorDown 15 12)) Spike.gameComponent
         , initGameComponent t (GameBulletInit (BulletInit ( 800, 1530 ) ( -50, 0 ) 14)) Bullet.gameComponent
+<<<<<<< HEAD
 
         --, initGameComponent t (GameMonsterInit (MonsterInit ( 1200, 30 ) ( 0, 0 ) "default" 10 100)) Monster.gameComponent
+=======
+>>>>>>> 2e7638b36853ee46906d5f9553fe8c4e51ccb3fc
         ]
 
 

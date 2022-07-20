@@ -6,7 +6,7 @@ import Dict
 import Lib.Component.Base exposing (ComponentTMsg(..), DefinedTypes(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
-import Lib.DefinedTypes.Parser exposing (dgetLComponent, dsetLComponent)
+import Lib.DefinedTypes.Parser exposing (dgetLComponent, dgetbool, dsetLComponent)
 
 
 initData : Data
@@ -64,7 +64,7 @@ initModel _ gcm =
             , acceleration = ( 0, 0 )
             , simplecheck = simplecheckBox info.initSize
             , collisionbox = [ simplecheckBox info.initSize ]
-            , extra = Dict.fromList (decodeTalkings info.talkings)
+            , extra = Dict.fromList (decodeTalkings info.talkings ++ [ ( "iscol", CDBool info.isCol ) ])
             , uid = info.uid
             }
 
@@ -72,27 +72,39 @@ initModel _ gcm =
             initData
 
 
+handlestart : Data -> GameGlobalData -> ( Data, List GameComponentMsgType, GameGlobalData )
+handlestart d ggd =
+    let
+        talkings =
+            d.extra
+    in
+    if dgetLComponent d.extra "_Child" == [] then
+        ( { d
+            | extra =
+                d.extra
+                    |> dsetLComponent "_Child"
+                        [ ( "Dialog", DialogE.initComponent 0 (ComponentDictMsg talkings) ) ]
+          }
+        , [ GameParentMsg (GameStringMsg "ignoreinput") ]
+        , ggd
+        )
+
+    else
+        ( d, [], ggd )
+
+
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
 updateModel msg gct ggd globalData ( d, t ) =
     case gct of
         GameInterCollisionMsg "player" _ _ ->
-            let
-                talkings =
-                    d.extra
-            in
-            if dgetLComponent d.extra "_Child" == [] then
-                ( { d
-                    | extra =
-                        d.extra
-                            |> dsetLComponent "_Child"
-                                [ ( "Dialog", DialogE.initComponent 0 (ComponentDictMsg talkings) ) ]
-                  }
-                , [ GameParentMsg (GameStringMsg "ignoreinput") ]
-                , ggd
-                )
+            if not (dgetbool d.extra "iscol") then
+                ( d, [], ggd )
 
             else
-                ( d, [], ggd )
+                handlestart d ggd
+
+        GameStringMsg "start" ->
+            handlestart d ggd
 
         _ ->
             let

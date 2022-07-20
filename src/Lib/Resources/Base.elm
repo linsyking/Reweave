@@ -25,6 +25,8 @@ allTexture =
     , ( "downbutton", getResourcePath "img/down.png" )
     , ( "bullet", getResourcePath "img/bullet.png" )
     , ( "fish", getResourcePath "img/fish.png" )
+    , ( "whiteshadow", getResourcePath "img/white-shadow.png" )
+    , ( "blueshadow", getResourcePath "img/ki2.png" )
     ]
 
 

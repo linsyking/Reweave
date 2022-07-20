@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Monster.Display exposing (..)
+module Lib.CoreEngine.GameComponents.Fish.Display exposing (..)
 
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable, group)

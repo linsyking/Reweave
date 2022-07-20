@@ -1,7 +1,7 @@
-module Lib.CoreEngine.GameComponents.Monster.Base exposing (..)
+module Lib.CoreEngine.GameComponents.Fish.Base exposing (..)
 
 
-type alias MonsterInit =
+type alias FishInit =
     { initPosition : ( Int, Int )
     , initVelocity : ( Float, Float )
     , bulletEmitMethod : String
