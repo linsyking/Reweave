@@ -188,6 +188,6 @@ viewText ( model, t ) globalData =
             dgetLComponent model "_Child"
     in
     group []
-        (List.append [ renderSprite globalData [] ( 230, 150 ) ( 130, 130 ) "background" ]
+        (List.append [ renderSprite globalData [] ( 250, 150 ) ( 130, 130 ) "background" ]
             (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
         )
