@@ -14,7 +14,7 @@ type alias Component =
     { name : String
     , data : Data
     , init : Int -> ComponentTMsg -> Data
-    , update : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
+    , update : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
     , view : ( Data, Int ) -> GlobalData -> Renderable
     , query : String -> ( Data, Int ) -> ComponentTMsg
     }
@@ -28,7 +28,7 @@ nullComponent =
     , update =
         \_ _ gd _ ->
             ( Dict.empty
-            , NullComponentMsg
+            , []
             , gd
             )
     , view = \_ _ -> group [] []

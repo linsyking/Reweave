@@ -40,7 +40,7 @@ randomPos t l r =
     Tuple.first (Random.step (Random.int l r) (Random.initialSeed t))
 
 
-updateWord : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
+updateWord : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateWord mainMsg comMsg globalData ( model, t ) =
     case mainMsg of
         Tick _ ->
@@ -53,7 +53,7 @@ updateWord mainMsg comMsg globalData ( model, t ) =
                     ( model
                         |> dsetint "_Timer" timer
                         |> dsetstring "_Status" "OnShow"
-                    , ComponentLSStringMsg "StatusReport" [ "OnShow" ]
+                    , [ ComponentLSStringMsg "StatusReport" [ "OnShow" ] ]
                     , globalData
                     )
 
@@ -61,14 +61,14 @@ updateWord mainMsg comMsg globalData ( model, t ) =
                     ( model
                         |> dsetint "_Timer" timer
                         |> dsetstring "_Status" "OnEnd"
-                    , ComponentLSStringMsg "StatusReport" [ "OnEnd" ]
+                    , [ ComponentLSStringMsg "StatusReport" [ "OnEnd" ] ]
                     , globalData
                     )
 
                 else
                     ( model
                         |> dsetint "_Timer" timer
-                    , ComponentLSStringMsg "StatusReport" [ dgetString model "_Status" ]
+                    , [ ComponentLSStringMsg "StatusReport" [ dgetString model "_Status" ] ]
                     , globalData
                     )
 
@@ -97,14 +97,14 @@ updateWord mainMsg comMsg globalData ( model, t ) =
                 ( model
                     |> dsetint "_Timer" timer
                     |> dsetlstring "CrashPos" newCrashPos
-                , ComponentLSStringMsg "StatusReport" [ dgetString model "_Status" ]
+                , [ ComponentLSStringMsg "StatusReport" [ dgetString model "_Status" ] ]
                 , globalData
                 )
 
             else
                 ( model
                     |> dsetint "_Timer" timer
-                , ComponentLSStringMsg "StatusReport" [ dgetString model "_Status" ]
+                , [ ComponentLSStringMsg "StatusReport" [ dgetString model "_Status" ] ]
                 , globalData
                 )
 
@@ -121,15 +121,15 @@ updateWord mainMsg comMsg globalData ( model, t ) =
                                 |> dsetstring "_Status" "OnDeBuild"
                                 |> dsetint "_Timer" 0
                                 |> dsetlstring "CrashPos" (List.repeat 20 (String.fromInt (dgetint model "_Position" + 400) ++ "_" ++ String.fromInt 150))
-                            , ComponentLSStringMsg "StatusReport" [ "OnDeBuild" ]
+                            , [ ComponentLSStringMsg "StatusReport" [ "OnDeBuild" ] ]
                             , globalData
                             )
 
                         _ ->
-                            ( model, ComponentLSStringMsg "StatusReport" [ status ], globalData )
+                            ( model, [ ComponentLSStringMsg "StatusReport" [ status ] ], globalData )
 
                 _ ->
-                    ( model, ComponentLSStringMsg "StatusReport" [ status ], globalData )
+                    ( model, [ ComponentLSStringMsg "StatusReport" [ status ] ], globalData )
 
 
 viewWord : ( Data, Int ) -> GlobalData -> Renderable

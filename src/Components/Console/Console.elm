@@ -19,7 +19,7 @@ initModel _ _ =
         ]
 
 
-updateModel : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
+updateModel : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateModel msg _ gd ( d, _ ) =
     let
         command =
@@ -31,59 +31,65 @@ updateModel msg _ gd ( d, _ ) =
     case msg of
         KeyDown 192 ->
             if state then
-                ( d |> dsetbool "state" (not state), ComponentStringMsg "startGameInput", gd )
+                ( d |> dsetbool "state" (not state), [ ComponentStringMsg "startGameInput" ], gd )
 
             else
-                ( d |> dsetbool "state" (not state), ComponentStringMsg "stopGameInput", gd )
+                ( d |> dsetbool "state" (not state), [ ComponentStringMsg "stopGameInput" ], gd )
 
         KeyDown 8 ->
             if state then
-                ( d |> dsetstring "input" (String.dropRight 1 command), NullComponentMsg, gd )
+                ( d |> dsetstring "input" (String.dropRight 1 command), [], gd )
 
             else
-                ( d, NullComponentMsg, gd )
+                ( d, [], gd )
 
         KeyDown 13 ->
-            let
-                loadscene =
-                    String.left 5 command == "load "
-
-                scenename =
-                    String.dropLeft 5 command
-
-                ld =
-                    String.dropLeft 1 scenename
-
-                realname =
-                    String.left 1 (String.toUpper scenename)
-
-                kk =
-                    String.concat [ realname, ld ]
-            in
             if state then
                 ( d
                     |> dsetstring "input" ""
                     |> dsetbool "state" False
-                , if loadscene then
-                    ComponentLStringMsg [ "nextscene", kk ]
-
-                  else
-                    ComponentStringMsg "startGameInput"
+                , [ sendmsg command ]
                 , gd
                 )
 
             else
-                ( d, NullComponentMsg, gd )
+                ( d, [], gd )
 
         KeyDown x ->
             if state then
-                ( d |> dsetstring "input" (String.append command (String.fromChar (Char.toLower (fromCode x)))), NullComponentMsg, gd )
+                ( d |> dsetstring "input" (String.append command (String.fromChar (Char.toLower (fromCode x)))), [], gd )
 
             else
-                ( d, NullComponentMsg, gd )
+                ( d, [], gd )
 
         _ ->
-            ( d, NullComponentMsg, gd )
+            ( d, [], gd )
+
+
+sendmsg : String -> ComponentTMsg
+sendmsg command =
+    let
+        loadscene =
+            String.left 5 command == "load "
+    in
+    if loadscene then
+        let
+            scenename =
+                String.dropLeft 5 command
+
+            ld =
+                String.dropLeft 1 scenename
+
+            realname =
+                String.left 1 (String.toUpper scenename)
+
+            kk =
+                String.concat [ realname, ld ]
+        in
+        ComponentLStringMsg [ "nextscene", kk ]
+
+    else
+        ComponentStringMsg "startGameInput"
 
 
 viewModel : ( Data, Int ) -> GlobalData -> Renderable

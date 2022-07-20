@@ -31,7 +31,7 @@ initButton _ comMsg =
             Dict.empty
 
 
-updateButton : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
+updateButton : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateButton mainMsg _ globalData ( model, t ) =
     case mainMsg of
         Tick _ ->
@@ -41,14 +41,14 @@ updateButton mainMsg _ globalData ( model, t ) =
             in
             ( model
                 |> dsetint "_Timer" timer
-            , ComponentLSStringMsg "StatusReport" [ "OnShow" ]
+            , [ ComponentLSStringMsg "StatusReport" [ "OnShow" ] ]
             , globalData
             )
 
         KeyDown 13 ->
             ( model
                 |> dsetstring "_Status" "OnEnd"
-            , ComponentLSStringMsg "Interaction" [ "OnDeBuild" ]
+            , [ ComponentLSStringMsg "Interaction" [ "OnDeBuild" ] ]
             , globalData
             )
 
@@ -57,7 +57,7 @@ updateButton mainMsg _ globalData ( model, t ) =
                 status =
                     dgetString model "_Status"
             in
-            ( model, ComponentLSStringMsg "StatusReport" [ status ], globalData )
+            ( model, [ ComponentLSStringMsg "StatusReport" [ status ] ], globalData )
 
 
 viewButton : ( Data, Int ) -> GlobalData -> Renderable

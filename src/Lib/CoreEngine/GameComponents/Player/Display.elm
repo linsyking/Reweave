@@ -9,7 +9,6 @@ import Lib.CoreEngine.GameComponent.Base exposing (Data, LifeStatus(..))
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerState(..))
 import Lib.DefinedTypes.Parser exposing (dgetPlayer)
 import Lib.Render.Character exposing (renderCharacterInAir, renderCharacterMove)
-import Lib.Render.Render exposing (renderSprite, renderText)
 
 
 view : ( Data, Int ) -> GameGlobalData -> GlobalData -> List ( Renderable, Int )

@@ -36,7 +36,7 @@ initText _ comMsg =
             Dict.empty
 
 
-updateText : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
+updateText : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateText mainMsg comMsg globalData ( model, t ) =
     case mainMsg of
         Tick _ ->
@@ -74,16 +74,16 @@ updateText mainMsg comMsg globalData ( model, t ) =
                         |> dsetint "_Timer" timer
                         |> dsetstring "_Status" "OnShow"
                         |> dsetLComponent "_Child" newChildComponentsList
-                    , ComponentLSStringMsg "StatusReport" [ "OnShow" ]
+                    , [ ComponentLSStringMsg "StatusReport" [ "OnShow" ] ]
                     , globalData
                     )
 
-                else if List.all (\x -> x == ComponentLSStringMsg "StatusReport" [ "OnEnd" ]) allChildComponentsMsg then
+                else if List.all (\x -> x == ComponentLSStringMsg "StatusReport" [ "OnEnd" ]) (List.concat allChildComponentsMsg) then
                     ( model
                         |> dsetint "_Timer" timer
                         |> dsetstring "_Status" "OnEnd"
                         |> dsetLComponent "_Child" newChildComponentsList
-                    , ComponentLSStringMsg "StatusReport" [ "OnEnd" ]
+                    , [ ComponentLSStringMsg "StatusReport" [ "OnEnd" ] ]
                     , globalData
                     )
 
@@ -110,13 +110,13 @@ updateText mainMsg comMsg globalData ( model, t ) =
                                     else
                                         ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], List.drop 1 tmpAllMsg, tmpFlag )
                                 )
-                                ( [], allChildComponentsMsg, True )
+                                ( [], List.concat allChildComponentsMsg, True )
                                 childComponentsList
                     in
                     ( model
                         |> dsetint "_Timer" timer
                         |> dsetLComponent "_Child" tmpChildComponentsList
-                    , ComponentLSStringMsg "StatusReport" [ dgetString model "_Status" ]
+                    , [ ComponentLSStringMsg "StatusReport" [ dgetString model "_Status" ] ]
                     , globalData
                     )
 
@@ -124,7 +124,7 @@ updateText mainMsg comMsg globalData ( model, t ) =
                     ( model
                         |> dsetint "_Timer" timer
                         |> dsetLComponent "_Child" newChildComponentsList
-                    , ComponentLSStringMsg "StatusReport" [ dgetString model "_Status" ]
+                    , [ ComponentLSStringMsg "StatusReport" [ dgetString model "_Status" ] ]
                     , globalData
                     )
 
@@ -141,7 +141,7 @@ updateText mainMsg comMsg globalData ( model, t ) =
                         (List.append newChildComponentsList
                             [ ( "Word" ++ String.fromInt currentPos, DialTextWordE.initComponent currentLength (ComponentStringMsg tmpChar) ) ]
                         )
-                , ComponentLSStringMsg "StatusReport" [ "OnBuild" ]
+                , [ ComponentLSStringMsg "StatusReport" [ "OnBuild" ] ]
                 , globalData
                 )
 
@@ -170,15 +170,15 @@ updateText mainMsg comMsg globalData ( model, t ) =
                             ( model
                                 |> dsetstring "_Status" "OnDeBuild"
                               -- |> dsetLComponent "_Child" newChildComponentsList
-                            , ComponentLSStringMsg "StatusReport" [ "OnDeBuild" ]
+                            , [ ComponentLSStringMsg "StatusReport" [ "OnDeBuild" ] ]
                             , globalData
                             )
 
                         _ ->
-                            ( model, ComponentLSStringMsg "StatusReport" [ status ], globalData )
+                            ( model, [ ComponentLSStringMsg "StatusReport" [ status ] ], globalData )
 
                 _ ->
-                    ( model, ComponentLSStringMsg "StatusReport" [ status ], globalData )
+                    ( model, [ ComponentLSStringMsg "StatusReport" [ status ] ], globalData )
 
 
 viewText : ( Data, Int ) -> GlobalData -> Renderable

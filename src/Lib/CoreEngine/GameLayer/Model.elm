@@ -406,6 +406,9 @@ dealParentMsg gct gd ( model, t ) ggd =
             in
             ( ( { model | actors = Array.push (initGameComponent t (GameBulletInit newinfo) Bullet.gameComponent) model.actors }, ggd, [] ), gd )
 
+        GameStringIntMsg "addenergy" v ->
+            ( ( model, { ggd | energy = ggd.energy + toFloat v }, [] ), gd )
+
         _ ->
             ( ( model, ggd, [] ), gd )
 

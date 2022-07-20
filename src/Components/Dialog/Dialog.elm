@@ -33,7 +33,7 @@ initDialog _ comMsg =
             Dict.empty
 
 
-checkStatusReport : List String -> List ( String, Component ) -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
+checkStatusReport : List String -> List ( String, Component ) -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 checkStatusReport list childComponentsList globalData ( model, t ) =
     let
         statusReport =
@@ -47,7 +47,7 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
             ( model
                 |> dsetint "_Timer" timer
                 |> dsetLComponent "_Child" childComponentsList
-            , NullComponentMsg
+            , []
             , globalData
             )
 
@@ -58,7 +58,7 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
                     (List.append childComponentsList
                         [ ( "NextButton", DialNextButtonE.initComponent 0 (ComponentStringMsg "") ) ]
                     )
-            , NullComponentMsg
+            , []
             , globalData
             )
 
@@ -66,7 +66,7 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
             ( model
                 |> dsetint "_Timer" timer
                 |> dsetLComponent "_Child" childComponentsList
-            , NullComponentMsg
+            , []
             , globalData
             )
 
@@ -94,7 +94,7 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
                         (List.append newChildComponentsList
                             [ ( "Text", DialTextE.initComponent 0 (ComponentStringMsg (dgetString model (String.fromInt index ++ "Text"))) ) ]
                         )
-                , NullComponentMsg
+                , []
                 , globalData
                 )
 
@@ -104,7 +104,7 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
                     |> dsetint "_Index" index
                     |> dsetstring "_Status" "OnDeBuild"
                     |> dsetLComponent "_Child" newChildComponentsList
-                , NullComponentMsg
+                , []
                 , globalData
                 )
 
@@ -112,12 +112,12 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
             ( model
                 |> dsetint "_Timer" timer
                 |> dsetLComponent "_Child" childComponentsList
-            , NullComponentMsg
+            , []
             , globalData
             )
 
 
-updateDialog : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
+updateDialog : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateDialog mainMsg _ globalData ( model, t ) =
     case mainMsg of
         Tick _ ->
@@ -138,12 +138,12 @@ updateDialog mainMsg _ globalData ( model, t ) =
                         |> dsetint "_Timer" timer
                         |> dsetstring "_Status" "OnShow"
                         |> dsetLComponent "_Child" [ ( "Text", DialTextE.initComponent 0 (ComponentStringMsg (dgetString model (String.fromInt index ++ "Text"))) ) ]
-                    , NullComponentMsg
+                    , []
                     , globalData
                     )
 
                 ( "OnBuild", _ ) ->
-                    ( model |> dsetint "_Timer" timer, NullComponentMsg, globalData )
+                    ( model |> dsetint "_Timer" timer, [], globalData )
 
                 ( "OnShow", _ ) ->
                     let
@@ -158,7 +158,7 @@ updateDialog mainMsg _ globalData ( model, t ) =
                                             ( tmpData, tmpMsg, _ ) =
                                                 comModel.update mainMsg NullComponentMsg globalData ( comModel.data, t )
                                         in
-                                        ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], tmpMsg )
+                                        ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], tmpComponentsMsg ++ tmpMsg )
 
                                     else
                                         let
@@ -167,11 +167,11 @@ updateDialog mainMsg _ globalData ( model, t ) =
                                         in
                                         ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], tmpComponentsMsg )
                                 )
-                                ( [], NullComponentMsg )
+                                ( [], [] )
                                 childComponentsList
                     in
-                    case newChildComponentMsg of
-                        ComponentLSStringMsg demand list ->
+                    case List.head newChildComponentMsg of
+                        Just (ComponentLSStringMsg demand list) ->
                             case demand of
                                 "StatusReport" ->
                                     checkStatusReport list newChildComponentsList globalData ( model, t )
@@ -180,7 +180,7 @@ updateDialog mainMsg _ globalData ( model, t ) =
                                     ( model
                                         |> dsetint "_Timer" timer
                                         |> dsetLComponent "_Child" newChildComponentsList
-                                    , NullComponentMsg
+                                    , []
                                     , globalData
                                     )
 
@@ -188,7 +188,7 @@ updateDialog mainMsg _ globalData ( model, t ) =
                             ( model
                                 |> dsetint "_Timer" timer
                                 |> dsetLComponent "_Child" newChildComponentsList
-                            , NullComponentMsg
+                            , []
                             , globalData
                             )
 
@@ -196,25 +196,25 @@ updateDialog mainMsg _ globalData ( model, t ) =
                     ( model
                         |> dsetint "_Timer" timer
                         |> dsetstring "_Status" "OnEnd"
-                    , NullComponentMsg
+                    , []
                     , globalData
                     )
 
                 ( "OnDeBuild", _ ) ->
                     ( model
                         |> dsetint "_Timer" timer
-                    , NullComponentMsg
+                    , []
                     , globalData
                     )
 
                 ( "OnEnd", _ ) ->
                     ( model
-                    , ComponentStringMsg "OnEnd"
+                    , [ ComponentStringMsg "OnEnd" ]
                     , globalData
                     )
 
                 ( _, _ ) ->
-                    ( model |> dsetint "_Timer" timer, NullComponentMsg, globalData )
+                    ( model |> dsetint "_Timer" timer, [], globalData )
 
         _ ->
             let
@@ -234,11 +234,11 @@ updateDialog mainMsg _ globalData ( model, t ) =
                             else
                                 ( List.append tmpComponentsList [ ( comName, comModel ) ], tmpComponentsMsg )
                         )
-                        ( [], NullComponentMsg )
+                        ( [], [] )
                         childComponetsList
             in
-            case newChildComponentMsg of
-                ComponentLSStringMsg demand list ->
+            case List.head newChildComponentMsg of
+                Just (ComponentLSStringMsg demand list) ->
                     case demand of
                         "Interaction" ->
                             let
@@ -260,19 +260,19 @@ updateDialog mainMsg _ globalData ( model, t ) =
                                                 else
                                                     ( List.append tmpComponentsList [ ( comName, comModel ) ], tmpComponentsMsg )
                                             )
-                                            ( [], NullComponentMsg )
+                                            ( [], [] )
                                             childComponetsList
                                 in
-                                ( model |> dsetLComponent "_Child" tmpChildComponentsList, NullComponentMsg, globalData )
+                                ( model |> dsetLComponent "_Child" tmpChildComponentsList, [], globalData )
 
                             else
-                                ( model |> dsetLComponent "_Child" newChildComponentsList, NullComponentMsg, globalData )
+                                ( model |> dsetLComponent "_Child" newChildComponentsList, [], globalData )
 
                         _ ->
-                            ( model |> dsetLComponent "_Child" newChildComponentsList, NullComponentMsg, globalData )
+                            ( model |> dsetLComponent "_Child" newChildComponentsList, [], globalData )
 
                 _ ->
-                    ( model |> dsetLComponent "_Child" newChildComponentsList, NullComponentMsg, globalData )
+                    ( model |> dsetLComponent "_Child" newChildComponentsList, [], globalData )
 
 
 viewDialog : ( Data, Int ) -> GlobalData -> Renderable

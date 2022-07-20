@@ -15,13 +15,13 @@ updateComponents t msg gd xs =
                 ( newx, newmsg, newgd ) =
                     x.update msg NullComponentMsg mlgg ( x.data, t )
             in
-            ( Array.push { x | data = newx } acs, ct ++ [ newmsg ], newgd )
+            ( Array.push { x | data = newx } acs, ct ++ newmsg, newgd )
         )
         ( Array.empty, [], gd )
         xs
 
 
-updateOneComponent : Msg -> ComponentTMsg -> GlobalData -> Int -> Component -> ( Component, ComponentTMsg, GlobalData )
+updateOneComponent : Msg -> ComponentTMsg -> GlobalData -> Int -> Component -> ( Component, List ComponentTMsg, GlobalData )
 updateOneComponent msg ct gd t c =
     let
         ( newx, newmsg, newgd ) =
@@ -30,7 +30,7 @@ updateOneComponent msg ct gd t c =
     ( { c | data = newx }, newmsg, newgd )
 
 
-updateSingleComponent : Msg -> ComponentTMsg -> GlobalData -> Int -> Int -> Array Component -> ( Array Component, ComponentTMsg, GlobalData )
+updateSingleComponent : Msg -> ComponentTMsg -> GlobalData -> Int -> Int -> Array Component -> ( Array Component, List ComponentTMsg, GlobalData )
 updateSingleComponent msg ct gd t n xs =
     case getComponent n xs of
         Just k ->
@@ -41,10 +41,10 @@ updateSingleComponent msg ct gd t n xs =
             ( Array.set n { k | data = newx } xs, newmsg, newgd )
 
         Nothing ->
-            ( xs, NullComponentMsg, gd )
+            ( xs, [], gd )
 
 
-updateSingleComponentByName : Msg -> ComponentTMsg -> GlobalData -> Int -> String -> Array Component -> ( Array Component, ComponentTMsg, GlobalData )
+updateSingleComponentByName : Msg -> ComponentTMsg -> GlobalData -> Int -> String -> Array Component -> ( Array Component, List ComponentTMsg, GlobalData )
 updateSingleComponentByName msg ct gd t s xs =
     let
         n =
@@ -59,7 +59,7 @@ updateSingleComponentByName msg ct gd t s xs =
             ( Array.set n { k | data = newx } xs, newmsg, newgd )
 
         Nothing ->
-            ( xs, NullComponentMsg, gd )
+            ( xs, [], gd )
 
 
 genView : GlobalData -> Int -> Array Component -> Renderable

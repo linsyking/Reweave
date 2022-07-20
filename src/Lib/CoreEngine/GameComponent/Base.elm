@@ -49,6 +49,7 @@ type GameComponentTMsg
     | GameExitInit ExitInit
     | GameCutSceneInit CutSceneInit
     | GameExitScene String
+    | GameStringIntMsg String Int
     | NullGameComponentMsg
 
 

@@ -127,7 +127,7 @@ updateModel msg gct ggd globalData ( d, t ) =
                         componentsList
             in
             case tmpChildComponentsMsg of
-                [ ComponentStringMsg "OnEnd" ] ->
+                [ [ ComponentStringMsg "OnEnd" ] ] ->
                     ( d
                     , [ GameParentMsg (GameStringMsg "reactinput") ]
                     , ggd
