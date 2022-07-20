@@ -10,6 +10,7 @@ import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Data, GameComponent, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (getGameComponentCenter, initGameComponent, isAlive, sendManyGameComponentMsg, simpleUpdateAllGameComponent, splitPlayerObjs, updateOneGameComponent, updateSingleGameComponentByName)
 import Lib.CoreEngine.GameComponent.GenUID exposing (genUID)
+import Lib.CoreEngine.GameComponents.Bullet.Export as Bullet
 import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameLayer.Common exposing (Model)
@@ -388,6 +389,14 @@ dealParentMsg gct gd ( model, t ) ggd =
                     { info | uid = genUID model }
             in
             ( ( { model | actors = Array.push (initGameComponent t (GameGoombaInit newinfo) Goomba.gameComponent) model.actors }, ggd, [] ), gd )
+
+        GameBulletInit info ->
+            -- Create a goomba
+            let
+                newinfo =
+                    { info | uid = genUID model }
+            in
+            ( ( { model | actors = Array.push (initGameComponent t (GameBulletInit newinfo) Bullet.gameComponent) model.actors }, ggd, [] ), gd )
 
         _ ->
             ( ( model, ggd, [] ), gd )
