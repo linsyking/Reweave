@@ -36,6 +36,8 @@ allTexture =
     , ( "p_m4", getResourcePath "img/p_m4.png" )
     , ( "p_m5", getResourcePath "img/p_m5.png" )
     , ( "p_m6", getResourcePath "img/p_m6.png" )
+    , ( "p_profile", getResourcePath "img/profile.png" )
+    , ( "master", getResourcePath "img/master.png" )
     , ( "goomba", getResourcePath "img/small.png" )
     , ( "goombadie", getResourcePath "img/smalldie.png" )
     ]

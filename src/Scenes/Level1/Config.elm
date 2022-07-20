@@ -33,7 +33,7 @@ import Scenes.Level1.Map exposing (mymap)
 initFrontGroundComponents : Int -> Array Component
 initFrontGroundComponents t =
     Array.fromList
-        [ Hints.initComponent t (ComponentLStringMsg [ "Use W,A,D to move and jump", "Use Esc to call the menu" ])
+        [ Hints.initComponent t (ComponentLStringMsg [ "Use A,D to move, Use C to jump", "Use Esc to call the menu" ])
         ]
 
 
@@ -55,7 +55,7 @@ initActors t =
         , initGameComponent t (GameGoombaInit (GoombaInit ( 2000, 800 ) ( 0, 0 ) 2)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 3500, 500 ) ( 0, 0 ) 3)) Goomba.gameComponent
         , initGameComponent t (GameExitInit (ExitInit ( 3800, 1600 ) ( 10, 160 ) "Scene1" 9)) Exit.gameComponent
-        , initGameComponent t (GameCutSceneInit (CutSceneInit ( 100, 1800 ) ( 100, 160 ) 88 [ ( "1", "Dear master, I want learn something from you" ), ( "1", "Yes, please go ahead." ) ] True)) CutScene.gameComponent
+        , initGameComponent t (GameCutSceneInit (CutSceneInit ( 100, 1800 ) ( 100, 160 ) 88 [ ( "p_profile", "Dear master, I want learn something from you" ), ( "master", "Yes, please go ahead." ) ] True)) CutScene.gameComponent
         , initGameComponent t (GameGoombaEmitterInit (GoombaEmitterInit ( 900, 1800 ) 200 ( -50, 0 ) 6)) GoombaEmitter.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 704, 2028 ) HorUp 1 10)) Spike.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 736, 2048 ) VerRight 3 11)) Spike.gameComponent

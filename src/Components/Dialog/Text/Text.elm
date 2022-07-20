@@ -21,12 +21,13 @@ import Lib.Render.Render exposing (renderSprite)
 initText : Int -> ComponentTMsg -> Data
 initText _ comMsg =
     case comMsg of
-        ComponentStringMsg str ->
+        ComponentLStringMsg [ str, sprite ] ->
             Dict.fromList
                 [ ( "_Status", CDString "OnBuild" )
                 , ( "_Timer", CDInt 0 )
                 , ( "_wholeText", CDString str )
                 , ( "ScreenText", CDString "" )
+                , ( "CharSprite", CDString sprite )
                 , ( "_wholeTextLength", CDInt (String.length str) )
                 , ( "_currentPos", CDInt -1 )
                 , ( "_Child", CDLComponent [] )
@@ -186,8 +187,13 @@ viewText ( model, t ) globalData =
     let
         childComponentsList =
             dgetLComponent model "_Child"
+
+        dpd =
+            dgetString model "CharSprite"
+
+        -- dasads = Debug.log "Dsaad " dpd
     in
     group []
-        (List.append [ renderSprite globalData [] ( 250, 150 ) ( 130, 130 ) "background" ]
+        (List.append [ renderSprite globalData [] ( 250, 150 ) ( 130, 130 ) dpd ]
             (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
         )

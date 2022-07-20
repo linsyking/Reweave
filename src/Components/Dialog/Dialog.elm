@@ -85,6 +85,9 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
 
                 index =
                     dgetint model "_Index" + 1
+
+                spritename =
+                    dgetString model (String.fromInt index ++ "CharSprite")
             in
             if dgetint model (String.fromInt index ++ "textExist") == 100 then
                 ( model
@@ -92,7 +95,7 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
                     |> dsetint "_Index" index
                     |> dsetLComponent "_Child"
                         (List.append newChildComponentsList
-                            [ ( "Text", DialTextE.initComponent 0 (ComponentStringMsg (dgetString model (String.fromInt index ++ "Text"))) ) ]
+                            [ ( "Text", DialTextE.initComponent 0 (ComponentLStringMsg [ dgetString model (String.fromInt index ++ "Text"), spritename ]) ) ]
                         )
                 , []
                 , globalData
@@ -127,17 +130,19 @@ updateDialog mainMsg _ globalData ( model, t ) =
 
                 status =
                     dgetString model "_Status"
+
+                spritename =
+                    dgetString model (String.fromInt index ++ "CharSprite")
+
+                index =
+                    dgetint model "_Index"
             in
             case ( status, timer ) of
                 ( "OnBuild", 10 ) ->
-                    let
-                        index =
-                            dgetint model "_Index"
-                    in
                     ( model
                         |> dsetint "_Timer" timer
                         |> dsetstring "_Status" "OnShow"
-                        |> dsetLComponent "_Child" [ ( "Text", DialTextE.initComponent 0 (ComponentStringMsg (dgetString model (String.fromInt index ++ "Text"))) ) ]
+                        |> dsetLComponent "_Child" [ ( "Text", DialTextE.initComponent 0 (ComponentLStringMsg [ dgetString model (String.fromInt index ++ "Text"), spritename ]) ) ]
                     , []
                     , globalData
                     )
