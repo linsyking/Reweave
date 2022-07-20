@@ -22,6 +22,7 @@ allTexture =
     , ( "spikeT", getResourcePath "img/spikeT.png" )
     , ( "spikeB", getResourcePath "img/spikeB.png" )
     , ( "bullet", getResourcePath "img/bullet.png" )
+    , ( "fish", getResourcePath "img/fish.png" )
     ]
 
 
