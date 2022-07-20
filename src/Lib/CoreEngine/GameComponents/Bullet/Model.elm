@@ -6,7 +6,6 @@ import Lib.Component.Base exposing (DefinedTypes(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
 import Lib.CoreEngine.Physics.SolidCollision exposing (canMove)
-import Lib.DefinedTypes.Parser exposing (dgetfloat)
 import Math.Vector2 exposing (vec2)
 
 
@@ -29,8 +28,8 @@ collisionBox =
     { name = "col"
     , offsetX = 0
     , offsetY = 0
-    , width = 30
-    , height = 30
+    , width = 10
+    , height = 10
     }
 
 
@@ -39,8 +38,8 @@ simplecheckBox =
     { name = "sp"
     , offsetX = 0
     , offsetY = 0
-    , width = 30
-    , height = 30
+    , width = 10
+    , height = 10
     }
 
 
@@ -55,10 +54,7 @@ initModel _ gcm =
             , acceleration = ( 0, 0 )
             , simplecheck = simplecheckBox
             , collisionbox = [ collisionBox ]
-            , extra =
-                Dict.fromList
-                    [ ( "radius", CDFloat info.radius )
-                    ]
+            , extra = Dict.empty
             , uid = info.uid
             }
 
@@ -68,15 +64,9 @@ initModel _ gcm =
 
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
 updateModel msg gct ggd gd ( d, t ) =
-    case gct of
-        GameInterCollisionMsg _ pd _ ->
-            ( { d | status = Dead t }, [ GameActorUidMsg pd.uid (GameStringMsg "die") ], ggd )
-
-        _ ->
+    case msg of
+        Tick _ ->
             let
-                r =
-                    dgetfloat d.extra "radius"
-
                 ( vx, vy ) =
                     d.velocity
 
@@ -89,7 +79,13 @@ updateModel msg gct ggd gd ( d, t ) =
             else
                 ( { d | position = ( x + ceiling (vx / 1000), y + ceiling (vy / 1000) ) }, [], ggd )
 
+        _ ->
+            case gct of
+                GameInterCollisionMsg _ pd _ ->
+                    ( { d | status = Dead t }, [ GameActorUidMsg pd.uid (GameStringMsg "die") ], ggd )
 
-queryModel : String -> ( Data, Int ) -> GameComponentTMsg
-queryModel _ _ =
-    NullGameComponentMsg
+                GameSolidCollisionMsg _ ->
+                    ( { d | status = Dead t }, [], ggd )
+
+                _ ->
+                    ( d, [], ggd )
