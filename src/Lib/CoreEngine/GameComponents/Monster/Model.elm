@@ -71,7 +71,7 @@ initModel _ gcm =
             , collisionbox = [ collisionBox, reboundBox ]
             , extra =
                 Dict.fromList
-                    [ ( "Picture", CDString info.picture )
+                    [ ( "TriggerUID", CDInt info.triggeruid )
                     , ( "BulletMethod", CDString info.bulletEmitMethod )
                     , ( "BulletTimer", CDInt 0 )
                     ]
