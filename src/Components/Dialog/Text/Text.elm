@@ -10,6 +10,7 @@ import Dict
 import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
 import Lib.DefinedTypes.Parser exposing (dgetLComponent, dgetString, dgetint, dsetLComponent, dsetint, dsetstring)
+import Lib.Render.Render exposing (renderSprite)
 
 
 
@@ -187,4 +188,6 @@ viewText ( model, t ) globalData =
             dgetLComponent model "_Child"
     in
     group []
-        (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
+        (List.append [ renderSprite globalData [] ( 230, 150 ) ( 130, 130 ) "background" ]
+            (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
+        )
