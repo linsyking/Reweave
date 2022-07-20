@@ -63,7 +63,7 @@ initActors t =
         , initGameComponent t (GameSpikeInit (SpikeInit ( 736, 2048 ) VerRight 3 11)) Spike.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 864, 2016 ) HorDown 15 12)) Spike.gameComponent
         , initGameComponent t (GameBulletInit (BulletInit ( 1800, 1930 ) ( -50, 0 ) 13)) Bullet.gameComponent
-        , initGameComponent t (GameMonsterInit (MonsterInit ( 1200, 30 ) ( 0, 0 ) 100)) Monster.gameComponent
+        , initGameComponent t (GameMonsterInit (MonsterInit ( 1200, 30 ) ( 0, 0 ) "fish" "default" 100)) Monster.gameComponent
         ]
 
 
