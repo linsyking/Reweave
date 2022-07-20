@@ -27,4 +27,12 @@ mymap =
         |> buildrect ( 86, 58 ) ( 15, 5 ) 1 --(15,10)
         |> buildrect ( 86, 49 ) ( 11, 9 ) 1
         |> buildrect ( 88, 45 ) ( 13, 4 ) 1
+        -- pavilion
         |> buildrect ( 116, 56 ) ( 1, 12 ) 1
+        |> buildrect ( 105, 55 ) ( 12, 1 ) 1
+        |> buildrect ( 105, 54 ) ( 1, 1 ) 1
+        |> buildrect ( 116, 54 ) ( 1, 1 ) 1
+        |> buildrect ( 117, 51 ) ( 3, 3 ) 1
+        |> buildrect ( 120, 50 ) ( 15, 1 ) 1
+        
+
