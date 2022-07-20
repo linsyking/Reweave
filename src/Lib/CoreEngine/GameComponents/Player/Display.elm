@@ -8,7 +8,7 @@ import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Data, LifeStatus(..))
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerState(..))
 import Lib.DefinedTypes.Parser exposing (dgetPlayer)
-import Lib.Render.Character exposing (renderCharacterMove)
+import Lib.Render.Character exposing (renderCharacterInAir, renderCharacterMove)
 import Lib.Render.Render exposing (renderSprite, renderText)
 
 
@@ -37,29 +37,34 @@ view ( d, t ) ggd gd =
 
         ( _, vy ) =
             d.velocity
+
+        okeys =
+            model.originKeys
     in
     case d.status of
         Dead _ ->
-            --         [ alpha
-            --     (case d.status of
-            --         Alive ->
-            --             1
-            --         _ ->
-            --             0.5
-            --     )
-            -- ]
-            []
+            [ ( group [ alpha 0.5 ] [ renderCharacterMove rev -1 gd (getPositionUnderCamera d.position ggd) ]
+              , 0
+              )
+            ]
 
         _ ->
             case name of
                 "inair" ->
-                    [ ( group [] [], 0 ) ]
+                    [ ( renderCharacterInAir (vy >= 0) rev gd (getPositionUnderCamera d.position ggd), 0 ) ]
 
                 "onground" ->
-                    [ ( renderCharacterMove rev (getStateFromTime deltatime) gd (getPositionUnderCamera d.position ggd)
-                      , 0
-                      )
-                    ]
+                    if okeys.left == 0 && okeys.right == 0 then
+                        [ ( renderCharacterMove rev -1 gd (getPositionUnderCamera d.position ggd)
+                          , 0
+                          )
+                        ]
+
+                    else
+                        [ ( renderCharacterMove rev (getStateFromTime deltatime) gd (getPositionUnderCamera d.position ggd)
+                          , 0
+                          )
+                        ]
 
                 _ ->
                     []
