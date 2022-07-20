@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Monster.Movement exposing (..)
+module Lib.CoreEngine.GameComponents.Fish.Movement exposing (..)
 
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Data)

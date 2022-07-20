@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Monster.Model exposing (..)
+module Lib.CoreEngine.GameComponents.Fish.Model exposing (..)
 
 import Base exposing (GlobalData, Msg(..))
 import Dict
@@ -8,7 +8,7 @@ import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (isAlive)
-import Lib.CoreEngine.GameComponents.Monster.Movement exposing (checkCollision, solidCollisionMove)
+import Lib.CoreEngine.GameComponents.Fish.Movement exposing (checkCollision, solidCollisionMove)
 import Lib.CoreEngine.Physics.Acceleration exposing (putAccOn)
 import Lib.CoreEngine.Physics.Velocity exposing (changeCVel)
 import Lib.DefinedTypes.Parser exposing (dgetString, dgetint, dsetint)
@@ -61,7 +61,7 @@ simplecheckBox =
 initModel : Int -> GameComponentTMsg -> Data
 initModel _ gcm =
     case gcm of
-        GameMonsterInit info ->
+        GameFishInit info ->
             { status = Alive
             , position = info.initPosition
             , velocity = info.initVelocity
