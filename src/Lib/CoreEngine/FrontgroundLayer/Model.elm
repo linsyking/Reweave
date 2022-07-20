@@ -51,6 +51,9 @@ dealComponentsMsg rmsg model gd ggd =
         ComponentStringMsg "startGameInput" ->
             ( ( model, ggd, [ ( LayerName "Game", LayerStringMsg "startinput" ) ] ), gd )
 
+        ComponentStringIntMsg "addenergy" v ->
+            ( ( model, { ggd | energy = ggd.energy + toFloat v }, [] ), gd )
+
         _ ->
             ( ( model, ggd, [] ), gd )
 

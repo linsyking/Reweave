@@ -48,7 +48,7 @@ updateModel msg _ gd ( d, _ ) =
                 ( d
                     |> dsetstring "input" ""
                     |> dsetbool "state" False
-                , [ sendmsg command ]
+                , [ sendmsg command, ComponentStringMsg "startGameInput" ]
                 , gd
                 )
 
@@ -71,6 +71,9 @@ sendmsg command =
     let
         loadscene =
             String.left 5 command == "load "
+
+        cheatenergy =
+            String.left 5 command == "gete "
     in
     if loadscene then
         let
@@ -88,8 +91,15 @@ sendmsg command =
         in
         ComponentLStringMsg [ "nextscene", kk ]
 
+    else if cheatenergy then
+        let
+            energy =
+                String.dropLeft 5 command
+        in
+        ComponentStringIntMsg "addenergy" (Maybe.withDefault 0 (String.toInt energy))
+
     else
-        ComponentStringMsg "startGameInput"
+        NullComponentMsg
 
 
 viewModel : ( Data, Int ) -> GlobalData -> Renderable
