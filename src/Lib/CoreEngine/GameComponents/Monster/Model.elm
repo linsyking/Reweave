@@ -98,7 +98,7 @@ updateModel msg gct ggd gd ( d, t ) =
         Tick _ ->
             let
                 timer =
-                    dgetint d.extra "BulletTimer" + 1
+                    dgetint d.extra "BulletTimer"
             in
             case gct of
                 GameSolidCollisionMsg cs ->
