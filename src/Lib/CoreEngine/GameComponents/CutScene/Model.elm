@@ -12,7 +12,7 @@ import Lib.DefinedTypes.Parser exposing (dgetLComponent, dsetLComponent)
 initData : Data
 initData =
     { status = Alive
-    , position = ( 300, 1100 )
+    , position = ( 100, 1100 )
     , velocity = ( 0, 0 )
     , mass = 0
     , acceleration = ( 0, 0 )
@@ -81,28 +81,24 @@ updateModel msg gct ggd globalData ( d, t ) =
                 talkings =
                     d.extra
             in
-            ( { d
-                | extra =
-                    d.extra
-                        |> dsetLComponent "_Child"
-                            [ ( "Dialog", DialogE.initComponent 0 (ComponentDictMsg talkings) ) ]
-              }
-            , []
-            , ggd
-            )
+            if dgetLComponent d.extra "_Child" == [] then
+                ( { d
+                    | extra =
+                        d.extra
+                            |> dsetLComponent "_Child"
+                                [ ( "Dialog", DialogE.initComponent 0 (ComponentDictMsg talkings) ) ]
+                  }
+                , []
+                , ggd
+                )
+
+            else
+                ( d, [], ggd )
 
         _ ->
             let
                 data =
                     d.extra
-
-                tmp =
-                    case msg of
-                        Tick _ ->
-                            2
-
-                        _ ->
-                            Debug.log (Debug.toString msg) 1
 
                 componentsList =
                     dgetLComponent data "_Child"
@@ -119,7 +115,15 @@ updateModel msg gct ggd globalData ( d, t ) =
                         ( [], [], globalData )
                         componentsList
             in
-            ( { d | extra = d.extra |> dsetLComponent "_Child" tmpChildComponentsList }
-            , []
-            , ggd
-            )
+            case tmpChildComponentsMsg of
+                [ ComponentStringMsg "OnEnd" ] ->
+                    ( { d | extra = d.extra |> dsetLComponent "_Child" [] }
+                    , []
+                    , ggd
+                    )
+
+                _ ->
+                    ( { d | extra = d.extra |> dsetLComponent "_Child" tmpChildComponentsList }
+                    , []
+                    , ggd
+                    )

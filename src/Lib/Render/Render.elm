@@ -2,10 +2,11 @@ module Lib.Render.Render exposing (..)
 
 import Base exposing (GlobalData)
 import Canvas exposing (Point, Renderable, text, texture)
-import Canvas.Settings exposing (Setting)
+import Canvas.Settings exposing (Setting, fill)
 import Canvas.Settings.Advanced exposing (scale, transform, translate)
 import Canvas.Settings.Text exposing (TextAlign(..), align, font)
 import Canvas.Texture exposing (Texture, dimensions, sprite)
+import Color exposing (Color)
 import Dict exposing (Dict)
 import Lib.Coordinate.Coordinates exposing (heightToReal, posToReal, widthToReal)
 import Lib.CoreEngine.Base exposing (brickSize)
@@ -143,6 +144,24 @@ renderText gd size s ft ( x, y ) =
     text
         [ font { size = floor rx, family = ft }
         , align Start
+        ]
+        ( dsx, dsy + rx - 1 )
+        s
+
+
+renderTextWithColor : GlobalData -> Int -> String -> String -> Color -> ( Int, Int ) -> Renderable
+renderTextWithColor gd size s ft col ( x, y ) =
+    let
+        rx =
+            heightToReal gd size
+
+        ( dsx, dsy ) =
+            posToReal gd ( x, y )
+    in
+    text
+        [ font { size = floor rx, family = ft }
+        , align Start
+        , fill col
         ]
         ( dsx, dsy + rx - 1 )
         s

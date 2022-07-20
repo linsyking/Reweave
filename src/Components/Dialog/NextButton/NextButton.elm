@@ -7,20 +7,21 @@ import Canvas.Settings.Advanced exposing (..)
 import Color
 import Constants exposing (..)
 import Dict
-import Lib.Component.Base exposing (Component, ComponentTMsg(..), Data, DefinedTypes(..))
+import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
-import Lib.DefinedTypes.Parser exposing (dgetDict, dgetLComponent, dgetString, dgetbool, dgetint, dsetLComponent, dsetbool, dsetint, dsetstring)
+import Lib.DefinedTypes.Parser exposing (dgetString, dgetint, dsetint, dsetstring)
+import Lib.Render.Render exposing (renderSprite)
 
 
 
--- OnBuild -> OnShow -> OnDeBuild
--- OnShow : OnLoadChild -> (OnShowChild ->) OnDeChild (OnDeconstructChild)
+-- OnBuild -> OnShow -> OnDeBuild -> OnEnd
+-- OnShow : OnLoadChild -> (OnShowChild ->) OnDeChild (OnDeconstructChild) -> OnEnd
 
 
 initButton : Int -> ComponentTMsg -> Data
 initButton _ comMsg =
     case comMsg of
-        ComponentStringMsg str ->
+        ComponentStringMsg _ ->
             Dict.fromList
                 [ ( "_Status", CDString "OnShow" )
                 , ( "_Timer", CDInt 0 )
@@ -32,7 +33,7 @@ initButton _ comMsg =
 
 
 updateButton : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
-updateButton mainMsg comMsg globalData ( model, t ) =
+updateButton mainMsg _ globalData ( model, t ) =
     case mainMsg of
         Tick _ ->
             let
@@ -63,11 +64,24 @@ updateButton mainMsg comMsg globalData ( model, t ) =
 viewButton : ( Data, Int ) -> GlobalData -> Renderable
 viewButton ( model, t ) globalData =
     if dgetString model "_Status" == "OnShow" then
-        group []
-            [ shapes
-                [ fill Color.blue ]
-                [ rect (posToReal globalData ( 400, 300 )) (widthToReal globalData 800) (heightToReal globalData 500) ]
-            ]
+        -- group []
+        -- [ shapes
+        --     [ fill Color.blue ]
+        --     -- [ rect (posToReal globalData ( 1350, 320 )) (widthToReal globalData 10) (heightToReal globalData 10) ]
+        -- ]
+        renderSprite globalData
+            []
+            ( 1600
+            , 280
+                + (if modBy 30 t <= 15 then
+                    2
+
+                   else
+                    -2
+                  )
+            )
+            ( 20, 13 )
+            "downbutton"
 
     else
         group [] []

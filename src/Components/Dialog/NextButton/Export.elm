@@ -6,7 +6,7 @@ import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 
 component : Component
 component =
-    { name = "Menu"
+    { name = "NextButton"
     , data = initButton 0 NullComponentMsg
     , init = initButton
     , update = updateButton

@@ -11,8 +11,8 @@ import Constants exposing (..)
 import Dict
 import Lib.Component.Base exposing (Component, ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
-import Lib.DefinedTypes.Parser exposing (dgetDict, dgetLComponent, dgetString, dgetbool, dgetint, dsetLComponent, dsetbool, dsetint, dsetstring)
-import Lib.Render.Render exposing (renderText)
+import Lib.DefinedTypes.Parser exposing (dgetLComponent, dgetString, dgetint, dsetLComponent, dsetint, dsetstring)
+import Lib.Render.Render exposing (renderSprite)
 
 
 
@@ -42,12 +42,6 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
 
         timer =
             dgetint model "_Timer" + 1
-
-        status =
-            dgetString model "_Status"
-
-        tmp =
-            Debug.log statusReport 1
     in
     case statusReport of
         "OnBuild" ->
@@ -82,7 +76,7 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
                 newChildComponentsList =
                     List.filter
                         (\( comName, _ ) ->
-                            if comName == "Text" then
+                            if comName == "Text" || comName == "NextButton" then
                                 False
 
                             else
@@ -107,7 +101,7 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
 
             else
                 ( model
-                    |> dsetint "_Timer" timer
+                    |> dsetint "_Timer" 0
                     |> dsetint "_Index" index
                     |> dsetstring "_Status" "OnDeBuild"
                     |> dsetLComponent "_Child" newChildComponentsList
@@ -125,7 +119,7 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
 
 
 updateDialog : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
-updateDialog mainMsg comMsg globalData ( model, t ) =
+updateDialog mainMsg _ globalData ( model, t ) =
     case mainMsg of
         Tick _ ->
             let
@@ -154,7 +148,7 @@ updateDialog mainMsg comMsg globalData ( model, t ) =
 
                 ( "OnShow", _ ) ->
                     let
-                        childComponetsList =
+                        childComponentsList =
                             dgetLComponent model "_Child"
 
                         ( newChildComponentsList, newChildComponentMsg ) =
@@ -175,7 +169,7 @@ updateDialog mainMsg comMsg globalData ( model, t ) =
                                         ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], tmpComponentsMsg )
                                 )
                                 ( [], NullComponentMsg )
-                                childComponetsList
+                                childComponentsList
                     in
                     case newChildComponentMsg of
                         ComponentLSStringMsg demand list ->
@@ -199,6 +193,27 @@ updateDialog mainMsg comMsg globalData ( model, t ) =
                             , globalData
                             )
 
+                ( "OnDeBuild", 10 ) ->
+                    ( model
+                        |> dsetint "_Timer" timer
+                        |> dsetstring "_Status" "OnEnd"
+                    , NullComponentMsg
+                    , globalData
+                    )
+
+                ( "OnDeBuild", _ ) ->
+                    ( model
+                        |> dsetint "_Timer" timer
+                    , NullComponentMsg
+                    , globalData
+                    )
+
+                ( "OnEnd", _ ) ->
+                    ( model
+                    , ComponentStringMsg "OnEnd"
+                    , globalData
+                    )
+
                 ( _, _ ) ->
                     ( model |> dsetint "_Timer" timer, NullComponentMsg, globalData )
 
@@ -206,9 +221,6 @@ updateDialog mainMsg comMsg globalData ( model, t ) =
             let
                 childComponetsList =
                     dgetLComponent model "_Child"
-
-                tmp =
-                    Debug.log (Debug.toString mainMsg) 1
 
                 ( newChildComponentsList, newChildComponentMsg ) =
                     List.foldl
@@ -276,22 +288,32 @@ viewDialog ( model, t ) globalData =
         childComponentsList =
             dgetLComponent model "_Child"
     in
-    if status == "OnBuild" then
-        group []
-            (List.append
-                [ shapes [ stroke Color.black ]
-                    [ rect (posToReal globalData ( 600, 200 - 15 * timer )) (widthToReal globalData 800) (heightToReal globalData (30 * timer))
-                    ]
-                ]
-                (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
-            )
+    case status of
+        "OnBuild" ->
+            group []
+                (List.append
+                    (if timer == 0 then
+                        []
 
-    else
-        group []
-            (List.append
-                [ shapes [ stroke Color.black ]
-                    [ rect (posToReal globalData ( 600, 50 )) (widthToReal globalData 800) (heightToReal globalData 300)
-                    ]
-                ]
-                (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
-            )
+                     else
+                        [ renderSprite globalData [] ( 189, 200 - 15 * timer ) ( 1542, 30 * timer ) "dialogue" ]
+                    )
+                    (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
+                )
+
+        "OnDeBuild" ->
+            group []
+                (List.append
+                    [ renderSprite globalData [] ( 189, 50 + 15 * timer ) ( 1542, 300 - 30 * timer ) "dialogue" ]
+                    (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
+                )
+
+        "OnEnd" ->
+            group [] []
+
+        _ ->
+            group []
+                (List.append
+                    [ renderSprite globalData [] ( 189, 50 ) ( 1542, 300 ) "dialogue" ]
+                    (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
+                )

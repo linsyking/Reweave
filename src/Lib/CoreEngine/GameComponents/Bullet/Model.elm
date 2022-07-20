@@ -89,4 +89,3 @@ updateModel msg gct ggd gd ( d, t ) =
 
                 _ ->
                     ( d, [], ggd )
-

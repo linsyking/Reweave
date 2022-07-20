@@ -3,6 +3,7 @@ module Scenes.Level1.Config exposing (..)
 import Array exposing (Array)
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable)
+import Color
 import Components.Hints.Export as Hints
 import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
@@ -27,7 +28,7 @@ import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..), SpikeInit)
 import Lib.CoreEngine.GameComponents.Spike.Export as Spike
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
-import Lib.Render.Render exposing (renderSprite, renderText)
+import Lib.Render.Render exposing (renderSprite, renderText, renderTextWithColor)
 import Lib.Scene.Base exposing (PlayerInitPosition(..))
 import Scenes.Level1.Map exposing (mymap)
 
@@ -57,7 +58,7 @@ initActors t =
         , initGameComponent t (GameGoombaInit (GoombaInit ( 2000, 800 ) ( 0, 0 ) 2)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 3500, 500 ) ( 0, 0 ) 3)) Goomba.gameComponent
         , initGameComponent t (GameExitInit (ExitInit ( 3800, 1600 ) ( 10, 160 ) "Scene1" 9)) Exit.gameComponent
-        , initGameComponent t (GameCutSceneInit (CutSceneInit ( 100, 1800 ) ( 100, 160 ) 88 [ ( "1", "yes jnot jeudnst", True ), ( "1", "no i feel bad", True ) ])) CutScene.gameComponent
+        , initGameComponent t (GameCutSceneInit (CutSceneInit ( 100, 1800 ) ( 100, 160 ) 88 [ ( "1", "Dear master, I want learn something from you", True ), ( "1", "Yes, please go ahead.", False ) ])) CutScene.gameComponent
         , initGameComponent t (GameGoombaEmitterInit (GoombaEmitterInit ( 900, 1800 ) 200 ( -50, 0 ) 6)) GoombaEmitter.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 704, 2028 ) HorUp 1 10)) Spike.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 736, 2048 ) VerRight 3 11)) Spike.gameComponent
@@ -94,4 +95,6 @@ allChartlets =
     , ( \gd ggd -> renderText gd 30 "3. Select any new object(Of course you can choose not to change)" "Times New Roman" (getPositionUnderCamera ( 200, 1550 ) ggd), BehindActors )
     , ( \gd ggd -> renderText gd 30 "4. Right click on any position to use the kinetic energy on the chosen object" "Times New Roman" (getPositionUnderCamera ( 200, 1600 ) ggd), BehindActors )
     , ( \gd ggd -> renderText gd 100 "Test Chamber" "Times New Roman" (getPositionUnderCamera ( 200, 1250 ) ggd), BehindActors )
+
+    -- , ( \gd _ -> renderTextWithColor gd 40 "Dear master, I want learn something from you" "Times New Roman" Color.white ( 400, 100 ), FrontSolids )
     ]
