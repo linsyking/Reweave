@@ -63,29 +63,31 @@ initModel _ gcm =
 
 
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
-updateModel msg gct ggd gd ( d, t ) =
+updateModel msg gct ggd _ ( d, t ) =
     case msg of
         Tick _ ->
-            let
-                ( vx, vy ) =
-                    d.velocity
+            case gct of
+                GameSolidCollisionMsg _ ->
+                    ( { d | status = Dead t }, [], ggd )
 
-                ( x, y ) =
-                    d.position
-            in
-            if (vx < 0 && not (canMove d ggd (vec2 -1 0))) || (vx > 0 && not (canMove d ggd (vec2 1 0))) then
-                ( { d | status = Dead t }, [], ggd )
+                _ ->
+                    let
+                        ( vx, vy ) =
+                            d.velocity
 
-            else
-                ( { d | position = ( x + ceiling (vx / 1000), y + ceiling (vy / 1000) ) }, [], ggd )
+                        ( x, y ) =
+                            d.position
+                    in
+                    if (vx < 0 && not (canMove d ggd (vec2 -1 0))) || (vx > 0 && not (canMove d ggd (vec2 1 0))) then
+                        ( { d | status = Dead t, position = ( x + ceiling (vx / 1000), y + ceiling (vy / 1000) ) }, [], ggd )
+
+                    else
+                        ( { d | position = ( x + ceiling (vx / 1000), y + ceiling (vy / 1000) ) }, [], ggd )
 
         _ ->
             case gct of
                 GameInterCollisionMsg _ pd _ ->
                     ( { d | status = Dead t }, [ GameActorUidMsg pd.uid (GameStringMsg "die") ], ggd )
-
-                GameSolidCollisionMsg _ ->
-                    ( { d | status = Dead t }, [], ggd )
 
                 _ ->
                     ( d, [], ggd )

@@ -33,18 +33,17 @@ simplecheckBox ( w, h ) =
     }
 
 
-decodeTalkings : List ( String, String, Bool ) -> List ( String, DefinedTypes )
+decodeTalkings : List ( String, String ) -> List ( String, DefinedTypes )
 decodeTalkings talkings =
     List.concat
         [ Tuple.second
             (List.foldl
-                (\( charSprite, text, dir ) ( index, list ) ->
+                (\( charSprite, text ) ( index, list ) ->
                     ( index + 1
                     , List.append list
                         [ ( String.fromInt index ++ "textExist", CDInt 100 )
                         , ( String.fromInt index ++ "CharSprite", CDString charSprite )
                         , ( String.fromInt index ++ "Text", CDString text )
-                        , ( String.fromInt index ++ "Direction", CDBool dir )
                         ]
                     )
                 )
@@ -88,7 +87,7 @@ updateModel msg gct ggd globalData ( d, t ) =
                             |> dsetLComponent "_Child"
                                 [ ( "Dialog", DialogE.initComponent 0 (ComponentDictMsg talkings) ) ]
                   }
-                , []
+                , [ GameParentMsg (GameStringMsg "ignoreinput") ]
                 , ggd
                 )
 
@@ -118,7 +117,7 @@ updateModel msg gct ggd globalData ( d, t ) =
             case tmpChildComponentsMsg of
                 [ ComponentStringMsg "OnEnd" ] ->
                     ( { d | extra = d.extra |> dsetLComponent "_Child" [] }
-                    , []
+                    , [ GameParentMsg (GameStringMsg "reactinput") ]
                     , ggd
                     )
 

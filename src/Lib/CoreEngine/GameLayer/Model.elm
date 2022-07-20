@@ -12,11 +12,13 @@ import Lib.CoreEngine.GameComponent.ComponentHandler exposing (getGameComponentC
 import Lib.CoreEngine.GameComponent.GenUID exposing (genUID)
 import Lib.CoreEngine.GameComponents.Bullet.Export as Bullet
 import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
+import Lib.CoreEngine.GameComponents.Player.Base exposing (BoundKey)
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameLayer.Common exposing (Model)
 import Lib.CoreEngine.Physics.InterCollision exposing (gonnaInterColllide)
 import Lib.CoreEngine.Physics.NaiveCollision exposing (judgeInCamera)
 import Lib.CoreEngine.Physics.SolidCollision exposing (canMove, gonnaSolidCollide, movePointPlain)
+import Lib.DefinedTypes.Parser exposing (dgetPlayer, dsetPlayer)
 import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget(..))
 import Lib.Scene.Base exposing (EngineT, PlayerInitPosition(..))
 import Lib.Tools.Array exposing (locate)
@@ -377,7 +379,35 @@ dealParentMsg gct gd ( model, t ) ggd =
             ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerRestartMsg ) ] ), gd )
 
         GameStringMsg "ignoreinput" ->
-            ( ( { model | ignoreInput = True }, ggd, [] ), gd )
+            let
+                player =
+                    model.player.data.extra
+
+                playerextra =
+                    dgetPlayer player "model"
+
+                nokey =
+                    BoundKey 0 0 0 0 0
+
+                newp =
+                    { playerextra | originKeys = nokey }
+
+                newplayer =
+                    dsetPlayer "model" newp player
+
+                odata =
+                    model.player.data
+
+                newdata =
+                    { odata | extra = newplayer }
+
+                opp =
+                    model.player
+
+                nnplayer =
+                    { opp | data = newdata }
+            in
+            ( ( { model | ignoreInput = True, player = nnplayer }, ggd, [] ), gd )
 
         GameStringMsg "reactinput" ->
             ( ( { model | ignoreInput = False }, ggd, [] ), gd )
