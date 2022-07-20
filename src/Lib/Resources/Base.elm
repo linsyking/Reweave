@@ -27,6 +27,15 @@ allTexture =
     , ( "fish", getResourcePath "img/fish.png" )
     , ( "whiteshadow", getResourcePath "img/white-shadow.png" )
     , ( "blueshadow", getResourcePath "img/ki2.png" )
+    , ( "p_jump", getResourcePath "img/p_jump.png" )
+    , ( "p_stand", getResourcePath "img/p_dtand.png" )
+    , ( "p_fall", getResourcePath "img/p_fall.png" )
+    , ( "p_m1", getResourcePath "img/p_m1.png" )
+    , ( "p_m2", getResourcePath "img/p_m2.png" )
+    , ( "p_m3", getResourcePath "img/p_m3.png" )
+    , ( "p_m4", getResourcePath "img/p_m4.png" )
+    , ( "p_m5", getResourcePath "img/p_m5.png" )
+    , ( "p_m6", getResourcePath "img/p_m6.png" )
     ]
 
 
