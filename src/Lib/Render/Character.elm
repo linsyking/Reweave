@@ -1,7 +1,7 @@
 module Lib.Render.Character exposing (..)
 
 import Base exposing (GlobalData)
-import Canvas exposing (Renderable, group)
+import Canvas exposing (Renderable)
 import Lib.Render.Render exposing (renderSpriteWithRev)
 
 
