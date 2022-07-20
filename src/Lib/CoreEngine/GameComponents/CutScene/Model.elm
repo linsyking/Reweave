@@ -116,7 +116,7 @@ updateModel msg gct ggd globalData ( d, t ) =
             in
             case tmpChildComponentsMsg of
                 [ ComponentStringMsg "OnEnd" ] ->
-                    ( { d | extra = d.extra |> dsetLComponent "_Child" [] }
+                    ( d
                     , [ GameParentMsg (GameStringMsg "reactinput") ]
                     , ggd
                     )
