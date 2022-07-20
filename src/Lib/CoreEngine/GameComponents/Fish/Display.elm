@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Monster.Display exposing (..)
+module Lib.CoreEngine.GameComponents.Fish.Display exposing (..)
 
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable, group)
@@ -6,6 +6,7 @@ import Canvas.Settings.Advanced exposing (alpha, rotate, transform)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Data, LifeStatus(..))
+import Lib.DefinedTypes.Parser exposing (dgetString)
 import Lib.Render.Render exposing (renderSprite, renderText)
 
 
@@ -31,7 +32,7 @@ view ( d, t ) ggd gd =
                 ]
                 (getPositionUnderCamera d.position ggd)
                 ( d.simplecheck.width, d.simplecheck.height )
-                "fish"
+                (dgetString d.extra "Picture")
             , renderText gd 20 (String.fromFloat (Tuple.first d.velocity)) "sans-serif" (getPositionUnderCamera d.position ggd)
             ]
       , 0

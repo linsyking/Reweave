@@ -6,4 +6,5 @@ type alias CutSceneInit =
     , initSize : ( Int, Int )
     , uid : Int
     , talkings : List ( String, String )
+    , isCol : Bool
     }
