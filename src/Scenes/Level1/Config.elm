@@ -20,6 +20,8 @@ import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
 import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
 import Lib.CoreEngine.GameComponents.GoombaEmitter.Base exposing (GoombaEmitterInit)
 import Lib.CoreEngine.GameComponents.GoombaEmitter.Export as GoombaEmitter
+import Lib.CoreEngine.GameComponents.Monster.Base exposing (MonsterInit)
+import Lib.CoreEngine.GameComponents.Monster.Export as Monster
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit)
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..), SpikeInit)
@@ -61,6 +63,7 @@ initActors t =
         , initGameComponent t (GameSpikeInit (SpikeInit ( 736, 2048 ) VerRight 3 11)) Spike.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 864, 2016 ) HorDown 15 12)) Spike.gameComponent
         , initGameComponent t (GameBulletInit (BulletInit ( 1800, 1930 ) ( -50, 0 ) 13)) Bullet.gameComponent
+        , initGameComponent t (GameMonsterInit (MonsterInit ( 1200, 30 ) ( 0, 0 ) 100)) Monster.gameComponent
         ]
 
 

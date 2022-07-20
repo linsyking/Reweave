@@ -10,6 +10,7 @@ import Lib.CoreEngine.GameComponents.CutScene.Base exposing (CutSceneInit)
 import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
 import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
 import Lib.CoreEngine.GameComponents.GoombaEmitter.Base exposing (GoombaEmitterInit)
+import Lib.CoreEngine.GameComponents.Monster.Base exposing (MonsterInit)
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit)
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeInit)
 
@@ -44,6 +45,7 @@ type GameComponentTMsg
     | GameGoombaEmitterInit GoombaEmitterInit
     | GameSpikeInit SpikeInit
     | GameBulletInit BulletInit
+    | GameMonsterInit MonsterInit
     | GameExitInit ExitInit
     | GameCutSceneInit CutSceneInit
     | GameExitScene String
