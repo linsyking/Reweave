@@ -65,6 +65,9 @@ changebk key status bk =
         67 ->
             { bk | space = status }
 
+        32 ->
+            { bk | space = status }
+
         _ ->
             bk
 
