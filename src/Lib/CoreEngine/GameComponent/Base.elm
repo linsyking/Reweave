@@ -8,11 +8,13 @@ import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponents.Bullet.Base exposing (BulletInit)
 import Lib.CoreEngine.GameComponents.CutScene.Base exposing (CutSceneInit)
 import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
+import Lib.CoreEngine.GameComponents.Fireball.Base exposing (FireballInit)
 import Lib.CoreEngine.GameComponents.Fish.Base exposing (FishInit)
 import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
 import Lib.CoreEngine.GameComponents.GoombaEmitter.Base exposing (GoombaEmitterInit)
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit)
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeInit)
+import Lib.CoreEngine.GameComponents.Turtle.Base exposing (TurtleInit)
 
 
 
@@ -47,6 +49,8 @@ type GameComponentTMsg
     | GameBulletInit BulletInit
     | GameFishInit FishInit
     | GameExitInit ExitInit
+    | GameFireballInit FireballInit
+    | GameTurtleInit TurtleInit
     | GameCutSceneInit CutSceneInit
     | GameExitScene String
     | GameStringIntMsg String Int

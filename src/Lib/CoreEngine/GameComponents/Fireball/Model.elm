@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Bullet.Model exposing (..)
+module Lib.CoreEngine.GameComponents.Fireball.Model exposing (..)
 
 import Base exposing (GlobalData, Msg(..))
 import Dict
@@ -28,8 +28,8 @@ collisionBox =
     { name = "col"
     , offsetX = 0
     , offsetY = 0
-    , width = 20
-    , height = 20
+    , width = 200
+    , height = 200
     }
 
 
@@ -38,23 +38,23 @@ simplecheckBox =
     { name = "sp"
     , offsetX = 0
     , offsetY = 0
-    , width = 20
-    , height = 20
+    , width = 200
+    , height = 200
     }
 
 
 initModel : Int -> GameComponentTMsg -> Data
 initModel _ gcm =
     case gcm of
-        GameBulletInit info ->
+        GameFireballInit info ->
             { status = Alive
             , position = info.initPosition
             , velocity = info.initVelocity
-            , mass = 5
+            , mass = 20
             , acceleration = ( 0, 0 )
             , simplecheck = simplecheckBox
             , collisionbox = [ collisionBox ]
-            , extra = Dict.fromList [ ( "Picture", CDString info.picture ) ]
+            , extra = Dict.empty
             , uid = info.uid
             }
 
@@ -87,7 +87,10 @@ updateModel msg gct ggd _ ( d, t ) =
         -- { d | position = ( x + ceiling (vx / 1000), y + ceiling (vy / 1000) ) }
         _ ->
             case gct of
-                GameInterCollisionMsg "fish" _ _ ->
+                GameInterCollisionMsg "turtle" _ _ ->
+                    ( d, [], ggd )
+
+                GameInterCollisionMsg "fireball" _ _ ->
                     ( d, [], ggd )
 
                 GameInterCollisionMsg _ pd _ ->

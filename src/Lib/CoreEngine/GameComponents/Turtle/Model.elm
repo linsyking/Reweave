@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Fish.Model exposing (..)
+module Lib.CoreEngine.GameComponents.Turtle.Model exposing (..)
 
 -- import Lib.CoreEngine.Physics.Velocity exposing (changeCVel)
 
@@ -38,7 +38,7 @@ simplecheckBox =
 initModel : Int -> GameComponentTMsg -> Data
 initModel _ comMsg =
     case comMsg of
-        GameFishInit info ->
+        GameTurtleInit info ->
             { status = Alive
             , position = info.initPosition
             , velocity = info.initVelocity
@@ -73,7 +73,7 @@ changeStatus model =
             dgetint data "Timer"
     in
     case ( status, timer ) of
-        ( "Away", 1200 ) ->
+        ( "Away", 150 ) ->
             { model
                 | extra =
                     data
@@ -85,11 +85,27 @@ changeStatus model =
             { model
                 | extra =
                     data
-                        |> dsetstring "Status" "FlyHigh"
+                        |> dsetstring "Status" "Wave"
                         |> dsetint "Timer" 0
             }
 
-        ( "FlyHigh", 100 ) ->
+        ( "Wave", 9 ) ->
+            { model
+                | extra =
+                    data
+                        |> dsetstring "Status" "JumpUp"
+                        |> dsetint "Timer" 0
+            }
+
+        ( "JumpUp", 50 ) ->
+            { model
+                | extra =
+                    data
+                        |> dsetstring "Status" "JumpDown"
+                        |> dsetint "Timer" 0
+            }
+
+        ( "JumpDown", 50 ) ->
             { model
                 | extra =
                     data
@@ -98,14 +114,6 @@ changeStatus model =
             }
 
         ( "Create", 500 ) ->
-            { model
-                | extra =
-                    data
-                        |> dsetstring "Status" "FlyBack"
-                        |> dsetint "Timer" 0
-            }
-
-        ( "FlyBack", 100 ) ->
             { model
                 | extra =
                     data
@@ -134,19 +142,14 @@ changeVelocity model =
             dgetint data "Timer"
     in
     case status of
-        "FlyHigh" ->
-            if timer < 40 then
-                { model | velocity = ( -45, 2 ) }
+        "JumpUp" ->
+            { model | velocity = ( 0, 20 - toFloat timer ) }
 
-            else
-                { model | velocity = ( 60, 2 ) }
+        "Wave" ->
+            { model | velocity = ( 0, 30 ) }
 
-        "FlyBack" ->
-            if timer < 60 then
-                { model | velocity = ( -60, -5 ) }
-
-            else
-                { model | velocity = ( 45, -5 ) }
+        "JumpDown" ->
+            { model | velocity = ( 0, -50 + toFloat timer ) }
 
         _ ->
             { model | velocity = ( 0, 0 ) }
@@ -171,16 +174,35 @@ getInitBulletsMsg t model =
     in
     case status of
         "Away" ->
-            if (modBy 100 timer == 0) || (modBy 100 timer == 20) || (modBy 100 timer == 30) then
+            if (modBy 150 timer == 0) || (modBy 150 timer == 60) then
                 Tuple.first
                     (List.foldl
                         (\( posX, posY ) ( bulletList, index ) ->
                             ( List.append bulletList
                                 [ GameParentMsg
-                                    (GameBulletInit
-                                        { initPosition = ( posX + floor (cos index * 430), posY + floor (sin index * 430) )
-                                        , initVelocity = ( cos index * 100, sin index * -100 )
-                                        , picture = "ot/scale"
+                                    (GameFireballInit
+                                        { initPosition = ( posX + floor (cos (degrees index) * 400), posY + floor (sin (degrees index) * 400) )
+                                        , initVelocity = ( cos (degrees index) * 100, sin (degrees index) * -100 )
+                                        , uid = 0
+                                        }
+                                    )
+                                ]
+                            , index + 36
+                            )
+                        )
+                        ( [], toFloat (modBy 100 timer - 5) )
+                        (List.repeat 10 ( Tuple.first model.position + 250, Tuple.second model.position + 300 ))
+                    )
+
+            else if modBy 150 timer == 100 then
+                Tuple.first
+                    (List.foldl
+                        (\( posX, posY ) ( bulletList, index ) ->
+                            ( List.append bulletList
+                                [ GameParentMsg
+                                    (GameFireballInit
+                                        { initPosition = ( posX + floor (cos (degrees index) * 400), posY + floor (sin (degrees index) * 400) )
+                                        , initVelocity = ( cos (degrees index) * 100, sin (degrees index) * -100 )
                                         , uid = 0
                                         }
                                     )
@@ -189,23 +211,22 @@ getInitBulletsMsg t model =
                             )
                         )
                         ( [], 0 )
-                        (List.repeat 20 ( Tuple.first model.position + 300, Tuple.second model.position + 300 ))
+                        (List.repeat 20 ( Tuple.first model.position + 250, Tuple.second model.position + 300 ))
                     )
 
             else
                 []
 
         "Create" ->
-            if (modBy 100 timer == 0) || (modBy 100 timer == 10) then
+            if (modBy 150 timer == 0) || (modBy 150 timer == 80) then
                 Tuple.first
                     (List.foldl
-                        (\( posX, posY ) ( bulletList, seed ) ->
+                        (\( posX, _ ) ( bulletList, seed ) ->
                             ( List.append bulletList
                                 [ GameParentMsg
-                                    (GameBulletInit
-                                        { initPosition = ( posX + randomPos seed -1000 1000, posY + randomPos seed 100 400 )
-                                        , initVelocity = ( toFloat (randomPos seed -20 20), toFloat (randomPos seed -250 -50) )
-                                        , picture = "ot/scale"
+                                    (GameFireballInit
+                                        { initPosition = ( posX + randomPos seed -1000 1000, 500 )
+                                        , initVelocity = ( 0, toFloat (randomPos seed -150 -50) )
                                         , uid = 0
                                         }
                                     )
@@ -214,8 +235,29 @@ getInitBulletsMsg t model =
                             )
                         )
                         ( [], Random.initialSeed t )
-                        (List.repeat 10 ( Tuple.first model.position + 300, Tuple.second model.position + 300 ))
+                        (List.repeat 10 ( Tuple.first model.position + 300, Tuple.second model.position + 250 ))
                     )
+
+            else
+                []
+
+        "Wave" ->
+            if modBy 3 timer == 0 then
+                [ GameParentMsg
+                    (GameFireballInit
+                        { initPosition = ( Tuple.first model.position, Tuple.second model.position + 500 )
+                        , initVelocity = ( -200, 0 )
+                        , uid = 0
+                        }
+                    )
+                , GameParentMsg
+                    (GameFireballInit
+                        { initPosition = ( Tuple.first model.position + 600, Tuple.second model.position + 500 )
+                        , initVelocity = ( 200, 0 )
+                        , uid = 0
+                        }
+                    )
+                ]
 
             else
                 []

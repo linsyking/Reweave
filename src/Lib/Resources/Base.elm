@@ -40,6 +40,7 @@ allTexture =
     , ( "downbutton", getResourcePath "img/down.png" )
     , ( "bullet", getResourcePath "img/bullet.png" )
     , ( "fish", getResourcePath "img/Monsters/fish.png" )
+    , ( "turtle", getResourcePath "img/Monsters/turtle.png" )
     , ( "whiteshadow", getResourcePath "img/white-shadow.png" )
     , ( "blueshadow", getResourcePath "img/ki.png" )
     , ( "goomba", getResourcePath "img/Monsters/small.png" )
@@ -120,4 +121,6 @@ otherSprites =
     , ( "ot/block", getResourcePath "img/Others/block.png" )
     , ( "ot/cave", getResourcePath "img/Others/cave.png" )
     , ( "ot/scale", getResourcePath "img/Others/scale.png" )
+    , ( "ot/fireball1", getResourcePath "img/Others/fire1.png" )
+    , ( "ot/fireball2", getResourcePath "img/Others/fire2.png" )
     ]

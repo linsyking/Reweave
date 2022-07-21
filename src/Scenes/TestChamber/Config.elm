@@ -24,6 +24,8 @@ import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit)
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..), SpikeInit)
 import Lib.CoreEngine.GameComponents.Spike.Export as Spike
+import Lib.CoreEngine.GameComponents.Turtle.Base exposing (TurtleInit)
+import Lib.CoreEngine.GameComponents.Turtle.Export as Turtle
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
 import Lib.Render.Render exposing (renderSprite, renderText)
 import Lib.Scene.Base exposing (PlayerInitPosition(..))
@@ -41,7 +43,7 @@ initPlayer : Int -> PlayerInitPosition -> GameComponent
 initPlayer t pos =
     case pos of
         DefaultPlayerPosition ->
-            initGameComponent t (GamePlayerInit (PlayerInit ( 200, 1550 ))) Player.gameComponent
+            initGameComponent t (GamePlayerInit (PlayerInit ( 2900, 2000 ))) Player.gameComponent
 
         CustomPlayerPosition x ->
             initGameComponent t (GamePlayerInit (PlayerInit x)) Player.gameComponent
@@ -61,8 +63,8 @@ initActors t =
         , initGameComponent t (GameSpikeInit (SpikeInit ( 736, 2048 ) VerRight 3 11)) Spike.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 864, 2016 ) HorDown 15 12)) Spike.gameComponent
 
-        -- , initGameComponent t (GameBulletInit (BulletInit ( 800, 1530 ) ( -5, 0 ) 14)) Bullet.gameComponent
-        , initGameComponent t (GameFishInit (FishInit ( 2700, 1000 ) ( 0, 0 ) "default" 88 100)) Fish.gameComponent
+        -- , initGameComponent t (GameFireballInit (FireballInit ( 500, 1530 ) ( -5, 0 ) 18)) Fireball.gameComponent
+        , initGameComponent t (GameTurtleInit (TurtleInit ( 2700, 1000 ) ( 0, 0 ) "default" 88 100)) Turtle.gameComponent
         ]
 
 
