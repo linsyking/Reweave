@@ -41,8 +41,8 @@ initModel _ gcm =
             , velocity = ( 0, 0 )
             , mass = 70
             , acceleration = ( 0, 0 )
-            , simplecheck = simplecheckBox info.initSize
-            , collisionbox = [ simplecheckBox info.initSize ]
+            , simplecheck = simplecheckBox ( 3, 20 )
+            , collisionbox = [ simplecheckBox ( 3, 20 ) ]
             , extra =
                 Dict.fromList
                     [ ( "togo", CDString info.togo )

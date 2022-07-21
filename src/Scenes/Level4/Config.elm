@@ -50,7 +50,7 @@ initActors t =
         , initGameComponent t (GameGoombaInit (GoombaInit ( 1280, 1696 ) ( 0, 0 ) 7)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 1760, 1800 ) ( 0, 0 ) 8)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 2240, 1800 ) ( 0, 0 ) 9)) Goomba.gameComponent
-        , initGameComponent t (GameExitInit (ExitInit ( 6350, 1920 ) ( 10, 160 ) "Scene1" 13)) Exit.gameComponent
+        , initGameComponent t (GameExitInit (ExitInit ( 6350, 1920 ) "Scene1" 13)) Exit.gameComponent
 
         --, initGameComponent t (GameCutSceneInit (CutSceneInit ( 100, 1800 ) ( 100, 160 ) 88 [ ( "1", "Dear master, I want learn something from you", True ), ( "1", "Yes, please go ahead.", False ) ])) CutScene.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 3360, 1408 ) HorDown 9 10)) Spike.gameComponent
