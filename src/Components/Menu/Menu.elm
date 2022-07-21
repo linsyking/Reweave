@@ -122,7 +122,7 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
             if judgeMouse globalData ( x, y ) ( 1100 - 30, 400 - 30 ) ( 2 * 30, 2 * 30 ) then
                 ( model
                     |> dsetbool "Show" False
-                , []
+                , [ ComponentStringMsg "OnClose" ]
                 , globalData
                 )
 
@@ -150,7 +150,7 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                                         (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
                                             let
                                                 ( tmpCom, tmpComMsg, gD ) =
-                                                    comModel.update mainMsg (ComponentDictMsg tmpData) tmpGData ( comModel.data, t )
+                                                    comModel.update mainMsg (ComponentStringDictMsg "" tmpData) tmpGData ( comModel.data, t )
                                             in
                                             ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
                                         )
@@ -162,6 +162,13 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                                 |> dsetLComponent "Child" newChildComponentsList
                             , []
                             , newGlobalData
+                            )
+
+                        "Close" ->
+                            ( model
+                                |> dsetbool "Show" False
+                            , [ ComponentStringMsg "OnClose" ]
+                            , globalData
                             )
 
                         _ ->

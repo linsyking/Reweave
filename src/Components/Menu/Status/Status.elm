@@ -81,7 +81,7 @@ updateStatus mainMsg comMsg globalData ( model, t ) =
                         _ ->
                             ( model, [], globalData )
 
-                ComponentDictMsg dict ->
+                ComponentStringDictMsg _ dict ->
                     ( model |> dsetDict "Data" dict, [], globalData )
 
                 _ ->
