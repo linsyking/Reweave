@@ -39,7 +39,7 @@ simplecheckBox =
     , offsetX = 0
     , offsetY = 0
     , width = 100
-    , height = 10
+    , height = 100
     }
 
 
