@@ -231,9 +231,14 @@ updateModel mainMsg comMsg gameGlobalData globalData ( model, t ) =
                     getInitBulletsMsg t model
 
                 newModel =
-                    model
-                        |> changeStatus
-                        |> changeVelocity
+                    case model.status of
+                        Dead _ ->
+                            { model | velocity = ( Tuple.first model.velocity, Tuple.second model.velocity - 10 ) }
+
+                        _ ->
+                            model
+                                |> changeStatus
+                                |> changeVelocity
             in
             ( newModel, requestMsg, gameGlobalData )
 
