@@ -10,12 +10,12 @@ import Lib.CoreEngine.Camera.Base exposing (CameraData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentTMsg(..))
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (initGameComponent)
-import Lib.CoreEngine.GameComponents.Bullet.Base exposing (BulletInit)
-import Lib.CoreEngine.GameComponents.Bullet.Export as Bullet
 import Lib.CoreEngine.GameComponents.CutScene.Base exposing (CutSceneInit)
 import Lib.CoreEngine.GameComponents.CutScene.Export as CutScene
 import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
 import Lib.CoreEngine.GameComponents.Exit.Export as Exit
+import Lib.CoreEngine.GameComponents.Fireball.Base exposing (FireballInit)
+import Lib.CoreEngine.GameComponents.Fireball.Export as Fireball
 import Lib.CoreEngine.GameComponents.Fish.Base exposing (FishInit)
 import Lib.CoreEngine.GameComponents.Fish.Export as Fish
 import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
@@ -62,8 +62,7 @@ initActors t =
         , initGameComponent t (GameSpikeInit (SpikeInit ( 704, 2028 ) HorUp 1 10)) Spike.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 736, 2048 ) VerRight 3 11)) Spike.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 864, 2016 ) HorDown 15 12)) Spike.gameComponent
-
-        -- , initGameComponent t (GameBulletInit (BulletInit ( 800, 1530 ) ( -5, 0 ) 14)) Bullet.gameComponent
+        , initGameComponent t (GameFireballInit (FireballInit ( 200, 1530 ) ( -5, 0 ) 18)) Fireball.gameComponent
         , initGameComponent t (GameFishInit (FishInit ( 2700, 1000 ) ( 0, 0 ) "default" 88 100)) Fish.gameComponent
         ]
 

@@ -1,9 +1,8 @@
 module Lib.CoreEngine.GameComponents.Fireball.Base exposing (..)
 
 
-type alias BulletInit =
+type alias FireballInit =
     { initPosition : ( Int, Int )
     , initVelocity : ( Float, Float )
-    , picture : String
     , uid : Int
     }

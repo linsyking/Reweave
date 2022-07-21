@@ -11,10 +11,20 @@ import Lib.Render.Render exposing (renderSprite)
 
 view : ( Data, Int ) -> GameGlobalData -> GlobalData -> List ( Renderable, Int )
 view ( d, t ) ggd gd =
+    let
+        tmp =
+            Debug.log "In" 1
+    in
     if d.status == Alive then
         [ ( group []
-                [ renderSprite gd [] (getPositionUnderCamera d.position ggd) ( d.simplecheck.width, d.simplecheck.height ) (dgetString d.extra "Picture")
-                ]
+                (if modBy 2 t == 0 then
+                    [ renderSprite gd [] (getPositionUnderCamera d.position ggd) ( d.simplecheck.width, d.simplecheck.height ) "ot/fireball1"
+                    ]
+
+                 else
+                    [ renderSprite gd [] (getPositionUnderCamera d.position ggd) ( d.simplecheck.width, d.simplecheck.height ) "ot/fireball2"
+                    ]
+                )
           , 0
           )
         ]
