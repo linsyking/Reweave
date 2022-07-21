@@ -37,6 +37,7 @@ type alias Model =
     , jStartTime : Int
     , playerStates : PlayerState
     , lastOriginKeys : BoundKey
+    , islastright : Bool
     }
 
 
@@ -48,6 +49,7 @@ nullModel =
     , originKeys = BoundKey 0 0 0 0 0
     , playerStates = PlayerStates []
     , lastOriginKeys = BoundKey 0 0 0 0 0
+    , islastright = True
     }
 
 
@@ -65,3 +67,16 @@ changebk key status bk =
 
         _ ->
             bk
+
+
+changehistory : Bool -> Int -> Bool
+changehistory old key =
+    case key of
+        65 ->
+            False
+
+        68 ->
+            True
+
+        _ ->
+            old

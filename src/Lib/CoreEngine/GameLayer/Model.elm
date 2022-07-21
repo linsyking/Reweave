@@ -8,17 +8,19 @@ import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Camera exposing (getNewCamera)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Data, GameComponent, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
-import Lib.CoreEngine.GameComponent.ComponentHandler exposing (getGameComponentCenter, initGameComponent, isAlive, sendManyGameComponentMsg, simpleUpdateAllGameComponent, splitPlayerObjs, updateOneGameComponent)
+import Lib.CoreEngine.GameComponent.ComponentHandler exposing (getGameComponentCenter, initGameComponent, isAlive, sendManyGameComponentMsg, simpleUpdateAllGameComponent, splitPlayerObjs, updateOneGameComponent, updateSingleGameComponentByName)
 import Lib.CoreEngine.GameComponent.GenUID exposing (genUID)
+import Lib.CoreEngine.GameComponents.Bullet.Export as Bullet
 import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
+import Lib.CoreEngine.GameComponents.Player.Base exposing (BoundKey)
 import Lib.CoreEngine.GameComponents.Player.Export as Player
-import Lib.CoreEngine.GameLayer.Common exposing (Model)
+import Lib.CoreEngine.GameLayer.Common exposing (Model, kineticCalc, searchNameGC, searchUIDGC)
 import Lib.CoreEngine.Physics.InterCollision exposing (gonnaInterColllide)
 import Lib.CoreEngine.Physics.NaiveCollision exposing (judgeInCamera)
 import Lib.CoreEngine.Physics.SolidCollision exposing (canMove, gonnaSolidCollide, movePointPlain)
+import Lib.DefinedTypes.Parser exposing (dgetPlayer, dsetPlayer)
 import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget(..))
 import Lib.Scene.Base exposing (EngineT, PlayerInitPosition(..))
-import Lib.Tools.Array exposing (locate)
 import Math.Vector2 exposing (vec2)
 
 
@@ -26,10 +28,10 @@ initModel : Int -> LayerMsg -> GameGlobalData -> Model
 initModel _ lm _ =
     case lm of
         LayerInitGameLayer info ->
-            { player = info.player, actors = info.actors, chartlets = info.chartlets, lastuseEnergyTime = 0 }
+            { player = info.player, actors = info.actors, chartlets = info.chartlets, lastuseEnergyTime = 0, ignoreInput = False }
 
         _ ->
-            { player = Player.gameComponent, actors = Array.fromList [ Goomba.gameComponent ], chartlets = [], lastuseEnergyTime = 0 }
+            { player = Player.gameComponent, actors = Array.fromList [ Goomba.gameComponent ], chartlets = [], lastuseEnergyTime = 0, ignoreInput = False }
 
 
 deleteObjects : GameGlobalData -> Array.Array GameComponent -> Array.Array GameComponent
@@ -266,30 +268,6 @@ interCollision _ t ggd gd gcs =
     ( appliedgc, appliedmsg, appliedggc )
 
 
-searchNameGC : String -> Array.Array GameComponent -> List Int
-searchNameGC s gcs =
-    locate (\x -> x.name == s) gcs
-
-
-searchUIDGC : Int -> Array.Array GameComponent -> Int
-searchUIDGC s gcs =
-    let
-        res =
-            locate (\x -> x.data.uid == s) gcs
-    in
-    case res of
-        [ x ] ->
-            x
-
-        _ ->
-            -1
-
-
-kineticCalc : Int -> ( Float, Float ) -> Float
-kineticCalc mass ( vx, vy ) =
-    toFloat mass * (vx * vx + vy * vy) / 10000
-
-
 calcDRate : ( Float, Float ) -> ( Float, Float ) -> ( Float, Float ) -> Float
 calcDRate p1 p2 ( w, h ) =
     let
@@ -375,6 +353,43 @@ dealParentMsg gct gd ( model, t ) ggd =
         GameStringMsg "restart" ->
             ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerRestartMsg ) ] ), gd )
 
+        GameStringMsg "ignoreinput" ->
+            let
+                player =
+                    model.player.data.extra
+
+                playerextra =
+                    dgetPlayer player "model"
+
+                nokey =
+                    BoundKey 0 0 0 0 0
+
+                newp =
+                    { playerextra | originKeys = nokey }
+
+                newplayer =
+                    dsetPlayer "model" newp player
+
+                odata =
+                    model.player.data
+
+                ( ovx, ovy ) =
+                    odata.velocity
+
+                newdata =
+                    { odata | extra = newplayer, velocity = ( ovx / 5, ovy / 5 ) }
+
+                opp =
+                    model.player
+
+                nnplayer =
+                    { opp | data = newdata }
+            in
+            ( ( { model | ignoreInput = True, player = nnplayer }, ggd, [] ), gd )
+
+        GameStringMsg "reactinput" ->
+            ( ( { model | ignoreInput = False }, ggd, [] ), gd )
+
         GameGoombaInit info ->
             -- Create a goomba
             let
@@ -383,252 +398,265 @@ dealParentMsg gct gd ( model, t ) ggd =
             in
             ( ( { model | actors = Array.push (initGameComponent t (GameGoombaInit newinfo) Goomba.gameComponent) model.actors }, ggd, [] ), gd )
 
+        GameBulletInit info ->
+            -- Create a goomba
+            let
+                newinfo =
+                    { info | uid = genUID model }
+            in
+            ( ( { model | actors = Array.push (initGameComponent t (GameBulletInit newinfo) Bullet.gameComponent) model.actors }, ggd, [] ), gd )
+
         _ ->
             ( ( model, ggd, [] ), gd )
 
 
-updateModel : Msg -> GlobalData -> LayerMsg -> ( Model, Int ) -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
-updateModel msg gd _ ( model, t ) ggd =
-    if ggd.ingamepause then
+dealAllParentMsg : List GameComponentTMsg -> GlobalData -> ( Model, Int ) -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
+dealAllParentMsg allparentmsg gd ( model, t ) ggd =
+    List.foldl
+        (\tm ( ( cm, cggd, cam ), cgd ) ->
+            let
+                ( ( nnm, nnggd, nndmd ), nngd ) =
+                    dealParentMsg tm cgd ( cm, t ) cggd
+            in
+            ( ( nnm, nnggd, cam ++ nndmd ), nngd )
+        )
         ( ( model, ggd, [] ), gd )
+        allparentmsg
 
-    else
-        case msg of
-            Tick _ ->
-                -- Tick, calculate collision
-                let
-                    allobjs =
-                        Array.push model.player model.actors
 
-                    clearSel =
-                        releaseObjects ggd allobjs
+updateModel : Msg -> GlobalData -> LayerMsg -> ( Model, Int ) -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
+updateModel msg gd lm ( model, t ) ggd =
+    case lm of
+        LayerStringMsg "stopinput" ->
+            ( ( { model | ignoreInput = True }, ggd, [] ), gd )
 
-                    removedobjs =
-                        deleteObjects clearSel allobjs
+        LayerStringMsg "startinput" ->
+            ( ( { model | ignoreInput = False }, ggd, [] ), gd )
 
-                    ( updatedobjs, updatedmsg, updatedggd ) =
-                        simpleUpdateAllGameComponent msg NullGameComponentMsg clearSel gd t removedobjs
+        _ ->
+            if ggd.ingamepause then
+                ( ( model, ggd, [] ), gd )
 
-                    clearedobjs =
-                        clearWrongVelocity updatedggd updatedobjs
+            else
+                case msg of
+                    Tick _ ->
+                        -- Tick, calculate collision
+                        let
+                            allobjs =
+                                Array.push model.player model.actors
 
-                    -- Obj vs Solid
-                    ( aftersolidobjs, solidmsg, aftersolidggd ) =
-                        solidCollision msg t updatedggd gd clearedobjs
+                            clearSel =
+                                releaseObjects ggd allobjs
 
-                    -- Obj vs Obj
-                    ( afterinterobjs, intermsg, afterinterggd ) =
-                        interCollision msg t aftersolidggd gd aftersolidobjs
+                            removedobjs =
+                                deleteObjects clearSel allobjs
 
-                    restartmsg =
-                        if judgePlayerOK ggd model.player then
-                            []
+                            ( updatedobjs, updatedmsg, updatedggd ) =
+                                simpleUpdateAllGameComponent msg NullGameComponentMsg clearSel gd t removedobjs
 
-                        else
-                            [ GameStringMsg "restart" ]
+                            clearedobjs =
+                                clearWrongVelocity updatedggd updatedobjs
 
-                    -- No recursive support
-                    allmsg =
-                        updatedmsg ++ solidmsg ++ intermsg
+                            -- Obj vs Solid
+                            ( aftersolidobjs, solidmsg, aftersolidggd ) =
+                                solidCollision msg t updatedggd gd clearedobjs
 
-                    allparentmsg =
-                        List.filterMap
-                            (\x ->
-                                case x of
-                                    GameParentMsg tmsg ->
-                                        Just tmsg
+                            -- Obj vs Obj
+                            ( afterinterobjs, intermsg, afterinterggd ) =
+                                interCollision msg t aftersolidggd gd aftersolidobjs
 
-                                    _ ->
-                                        Nothing
-                            )
-                            allmsg
-                            ++ restartmsg
+                            restartmsg =
+                                if judgePlayerOK ggd model.player then
+                                    []
 
-                    -- TODO: handle parentmsg
-                    ( finalobjs, finalggd ) =
+                                else
+                                    [ GameStringMsg "restart" ]
+
+                            -- No recursive support
+                            allmsg =
+                                updatedmsg ++ solidmsg ++ intermsg
+
+                            allparentmsg =
+                                List.filterMap
+                                    (\x ->
+                                        case x of
+                                            GameParentMsg tmsg ->
+                                                Just tmsg
+
+                                            _ ->
+                                                Nothing
+                                    )
+                                    allmsg
+                                    ++ restartmsg
+
+                            -- TODO: handle parentmsg
+                            ( finalobjs, finalggd ) =
+                                List.foldl
+                                    (\m ( ao, ai ) ->
+                                        case m of
+                                            GameActorNameMsg s mm ->
+                                                let
+                                                    rid =
+                                                        searchNameGC s ao
+
+                                                    ( res, _, newgg ) =
+                                                        sendManyGameComponentMsg UnknownMsg mm ai gd rid t ao
+                                                in
+                                                ( res, newgg )
+
+                                            GameActorUidMsg s mm ->
+                                                let
+                                                    rid =
+                                                        searchUIDGC s ao
+
+                                                    ( res, _, newgg ) =
+                                                        sendManyGameComponentMsg UnknownMsg mm ai gd [ rid ] t ao
+                                                in
+                                                ( res, newgg )
+
+                                            _ ->
+                                                ( ao, ai )
+                                    )
+                                    ( afterinterobjs, afterinterggd )
+                                    allmsg
+
+                            ( newplayer, newactors ) =
+                                splitPlayerObjs finalobjs model.player
+
+                            newcamera =
+                                getNewCamera finalggd newplayer.data
+
+                            newmodel =
+                                { model | player = newplayer, actors = newactors }
+
+                            newggd =
+                                { finalggd | camera = newcamera }
+
+                            newiter =
+                                if judgePlayerOK ggd model.player then
+                                    ( ( newmodel, newggd, [] ), gd )
+
+                                else
+                                    ( ( model, ggd, [] ), gd )
+                        in
                         List.foldl
-                            (\m ( ao, ai ) ->
-                                case m of
-                                    GameActorNameMsg s mm ->
-                                        let
-                                            rid =
-                                                searchNameGC s ao
-
-                                            ( res, _, newgg ) =
-                                                sendManyGameComponentMsg UnknownMsg mm ai gd rid t ao
-                                        in
-                                        ( res, newgg )
-
-                                    GameActorUidMsg s mm ->
-                                        let
-                                            rid =
-                                                searchUIDGC s ao
-
-                                            ( res, _, newgg ) =
-                                                sendManyGameComponentMsg UnknownMsg mm ai gd [ rid ] t ao
-                                        in
-                                        ( res, newgg )
-
-                                    _ ->
-                                        ( ao, ai )
+                            (\tm ( ( cm, cggd, cam ), cgd ) ->
+                                let
+                                    ( ( nnm, nnggd, nndmd ), nngd ) =
+                                        dealParentMsg tm cgd ( cm, t ) cggd
+                                in
+                                ( ( nnm, nnggd, cam ++ nndmd ), nngd )
                             )
-                            ( afterinterobjs, afterinterggd )
-                            allmsg
+                            newiter
+                            allparentmsg
 
-                    ( newplayer, newactors ) =
-                        splitPlayerObjs finalobjs model.player
-
-                    newcamera =
-                        getNewCamera finalggd newplayer.data
-
-                    newmodel =
-                        { model | player = newplayer, actors = newactors }
-
-                    newggd =
-                        { finalggd | camera = newcamera }
-
-                    newiter =
-                        if judgePlayerOK ggd model.player then
-                            ( ( newmodel, newggd, [] ), gd )
-
-                        else
+                    KeyDown 87 ->
+                        if model.ignoreInput then
                             ( ( model, ggd, [] ), gd )
-                in
-                List.foldl
-                    (\tm ( ( cm, cggd, cam ), cgd ) ->
-                        let
-                            ( ( nnm, nnggd, nndmd ), nngd ) =
-                                dealParentMsg tm cgd ( cm, t ) cggd
-                        in
-                        ( ( nnm, nnggd, cam ++ nndmd ), nngd )
-                    )
-                    newiter
-                    allparentmsg
 
-            KeyDown 87 ->
-                if ggd.selectobj > 0 then
-                    if ggd.selectobj == model.player.data.uid then
-                        let
-                            k =
-                                kineticCalc model.player.data.mass model.player.data.velocity
-
-                            ( newplayer, _, newggd ) =
-                                if k > 300 then
-                                    updateOneGameComponent UnknownMsg GameClearVelocity ggd gd t model.player
-
-                                else
-                                    ( model.player, [], ggd )
-
-                            tcggd =
-                                if k > 300 then
-                                    { newggd | energy = newggd.energy + k }
-
-                                else
-                                    newggd
-                        in
-                        ( ( { model | player = newplayer }, tcggd, [] ), gd )
-
-                    else
-                        let
-                            tn =
-                                searchUIDGC ggd.selectobj model.actors
-
-                            tac =
-                                Array.get tn model.actors
-                        in
-                        case tac of
-                            Just thisactor ->
+                        else if ggd.selectobj > 0 then
+                            if ggd.selectobj == model.player.data.uid then
                                 let
                                     k =
-                                        kineticCalc thisactor.data.mass thisactor.data.velocity
+                                        kineticCalc model.player.data.mass model.player.data.velocity
 
-                                    ( newactor, _, newggd ) =
+                                    ( newplayer, _, newggd ) =
                                         if k > 300 then
-                                            updateOneGameComponent UnknownMsg GameClearVelocity ggd gd t thisactor
+                                            updateOneGameComponent UnknownMsg GameClearVelocity ggd gd t model.player
 
                                         else
-                                            ( thisactor, [], ggd )
+                                            ( model.player, [], ggd )
 
-                                    onew =
+                                    tcggd =
                                         if k > 300 then
                                             { newggd | energy = newggd.energy + k }
 
                                         else
                                             newggd
-
-                                    newactors =
-                                        Array.set tn newactor model.actors
                                 in
-                                ( ( { model | actors = newactors }, onew, [] ), gd )
+                                ( ( { model | player = newplayer }, tcggd, [] ), gd )
 
-                            Nothing ->
-                                ( ( model, ggd, [] ), gd )
+                            else
+                                let
+                                    tn =
+                                        searchUIDGC ggd.selectobj model.actors
 
-                else
-                    ( ( model, ggd, [] ), gd )
+                                    tac =
+                                        Array.get tn model.actors
+                                in
+                                case tac of
+                                    Just thisactor ->
+                                        let
+                                            k =
+                                                kineticCalc thisactor.data.mass thisactor.data.velocity
 
-            KeyDown _ ->
-                let
-                    ( newplayer, _, newggd ) =
-                        updateOneGameComponent msg NullGameComponentMsg ggd gd t model.player
-                in
-                ( ( { model | player = newplayer }, newggd, [] ), gd )
+                                            ( newactor, _, newggd ) =
+                                                if k > 300 then
+                                                    updateOneGameComponent UnknownMsg GameClearVelocity ggd gd t thisactor
 
-            KeyUp _ ->
-                let
-                    ( newplayer, _, newggd ) =
-                        updateOneGameComponent msg NullGameComponentMsg ggd gd t model.player
-                in
-                ( ( { model | player = newplayer }, newggd, [] ), gd )
+                                                else
+                                                    ( thisactor, [], ggd )
 
-            MouseDown 2 mp ->
-                if t - model.lastuseEnergyTime < 15 then
-                    ( ( model, ggd, [] ), gd )
+                                            onew =
+                                                if k > 300 then
+                                                    { newggd | energy = newggd.energy + k }
 
-                else if ggd.selectobj > 0 then
-                    if ggd.selectobj == model.player.data.uid then
+                                                else
+                                                    newggd
+
+                                            newactors =
+                                                Array.set tn newactor model.actors
+                                        in
+                                        ( ( { model | actors = newactors }, onew, [] ), gd )
+
+                                    Nothing ->
+                                        ( ( model, ggd, [] ), gd )
+
+                        else
+                            ( ( model, ggd, [] ), gd )
+
+                    KeyDown 13 ->
+                        -- For cutscene
                         let
-                            ( px, py ) =
-                                posToReal gd (getPositionUnderCamera (getGameComponentCenter model.player) ggd)
-
-                            ( mx, my ) =
-                                fromMouseToReal gd mp
-
-                            pp =
-                                ( px, py )
-
-                            mm =
-                                ( mx, my )
-
-                            ( xsable, updss ) =
-                                getDSEnergy pp mm gd ggd
-
-                            newplayer =
-                                if xsable > 0 then
-                                    let
-                                        ( up, _, _ ) =
-                                            updateOneGameComponent UnknownMsg (GameUseEnergy ( mx - px, my - py ) xsable) ggd gd t model.player
-                                    in
-                                    up
-
-                                else
-                                    model.player
+                            ( newactors, _, newggd ) =
+                                updateSingleGameComponentByName msg NullGameComponentMsg ggd gd t "CutScene" model.actors
                         in
-                        ( ( { model | player = newplayer, lastuseEnergyTime = t }, updss, [] ), gd )
+                        ( ( { model | actors = newactors }, newggd, [] ), gd )
 
-                    else
-                        let
-                            tn =
-                                searchUIDGC ggd.selectobj model.actors
+                    KeyDown _ ->
+                        if model.ignoreInput then
+                            ( ( model, ggd, [] ), gd )
 
-                            tac =
-                                Array.get tn model.actors
-                        in
-                        case tac of
-                            Just thisactor ->
+                        else
+                            let
+                                ( newplayer, _, newggd ) =
+                                    updateOneGameComponent msg NullGameComponentMsg ggd gd t model.player
+                            in
+                            ( ( { model | player = newplayer }, newggd, [] ), gd )
+
+                    KeyUp _ ->
+                        if model.ignoreInput then
+                            ( ( model, ggd, [] ), gd )
+
+                        else
+                            let
+                                ( newplayer, _, newggd ) =
+                                    updateOneGameComponent msg NullGameComponentMsg ggd gd t model.player
+                            in
+                            ( ( { model | player = newplayer }, newggd, [] ), gd )
+
+                    MouseDown 2 mp ->
+                        if model.ignoreInput then
+                            ( ( model, ggd, [] ), gd )
+
+                        else if t - model.lastuseEnergyTime < 15 then
+                            ( ( model, ggd, [] ), gd )
+
+                        else if ggd.selectobj > 0 then
+                            if ggd.selectobj == model.player.data.uid then
                                 let
                                     ( px, py ) =
-                                        posToReal gd (getPositionUnderCamera (getGameComponentCenter thisactor) ggd)
+                                        posToReal gd (getPositionUnderCamera (getGameComponentCenter model.player) ggd)
 
                                     ( mx, my ) =
                                         fromMouseToReal gd mp
@@ -646,36 +674,79 @@ updateModel msg gd _ ( model, t ) ggd =
                                         if xsable > 0 then
                                             let
                                                 ( up, _, _ ) =
-                                                    updateOneGameComponent UnknownMsg (GameUseEnergy ( mx - px, my - py ) xsable) ggd gd t thisactor
+                                                    updateOneGameComponent UnknownMsg (GameUseEnergy ( mx - px, my - py ) xsable) ggd gd t model.player
                                             in
                                             up
 
                                         else
-                                            thisactor
-
-                                    newactors =
-                                        Array.set tn newplayer model.actors
+                                            model.player
                                 in
-                                ( ( { model | actors = newactors, lastuseEnergyTime = t }, updss, [] ), gd )
+                                ( ( { model | player = newplayer, lastuseEnergyTime = t }, updss, [] ), gd )
 
-                            Nothing ->
-                                ( ( model, ggd, [] ), gd )
+                            else
+                                let
+                                    tn =
+                                        searchUIDGC ggd.selectobj model.actors
 
-                else
-                    ( ( model, ggd, [] ), gd )
+                                    tac =
+                                        Array.get tn model.actors
+                                in
+                                case tac of
+                                    Just thisactor ->
+                                        let
+                                            ( px, py ) =
+                                                posToReal gd (getPositionUnderCamera (getGameComponentCenter thisactor) ggd)
 
-            MouseDown 0 _ ->
-                let
-                    allobjs =
-                        Array.push model.player model.actors
+                                            ( mx, my ) =
+                                                fromMouseToReal gd mp
 
-                    ( newobjs, _, newggd ) =
-                        simpleUpdateAllGameComponent msg NullGameComponentMsg ggd gd t allobjs
+                                            pp =
+                                                ( px, py )
 
-                    ( newplayer, newactors ) =
-                        splitPlayerObjs newobjs model.player
-                in
-                ( ( { model | actors = newactors, player = newplayer }, newggd, [] ), gd )
+                                            mm =
+                                                ( mx, my )
 
-            _ ->
-                ( ( model, ggd, [] ), gd )
+                                            ( xsable, updss ) =
+                                                getDSEnergy pp mm gd ggd
+
+                                            newplayer =
+                                                if xsable > 0 then
+                                                    let
+                                                        ( up, _, _ ) =
+                                                            updateOneGameComponent UnknownMsg (GameUseEnergy ( mx - px, my - py ) xsable) ggd gd t thisactor
+                                                    in
+                                                    up
+
+                                                else
+                                                    thisactor
+
+                                            newactors =
+                                                Array.set tn newplayer model.actors
+                                        in
+                                        ( ( { model | actors = newactors, lastuseEnergyTime = t }, updss, [] ), gd )
+
+                                    Nothing ->
+                                        ( ( model, ggd, [] ), gd )
+
+                        else
+                            ( ( model, ggd, [] ), gd )
+
+                    MouseDown 0 _ ->
+                        if model.ignoreInput then
+                            ( ( model, ggd, [] ), gd )
+
+                        else
+                            let
+                                allobjs =
+                                    Array.push model.player model.actors
+
+                                ( newobjs, _, newggd ) =
+                                    simpleUpdateAllGameComponent msg NullGameComponentMsg ggd gd t allobjs
+
+                                ( newplayer, newactors ) =
+                                    splitPlayerObjs newobjs model.player
+                            in
+                            ( ( { model | actors = newactors, player = newplayer }, newggd, [] ), gd )
+
+                    _ ->
+                        ( ( model, ggd, [] ), gd )

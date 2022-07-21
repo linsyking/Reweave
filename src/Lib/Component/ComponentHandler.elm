@@ -4,6 +4,7 @@ import Array exposing (Array)
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
 import Lib.Component.Base exposing (Component, ComponentTMsg(..))
+import Lib.Tools.Array exposing (locate)
 
 
 updateComponents : Int -> Msg -> GlobalData -> Array Component -> ( Array Component, List ComponentTMsg, GlobalData )
@@ -14,13 +15,13 @@ updateComponents t msg gd xs =
                 ( newx, newmsg, newgd ) =
                     x.update msg NullComponentMsg mlgg ( x.data, t )
             in
-            ( Array.push { x | data = newx } acs, ct ++ [ newmsg ], newgd )
+            ( Array.push { x | data = newx } acs, ct ++ newmsg, newgd )
         )
         ( Array.empty, [], gd )
         xs
 
 
-updateOneComponent : Msg -> ComponentTMsg -> GlobalData -> Int -> Component -> ( Component, ComponentTMsg, GlobalData )
+updateOneComponent : Msg -> ComponentTMsg -> GlobalData -> Int -> Component -> ( Component, List ComponentTMsg, GlobalData )
 updateOneComponent msg ct gd t c =
     let
         ( newx, newmsg, newgd ) =
@@ -29,7 +30,7 @@ updateOneComponent msg ct gd t c =
     ( { c | data = newx }, newmsg, newgd )
 
 
-updateSingleComponent : Msg -> ComponentTMsg -> GlobalData -> Int -> Int -> Array Component -> ( Array Component, ComponentTMsg, GlobalData )
+updateSingleComponent : Msg -> ComponentTMsg -> GlobalData -> Int -> Int -> Array Component -> ( Array Component, List ComponentTMsg, GlobalData )
 updateSingleComponent msg ct gd t n xs =
     case getComponent n xs of
         Just k ->
@@ -40,7 +41,25 @@ updateSingleComponent msg ct gd t n xs =
             ( Array.set n { k | data = newx } xs, newmsg, newgd )
 
         Nothing ->
-            ( xs, NullComponentMsg, gd )
+            ( xs, [], gd )
+
+
+updateSingleComponentByName : Msg -> ComponentTMsg -> GlobalData -> Int -> String -> Array Component -> ( Array Component, List ComponentTMsg, GlobalData )
+updateSingleComponentByName msg ct gd t s xs =
+    let
+        n =
+            getComponentFromName s xs
+    in
+    case getComponent n xs of
+        Just k ->
+            let
+                ( newx, newmsg, newgd ) =
+                    k.update msg ct gd ( k.data, t )
+            in
+            ( Array.set n { k | data = newx } xs, newmsg, newgd )
+
+        Nothing ->
+            ( xs, [], gd )
 
 
 genView : GlobalData -> Int -> Array Component -> Renderable
@@ -51,6 +70,11 @@ genView vp t xs =
 getComponent : Int -> Array Component -> Maybe Component
 getComponent n xs =
     Array.get n xs
+
+
+getComponentFromName : String -> Array Component -> Int
+getComponentFromName s xs =
+    Maybe.withDefault -1 (List.head (locate (\x -> x.name == s) xs))
 
 
 queryComponent : Int -> String -> Int -> Array Component -> ComponentTMsg

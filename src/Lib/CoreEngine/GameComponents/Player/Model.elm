@@ -8,7 +8,7 @@ import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (isAlive)
-import Lib.CoreEngine.GameComponents.Player.Base exposing (changebk, nullModel)
+import Lib.CoreEngine.GameComponents.Player.Base exposing (changebk, changehistory, nullModel)
 import Lib.CoreEngine.GameComponents.Player.InputFilter exposing (afterMove, preCheck)
 import Lib.CoreEngine.GameComponents.Player.InputHandler exposing (changePlayerVelocity)
 import Lib.CoreEngine.GameComponents.Player.Movement exposing (solidCollisionMove)
@@ -135,7 +135,7 @@ updateModel msg gct ggd gd ( d, t ) =
         KeyDown x ->
             let
                 newmodel =
-                    { model | originKeys = changebk x 1 model.originKeys }
+                    { model | originKeys = changebk x 1 model.originKeys, islastright = changehistory model.islastright x }
 
                 exportmodel =
                     dsetPlayer "model" newmodel d.extra

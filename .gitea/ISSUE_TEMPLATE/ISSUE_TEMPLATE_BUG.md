@@ -9,19 +9,21 @@ about: issue template for bug report
 
 **Environment**
 
-*   Modern Browser:
+*   Web Browser:
+*   Browser Version: 
+*   Operating System:
 
-**bug items**
+**bug details (for visual)**
 
 *   [ ] <item1>
 *   [ ] <item2>
 *   [ ] <item3>
 
-**The way/idea to fix it**
+**The suggestion/idea to fix it**
 
 *   [ ] <method1>
 
-**Other Information** 
+**Other Information (Who to assign)** 
 
 <description>
 

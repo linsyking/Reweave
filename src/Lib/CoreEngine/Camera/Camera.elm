@@ -210,6 +210,9 @@ getCameraInbox ggd =
         ( cx, cy ) =
             ggd.camera.position
 
+        ( ( r1, r2 ), ( r3, r4 ) ) =
+            ggd.camera.inbox
+
         crx =
             toFloat cx
 
@@ -217,10 +220,10 @@ getCameraInbox ggd =
             toFloat cy
 
         p =
-            ( floor (crx + 0.2 * toFloat cameraWidth), floor (cry + 0.3 * toFloat cameraHeight) )
+            ( floor (crx + r1 * toFloat cameraWidth), floor (cry + r2 * toFloat cameraHeight) )
 
         q =
-            ( floor (crx + 0.4 * toFloat cameraWidth), floor (cry + 0.4 * toFloat cameraHeight) )
+            ( floor (crx + r3 * toFloat cameraWidth), floor (cry + r4 * toFloat cameraHeight) )
     in
     ( p, q )
 

@@ -24,7 +24,7 @@ initMap _ _ =
         ]
 
 
-updateMap : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
+updateMap : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateMap mainMsg comMsg globalData ( model, t ) =
     let
         reverseShowStatus =
@@ -48,16 +48,17 @@ updateMap mainMsg comMsg globalData ( model, t ) =
             if judgeMouse globalData ( x, y ) ( posX - radius, posY - radius ) ( 2 * radius, 2 * radius ) then
                 ( model
                     |> dsetbool "show" reverseShowStatus
-                , if reverseShowStatus == True then
-                    ComponentLSStringMsg "OnShow" [ "Map" ]
+                , [ if reverseShowStatus == True then
+                        ComponentLSStringMsg "OnShow" [ "Map" ]
 
-                  else
-                    ComponentLSStringMsg "OnHide" [ "Map" ]
+                    else
+                        ComponentLSStringMsg "OnHide" [ "Map" ]
+                  ]
                 , globalData
                 )
 
             else
-                ( model, NullComponentMsg, globalData )
+                ( model, [], globalData )
 
         _ ->
             case comMsg of
@@ -66,25 +67,25 @@ updateMap mainMsg comMsg globalData ( model, t ) =
                         "Display:HIDE" ->
                             ( model
                                 |> dsetbool "show" False
-                            , NullComponentMsg
+                            , []
                             , globalData
                             )
 
                         "Display:SHOW" ->
                             ( model
                                 |> dsetbool "show" True
-                            , NullComponentMsg
+                            , []
                             , globalData
                             )
 
                         _ ->
-                            ( model, NullComponentMsg, globalData )
+                            ( model, [], globalData )
 
                 ComponentDictMsg dict ->
-                    ( model |> dsetDict "Data" dict, NullComponentMsg, globalData )
+                    ( model |> dsetDict "Data" dict, [], globalData )
 
                 _ ->
-                    ( model, NullComponentMsg, globalData )
+                    ( model, [], globalData )
 
 
 viewMap : ( Data, Int ) -> GlobalData -> Renderable

@@ -30,7 +30,7 @@ initSettings _ _ =
         ]
 
 
-updateSettings : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
+updateSettings : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateSettings mainMsg comMsg globalData ( model, t ) =
     let
         showStatus =
@@ -83,7 +83,7 @@ updateSettings mainMsg comMsg globalData ( model, t ) =
                             else
                                 True
                         )
-                        tmpChildComponentsMsg
+                        (List.concat tmpChildComponentsMsg)
                     )
                 )
     in
@@ -93,16 +93,17 @@ updateSettings mainMsg comMsg globalData ( model, t ) =
                 ( model
                     |> dsetbool "show" reverseShowStatus
                     |> dsetLComponent "Child" tmpChildComponentsList
-                , if reverseShowStatus == True then
-                    ComponentLSStringMsg "OnShow" [ "Settings" ]
+                , [ if reverseShowStatus == True then
+                        ComponentLSStringMsg "OnShow" [ "Settings" ]
 
-                  else
-                    ComponentLSStringMsg "OnHide" [ "Settings" ]
+                    else
+                        ComponentLSStringMsg "OnHide" [ "Settings" ]
+                  ]
                 , newGlobalData
                 )
 
             else
-                ( model |> dsetLComponent "Child" tmpChildComponentsList, newComMsg, newGlobalData )
+                ( model |> dsetLComponent "Child" tmpChildComponentsList, [ newComMsg ], newGlobalData )
 
         _ ->
             case comMsg of
@@ -112,7 +113,7 @@ updateSettings mainMsg comMsg globalData ( model, t ) =
                             ( model
                                 |> dsetbool "show" False
                                 |> dsetLComponent "Child" tmpChildComponentsList
-                            , newComMsg
+                            , [ newComMsg ]
                             , newGlobalData
                             )
 
@@ -120,15 +121,15 @@ updateSettings mainMsg comMsg globalData ( model, t ) =
                             ( model
                                 |> dsetbool "show" True
                                 |> dsetLComponent "Child" tmpChildComponentsList
-                            , newComMsg
+                            , [ newComMsg ]
                             , newGlobalData
                             )
 
                         _ ->
-                            ( model |> dsetLComponent "Child" tmpChildComponentsList, newComMsg, newGlobalData )
+                            ( model |> dsetLComponent "Child" tmpChildComponentsList, [ newComMsg ], newGlobalData )
 
                 _ ->
-                    ( model |> dsetLComponent "Child" tmpChildComponentsList, newComMsg, newGlobalData )
+                    ( model |> dsetLComponent "Child" tmpChildComponentsList, [ newComMsg ], newGlobalData )
 
 
 viewSettings : ( Data, Int ) -> GlobalData -> Renderable

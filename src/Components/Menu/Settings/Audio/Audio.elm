@@ -55,7 +55,7 @@ initMap _ comMsg =
                 ]
 
 
-updateMap : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
+updateMap : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateMap mainMsg comMsg globalData ( model, t ) =
     let
         posX =
@@ -74,7 +74,7 @@ updateMap mainMsg comMsg globalData ( model, t ) =
         MouseDown 0 ( x, y ) ->
             if judgeMouse globalData ( x, y ) ( posX - radius, posY - radius ) ( 2 * radius, 2 * radius ) then
                 ( model
-                , NullComponentMsg
+                , []
                 , case comType of
                     "Down" ->
                         { globalData
@@ -101,7 +101,7 @@ updateMap mainMsg comMsg globalData ( model, t ) =
                 )
 
             else
-                ( model, NullComponentMsg, globalData )
+                ( model, [], globalData )
 
         _ ->
             case comMsg of
@@ -110,22 +110,22 @@ updateMap mainMsg comMsg globalData ( model, t ) =
                         "Display:HIDE" ->
                             ( model
                                 |> dsetbool "show" False
-                            , NullComponentMsg
+                            , []
                             , globalData
                             )
 
                         "Display:SHOW" ->
                             ( model
                                 |> dsetbool "show" True
-                            , NullComponentMsg
+                            , []
                             , globalData
                             )
 
                         _ ->
-                            ( model, NullComponentMsg, globalData )
+                            ( model, [], globalData )
 
                 _ ->
-                    ( model, NullComponentMsg, globalData )
+                    ( model, [], globalData )
 
 
 viewMap : ( Data, Int ) -> GlobalData -> Renderable

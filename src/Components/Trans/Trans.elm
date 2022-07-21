@@ -46,7 +46,7 @@ initTrans t ct =
                 ]
 
 
-updateTrans : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
+updateTrans : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateTrans _ gMsg globalData ( d, t ) =
     let
         localtime =
@@ -67,17 +67,17 @@ updateTrans _ gMsg globalData ( d, t ) =
                         |> dsetint "duration" (Maybe.withDefault 0 (toInt dur))
                         |> dsetint "rt" t
             in
-            ( newd, NullComponentMsg, globalData )
+            ( newd, [], globalData )
 
         _ ->
             if localtime == duration + pausetime && dgetString d "mode" == "start" then
-                ( d, ComponentLStringMsg (dgetLString d "msg"), globalData )
+                ( d, [ ComponentLStringMsg (dgetLString d "msg") ], globalData )
 
             else if localtime == duration + pausetime && dgetString d "mode" == "end" then
-                ( d |> dsetbool "state" False, NullComponentMsg, globalData )
+                ( d |> dsetbool "state" False, [], globalData )
 
             else
-                ( d, NullComponentMsg, globalData )
+                ( d, [], globalData )
 
 
 viewTrans : ( Data, Int ) -> GlobalData -> Renderable

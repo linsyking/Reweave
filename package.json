@@ -5,7 +5,8 @@
     "release": "standard-version",
     "publish": "standard-version && git push --follow-tags origin dev",
     "prepare": "husky install",
-    "agree": "curl https://yydbxx.cn/test/st/p2/approvePR.php"
+    "agree": "curl https://yydbxx.cn/test/st/p2/approvePR.php",
+    "level" : "python ./tools/makelevel.py"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.0.2",
