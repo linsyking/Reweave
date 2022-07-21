@@ -35,6 +35,9 @@ initBar energy _ =
 bezier : Int -> Float -> Data -> Data
 bezier clockwise t d =
     let
+        time =
+            dgetfloat d "t"
+
         cx =
             dgetfloat d "cx"
 
@@ -87,7 +90,7 @@ bezier clockwise t d =
                 |> dsetfloat "cp1y" cp1y
                 |> dsetfloat "cp2x" cp2x
                 |> dsetfloat "cp2y" cp2y
-                |> dsetfloat "t" (t + 0.01)
+                |> dsetfloat "t" (time + 0.01)
 
         0 ->
             d
@@ -95,7 +98,7 @@ bezier clockwise t d =
                 |> dsetfloat "cp1y" cp1CounterY
                 |> dsetfloat "cp2x" cp2CounterX
                 |> dsetfloat "cp2y" cp2CounterY
-                |> dsetfloat "t" (t + 0.01)
+                |> dsetfloat "t" (time + 0.01)
 
         2 ->
             d
@@ -103,7 +106,7 @@ bezier clockwise t d =
                 |> dsetfloat "cp1y" (-cp1CounterY + 2 * lineY)
                 |> dsetfloat "cp2x" cp2CounterX
                 |> dsetfloat "cp2y" (-cp2CounterY + 2 * lineY)
-                |> dsetfloat "t" (t + 0.01)
+                |> dsetfloat "t" (time + 0.01)
 
         3 ->
             d
@@ -111,7 +114,7 @@ bezier clockwise t d =
                 |> dsetfloat "cp1y" (-cp1y + 2 * lineY)
                 |> dsetfloat "cp2x" cp2x
                 |> dsetfloat "cp2y" (-cp2y + 2 * lineY)
-                |> dsetfloat "t" (t + 0.01)
+                |> dsetfloat "t" (time + 0.01)
 
         _ ->
             d
@@ -121,7 +124,7 @@ updateBar : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List 
 updateBar _ gMsg globalData ( d, t ) =
     let
         time =
-            dgetfloat d "t"
+            3 * ( dgetfloat d "t" )
 
         angle =
             dgetfloat d "angle"
