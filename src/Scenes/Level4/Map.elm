@@ -46,7 +46,7 @@ mymap =
         |> buildrect ( 120, 63 ) ( 4, 1 ) 1
         |> buildrect ( 127, 58 ) ( 10, 1 ) 1
         -- final platform
-        |> buildrect ( 159, 50 ) ( 8, 1 ) 1
+        --|> buildrect ( 159, 50 ) ( 8, 1 ) 1
         |> buildrect ( 175, 65 ) ( 8, 3 ) 1
         
 
