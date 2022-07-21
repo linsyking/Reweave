@@ -180,6 +180,7 @@ getInitBulletsMsg t model =
                                     (GameBulletInit
                                         { initPosition = ( posX + floor (cos index * 430), posY + floor (sin index * 430) )
                                         , initVelocity = ( cos index * 100, sin index * -100 )
+                                        , picture = "ot/scale"
                                         , uid = 0
                                         }
                                     )
@@ -204,6 +205,7 @@ getInitBulletsMsg t model =
                                     (GameBulletInit
                                         { initPosition = ( posX + randomPos seed -1000 1000, posY + randomPos seed 100 400 )
                                         , initVelocity = ( toFloat (randomPos seed -20 20), toFloat (randomPos seed -150 -50) )
+                                        , picture = "ot/scale"
                                         , uid = 0
                                         }
                                     )
