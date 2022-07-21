@@ -118,4 +118,6 @@ otherSprites =
     , ( "ot/block", getResourcePath "img/Others/block.png" )
     , ( "ot/cave", getResourcePath "img/Others/cave.png" )
     , ( "ot/scale", getResourcePath "img/Others/scale.png" )
+    , ( "ot/fireball1", getResourcePath "img/Others/fire1.png" )
+    , ( "ot/fireball2", getResourcePath "img/Others/fire2.png" )
     ]
