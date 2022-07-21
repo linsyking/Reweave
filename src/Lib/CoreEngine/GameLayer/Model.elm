@@ -507,38 +507,38 @@ updateModel msg gd lm ( model, t ) ggd =
                                             _ ->
                                                 Nothing
                                     )
-                                    allmsg
+                                    (allmsg ++ finalmsg)
                                     ++ restartmsg
 
                             -- TODO: handle parentmsg
-                            ( finalobjs, finalggd ) =
+                            ( finalobjs, finalmsg, finalggd ) =
                                 List.foldl
-                                    (\m ( ao, ai ) ->
+                                    (\m ( ao, alllm, ai ) ->
                                         case m of
                                             GameActorNameMsg s mm ->
                                                 let
                                                     rid =
                                                         searchNameGC s ao
 
-                                                    ( res, _, newgg ) =
+                                                    ( res, nmsg, newgg ) =
                                                         sendManyGameComponentMsg UnknownMsg mm ai gd rid t ao
                                                 in
-                                                ( res, newgg )
+                                                ( res, alllm ++ nmsg, newgg )
 
                                             GameActorUidMsg s mm ->
                                                 let
                                                     rid =
                                                         searchUIDGC s ao
 
-                                                    ( res, _, newgg ) =
+                                                    ( res, nmsg, newgg ) =
                                                         sendManyGameComponentMsg UnknownMsg mm ai gd [ rid ] t ao
                                                 in
-                                                ( res, newgg )
+                                                ( res, alllm ++ nmsg, newgg )
 
                                             _ ->
-                                                ( ao, ai )
+                                                ( ao, alllm, ai )
                                     )
-                                    ( afterinterobjs, afterinterggd )
+                                    ( afterinterobjs, [], afterinterggd )
                                     allmsg
 
                             ( newplayer, newactors ) =

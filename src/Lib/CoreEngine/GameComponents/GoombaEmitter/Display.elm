@@ -21,4 +21,4 @@ view ( d, _ ) ggd gd =
         ( px, py ) =
             d.position
     in
-    [ ( renderSpriteWithRev (gx >= 0) gd [] (getPositionUnderCamera ( px, py - 30 ) ggd) ( 100, 100 ) "ot/cave", -1 ) ]
+    [ ( renderSpriteWithRev (gx >= 0) gd [] (getPositionUnderCamera ( px + 20, py - 40 ) ggd) ( 100, 100 ) "ot/cave", -1 ) ]
