@@ -52,15 +52,28 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
             )
 
         "OnShow" ->
-            ( model
-                |> dsetint "_Timer" timer
-                |> dsetLComponent "_Child"
-                    (List.append childComponentsList
-                        [ ( "NextButton", DialNextButtonE.initComponent 0 (ComponentStringMsg "") ) ]
-                    )
-            , []
-            , globalData
-            )
+            let
+                tmpList =
+                    List.filter (\( comName, _ ) -> comName == "NextButton") childComponentsList
+            in
+            if List.isEmpty tmpList then
+                ( model
+                    |> dsetint "_Timer" timer
+                    |> dsetLComponent "_Child"
+                        (List.append childComponentsList
+                            [ ( "NextButton", DialNextButtonE.initComponent 0 (ComponentStringMsg "") ) ]
+                        )
+                , []
+                , globalData
+                )
+
+            else
+                ( model
+                    |> dsetint "_Timer" timer
+                    |> dsetLComponent "_Child" childComponentsList
+                , []
+                , globalData
+                )
 
         "OnDeBuild" ->
             ( model
