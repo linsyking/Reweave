@@ -147,15 +147,15 @@ viewWord ( model, t ) globalData =
     case status of
         "OnBuild" ->
             group [ alpha (toFloat timer / 20.0) ]
-                [ renderTextWithColor globalData 40 (dgetString model "Word") "Courier New" Color.white ( 400 + position, 130 ) ]
+                [ renderTextWithColor globalData 35 (dgetString model "Word") "Courier New" Color.white ( 400 + position, 130 ) ]
 
         "OnShow" ->
             group []
-                [ renderTextWithColor globalData 40 (dgetString model "Word") "Courier New" Color.white ( 400 + position, 130 ) ]
+                [ renderTextWithColor globalData 35 (dgetString model "Word") "Courier New" Color.white ( 400 + position, 130 ) ]
 
         "OnDeBuild" ->
             group [ alpha (1.0 - toFloat timer / 20.0) ]
-                (List.append [ renderTextWithColor globalData 40 (dgetString model "Word") "Courier New" Color.white ( 400 + position, 130 ) ]
+                (List.append [ renderTextWithColor globalData 35 (dgetString model "Word") "Courier New" Color.white ( 400 + position, 130 ) ]
                     (List.map
                         (\str ->
                             let

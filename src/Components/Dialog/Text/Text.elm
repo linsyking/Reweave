@@ -52,7 +52,7 @@ updateText mainMsg comMsg globalData ( model, t ) =
                     dgetint model "_wholeTextLength"
 
                 currentLength =
-                    dgetint model "_currentLength" + floor (heightToReal globalData 40)
+                    dgetint model "_currentLength" + floor (heightToReal globalData 33)
 
                 childComponentsList =
                     dgetLComponent model "_Child"

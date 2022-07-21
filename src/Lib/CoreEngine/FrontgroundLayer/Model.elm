@@ -24,10 +24,10 @@ initModel t lm _ =
             , components =
                 Array.append
                     (Array.fromList
-                        [ Trans.initComponent t (ComponentLStringMsg [ "end", "cloud", "0" ])
+                        [ Bar.initComponent t NullComponentMsg
+                        , Trans.initComponent t (ComponentLStringMsg [ "end", "cloud", "0" ])
                         , Menu.initComponent t NullComponentMsg
                         , Console.initComponent t NullComponentMsg
-                        , Bar.initComponent t NullComponentMsg
                         ]
                     )
                     f.components

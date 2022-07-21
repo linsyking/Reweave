@@ -93,7 +93,7 @@ preCheck t model d =
 
 
 judgeFirstJump : Int -> Model -> Data -> Bool
-judgeFirstJump t model d =
+judgeFirstJump t model _ =
     let
         cs =
             model.originKeys.space

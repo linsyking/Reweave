@@ -5,6 +5,7 @@ import Canvas exposing (Renderable, group)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
 import Lib.CoreEngine.GameLayer.Common exposing (Model)
+import Lib.Map.Chartlet exposing (renderBackgroundChartletsFromSolid)
 
 
 renderChartletsFront : Model -> GameGlobalData -> GlobalData -> Renderable
@@ -35,7 +36,7 @@ renderChartletsBehindActor model ggd gd =
                     _ ->
                         Nothing
             )
-            model.chartlets
+            (renderBackgroundChartletsFromSolid ggd gd ++ model.chartlets)
         )
 
 

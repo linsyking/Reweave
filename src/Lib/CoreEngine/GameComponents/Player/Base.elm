@@ -80,3 +80,15 @@ changehistory old key =
 
         _ ->
             old
+
+
+fixnotrightdir : Bool -> BoundKey -> Bool
+fixnotrightdir o bk =
+    if bk.right == 1 && bk.left == 0 then
+        True
+
+    else if bk.right == 0 && bk.left == 1 then
+        False
+
+    else
+        o

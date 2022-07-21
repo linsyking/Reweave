@@ -78,7 +78,7 @@ updateModel msg gct ggd _ ( d, t ) =
                         ( x, y ) =
                             d.position
                     in
-                    if (vx < 0 && not (canMove d ggd (vec2 -1 0))) || (vx > 0 && not (canMove d ggd (vec2 1 0))) then
+                    if (vx < 0 && not (canMove d ggd (vec2 -1 0))) || (vx > 0 && not (canMove d ggd (vec2 1 0))) || (vy > 0 && not (canMove d ggd (vec2 0 1))) || (vy < 0 && not (canMove d ggd (vec2 0 -1))) then
                         ( { d | status = Dead t, position = ( x + ceiling (vx / 1000), y + ceiling (vy / 1000) ) }, [], ggd )
 
                     else

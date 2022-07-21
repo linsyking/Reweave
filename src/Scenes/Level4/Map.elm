@@ -1,7 +1,7 @@
 module Scenes.Level4.Map exposing (..)
 
 import Array2D
-import Lib.Map.Poly exposing (buildrect, buildrectT)
+import Lib.Map.Poly exposing (buildrect)
 
 
 sds : Array2D.Array2D Int
