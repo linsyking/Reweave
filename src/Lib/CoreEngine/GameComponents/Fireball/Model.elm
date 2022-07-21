@@ -90,6 +90,9 @@ updateModel msg gct ggd _ ( d, t ) =
                 GameInterCollisionMsg "turtle" _ _ ->
                     ( d, [], ggd )
 
+                GameInterCollisionMsg "fireball" _ _ ->
+                    ( d, [], ggd )
+
                 GameInterCollisionMsg _ pd _ ->
                     ( { d | status = Dead t }, [ GameActorUidMsg pd.uid (GameStringMsg "die") ], ggd )
 

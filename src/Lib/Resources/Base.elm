@@ -40,6 +40,7 @@ allTexture =
     , ( "downbutton", getResourcePath "img/down.png" )
     , ( "bullet", getResourcePath "img/bullet.png" )
     , ( "fish", getResourcePath "img/Monsters/fish.png" )
+    , ( "turtle", getResourcePath "img/Monsters/turtle.png" )
     , ( "whiteshadow", getResourcePath "img/white-shadow.png" )
     , ( "blueshadow", getResourcePath "img/ki.png" )
     , ( "goomba", getResourcePath "img/Monsters/small.png" )

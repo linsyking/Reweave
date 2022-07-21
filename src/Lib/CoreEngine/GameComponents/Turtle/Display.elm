@@ -29,7 +29,7 @@ view ( d, t ) ggd gd =
                 ]
                 (getPositionUnderCamera d.position ggd)
                 ( d.simplecheck.width, d.simplecheck.height )
-                "fish"
+                "turtle"
             ]
       , 0
       )
