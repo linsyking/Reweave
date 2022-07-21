@@ -12,14 +12,13 @@ import Lib.CoreEngine.GameComponent.ComponentHandler exposing (getGameComponentC
 import Lib.CoreEngine.GameComponent.GenUID exposing (genUID)
 import Lib.CoreEngine.GameComponents.Bullet.Export as Bullet
 import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
-import Lib.CoreEngine.GameComponents.Player.Base exposing (BoundKey)
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameComponents.Player.FSM exposing (queryIsState)
 import Lib.CoreEngine.GameLayer.Common exposing (Model, kineticCalc, searchNameGC, searchUIDGC)
 import Lib.CoreEngine.Physics.InterCollision exposing (gonnaInterColllide)
 import Lib.CoreEngine.Physics.NaiveCollision exposing (judgeInCamera)
 import Lib.CoreEngine.Physics.SolidCollision exposing (canMove, gonnaSolidCollide, movePointPlain)
-import Lib.DefinedTypes.Parser exposing (dgetPlayer, dsetPlayer)
+import Lib.DefinedTypes.Parser exposing (dgetPlayer)
 import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget(..))
 import Lib.Scene.Base exposing (EngineT, PlayerInitPosition(..))
 import Math.Vector2 exposing (vec2)
@@ -354,42 +353,11 @@ dealParentMsg gct gd ( model, t ) ggd =
         GameStringMsg "restart" ->
             ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerRestartMsg ) ] ), gd )
 
-        GameStringMsg "ignoreinput" ->
-            let
-                player =
-                    model.player.data.extra
+        GameStringMsg "stopgamelayer" ->
+            ( ( model, { ggd | ingamepause = True }, [] ), gd )
 
-                playerextra =
-                    dgetPlayer player "model"
-
-                nokey =
-                    BoundKey 0 0 0 0 0
-
-                newp =
-                    { playerextra | originKeys = nokey }
-
-                newplayer =
-                    dsetPlayer "model" newp player
-
-                odata =
-                    model.player.data
-
-                ( ovx, ovy ) =
-                    odata.velocity
-
-                newdata =
-                    { odata | extra = newplayer, velocity = ( ovx / 5, ovy / 5 ) }
-
-                opp =
-                    model.player
-
-                nnplayer =
-                    { opp | data = newdata }
-            in
-            ( ( { model | ignoreInput = True, player = nnplayer }, ggd, [] ), gd )
-
-        GameStringMsg "reactinput" ->
-            ( ( { model | ignoreInput = False }, ggd, [] ), gd )
+        GameStringMsg "startgamelayer" ->
+            ( ( model, { ggd | ingamepause = False }, [] ), gd )
 
         GameGoombaInit info ->
             -- Create a goomba
@@ -453,6 +421,12 @@ updateModel msg gd lm ( model, t ) ggd =
 
         LayerStringMsg "startinput" ->
             ( ( { model | ignoreInput = False }, ggd, [] ), gd )
+
+        LayerStringMsg "stoplayer" ->
+            ( ( model, { ggd | ingamepause = True }, [] ), gd )
+
+        LayerStringMsg "startlayer" ->
+            ( ( model, { ggd | ingamepause = False }, [] ), gd )
 
         _ ->
             if ggd.ingamepause then

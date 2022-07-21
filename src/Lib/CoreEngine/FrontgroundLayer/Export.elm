@@ -15,7 +15,7 @@ type alias Data =
 
 nullData : Data
 nullData =
-    { render = \_ _ _ -> group [] [], components = Array.empty, fpsrepo = [] }
+    { render = \_ _ _ -> group [] [], components = Array.empty, fpsrepo = [], ispaused = False }
 
 
 layer : Layer GameGlobalData Data

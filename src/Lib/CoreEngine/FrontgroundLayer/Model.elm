@@ -32,10 +32,11 @@ initModel t lm _ =
                     )
                     f.components
             , fpsrepo = []
+            , ispaused = False
             }
 
         _ ->
-            { render = \_ _ _ -> group [] [], components = Array.empty, fpsrepo = [] }
+            { render = \_ _ _ -> group [] [], components = Array.empty, fpsrepo = [], ispaused = False }
 
 
 dealComponentsMsg : ComponentTMsg -> Model -> GlobalData -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
@@ -124,11 +125,19 @@ updateModel msg gd lm ( model, t ) ggd =
                     ( ( { model | components = newcs }, ggd, [] ), newgd )
 
                 KeyDown 27 ->
-                    let
-                        ( newcs, _, newgd ) =
-                            updateSingleComponentByName UnknownMsg (ComponentLStringMsg [ "Activate", "NONE" ]) gd t "Menu" model.components
-                    in
-                    ( ( { model | components = newcs }, ggd, [] ), newgd )
+                    if model.ispaused then
+                        let
+                            ( newcs, _, newgd ) =
+                                updateSingleComponentByName UnknownMsg (ComponentLStringMsg [ "Close", "NONE" ]) gd t "Menu" model.components
+                        in
+                        ( ( { model | components = newcs }, ggd, [] ), newgd )
+
+                    else
+                        let
+                            ( newcs, _, newgd ) =
+                                updateSingleComponentByName UnknownMsg (ComponentLStringMsg [ "Activate", "NONE" ]) gd t "Menu" model.components
+                        in
+                        ( ( { model | components = newcs }, ggd, [] ), newgd )
 
                 KeyDown _ ->
                     let

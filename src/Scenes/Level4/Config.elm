@@ -10,8 +10,6 @@ import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentT
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (initGameComponent)
 import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
 import Lib.CoreEngine.GameComponents.Exit.Export as Exit
-import Lib.CoreEngine.GameComponents.Fish.Base exposing (FishInit)
-import Lib.CoreEngine.GameComponents.Fish.Export as Monster
 import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
 import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit)
