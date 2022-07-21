@@ -28,8 +28,8 @@ collisionBox =
     { name = "col"
     , offsetX = 0
     , offsetY = 0
-    , width = 40
-    , height = 40
+    , width = 100
+    , height = 100
     }
 
 
@@ -38,15 +38,15 @@ simplecheckBox =
     { name = "sp"
     , offsetX = 0
     , offsetY = 0
-    , width = 40
-    , height = 40
+    , width = 100
+    , height = 100
     }
 
 
 initModel : Int -> GameComponentTMsg -> Data
 initModel _ gcm =
     case gcm of
-        GameBulletInit info ->
+        GameFireballInit info ->
             { status = Alive
             , position = info.initPosition
             , velocity = info.initVelocity
