@@ -3,6 +3,7 @@ module Lib.CoreEngine.FrontgroundLayer.Model exposing (..)
 import Array
 import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (group)
+import Components.Bar.Export as Bar
 import Components.Console.Export as Console
 import Components.Menu.Export as Menu
 import Components.Trans.Export as Trans
@@ -26,6 +27,7 @@ initModel t lm _ =
                         [ Trans.initComponent t (ComponentLStringMsg [ "end", "cloud", "0" ])
                         , Menu.initComponent t NullComponentMsg
                         , Console.initComponent t NullComponentMsg
+                        , Bar.initComponent t NullComponentMsg
                         ]
                     )
                     f.components
@@ -96,6 +98,9 @@ updateModel msg gd lm ( model, t ) ggd =
                         ( newcs, rmsg, newgd ) =
                             updateComponents t msg gd model.components
 
+                        ( newcs2, _, _ ) =
+                            updateSingleComponentByName msg (ComponentIntMsg 23) gd t "Bar" newcs
+
                         curtime =
                             posixToMillis tick
 
@@ -109,7 +114,7 @@ updateModel msg gd lm ( model, t ) ggd =
                         addfpsmodel =
                             { model | fpsrepo = newfpsrepo }
                     in
-                    dealAllComponentMsg rmsg { addfpsmodel | components = newcs } newgd ggd
+                    dealAllComponentMsg rmsg { addfpsmodel | components = newcs2 } newgd ggd
 
                 MouseDown 0 _ ->
                     let

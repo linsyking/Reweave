@@ -422,6 +422,15 @@ dealParentMsg gct gd ( model, t ) ggd =
             ( ( model, ggd, [] ), gd )
 
 
+addenergy : Float -> Float -> Float
+addenergy ori del =
+    if ori + del >= 4000 then
+        4000
+
+    else
+        ori + del
+
+
 dealAllParentMsg : List GameComponentTMsg -> GlobalData -> ( Model, Int ) -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
 dealAllParentMsg allparentmsg gd ( model, t ) ggd =
     List.foldl
@@ -581,7 +590,7 @@ updateModel msg gd lm ( model, t ) ggd =
 
                                     tcggd =
                                         if k > 300 then
-                                            { newggd | energy = newggd.energy + k }
+                                            { newggd | energy = addenergy ggd.energy k }
 
                                         else
                                             newggd
@@ -611,7 +620,7 @@ updateModel msg gd lm ( model, t ) ggd =
 
                                             onew =
                                                 if k > 300 then
-                                                    { newggd | energy = newggd.energy + k }
+                                                    { newggd | energy = addenergy ggd.energy k }
 
                                                 else
                                                     newggd

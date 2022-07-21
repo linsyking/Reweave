@@ -242,7 +242,7 @@ reboundPlayer rbv d =
             if pvy > -200 then
                 200
 
-            else if pvy > -300 then
+            else if pvy > -400 then
                 300
 
             else
