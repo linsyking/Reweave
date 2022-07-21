@@ -7,6 +7,7 @@ import Scenes.Home.Global as HG
 import Scenes.Level1.Export as LV1
 import Scenes.Level2.Export as Level2
 import Scenes.Level4.Export as LV4
+import Scenes.Platformtest.Export as Platformtest
 import Scenes.Scene1.Export as S1
 import Scenes.Scene1.Global as S1G
 import Scenes.SceneSettings exposing (..)
@@ -20,4 +21,5 @@ allScenes =
     , ( "Home", HG.toCT H.scene )
     , ( "Level2", CEG.toCT Level2.scene )
     , ( "Level4", CEG.toCT LV4.scene )
+    , ( "Platformtest", CEG.toCT Platformtest.scene )
     ]
