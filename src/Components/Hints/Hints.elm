@@ -22,9 +22,9 @@ initHints t ct =
             Dict.empty
 
 
-updateHints : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
+updateHints : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateHints _ _ gd ( d, _ ) =
-    ( d, NullComponentMsg, gd )
+    ( d, [], gd )
 
 
 viewHints : ( Data, Int ) -> GlobalData -> Renderable

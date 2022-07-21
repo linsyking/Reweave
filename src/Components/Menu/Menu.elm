@@ -43,7 +43,7 @@ initMenu _ _ =
         ]
 
 
-componentInteract : List ( String, Component ) -> List ComponentTMsg -> ComponentTMsg -> GlobalData -> ( List ( String, Component ), ComponentTMsg, GlobalData )
+componentInteract : List ( String, Component ) -> List ComponentTMsg -> ComponentTMsg -> GlobalData -> ( List ( String, Component ), List ComponentTMsg, GlobalData )
 componentInteract comList comMsgList newMsg globalData =
     case comMsgList of
         tmpMsg :: restMsgList ->
@@ -61,7 +61,7 @@ componentInteract comList comMsgList newMsg globalData =
                                             let
                                                 ( tmpData, tmpComMsg, _ ) =
                                                     if comName == showItemName then
-                                                        ( comModel.data, NullComponentMsg, globalData )
+                                                        ( comModel.data, [], globalData )
 
                                                     else
                                                         comModel.update UnknownMsg (ComponentStringMsg "Display:HIDE") globalData ( comModel.data, 0 )
@@ -74,7 +74,7 @@ componentInteract comList comMsgList newMsg globalData =
                                     List.map (\( tmpCom, _ ) -> tmpCom) newComListWithComMsgs
 
                                 newComMsg =
-                                    Maybe.withDefault NullComponentMsg (List.head (List.map (\( _, tmpComMsg ) -> tmpComMsg) newComListWithComMsgs))
+                                    Maybe.withDefault NullComponentMsg (List.head (List.concat (List.map (\( _, tmpComMsg ) -> tmpComMsg) newComListWithComMsgs)))
                             in
                             if newMsg == NullComponentMsg then
                                 componentInteract newComList restMsgList newComMsg globalData
@@ -89,10 +89,10 @@ componentInteract comList comMsgList newMsg globalData =
                     componentInteract comList restMsgList newMsg globalData
 
         _ ->
-            ( comList, newMsg, globalData )
+            ( comList, [ newMsg ], globalData )
 
 
-updateMenu : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
+updateMenu : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateMenu mainMsg comMsg globalData ( model, t ) =
     let
         childComponentsList =
@@ -117,12 +117,12 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                         childComponentsList
 
                 ( newChildComponentsList, newChildComponentsMsg, newGlobalData ) =
-                    componentInteract tmpChildComponentsList tmpChildComponentsMsg NullComponentMsg tmpGlobalData
+                    componentInteract tmpChildComponentsList (List.concat tmpChildComponentsMsg) NullComponentMsg tmpGlobalData
             in
             if judgeMouse globalData ( x, y ) ( 1100 - 30, 400 - 30 ) ( 2 * 30, 2 * 30 ) then
                 ( model
                     |> dsetbool "Show" False
-                , NullComponentMsg
+                , []
                 , globalData
                 )
 
@@ -134,7 +134,7 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                 )
 
             else
-                ( model, NullComponentMsg, globalData )
+                ( model, [], globalData )
 
         _ ->
             case comMsg of
@@ -160,15 +160,15 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                             ( model
                                 |> dsetbool "Show" True
                                 |> dsetLComponent "Child" newChildComponentsList
-                            , NullComponentMsg
+                            , []
                             , newGlobalData
                             )
 
                         _ ->
-                            ( model, NullComponentMsg, globalData )
+                            ( model, [], globalData )
 
                 _ ->
-                    ( model, NullComponentMsg, globalData )
+                    ( model, [], globalData )
 
 
 viewMenu : ( Data, Int ) -> GlobalData -> Renderable

@@ -7,6 +7,7 @@ import Canvas exposing (Renderable, group)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Data, GameComponent, GameComponentMsgType, GameComponentTMsg(..), LifeStatus(..))
 import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos, judgeInCamera)
+import Lib.Tools.Array exposing (locate)
 
 
 updateOneGameComponent : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> Int -> GameComponent -> ( GameComponent, List GameComponentMsgType, GameGlobalData )
@@ -30,6 +31,29 @@ updateSingleGameComponent msg ct ggd gd t n xs =
 
         Nothing ->
             ( xs, [], ggd )
+
+
+updateSingleGameComponentByName : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> Int -> String -> Array GameComponent -> ( Array GameComponent, List GameComponentMsgType, GameGlobalData )
+updateSingleGameComponentByName msg ct ggd gd t s xs =
+    let
+        n =
+            getGameComponentFromName s xs
+    in
+    case getGameComponent n xs of
+        Just k ->
+            let
+                ( newx, newmsg, newggd ) =
+                    k.update msg ct ggd gd ( k.data, t )
+            in
+            ( Array.set n { k | data = newx } xs, newmsg, newggd )
+
+        Nothing ->
+            ( xs, [], ggd )
+
+
+getGameComponentFromName : String -> Array GameComponent -> Int
+getGameComponentFromName s xs =
+    Maybe.withDefault -1 (List.head (locate (\x -> x.name == s) xs))
 
 
 genView : GameGlobalData -> GlobalData -> Int -> Array GameComponent -> Renderable

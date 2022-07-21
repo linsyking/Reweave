@@ -3,10 +3,11 @@ module Lib.CoreEngine.FrontgroundLayer.Model exposing (..)
 import Array
 import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (group)
+import Components.Console.Export as Console
 import Components.Menu.Export as Menu
 import Components.Trans.Export as Trans
 import Lib.Component.Base exposing (ComponentTMsg(..))
-import Lib.Component.ComponentHandler exposing (updateComponents, updateSingleComponent)
+import Lib.Component.ComponentHandler exposing (updateComponents, updateSingleComponentByName)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.FrontgroundLayer.Common exposing (Model)
 import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget(..))
@@ -24,6 +25,7 @@ initModel t lm _ =
                     (Array.fromList
                         [ Trans.initComponent t (ComponentLStringMsg [ "end", "cloud", "0" ])
                         , Menu.initComponent t NullComponentMsg
+                        , Console.initComponent t NullComponentMsg
                         ]
                     )
                     f.components
@@ -43,8 +45,31 @@ dealComponentsMsg rmsg model gd ggd =
         ComponentLStringMsg ("restart" :: _) ->
             ( ( model, ggd, [ ( LayerParentScene, LayerExitMsg (EngineT 0 DefaultPlayerPosition) ggd.currentScene ) ] ), gd )
 
+        ComponentStringMsg "stopGameInput" ->
+            ( ( model, ggd, [ ( LayerName "Game", LayerStringMsg "stopinput" ) ] ), gd )
+
+        ComponentStringMsg "startGameInput" ->
+            ( ( model, ggd, [ ( LayerName "Game", LayerStringMsg "startinput" ) ] ), gd )
+
+        ComponentStringIntMsg "addenergy" v ->
+            ( ( model, { ggd | energy = ggd.energy + toFloat v }, [] ), gd )
+
         _ ->
             ( ( model, ggd, [] ), gd )
+
+
+dealAllComponentMsg : List ComponentTMsg -> Model -> GlobalData -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
+dealAllComponentMsg rmsg model gd ggd =
+    List.foldl
+        (\lmt ( ( xm, xggd, xlm ), xgd ) ->
+            let
+                ( ( nm, nggd, nlm ), ngd ) =
+                    dealComponentsMsg lmt xm xgd xggd
+            in
+            ( ( nm, nggd, xlm ++ nlm ), ngd )
+        )
+        ( ( model, ggd, [] ), gd )
+        rmsg
 
 
 updateModel : Msg -> GlobalData -> LayerMsg -> ( Model, Int ) -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
@@ -53,14 +78,14 @@ updateModel msg gd lm ( model, t ) ggd =
         LayerExitMsg _ s ->
             let
                 ( newcs, _, newgd ) =
-                    updateSingleComponent UnknownMsg (ComponentLStringMsg [ "start", "cloud", "50", "nextscene", s ]) gd t 0 model.components
+                    updateSingleComponentByName UnknownMsg (ComponentLStringMsg [ "start", "cloud", "50", "nextscene", s ]) gd t "Trans" model.components
             in
             ( ( { model | components = newcs }, ggd, [] ), newgd )
 
         LayerRestartMsg ->
             let
                 ( newcs, _, newgd ) =
-                    updateSingleComponent UnknownMsg (ComponentLStringMsg [ "start", "cloud", "10", "restart" ]) gd t 0 model.components
+                    updateSingleComponentByName UnknownMsg (ComponentLStringMsg [ "start", "cloud", "10", "restart" ]) gd t "Trans" model.components
             in
             ( ( { model | components = newcs }, ggd, [] ), newgd )
 
@@ -84,23 +109,28 @@ updateModel msg gd lm ( model, t ) ggd =
                         addfpsmodel =
                             { model | fpsrepo = newfpsrepo }
                     in
-                    List.foldl
-                        (\lmt ( ( xm, xggd, xlm ), xgd ) ->
-                            let
-                                ( ( nm, nggd, nlm ), ngd ) =
-                                    dealComponentsMsg lmt xm xgd xggd
-                            in
-                            ( ( nm, nggd, xlm ++ nlm ), ngd )
-                        )
-                        ( ( { addfpsmodel | components = newcs }, ggd, [] ), newgd )
-                        rmsg
+                    dealAllComponentMsg rmsg { addfpsmodel | components = newcs } newgd ggd
+
+                MouseDown 0 _ ->
+                    let
+                        ( newcs, _, newgd ) =
+                            updateSingleComponentByName msg NullComponentMsg gd t "Menu" model.components
+                    in
+                    ( ( { model | components = newcs }, ggd, [] ), newgd )
 
                 KeyDown 27 ->
                     let
                         ( newcs, _, newgd ) =
-                            updateSingleComponent UnknownMsg (ComponentLStringMsg [ "Activate", "NONE" ]) gd t 1 model.components
+                            updateSingleComponentByName UnknownMsg (ComponentLStringMsg [ "Activate", "NONE" ]) gd t "Menu" model.components
                     in
                     ( ( { model | components = newcs }, ggd, [] ), newgd )
+
+                KeyDown _ ->
+                    let
+                        ( newcs, rmsg, newgd ) =
+                            updateComponents t msg gd model.components
+                    in
+                    dealAllComponentMsg rmsg { model | components = newcs } newgd ggd
 
                 _ ->
                     ( ( model, ggd, [] ), gd )

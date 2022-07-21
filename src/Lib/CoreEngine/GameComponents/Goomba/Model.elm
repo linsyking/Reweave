@@ -31,8 +31,8 @@ collisionBox =
     { name = "col"
     , offsetX = 0
     , offsetY = 11
-    , width = 60
-    , height = 50
+    , width = 70
+    , height = 43
     }
 
 
@@ -41,7 +41,7 @@ reboundBox =
     { name = "reb"
     , offsetX = 0
     , offsetY = 0
-    , width = 60
+    , width = 70
     , height = 10
     }
 
@@ -51,8 +51,8 @@ simplecheckBox =
     { name = "sp"
     , offsetX = 0
     , offsetY = 0
-    , width = 60
-    , height = 60
+    , width = 70
+    , height = 53
     }
 
 

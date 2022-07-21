@@ -2,10 +2,11 @@ module Lib.Render.Render exposing (..)
 
 import Base exposing (GlobalData)
 import Canvas exposing (Point, Renderable, text, texture)
-import Canvas.Settings exposing (Setting)
+import Canvas.Settings exposing (Setting, fill)
 import Canvas.Settings.Advanced exposing (scale, transform, translate)
 import Canvas.Settings.Text exposing (TextAlign(..), align, font)
 import Canvas.Texture exposing (Texture, dimensions, sprite)
+import Color exposing (Color)
 import Dict exposing (Dict)
 import Lib.Coordinate.Coordinates exposing (heightToReal, posToReal, widthToReal)
 import Lib.CoreEngine.Base exposing (brickSize)
@@ -94,6 +95,90 @@ renderSprite gd ls p ( w, h ) name =
             text [] (transPoint gd p) "Wrong Sprite"
 
 
+renderSpriteWithRev : Bool -> GlobalData -> List Setting -> ( Int, Int ) -> ( Int, Int ) -> String -> Renderable
+renderSpriteWithRev rev gd ls p ( w, h ) name =
+    if not rev then
+        renderSprite gd [] p ( w, h ) name
+
+    else
+        let
+            dst =
+                gd.sprites
+        in
+        case igetSprite name dst of
+            Just t ->
+                let
+                    text_dim =
+                        dimensions t
+
+                    rw =
+                        widthToReal gd w
+
+                    rh =
+                        heightToReal gd h
+
+                    text_width =
+                        text_dim.width
+
+                    text_height =
+                        text_dim.height
+
+                    width_s =
+                        rw / text_width
+
+                    height_s =
+                        rh / text_height
+
+                    ( newx, newy ) =
+                        transPoint gd p
+                in
+                if w > 0 && h > 0 then
+                    texture
+                        (transform
+                            [ translate newx newy
+                            , scale -width_s width_s
+                            , translate -text_width 0
+                            ]
+                            :: ls
+                        )
+                        ( 0, 0 )
+                        t
+
+                else if w > 0 && h <= 0 then
+                    texture
+                        (transform
+                            [ translate newx newy
+                            , scale -width_s width_s
+                            , translate -text_width 0
+                            ]
+                            :: ls
+                        )
+                        ( 0, 0 )
+                        t
+
+                else if w <= 0 && h > 0 then
+                    texture
+                        (transform
+                            [ translate newx newy
+                            , scale -height_s height_s
+                            , translate -text_width 0
+                            ]
+                            :: ls
+                        )
+                        ( 0, 0 )
+                        t
+
+                else
+                    -- All <= 0
+                    texture
+                        ls
+                        ( newx, newy )
+                        t
+
+            Nothing ->
+                text [] (transPoint gd p) "Wrong Sprite"
+
+
 renderBrickSheet : GlobalData -> List Setting -> ( Int, Int ) -> ( Int, Int ) -> String -> Dict String Texture -> Renderable
 renderBrickSheet gd ls p ( x, y ) name dst =
     case igetSprite name dst of
@@ -143,6 +228,24 @@ renderText gd size s ft ( x, y ) =
     text
         [ font { size = floor rx, family = ft }
         , align Start
+        ]
+        ( dsx, dsy + rx - 1 )
+        s
+
+
+renderTextWithColor : GlobalData -> Int -> String -> String -> Color -> ( Int, Int ) -> Renderable
+renderTextWithColor gd size s ft col ( x, y ) =
+    let
+        rx =
+            heightToReal gd size
+
+        ( dsx, dsy ) =
+            posToReal gd ( x, y )
+    in
+    text
+        [ font { size = floor rx, family = ft }
+        , align Start
+        , fill col
         ]
         ( dsx, dsy + rx - 1 )
         s

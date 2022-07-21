@@ -117,7 +117,7 @@ bezier clockwise t d =
             d
 
 
-updateBar : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, ComponentTMsg, GlobalData )
+updateBar : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateBar _ gMsg globalData ( d, t ) =
     let
         time =
@@ -127,12 +127,12 @@ updateBar _ gMsg globalData ( d, t ) =
         ComponentIntMsg num ->
             ( (d |> dsetfloat "angle" (90 - 180 / 100 * toFloat num))
                 |> bezier (modBy 4 (ceiling time)) (time - toFloat (floor time))
-            , NullComponentMsg
+            , []
             , globalData
             )
 
         _ ->
-            ( d, NullComponentMsg, globalData )
+            ( d, [], globalData )
 
 
 viewBar : ( Data, Int ) -> GlobalData -> Renderable

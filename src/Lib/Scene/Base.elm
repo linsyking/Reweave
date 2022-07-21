@@ -59,7 +59,7 @@ type alias EngineT =
 
 nullEngineT : EngineT
 nullEngineT =
-    { energy = 2000
+    { energy = 0
     , playerPosition = DefaultPlayerPosition
     }
 
