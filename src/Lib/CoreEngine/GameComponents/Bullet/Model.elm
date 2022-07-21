@@ -79,11 +79,13 @@ updateModel msg gct ggd _ ( d, t ) =
                             d.position
                     in
                     if (vx < 0 && not (canMove d ggd (vec2 -1 0))) || (vx > 0 && not (canMove d ggd (vec2 1 0))) then
-                        ( { d | status = Dead t, position = ( x + ceiling (vx / 1000), y + ceiling (vy / 1000) ) }, [], ggd )
+                        ( { d | status = Dead t }, [], ggd )
+                        -- , position = ( x + ceiling (vx / 1000), y + ceiling (vy / 1000) )
 
                     else
-                        ( { d | position = ( x + ceiling (vx / 1000), y + ceiling (vy / 1000) ) }, [], ggd )
+                        ( d, [], ggd )
 
+        -- { d | position = ( x + ceiling (vx / 1000), y + ceiling (vy / 1000) ) }
         _ ->
             case gct of
                 GameInterCollisionMsg _ pd _ ->
