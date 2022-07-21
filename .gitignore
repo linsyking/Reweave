@@ -15,6 +15,7 @@ minted-*
 *.lmk
 .tag*
 elm-stuff/
+build/
 scripts/grouping.csv
 *.DS_Store
 node_modules/
