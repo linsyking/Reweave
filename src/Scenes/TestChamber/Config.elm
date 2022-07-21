@@ -14,8 +14,6 @@ import Lib.CoreEngine.GameComponents.CutScene.Base exposing (CutSceneInit)
 import Lib.CoreEngine.GameComponents.CutScene.Export as CutScene
 import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
 import Lib.CoreEngine.GameComponents.Exit.Export as Exit
-import Lib.CoreEngine.GameComponents.Fireball.Base exposing (FireballInit)
-import Lib.CoreEngine.GameComponents.Fireball.Export as Fireball
 import Lib.CoreEngine.GameComponents.Fish.Base exposing (FishInit)
 import Lib.CoreEngine.GameComponents.Fish.Export as Fish
 import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
