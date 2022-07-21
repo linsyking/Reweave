@@ -16,6 +16,8 @@ import Lib.CoreEngine.GameComponents.CutScene.Base exposing (CutSceneInit)
 import Lib.CoreEngine.GameComponents.CutScene.Export as CutScene
 import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
 import Lib.CoreEngine.GameComponents.Exit.Export as Exit
+import Lib.CoreEngine.GameComponents.Fish.Base exposing (FishInit)
+import Lib.CoreEngine.GameComponents.Fish.Export as Fish
 import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
 import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
 import Lib.CoreEngine.GameComponents.GoombaEmitter.Base exposing (GoombaEmitterInit)
@@ -41,7 +43,7 @@ initPlayer : Int -> PlayerInitPosition -> GameComponent
 initPlayer t pos =
     case pos of
         DefaultPlayerPosition ->
-            initGameComponent t (GamePlayerInit (PlayerInit ( 50, 2000 ))) Player.gameComponent
+            initGameComponent t (GamePlayerInit (PlayerInit ( 3000, 2000 ))) Player.gameComponent
 
         CustomPlayerPosition x ->
             initGameComponent t (GamePlayerInit (PlayerInit x)) Player.gameComponent
@@ -60,9 +62,8 @@ initActors t =
         , initGameComponent t (GameSpikeInit (SpikeInit ( 704, 2028 ) HorUp 1 10)) Spike.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 736, 2048 ) VerRight 3 11)) Spike.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 864, 2016 ) HorDown 15 12)) Spike.gameComponent
-        , initGameComponent t (GameBulletInit (BulletInit ( 800, 1530 ) ( -50, 0 ) 14)) Bullet.gameComponent
-
-        --, initGameComponent t (GameMonsterInit (MonsterInit ( 1200, 30 ) ( 0, 0 ) "default" 10 100)) Monster.gameComponent
+        , initGameComponent t (GameBulletInit (BulletInit ( 800, 1530 ) ( -5, 0 ) 14)) Bullet.gameComponent
+        , initGameComponent t (GameFishInit (FishInit ( 2700, 1000 ) ( 0, 0 ) "default" 10 100)) Fish.gameComponent
         ]
 
 

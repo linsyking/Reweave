@@ -10,7 +10,7 @@ import Dict
 import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
 import Lib.DefinedTypes.Parser exposing (dgetfloat, dsetfloat)
-import Html exposing (th)
+
 
 initBar : Int -> ComponentTMsg -> Data
 initBar energy _ =
@@ -129,17 +129,17 @@ updateBar _ gMsg globalData ( d, t ) =
     case gMsg of
         ComponentIntMsg num ->
             if 90 - 180 / 100 * toFloat num == angle then
-                (d |> bezier (modBy 4 (ceiling time)) (time - toFloat (floor time))
-                , NullComponentMsg
+                ( d |> bezier (modBy 4 (ceiling time)) (time - toFloat (floor time))
+                , []
                 , globalData
                 )
 
             else
-            ( (d |> dsetfloat "angle" (90 - 180 / 100 * toFloat num))
-                |> bezier (modBy 4 (ceiling time)) (time - toFloat (floor time))
-            , []
-            , globalData
-            )
+                ( (d |> dsetfloat "angle" (90 - 180 / 100 * toFloat num))
+                    |> bezier (modBy 4 (ceiling time)) (time - toFloat (floor time))
+                , []
+                , globalData
+                )
 
         _ ->
             ( d, [], globalData )
