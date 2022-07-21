@@ -90,3 +90,43 @@ preCheck t model d =
             { mok | space = nspace }
     in
     ( { model | jStartTime = jst, currentKeys = newkeys }, newd )
+
+
+judgeFirstJump : Int -> Model -> Data -> Bool
+judgeFirstJump t model d =
+    let
+        cs =
+            model.originKeys.space
+
+        jst =
+            if isFirstJump model then
+                --- First Press
+                t
+
+            else
+                model.jStartTime
+
+        stt =
+            queryStateStarttime model "inair"
+
+        nspace =
+            if cs == 1 then
+                if queryIsState model "inair" && not (isNope model) then
+                    1
+
+                else if queryIsState model "onground" && t - jst <= 10 then
+                    1
+
+                else if iswolfJump then
+                    1
+
+                else
+                    0
+
+            else
+                cs
+
+        iswolfJump =
+            cs == 1 && queryIsState model "inair" && t - stt <= 10 && isNope model && t - jst <= 10
+    in
+    (isFirstJump model && nspace == 1 && isNope model) || (queryIsState model "onground" && t - jst <= 10 && cs == 1 && t - jst >= 1)

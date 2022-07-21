@@ -45,7 +45,7 @@ nullModel : Model
 nullModel =
     { currentKeys = BoundKey 0 0 0 0 0
     , keyPressed = Nope
-    , jStartTime = 0
+    , jStartTime = -100
     , originKeys = BoundKey 0 0 0 0 0
     , playerStates = PlayerStates []
     , lastOriginKeys = BoundKey 0 0 0 0 0

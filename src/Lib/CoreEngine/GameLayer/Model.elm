@@ -14,6 +14,7 @@ import Lib.CoreEngine.GameComponents.Bullet.Export as Bullet
 import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
 import Lib.CoreEngine.GameComponents.Player.Base exposing (BoundKey)
 import Lib.CoreEngine.GameComponents.Player.Export as Player
+import Lib.CoreEngine.GameComponents.Player.FSM exposing (queryIsState)
 import Lib.CoreEngine.GameLayer.Common exposing (Model, kineticCalc, searchNameGC, searchUIDGC)
 import Lib.CoreEngine.Physics.InterCollision exposing (gonnaInterColllide)
 import Lib.CoreEngine.Physics.NaiveCollision exposing (judgeInCamera)
@@ -406,6 +407,17 @@ dealParentMsg gct gd ( model, t ) ggd =
             in
             ( ( { model | actors = Array.push (initGameComponent t (GameBulletInit newinfo) Bullet.gameComponent) model.actors }, ggd, [] ), gd )
 
+        GameStringIntMsg "addenergy" i ->
+            let
+                newe =
+                    if ggd.energy + toFloat i <= 0 then
+                        0
+
+                    else
+                        ggd.energy + toFloat i
+            in
+            ( ( model, { ggd | energy = newe }, [] ), gd )
+
         _ ->
             ( ( model, ggd, [] ), gd )
 
@@ -655,33 +667,46 @@ updateModel msg gd lm ( model, t ) ggd =
                         else if ggd.selectobj > 0 then
                             if ggd.selectobj == model.player.data.uid then
                                 let
-                                    ( px, py ) =
-                                        posToReal gd (getPositionUnderCamera (getGameComponentCenter model.player) ggd)
+                                    pls =
+                                        dgetPlayer model.player.data.extra "model"
 
-                                    ( mx, my ) =
-                                        fromMouseToReal gd mp
-
-                                    pp =
-                                        ( px, py )
-
-                                    mm =
-                                        ( mx, my )
-
-                                    ( xsable, updss ) =
-                                        getDSEnergy pp mm gd ggd
-
-                                    newplayer =
-                                        if xsable > 0 then
-                                            let
-                                                ( up, _, _ ) =
-                                                    updateOneGameComponent UnknownMsg (GameUseEnergy ( mx - px, my - py ) xsable) ggd gd t model.player
-                                            in
-                                            up
-
-                                        else
-                                            model.player
+                                    isinair =
+                                        queryIsState
+                                            pls
+                                            "inair"
                                 in
-                                ( ( { model | player = newplayer, lastuseEnergyTime = t }, updss, [] ), gd )
+                                if isinair then
+                                    ( ( model, ggd, [] ), gd )
+
+                                else
+                                    let
+                                        ( px, py ) =
+                                            posToReal gd (getPositionUnderCamera (getGameComponentCenter model.player) ggd)
+
+                                        ( mx, my ) =
+                                            fromMouseToReal gd mp
+
+                                        pp =
+                                            ( px, py )
+
+                                        mm =
+                                            ( mx, my )
+
+                                        ( xsable, updss ) =
+                                            getDSEnergy pp mm gd ggd
+
+                                        newplayer =
+                                            if xsable > 0 then
+                                                let
+                                                    ( up, _, _ ) =
+                                                        updateOneGameComponent UnknownMsg (GameUseEnergy ( mx - px, my - py ) xsable) ggd gd t model.player
+                                                in
+                                                up
+
+                                            else
+                                                model.player
+                                    in
+                                    ( ( { model | player = newplayer, lastuseEnergyTime = t }, updss, [] ), gd )
 
                             else
                                 let
