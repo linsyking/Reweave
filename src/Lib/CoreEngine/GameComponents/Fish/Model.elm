@@ -11,6 +11,7 @@ import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
 import Lib.CoreEngine.GameComponents.Bullet.Base exposing (BulletInit)
 import Lib.DefinedTypes.Parser exposing (dgetString, dgetint, dsetint, dsetstring)
+import Random
 
 
 initData : Data
@@ -115,7 +116,23 @@ changeStatus model =
             { model
                 | extra =
                     data
-                        |> dsetstring "Status" "Hide"
+                        |> dsetstring "Status" "Create"
+                        |> dsetint "Timer" 0
+            }
+
+        ( "Create", 500 ) ->
+            { model
+                | extra =
+                    data
+                        |> dsetstring "Status" "FlyBack"
+                        |> dsetint "Timer" 0
+            }
+
+        ( "FlyBack", 300 ) ->
+            { model
+                | extra =
+                    data
+                        |> dsetstring "Status" "Away"
                         |> dsetint "Timer" 0
             }
 
@@ -142,17 +159,29 @@ changeVelocity model =
     case status of
         "FlyHigh" ->
             if timer < 100 then
-                { model | velocity = ( -15, 5 ) }
+                { model | velocity = ( -15, 0 ) }
 
             else
-                { model | velocity = ( 15, 5 ) }
+                { model | velocity = ( 15, 0 ) }
+
+        "FlyBack" ->
+            if timer < 200 then
+                { model | velocity = ( -15, 0 ) }
+
+            else
+                { model | velocity = ( 15, 0 ) }
 
         _ ->
             model
 
 
-getInitBulletsMsg : Data -> List GameComponentMsgType
-getInitBulletsMsg model =
+randomPos : Random.Seed -> Int -> Int -> Int
+randomPos seed l r =
+    Tuple.first (Random.step (Random.int l r) seed)
+
+
+getInitBulletsMsg : Int -> Data -> List GameComponentMsgType
+getInitBulletsMsg t model =
     let
         data =
             model.extra
@@ -188,6 +217,30 @@ getInitBulletsMsg model =
             else
                 []
 
+        "Create" ->
+            if (modBy 100 timer == 0) || (modBy 100 timer == 10) || (modBy 100 timer == 30) then
+                Tuple.first
+                    (List.foldl
+                        (\( posX, posY ) ( bulletList, seed ) ->
+                            ( List.append bulletList
+                                [ GameParentMsg
+                                    (GameBulletInit
+                                        { initPosition = ( posX + randomPos seed -1000 1000, posY + randomPos seed 0 300 )
+                                        , initVelocity = ( toFloat (randomPos seed -20 20), toFloat (randomPos seed -30 30) )
+                                        , uid = 0
+                                        }
+                                    )
+                                ]
+                            , Tuple.second (Random.step (Random.int 0 10) seed)
+                            )
+                        )
+                        ( [], Random.initialSeed t )
+                        (List.repeat 50 ( Tuple.first model.position + 300, Tuple.second model.position + 300 ))
+                    )
+
+            else
+                []
+
         _ ->
             []
 
@@ -198,7 +251,7 @@ updateModel mainMsg comMsg gameGlobalData globalData ( model, t ) =
         Tick _ ->
             let
                 requestMsg =
-                    getInitBulletsMsg model
+                    getInitBulletsMsg t model
 
                 newModel =
                     model
