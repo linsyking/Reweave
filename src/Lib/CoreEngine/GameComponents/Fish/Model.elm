@@ -9,7 +9,6 @@ import Lib.Coordinate.Coordinates exposing (judgeMouse)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
-import Lib.CoreEngine.GameComponents.Bullet.Base exposing (BulletInit)
 import Lib.DefinedTypes.Parser exposing (dgetString, dgetint, dsetint, dsetstring)
 import Random
 
