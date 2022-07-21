@@ -223,7 +223,7 @@ getInitBulletsMsg t model =
 
 
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
-updateModel mainMsg comMsg gameGlobalData globalData ( model, t ) =
+updateModel mainMsg comMsg gameGlobalData _ ( model, t ) =
     case mainMsg of
         Tick _ ->
             let
