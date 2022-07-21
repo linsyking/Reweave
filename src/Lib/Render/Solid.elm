@@ -2,10 +2,7 @@ module Lib.Render.Solid exposing (..)
 
 import Array2D
 import Base exposing (GlobalData)
-import Canvas exposing (Renderable, group, rect, shapes)
-import Canvas.Settings exposing (fill)
-import Color
-import Lib.Coordinate.Coordinates exposing (heightToReal, posToReal, widthToReal)
+import Canvas exposing (Renderable, group)
 import Lib.CoreEngine.Base exposing (GameGlobalData, brickSize)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.Render.Render exposing (renderSprite, renderSpriteWithRev)
@@ -69,7 +66,8 @@ renderSingleBlock tp p ggd gd =
     in
     case tp of
         1 ->
-            shapes [ fill Color.red ] [ rect (posToReal gd (getPositionUnderCamera p ggd)) (widthToReal gd brickSize) (heightToReal gd brickSize) ]
+            -- shapes [ fill Color.red ] [ rect (posToReal gd (getPositionUnderCamera p ggd)) (widthToReal gd brickSize) (heightToReal gd brickSize) ]
+            renderSprite gd [] ( cpx, cpy ) ( brickSize, brickSize ) "ot/block"
 
         3 ->
             -- beimin ground

@@ -50,6 +50,7 @@ allTexture =
         ++ jiangnanSprites
         ++ longxiSprites
         ++ zhongyuanSprites
+        ++ otherSprites
 
 
 charaSprites : List ( String, String )
@@ -108,4 +109,12 @@ zhongyuanSprites =
     [ ( "zy/stick", getResourcePath "img/ZhongYuan/stick.png" )
     , ( "zy/platform", getResourcePath "img/ZhongYuan/platform.png" )
     , ( "zy/buiding", getResourcePath "img/ZhongYuan/buiding.png" )
+    ]
+
+
+otherSprites : List ( String, String )
+otherSprites =
+    [ ( "ot/transfer", getResourcePath "img/Others/transfer.png" )
+    , ( "ot/block", getResourcePath "img/Others/block.png" )
+    , ( "ot/cave", getResourcePath "img/Others/cave.png" )
     ]
