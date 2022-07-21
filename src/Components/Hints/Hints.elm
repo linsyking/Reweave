@@ -37,7 +37,7 @@ viewHints ( d, t ) gd =
             dgetint d "starttime"
 
         startshow =
-            150
+            50
 
         elapsed =
             t - st

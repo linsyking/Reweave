@@ -15,7 +15,7 @@ view ( d, t ) ggd gd =
     [ ( group []
             [ renderSprite gd
                 []
-                (getPositionUnderCamera ( Tuple.first d.position - 100, Tuple.second d.position - 180 ) ggd)
+                (getPositionUnderCamera ( Tuple.first d.position - 100, Tuple.second d.position - 140 ) ggd)
                 ( 200, 200 )
                 "ot/transfer"
             ]

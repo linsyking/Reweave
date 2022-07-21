@@ -4,7 +4,7 @@ import Lib.CoreEngine.Export as CE
 import Lib.CoreEngine.Global as CEG
 import Scenes.Home.Export as H
 import Scenes.Home.Global as HG
-import Scenes.Level1.Export as Level1
+import Scenes.Level0.Export as Level0
 import Scenes.Level2.Export as Level2
 import Scenes.Level4.Export as LV4
 import Scenes.Platformtest.Export as Platformtest
@@ -23,5 +23,5 @@ allScenes =
     , ( "Level2", CEG.toCT Level2.scene )
     , ( "Level4", CEG.toCT LV4.scene )
     , ( "Platformtest", CEG.toCT Platformtest.scene )
-    , ( "Level1", CEG.toCT Level1.scene )
+    , ( "Level0", CEG.toCT Level0.scene )
     ]

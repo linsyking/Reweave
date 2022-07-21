@@ -99,7 +99,7 @@ updateModel msg gd lm ( model, t ) ggd =
                             updateComponents t msg gd model.components
 
                         ( newcs2, _, _ ) =
-                            updateSingleComponentByName msg (ComponentIntMsg 23) gd t "Bar" newcs
+                            updateSingleComponentByName msg (ComponentIntMsg (floor (ggd.energy / 2000 * 100))) gd t "Bar" newcs
 
                         curtime =
                             posixToMillis tick
