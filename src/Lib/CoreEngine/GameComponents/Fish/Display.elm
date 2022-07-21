@@ -6,7 +6,6 @@ import Canvas.Settings.Advanced exposing (alpha, rotate, transform)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Data, LifeStatus(..))
-import Lib.DefinedTypes.Parser exposing (dgetString)
 import Lib.Render.Render exposing (renderSprite, renderText)
 
 
@@ -32,7 +31,7 @@ view ( d, t ) ggd gd =
                 ]
                 (getPositionUnderCamera d.position ggd)
                 ( d.simplecheck.width, d.simplecheck.height )
-                (dgetString d.extra "Picture")
+                "fish"
             , renderText gd 20 (String.fromFloat (Tuple.first d.velocity)) "sans-serif" (getPositionUnderCamera d.position ggd)
             ]
       , 0
