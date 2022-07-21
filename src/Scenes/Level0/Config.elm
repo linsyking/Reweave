@@ -27,7 +27,7 @@ import Scenes.Level0.Map exposing (mymap)
 initFrontGroundComponents : Int -> Array Component
 initFrontGroundComponents t =
     Array.fromList
-        [ Hints.initComponent t (ComponentLStringMsg [ "Use A,D to move to left and right, Use C or Space to jump", "Use Esc to call the menu" ])
+        [ Hints.initComponent t (ComponentLStringMsg [ "50", "750", "700", "30", "Use A,D to move to left and right, Use C or Space to jump", "Use Esc to call the menu" ])
         ]
 
 
@@ -44,7 +44,7 @@ initPlayer t pos =
 initActors : Int -> Array GameComponent
 initActors t =
     Array.fromList
-        [ initGameComponent t (GameExitInit (ExitInit ( 3700, 1910 ) "Test" 2)) Exit.gameComponent
+        [ initGameComponent t (GameExitInit (ExitInit ( 3700, 1910 ) "Level1" 2)) Exit.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2220 ) HorUp 100 3)) Spike.gameComponent
         , initGameComponent t (GameCutSceneInit (CutSceneInit ( 2440, 1820 ) ( 100, 100 ) 88 dialogues True)) CutScene.gameComponent
         ]

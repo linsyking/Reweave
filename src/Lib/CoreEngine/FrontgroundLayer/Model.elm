@@ -7,6 +7,7 @@ import Components.Bar.Export as Bar
 import Components.Console.Export as Console
 import Components.Menu.Export as Menu
 import Components.Trans.Export as Trans
+import Dict
 import Lib.Component.Base exposing (ComponentTMsg(..))
 import Lib.Component.ComponentHandler exposing (updateComponents, updateSingleComponentByName)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
@@ -128,16 +129,16 @@ updateModel msg gd lm ( model, t ) ggd =
                     if model.ispaused then
                         let
                             ( newcs, _, newgd ) =
-                                updateSingleComponentByName UnknownMsg (ComponentLStringMsg [ "Close", "NONE" ]) gd t "Menu" model.components
+                                updateSingleComponentByName UnknownMsg (ComponentStringDictMsg "Close" Dict.empty) gd t "Menu" model.components
                         in
-                        ( ( { model | components = newcs }, ggd, [] ), newgd )
+                        ( ( { model | components = newcs, ispaused = False }, { ggd | ingamepause = False }, [] ), newgd )
 
                     else
                         let
                             ( newcs, _, newgd ) =
-                                updateSingleComponentByName UnknownMsg (ComponentLStringMsg [ "Activate", "NONE" ]) gd t "Menu" model.components
+                                updateSingleComponentByName UnknownMsg (ComponentStringDictMsg "Activate" Dict.empty) gd t "Menu" model.components
                         in
-                        ( ( { model | components = newcs }, ggd, [] ), newgd )
+                        ( ( { model | components = newcs, ispaused = True }, { ggd | ingamepause = True }, [] ), newgd )
 
                 KeyDown _ ->
                     let

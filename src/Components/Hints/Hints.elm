@@ -12,10 +12,14 @@ import Lib.Render.Render exposing (renderText)
 initHints : Int -> ComponentTMsg -> Data
 initHints t ct =
     case ct of
-        ComponentLStringMsg xs ->
+        ComponentLStringMsg (start :: px :: py :: fsize :: xs) ->
             Dict.fromList
                 [ ( "hints", CDLString xs )
                 , ( "starttime", CDInt t )
+                , ( "posx", CDInt (Maybe.withDefault 0 (String.toInt px)) )
+                , ( "posy", CDInt (Maybe.withDefault 0 (String.toInt py)) )
+                , ( "size", CDInt (Maybe.withDefault 0 (String.toInt fsize)) )
+                , ( "st", CDInt (Maybe.withDefault 0 (String.toInt start)) )
                 ]
 
         _ ->
@@ -36,8 +40,14 @@ viewHints ( d, t ) gd =
         st =
             dgetint d "starttime"
 
+        pp =
+            ( dgetint d "posx", dgetint d "posy" )
+
+        fs =
+            dgetint d "size"
+
         startshow =
-            50
+            dgetint d "st"
 
         elapsed =
             t - st
@@ -58,7 +68,7 @@ viewHints ( d, t ) gd =
         group [] []
 
     else
-        group [ alpha (genalpha stage) ] [ renderText gd 30 curh "Times New Roman" ( 750, 700 ) ]
+        group [ alpha (genalpha stage) ] [ renderText gd fs curh "Times New Roman" pp ]
 
 
 genalpha : Int -> Float

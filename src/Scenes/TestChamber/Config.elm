@@ -35,8 +35,7 @@ import Scenes.TestChamber.Map exposing (mymap)
 initFrontGroundComponents : Int -> Array Component
 initFrontGroundComponents t =
     Array.fromList
-        [ Hints.initComponent t (ComponentLStringMsg [ "Use A,D to move, Use C to jump", "Use Esc to call the menu" ])
-        ]
+        []
 
 
 initPlayer : Int -> PlayerInitPosition -> GameComponent
