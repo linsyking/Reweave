@@ -158,17 +158,17 @@ changeVelocity model =
     case status of
         "FlyHigh" ->
             if timer < 40 then
-                { model | velocity = ( -45, 0 ) }
+                { model | velocity = ( -45, 2 ) }
 
             else
-                { model | velocity = ( 60, 0 ) }
+                { model | velocity = ( 60, 2 ) }
 
         "FlyBack" ->
             if timer < 60 then
-                { model | velocity = ( -60, 0 ) }
+                { model | velocity = ( -60, -2 ) }
 
             else
-                { model | velocity = ( 45, 0 ) }
+                { model | velocity = ( 45, -2 ) }
 
         _ ->
             { model | velocity = ( 0, 0 ) }
