@@ -112,7 +112,7 @@ changeStatus model =
                         |> dsetint "Timer" 0
             }
 
-        ( "FlyHigh", 300 ) ->
+        ( "FlyHigh", 100 ) ->
             { model
                 | extra =
                     data
@@ -128,7 +128,7 @@ changeStatus model =
                         |> dsetint "Timer" 0
             }
 
-        ( "FlyBack", 300 ) ->
+        ( "FlyBack", 100 ) ->
             { model
                 | extra =
                     data
@@ -158,21 +158,21 @@ changeVelocity model =
     in
     case status of
         "FlyHigh" ->
-            if timer < 100 then
-                { model | velocity = ( -15, 0 ) }
+            if timer < 40 then
+                { model | velocity = ( -45, 0 ) }
 
             else
-                { model | velocity = ( 15, 0 ) }
+                { model | velocity = ( 60, 0 ) }
 
         "FlyBack" ->
-            if timer < 200 then
-                { model | velocity = ( -15, 0 ) }
+            if timer < 60 then
+                { model | velocity = ( -60, 0 ) }
 
             else
-                { model | velocity = ( 15, 0 ) }
+                { model | velocity = ( 45, 0 ) }
 
         _ ->
-            model
+            { model | velocity = ( 0, 0 ) }
 
 
 randomPos : Random.Seed -> Int -> Int -> Int
@@ -218,15 +218,15 @@ getInitBulletsMsg t model =
                 []
 
         "Create" ->
-            if (modBy 100 timer == 0) || (modBy 100 timer == 10) || (modBy 100 timer == 30) then
+            if (modBy 100 timer == 0) || (modBy 100 timer == 10) then
                 Tuple.first
                     (List.foldl
                         (\( posX, posY ) ( bulletList, seed ) ->
                             ( List.append bulletList
                                 [ GameParentMsg
                                     (GameBulletInit
-                                        { initPosition = ( posX + randomPos seed -1000 1000, posY + randomPos seed 0 300 )
-                                        , initVelocity = ( toFloat (randomPos seed -20 20), toFloat (randomPos seed -30 30) )
+                                        { initPosition = ( posX + randomPos seed -1000 1000, posY + randomPos seed 100 400 )
+                                        , initVelocity = ( toFloat (randomPos seed -20 20), toFloat (randomPos seed -150 -50) )
                                         , uid = 0
                                         }
                                     )
@@ -235,7 +235,7 @@ getInitBulletsMsg t model =
                             )
                         )
                         ( [], Random.initialSeed t )
-                        (List.repeat 50 ( Tuple.first model.position + 300, Tuple.second model.position + 300 ))
+                        (List.repeat 20 ( Tuple.first model.position + 300, Tuple.second model.position + 300 ))
                     )
 
             else
