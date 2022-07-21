@@ -204,7 +204,7 @@ getInitBulletsMsg t model =
                                 [ GameParentMsg
                                     (GameBulletInit
                                         { initPosition = ( posX + randomPos seed -1000 1000, posY + randomPos seed 100 400 )
-                                        , initVelocity = ( toFloat (randomPos seed -20 20), toFloat (randomPos seed -150 -50) )
+                                        , initVelocity = ( toFloat (randomPos seed -20 20), toFloat (randomPos seed -250 -50) )
                                         , picture = "ot/scale"
                                         , uid = 0
                                         }
@@ -214,7 +214,7 @@ getInitBulletsMsg t model =
                             )
                         )
                         ( [], Random.initialSeed t )
-                        (List.repeat 20 ( Tuple.first model.position + 300, Tuple.second model.position + 300 ))
+                        (List.repeat 10 ( Tuple.first model.position + 300, Tuple.second model.position + 300 ))
                     )
 
             else

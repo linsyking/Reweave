@@ -87,6 +87,9 @@ updateModel msg gct ggd _ ( d, t ) =
         -- { d | position = ( x + ceiling (vx / 1000), y + ceiling (vy / 1000) ) }
         _ ->
             case gct of
+                GameInterCollisionMsg "fish" _ _ ->
+                    ( d, [], ggd )
+
                 GameInterCollisionMsg _ pd _ ->
                     ( { d | status = Dead t }, [ GameActorUidMsg pd.uid (GameStringMsg "die") ], ggd )
 
