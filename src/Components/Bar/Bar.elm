@@ -124,7 +124,7 @@ updateBar : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List 
 updateBar _ gMsg globalData ( d, t ) =
     let
         time =
-            3 * ( dgetfloat d "t" )
+            3 * dgetfloat d "t"
 
         angle =
             dgetfloat d "angle"

@@ -35,6 +35,7 @@ allTexture =
     , ( "spikeR", getResourcePath "img/Spike/spikeR.png" )
     , ( "spikeT", getResourcePath "img/Spike/spikeT.png" )
     , ( "spikeB", getResourcePath "img/Spike/spikeB.png" )
+    , ( "skull", getResourcePath "img/Spike/skull.png" )
     , ( "dialogue", getResourcePath "img/dialogue.png" )
     , ( "downbutton", getResourcePath "img/down.png" )
     , ( "bullet", getResourcePath "img/bullet.png" )
