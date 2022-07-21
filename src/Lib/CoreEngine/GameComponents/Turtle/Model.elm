@@ -89,7 +89,7 @@ changeStatus model =
                         |> dsetint "Timer" 0
             }
 
-        ( "Wave", 9 ) ->
+        ( "Wave", 21 ) ->
             { model
                 | extra =
                     data
@@ -113,7 +113,7 @@ changeStatus model =
                         |> dsetint "Timer" 0
             }
 
-        ( "Create", 500 ) ->
+        ( "Create", 700 ) ->
             { model
                 | extra =
                     data
@@ -143,13 +143,13 @@ changeVelocity model =
     in
     case status of
         "JumpUp" ->
-            { model | velocity = ( 0, 20 - toFloat timer ) }
+            { model | velocity = ( 0, 20 - toFloat timer / 5 ) }
 
         "Wave" ->
-            { model | velocity = ( 0, 30 ) }
+            { model | velocity = ( 0, 60 ) }
 
         "JumpDown" ->
-            { model | velocity = ( 0, -50 + toFloat timer ) }
+            { model | velocity = ( 0, -63 + toFloat timer / 5 ) }
 
         _ ->
             { model | velocity = ( 0, 0 ) }
@@ -218,7 +218,7 @@ getInitBulletsMsg t model =
                 []
 
         "Create" ->
-            if (modBy 150 timer == 0) || (modBy 150 timer == 80) then
+            if ((modBy 200 timer == 0) || (modBy 200 timer == 110)) && (timer < 400) then
                 Tuple.first
                     (List.foldl
                         (\( posX, _ ) ( bulletList, seed ) ->
@@ -235,14 +235,14 @@ getInitBulletsMsg t model =
                             )
                         )
                         ( [], Random.initialSeed t )
-                        (List.repeat 10 ( Tuple.first model.position + 300, Tuple.second model.position + 250 ))
+                        (List.repeat 15 ( Tuple.first model.position + 300, Tuple.second model.position + 250 ))
                     )
 
             else
                 []
 
         "Wave" ->
-            if modBy 3 timer == 0 then
+            if modBy 8 timer == 0 then
                 [ GameParentMsg
                     (GameFireballInit
                         { initPosition = ( Tuple.first model.position, Tuple.second model.position + 500 )
