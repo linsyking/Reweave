@@ -122,7 +122,7 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
             if judgeMouse globalData ( x, y ) ( 1100 - 30, 400 - 30 ) ( 2 * 30, 2 * 30 ) then
                 ( model
                     |> dsetbool "Show" False
-                , []
+                , [ ComponentStringMsg "OnClose" ]
                 , globalData
                 )
 
@@ -167,7 +167,7 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                         "Close" ->
                             ( model
                                 |> dsetbool "Show" False
-                            , []
+                            , [ ComponentStringMsg "OnClose" ]
                             , globalData
                             )
 
