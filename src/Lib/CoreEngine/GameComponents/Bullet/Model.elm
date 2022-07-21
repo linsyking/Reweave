@@ -28,8 +28,8 @@ collisionBox =
     { name = "col"
     , offsetX = 0
     , offsetY = 0
-    , width = 10
-    , height = 10
+    , width = 20
+    , height = 20
     }
 
 
@@ -38,8 +38,8 @@ simplecheckBox =
     { name = "sp"
     , offsetX = 0
     , offsetY = 0
-    , width = 10
-    , height = 10
+    , width = 20
+    , height = 20
     }
 
 
@@ -54,7 +54,7 @@ initModel _ gcm =
             , acceleration = ( 0, 0 )
             , simplecheck = simplecheckBox
             , collisionbox = [ collisionBox ]
-            , extra = Dict.empty
+            , extra = Dict.fromList [ ( "Picture", CDString info.picture ) ]
             , uid = info.uid
             }
 
