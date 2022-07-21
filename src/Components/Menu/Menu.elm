@@ -150,7 +150,7 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                                         (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
                                             let
                                                 ( tmpCom, tmpComMsg, gD ) =
-                                                    comModel.update mainMsg (ComponentDictMsg tmpData) tmpGData ( comModel.data, t )
+                                                    comModel.update mainMsg (ComponentStringDictMsg "" tmpData) tmpGData ( comModel.data, t )
                                             in
                                             ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
                                         )

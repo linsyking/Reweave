@@ -22,7 +22,7 @@ import Lib.Render.Render exposing (renderSprite)
 initDialog : Int -> ComponentTMsg -> Data
 initDialog _ comMsg =
     case comMsg of
-        ComponentDictMsg dict ->
+        ComponentStringDictMsg _ dict ->
             dict
                 |> dsetstring "_Status" "OnBuild"
                 |> dsetint "_Timer" 0
