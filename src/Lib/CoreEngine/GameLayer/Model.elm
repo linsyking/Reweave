@@ -392,8 +392,8 @@ dealParentMsg gct gd ( model, t ) ggd =
 
 addenergy : Float -> Float -> Float
 addenergy ori del =
-    if ori + del >= 4000 then
-        4000
+    if ori + del >= 2000 then
+        2000
 
     else
         ori + del

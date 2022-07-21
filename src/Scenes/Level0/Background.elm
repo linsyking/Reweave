@@ -1,4 +1,4 @@
-module Scenes.Level1.Background exposing (..)
+module Scenes.Level0.Background exposing (..)
 
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable)

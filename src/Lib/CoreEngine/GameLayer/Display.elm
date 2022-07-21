@@ -11,6 +11,7 @@ import Lib.CoreEngine.GameLayer.Common exposing (Model, kineticCalc, searchUIDGC
 import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos)
 import Lib.Render.Chartlet exposing (renderChartletsBehindActor, renderChartletsBehindSolids, renderChartletsFront)
 import Lib.Render.Energy exposing (renderEnergyPoint)
+import Lib.Render.Render exposing (renderText)
 import Lib.Render.Solid exposing (renderSolids)
 
 
@@ -29,9 +30,13 @@ view ( model, ot ) ggd gd =
 
         selected =
             ggd.selectobj
+
+        ( px, py ) =
+            model.player.data.position
     in
     group []
-        [ renderChartletsBehindActor model ggd gd
+        [ renderText gd 30 ("x:" ++ String.fromInt px ++ ", y:" ++ String.fromInt py) "Times New Roman" ( 200, 0 )
+        , renderChartletsBehindActor model ggd gd
         , genView ggd gd t allobjs
         , if selected > 0 then
             let

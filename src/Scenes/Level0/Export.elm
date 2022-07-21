@@ -1,11 +1,11 @@
-module Scenes.Level1.Export exposing (..)
+module Scenes.Level0.Export exposing (..)
 
 import Array
 import Canvas exposing (group)
 import Lib.CoreEngine.Export exposing (Data, genEngineScene, initEngine)
 import Lib.Scene.Base exposing (Scene, SceneMsg(..), nullEngineT)
-import Scenes.Level1.Background exposing (background)
-import Scenes.Level1.Config exposing (allChartlets, initActors, initFrontGroundComponents, initGameGlobalData, initPlayer)
+import Scenes.Level0.Background exposing (background)
+import Scenes.Level0.Config exposing (allChartlets, initActors, initFrontGroundComponents, initGameGlobalData, initPlayer)
 
 
 game : Int -> SceneMsg -> Data
