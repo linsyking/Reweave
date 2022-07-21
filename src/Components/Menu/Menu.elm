@@ -164,6 +164,13 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                             , newGlobalData
                             )
 
+                        "Close" ->
+                            ( model
+                                |> dsetbool "Show" False
+                            , []
+                            , globalData
+                            )
+
                         _ ->
                             ( model, [], globalData )
 
