@@ -29,9 +29,7 @@ import Scenes.Level4.Map exposing (mymap)
 
 initFrontGroundComponents : Int -> Array Component
 initFrontGroundComponents t =
-    Array.fromList
-        [ Hints.initComponent t (ComponentLStringMsg [ "Use W,A,D to move and jump", "Use Esc to call the menu" ])
-        ]
+    Array.empty
 
 
 initPlayer : Int -> PlayerInitPosition -> GameComponent
@@ -48,8 +46,9 @@ initActors : Int -> Array GameComponent
 initActors t =
     Array.fromList
         [ --initGameComponent t (GameGoombaInit (GoombaInit ( 1200, 1800 ) ( 0, 0 ) 4)) Goomba.gameComponent
-        --, initGameComponent t (GameGoombaInit (GoombaInit ( 1000, 1800 ) ( 0, 0 ) 5)) Goomba.gameComponent
-        --, initGameComponent t (GameGoombaInit (GoombaInit ( 2000, 800 ) ( 0, 0 ) 2)) Goomba.gameComponent
+          --, initGameComponent t (GameGoombaInit (GoombaInit ( 1000, 1800 ) ( 0, 0 ) 5)) Goomba.gameComponent
+          initGameComponent t (GameGoombaInit (GoombaInit ( 200, 800 ) ( 0, 0 ) 2)) Goomba.gameComponent
+
         --, initGameComponent t (GameGoombaInit (GoombaInit ( 3500, 500 ) ( 0, 0 ) 3)) Goomba.gameComponent
         --, initGameComponent t (GameExitInit (ExitInit ( 3800, 1600 ) ( 10, 160 ) "Scene1" 9)) Exit.gameComponent
         --, initGameComponent t (GameCutSceneInit (CutSceneInit ( 100, 1800 ) ( 100, 160 ) 88 [ ( "1", "Dear master, I want learn something from you", True ), ( "1", "Yes, please go ahead.", False ) ])) CutScene.gameComponent
