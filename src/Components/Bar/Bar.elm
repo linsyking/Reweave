@@ -165,8 +165,7 @@ viewBar ( d, _ ) globalData =
     if angle == -90 then
         group
             []
-            [ Canvas.clear ( 0, 0 ) 400 400
-            , shapes
+            [ shapes
                 [ fill Color.green
                 ]
                 [ circle ( cx, cy ) radius
@@ -188,8 +187,7 @@ viewBar ( d, _ ) globalData =
         in
         group
             []
-            [ Canvas.clear ( 0, 0 ) 400 400
-            , shapes
+            [ shapes
                 [ fill Color.green
                 ]
                 [ path ( x, y ) [ renderBezier angle cx cy radius cp1x cp1y cp2x cp2y ]
