@@ -5,9 +5,7 @@ module Lib.CoreEngine.GameComponents.Fish.Model exposing (..)
 import Base exposing (GlobalData, Msg(..))
 import Dict
 import Lib.Component.Base exposing (DefinedTypes(..))
-import Lib.Coordinate.Coordinates exposing (judgeMouse)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
-import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
 import Lib.DefinedTypes.Parser exposing (dgetString, dgetint, dsetint, dsetstring)
 import Random
@@ -21,29 +19,9 @@ initData =
     , mass = 70
     , acceleration = ( 0, -8 )
     , simplecheck = simplecheckBox
-    , collisionbox = [ collisionBox, reboundBox ]
+    , collisionbox = [ simplecheckBox ]
     , extra = Dict.empty
     , uid = 2
-    }
-
-
-collisionBox : Box
-collisionBox =
-    { name = "col"
-    , offsetX = 0
-    , offsetY = 11
-    , width = 600
-    , height = 500
-    }
-
-
-reboundBox : Box
-reboundBox =
-    { name = "reb"
-    , offsetX = 0
-    , offsetY = 0
-    , width = 600
-    , height = 490
     }
 
 
@@ -53,7 +31,7 @@ simplecheckBox =
     , offsetX = 0
     , offsetY = 0
     , width = 600
-    , height = 600
+    , height = 500
     }
 
 
@@ -67,7 +45,7 @@ initModel _ comMsg =
             , mass = 70
             , acceleration = ( 0, 0 )
             , simplecheck = simplecheckBox
-            , collisionbox = [ collisionBox, reboundBox ]
+            , collisionbox = [ simplecheckBox ]
             , extra =
                 Dict.fromList
                     [ ( "TriggerUID", CDInt info.triggeruid )
@@ -165,10 +143,10 @@ changeVelocity model =
 
         "FlyBack" ->
             if timer < 60 then
-                { model | velocity = ( -60, -2 ) }
+                { model | velocity = ( -60, -5 ) }
 
             else
-                { model | velocity = ( 45, -2 ) }
+                { model | velocity = ( 45, -5 ) }
 
         _ ->
             { model | velocity = ( 0, 0 ) }
@@ -259,25 +237,14 @@ updateModel mainMsg comMsg gameGlobalData globalData ( model, t ) =
             in
             ( newModel, requestMsg, gameGlobalData )
 
-        MouseDown 0 mp ->
-            if judgeMouse globalData mp (getPositionUnderCamera model.position gameGlobalData) ( model.simplecheck.width, model.simplecheck.height ) then
-                ( model, [], { gameGlobalData | selectobj = model.uid } )
-
-            else
-                ( model, [], gameGlobalData )
-
         _ ->
             case comMsg of
-                GameClearVelocity ->
-                    ( { model | velocity = ( 0, 0 ) }, [], gameGlobalData )
+                GameInterCollisionMsg "player" _ _ ->
+                    let
+                        uid =
+                            dgetint model.extra "TriggerUID"
+                    in
+                    ( { model | status = Dead t }, [ GameActorUidMsg uid (GameStringMsg "start") ], gameGlobalData )
 
-                -- GameUseEnergy mp e ->
-                --     let
-                --         ndd =
-                --             changeCVel d mp e
-                --     in
-                --     ( ndd, [], ggd )
-                -- GameStringMsg "die" ->
-                --     ( { d | status = Dead t }, [], ggd )
                 _ ->
                     ( model, [], gameGlobalData )

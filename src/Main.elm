@@ -59,7 +59,7 @@ init : Flags -> ( Model, Cmd Msg, AudioCmd Msg )
 init flags =
     let
         ms =
-            loadSceneByName initModel "Platformtest" NullSceneMsg
+            loadSceneByName initModel "Level1" NullSceneMsg
 
         oldgd =
             ms.currentGlobalData
@@ -170,7 +170,7 @@ update _ msg model =
                 case som of
                     SOChangeScene ( tm, s ) ->
                         --- Load new scene
-                        ( loadSceneByName tmodel s tm, Cmd.none, Audio.cmdNone )
+                        ( resetSceneStartTime (loadSceneByName tmodel s tm), Cmd.none, Audio.cmdNone )
 
                     SOPlayAudio name path opt ->
                         ( bnewmodel, Cmd.none, Audio.loadAudio (SoundLoaded name opt) path )
@@ -189,7 +189,7 @@ update _ msg model =
                         ( { bnewmodel | audiorepo = stopAudio bnewmodel.audiorepo name }, Cmd.none, Audio.cmdNone )
 
                     _ ->
-                        ( bnewmodel, Cmd.none, Audio.cmdNone )
+                        ( updateSceneStartTime bnewmodel, Cmd.none, Audio.cmdNone )
 
 
 subscriptions : AudioData -> Model -> Sub Msg

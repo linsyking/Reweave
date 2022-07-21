@@ -36,6 +36,7 @@ type alias GlobalData =
     , audioVolume : Float
     , sprites : Dict String Texture
     , randomnum : Int
+    , scenestarttime : Int
     }
 
 
