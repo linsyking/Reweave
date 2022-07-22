@@ -10,7 +10,7 @@ import Dict
 import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
 import Lib.DefinedTypes.Parser exposing (dgetLString, dgetString, dgetint, dsetint, dsetlstring, dsetstring)
-import Lib.Render.Render exposing (renderTextWithColor)
+import Lib.Render.Render exposing (renderText)
 import Random
 
 
@@ -147,15 +147,15 @@ viewWord ( model, t ) globalData =
     case status of
         "OnBuild" ->
             group [ alpha (toFloat timer / 20.0) ]
-                [ renderTextWithColor globalData 35 (dgetString model "Word") "Courier New" Color.white ( 400 + position, 130 ) ]
+                [ renderText globalData 35 (dgetString model "Word") "Courier New" ( 400 + position, 130 ) ]
 
         "OnShow" ->
             group []
-                [ renderTextWithColor globalData 35 (dgetString model "Word") "Courier New" Color.white ( 400 + position, 130 ) ]
+                [ renderText globalData 35 (dgetString model "Word") "Courier New" ( 400 + position, 130 ) ]
 
         "OnDeBuild" ->
             group [ alpha (1.0 - toFloat timer / 20.0) ]
-                (List.append [ renderTextWithColor globalData 35 (dgetString model "Word") "Courier New" Color.white ( 400 + position, 130 ) ]
+                (List.append [ renderText globalData 35 (dgetString model "Word") "Courier New" ( 400 + position, 130 ) ]
                     (List.map
                         (\str ->
                             let
@@ -168,7 +168,7 @@ viewWord ( model, t ) globalData =
                                 posY =
                                     Maybe.withDefault 0 (String.toInt (Maybe.withDefault "" (List.head (List.reverse list))))
                             in
-                            shapes [ alpha (1.0 - toFloat timer / 10.0), fill Color.white ] [ rect (posToReal globalData ( posX, posY )) (widthToReal globalData 2) (heightToReal globalData 2) ]
+                            shapes [ alpha (1.0 - toFloat timer / 10.0), fill Color.black ] [ rect (posToReal globalData ( posX, posY )) (widthToReal globalData 2) (heightToReal globalData 2) ]
                         )
                         (dgetLString model "CrashPos")
                     )

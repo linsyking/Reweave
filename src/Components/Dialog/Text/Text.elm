@@ -194,6 +194,6 @@ viewText ( model, t ) globalData =
         -- dasads = Debug.log "Dsaad " dpd
     in
     group []
-        (List.append [ renderSprite globalData [] ( 250, 150 ) ( 130, 130 ) dpd ]
+        (List.append [ renderSprite globalData [] ( 260, 150 ) ( 130, 130 ) dpd ]
             (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
         )
