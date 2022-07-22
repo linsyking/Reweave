@@ -29,5 +29,5 @@ view ( d, t ) ggd gd =
             ]
       , 0
       )
-    , ( group [] (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) gd) componentsList), 0 )
+    , ( group [] (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) gd) componentsList), 10 )
     ]

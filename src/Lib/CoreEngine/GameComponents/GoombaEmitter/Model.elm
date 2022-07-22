@@ -27,8 +27,8 @@ simplecheckBox =
     { name = "sp"
     , offsetX = 0
     , offsetY = 0
-    , width = 0
-    , height = 0
+    , width = 100
+    , height = 100
     }
 
 

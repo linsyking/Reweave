@@ -313,6 +313,12 @@ calcDRate p1 p2 ( w, h ) =
 calcRPer : ( Float, Float ) -> ( Float, Float ) -> GlobalData -> Float
 calcRPer ( px, py ) ( mx, my ) gd =
     let
+        dsddd =
+            Debug.log "pxs" ( ( px, py ), ( mx, my ), ( toFloat gd.realWidth, toFloat gd.realHeight ) )
+
+        dddd =
+            Debug.log "result" ds
+
         ds =
             calcDRate ( px, py ) ( mx, my ) ( toFloat gd.realWidth, toFloat gd.realHeight )
     in
@@ -700,6 +706,9 @@ updateModel msg gd lm ( model, t ) ggd =
 
                                 else
                                     let
+                                        dddd =
+                                            Debug.log "dsd" xsable
+
                                         ( px, py ) =
                                             posToReal gd (getPositionUnderCamera (getGameComponentCenter model.player) ggd)
 

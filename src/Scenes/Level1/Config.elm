@@ -36,8 +36,9 @@ initPlayer : Int -> PlayerInitPosition -> GameComponent
 initPlayer t pos =
     case pos of
         DefaultPlayerPosition ->
-            initGameComponent t (GamePlayerInit (PlayerInit ( 342, 1160 ))) Player.gameComponent
+            initGameComponent t (GamePlayerInit (PlayerInit ( 3197, 1480 ))) Player.gameComponent
 
+        -- initGameComponent t (GamePlayerInit (PlayerInit ( 342, 1160 ))) Player.gameComponent
         CustomPlayerPosition x ->
             initGameComponent t (GamePlayerInit (PlayerInit x)) Player.gameComponent
 
@@ -45,9 +46,12 @@ initPlayer t pos =
 initActors : Int -> Array GameComponent
 initActors t =
     Array.fromList
-        [ initGameComponent t (GameExitInit (ExitInit ( 120, 1240 ) "Level0" (CustomPlayerPosition ( 3446, 1800 )) 1 88)) Exit.gameComponent
-        , initGameComponent t (GameCutSceneInit (CutSceneInit ( 475, 1340 ) ( 100, 100 ) 88 dialogues True)) CutScene.gameComponent
+        [ initGameComponent t (GameExitInit (ExitInit ( 120, 1240 ) "Level0" (CustomPlayerPosition ( 3446, 1800 )) 1 6)) Exit.gameComponent
+        , initGameComponent t (GameCutSceneInit (CutSceneInit ( 475, 1340 ) ( 100, 100 ) 5 dialogues True)) CutScene.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2200 ) HorUp 1000 False 3)) Spike.gameComponent
+        , initGameComponent t (GameSpikeInit (SpikeInit ( 1440, 1900 ) HorUp 1 True 4)) Spike.gameComponent
+        , initGameComponent t (GameExitInit (ExitInit ( 3700, 1450 ) "Level2" DefaultPlayerPosition 0 7)) Exit.gameComponent
+        , initGameComponent t (GameGoombaInit (GoombaInit ( 3425, 1928 ) ( 50, 0 ) 8)) Goomba.gameComponent
         ]
 
 
@@ -60,7 +64,7 @@ dialogues =
 
 initCamera : CameraData
 initCamera =
-    CameraData ( 0, 700 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * 119 - 1, 70 * 32 - 1 ) ) ( ( 0.2, 0.3 ), ( 0.4, 0.4 ) )
+    CameraData ( 0, 700 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * 119 - 1, 70 * 32 - 1 ) ) ( ( 0.2, 0.1 ), ( 0.4, 0.1 ) )
 
 
 initGameGlobalData : Float -> List String -> GameGlobalData
@@ -82,7 +86,7 @@ allChartlets : List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth
 allChartlets =
     [ ( \gd ggd ->
             renderSprite gd [] (getPositionUnderCamera ( 32, 1250 ) ggd) ( 32 * 14, 0 ) "dh/bigrock"
-      , FrontSolids
+      , BehindActors
       )
     , ( \gd ggd ->
             renderSprite gd [] (getPositionUnderCamera ( 32, 1450 ) ggd) ( 32 * 14, 0 ) "dh/bigrock"
@@ -100,8 +104,20 @@ allChartlets =
             renderSprite gd [] (getPositionUnderCamera ( 475, 1350 ) ggd) ( 100, 0 ) "master"
       , BehindActors
       )
+    , ( \gd ggd ->
+            renderSprite gd [] (getPositionUnderCamera ( 3497, 1470 ) ggd) ( 32 * 10, 0 ) "dh/bigrock"
+      , FrontSolids
+      )
+    , ( \gd ggd ->
+            renderSprite gd [] (getPositionUnderCamera ( 3497, 1770 ) ggd) ( 32 * 10, 0 ) "dh/bigrock"
+      , FrontSolids
+      )
+    , ( \gd ggd ->
+            renderSprite gd [] (getPositionUnderCamera ( 3497, 2070 ) ggd) ( 32 * 10, 0 ) "dh/bigrock"
+      , FrontSolids
+      )
     ]
-        ++ makemanywaves 10
+        ++ makemanywaves 4
 
 
 makemanywaves : Int -> List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )

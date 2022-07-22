@@ -56,7 +56,7 @@ initActors t =
         , initGameComponent t (GameSpikeInit (SpikeInit ( 704, 2028 ) HorUp 1 True 10)) Spike.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 736, 2048 ) VerRight 3 True 11)) Spike.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 864, 2016 ) HorDown 15 True 12)) Spike.gameComponent
-        , initGameComponent t (GameFishInit (FishInit ( 100, 100 ) 88 229)) Fish.gameComponent
+        , initGameComponent t (GameFishInit (FishInit ( 100, 1000 ) 88 229)) Fish.gameComponent
 
         -- , initGameComponent t (GameFireballInit (FireballInit ( 500, 1530 ) ( -5, 0 ) 18)) Fireball.gameComponent
         , initGameComponent t (GameTurtleInit (TurtleInit ( 2700, 1000 ) 88 100)) Turtle.gameComponent
