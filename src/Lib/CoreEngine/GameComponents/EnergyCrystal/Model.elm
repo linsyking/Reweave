@@ -35,7 +35,7 @@ simplecheckBox ( w, h ) =
 initModel : Int -> GameComponentTMsg -> Data
 initModel _ gct =
     case gct of
-        GameBoneInit info ->
+        GameEnergyCrystalInit info ->
             { status = Alive
             , position = info.initPosition
             , velocity = ( 0, 0 )
@@ -55,7 +55,7 @@ updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data
 updateModel _ gct ggd _ ( d, t ) =
     case gct of
         GameInterCollisionMsg "player" _ _ ->
-            ( d, [], { ggd | energy = ggd.energy + 100 } )
+            ( { d | status = Dead t }, [], { ggd | energy = ggd.energy + 100 } )
 
         _ ->
             ( d, [], ggd )
