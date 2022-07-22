@@ -15,10 +15,6 @@ module Lib.CoreEngine.Base exposing
 
 @docs testGameGlobalData
 
-@docs sds
-
-@docs ps
-
 -}
 
 import Array2D exposing (Array2D)
