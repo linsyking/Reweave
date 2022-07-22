@@ -1,11 +1,11 @@
-module Lib.CoreEngine.GameComponents.Spike.Model exposing (..)
+module Lib.CoreEngine.GameComponents.Bone.Model exposing (..)
 
 import Base exposing (GlobalData, Msg)
 import Dict
 import Lib.Component.Base exposing (DefinedTypes(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
-import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..))
+import Maybe exposing (withDefault)
 
 
 initData : Data
@@ -15,83 +15,21 @@ initData =
     , velocity = ( 0, 0 )
     , mass = 0
     , acceleration = ( 0, 0 )
-    , simplecheck = simplecheckBox HorUp 1
-    , collisionbox = [ simplecheckBox HorDown 1 ]
+    , simplecheck = simplecheckBox ( 0, 0 )
+    , collisionbox = [ simplecheckBox ( 0, 0 ) ]
     , extra = Dict.empty
     , uid = 999
     }
 
 
-simplecheckBox : SpikeDirection -> Int -> Box
-simplecheckBox sd ss =
-    case sd of
-        HorUp ->
-            { name = "sp"
-            , offsetX = 0
-            , offsetY = 0
-            , width = ss * 32
-            , height = 20
-            }
-
-        HorDown ->
-            { name = "sp"
-            , offsetX = 0
-            , offsetY = 0
-            , width = ss * 32
-            , height = 20
-            }
-
-        VerLeft ->
-            { name = "sp"
-            , offsetX = 0
-            , offsetY = 0
-            , width = 20
-            , height = ss * 32
-            }
-
-        VerRight ->
-            { name = "sp"
-            , offsetX = 0
-            , offsetY = 0
-            , width = 20
-            , height = ss * 32
-            }
-
-
-colBox : SpikeDirection -> Int -> Box
-colBox sd ss =
-    case sd of
-        HorUp ->
-            { name = "col"
-            , offsetX = 0
-            , offsetY = 2
-            , width = ss * 32
-            , height = 18
-            }
-
-        HorDown ->
-            { name = "col"
-            , offsetX = 0
-            , offsetY = 0
-            , width = ss * 32
-            , height = 18
-            }
-
-        VerLeft ->
-            { name = "col"
-            , offsetX = 2
-            , offsetY = 0
-            , width = 18
-            , height = ss * 32
-            }
-
-        VerRight ->
-            { name = "col"
-            , offsetX = 0
-            , offsetY = 0
-            , width = 18
-            , height = ss * 32
-            }
+simplecheckBox : ( Int, Int ) -> Box
+simplecheckBox ( w, h ) =
+    { name = "sp"
+    , offsetX = 0
+    , offsetY = 0
+    , width = w
+    , height = h
+    }
 
 
 initModel : Int -> GameComponentTMsg -> Data
@@ -103,28 +41,9 @@ initModel _ gct =
             , velocity = ( 0, 0 )
             , mass = 0
             , acceleration = ( 0, 0 )
-            , simplecheck = simplecheckBox info.direction info.spikesnum
-            , collisionbox = [ colBox info.direction info.spikesnum ]
-            , extra =
-                Dict.fromList
-                    [ ( "direction"
-                      , CDInt
-                            (case info.direction of
-                                HorUp ->
-                                    0
-
-                                HorDown ->
-                                    1
-
-                                VerLeft ->
-                                    2
-
-                                VerRight ->
-                                    3
-                            )
-                      )
-                    , ( "number", CDInt info.spikesnum )
-                    ]
+            , simplecheck = simplecheckBox info.initSize
+            , collisionbox = [ simplecheckBox info.initSize ]
+            , extra = Dict.empty
             , uid = info.uid
             }
 

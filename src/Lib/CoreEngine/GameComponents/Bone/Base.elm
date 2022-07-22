@@ -1,16 +1,8 @@
-module Lib.CoreEngine.GameComponents.Spike.Base exposing (..)
+module Lib.CoreEngine.GameComponents.Bone.Base exposing (..)
 
 
-type alias SpikeInit =
+type alias BoneInit =
     { initPosition : ( Int, Int )
-    , direction : SpikeDirection
-    , spikesnum : Int
+    , initSize : ( Int, Int )
     , uid : Int
     }
-
-
-type SpikeDirection
-    = HorUp
-    | HorDown
-    | VerRight
-    | VerLeft

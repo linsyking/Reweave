@@ -1,13 +1,13 @@
-module Lib.CoreEngine.GameComponents.Spike.Export exposing (..)
+module Lib.CoreEngine.GameComponents.Bone.Export exposing (..)
 
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent)
-import Lib.CoreEngine.GameComponents.Spike.Display exposing (view)
-import Lib.CoreEngine.GameComponents.Spike.Model exposing (initData, initModel, updateModel)
+import Lib.CoreEngine.GameComponents.Bone.Display exposing (view)
+import Lib.CoreEngine.GameComponents.Bone.Model exposing (initData, initModel, updateModel)
 
 
 gameComponent : GameComponent
 gameComponent =
-    { name = "spike"
+    { name = "bone"
     , data = initData
     , init = initModel
     , update = updateModel
