@@ -4,13 +4,6 @@ module Lib.Resources.Base exposing
     , saveSprite
     , igetSprite
     , allTexture
-    , charaSprites
-    , beiminSprites
-    , donghaiSprites
-    , jiangnanSprites
-    , longxiSprites
-    , zhongyuanSprites
-    , otherSprites
     )
 
 {-| This is the doc for this module
@@ -104,6 +97,7 @@ allTexture =
         ++ longxiSprites
         ++ zhongyuanSprites
         ++ otherSprites
+        ++ backgroundSprites
 
 
 {-| charaSprites
@@ -195,4 +189,14 @@ otherSprites =
     , ( "ot/map", getResourcePath "img/Others/map.png" )
     , ( "ot/vup", getResourcePath "img/Others/volume-up.svg" )
     , ( "ot/vdown", getResourcePath "img/Others/volume-down.svg" )
+    ]
+
+
+backgroundSprites : List ( String, String )
+backgroundSprites =
+    [ ( "bg/zy", getResourcePath "img/Background/ZhongYuan.jpg" )
+    , ( "bg/lx", getResourcePath "img/Background/LongXi.jpg" )
+    , ( "bg/jn", getResourcePath "img/Background/JiangNan.jpg" )
+    , ( "bg/dh", getResourcePath "img/Background/DongHai.jpg" )
+    , ( "bg/bm", getResourcePath "img/Background/BeiMing.jpg" )
     ]

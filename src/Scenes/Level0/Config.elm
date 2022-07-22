@@ -60,10 +60,15 @@ initFrontGroundComponents t sp =
         0 ->
             Array.fromList
                 [ Hints.initComponent t (ComponentLStringMsg [ "50", "750", "700", "30", "Use A,D to move to left and right, Use C or Space to jump", "Use Esc to call the menu" ])
+                , Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "Beiming  北溟" ])
+                , Hints.initComponent t (ComponentLStringMsg [ "40", "1560", "100", "35", "Near A Temple 寺庙旁" ])
                 ]
 
         _ ->
-            Array.empty
+            Array.fromList
+                [ Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "Beiming  北溟" ])
+                , Hints.initComponent t (ComponentLStringMsg [ "40", "1560", "100", "35", "Near A Temple  寺庙旁" ])
+                ]
 
 
 {-| initPlayer

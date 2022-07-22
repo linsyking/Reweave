@@ -45,6 +45,7 @@ initModel t lm _ =
             { render = f.timeseries
             , components =
                 Array.append
+                    f.components
                     (Array.fromList
                         [ Bar.initComponent t NullComponentMsg
                         , Trans.initComponent t (ComponentLStringMsg [ "end", "cloud", "0" ])
@@ -52,7 +53,6 @@ initModel t lm _ =
                         , Console.initComponent t NullComponentMsg
                         ]
                     )
-                    f.components
             , fpsrepo = []
             , ispaused = False
             , exitinfo = nullEngineT
