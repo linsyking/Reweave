@@ -186,8 +186,8 @@ otherSprites =
     , ( "ot/setting", getResourcePath "img/Others/setting.png" )
     , ( "ot/status", getResourcePath "img/Others/status.png" )
     , ( "ot/map", getResourcePath "img/Others/map.png" )
-    , ( "ot/vup", getResourcePath "img/Others/volume-up.svg" )
-    , ( "ot/vdown", getResourcePath "img/Others/volume-down.svg" )
+    , ( "ot/vup", getResourcePath "img/Others/volume-up.png" )
+    , ( "ot/vdown", getResourcePath "img/Others/volume-down.png" )
     ]
 
 

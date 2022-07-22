@@ -150,7 +150,25 @@ updateModel msg gd lm ( model, t ) ggd =
                 ( newcs, _, newgd ) =
                     updateSingleComponentByName UnknownMsg (ComponentLStringMsg [ "start", "cloud", String.fromInt transt, "restart", ggd.currentScene ]) gd t "Trans" model.components
             in
-            ( ( { model | components = newcs, exitinfo = EngineT 0 DefaultPlayerPosition ggd.collectedMonsters ggd.specialState }, ggd, [] ), newgd )
+            ( ( { model
+                    | components = newcs
+                    , exitinfo =
+                        EngineT
+                            (if ggd.energy >= 500 then
+                                500
+
+                             else
+                                addenergy ggd.energy -(ggd.energy / 1.5)
+                            )
+                            DefaultPlayerPosition
+                            ggd.collectedMonsters
+                            ggd.specialState
+                }
+              , ggd
+              , []
+              )
+            , newgd
+            )
 
         _ ->
             case msg of

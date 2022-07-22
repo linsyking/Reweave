@@ -34,13 +34,15 @@ mymap =
         |> buildrect ( 0, 69 ) ( 120, 1 ) 2
         |> buildrect ( 0, 40 ) ( 14, 35 ) 2
         |> buildzystick ( 13, 45 )
-        |> buildbmleaf ( 30, 67 )
-        |> buildbmleaf ( 55, 45 )
+        |> buildbmleaf ( 30, 65 )
+        |> buildbmleaf ( 55, 42 )
         |> buildrect ( 45, 60 ) ( 1, 10 ) 1
         |> buildbmlotus ( 70, 65 )
+        |> buildbmlotus ( 68, 65 )
+        |> buildbmlotus ( 72, 65 )
         |> buildrect ( 80, 64 ) ( 1, 10 ) 1
         |> buildrect ( 90, 60 ) ( 1, 10 ) 1
-        |> buildrect ( 100, 50 ) ( 1, 20 ) 1
+        |> buildrect ( 101, 50 ) ( 1, 20 ) 1
         |> buildrect ( 110, 47 ) ( 10, 30 ) 2
         |> buildzystick ( 105, 64 )
         |> builddhsmallrock ( 104, 63 )
