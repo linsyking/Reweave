@@ -5,8 +5,11 @@ import Canvas exposing (Renderable)
 import Dict exposing (Dict)
 import Lib.Component.Base exposing (DefinedTypes)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
+import Lib.CoreEngine.GameComponents.Ball.Base exposing (BallInit)
+import Lib.CoreEngine.GameComponents.Bone.Base exposing (BoneInit)
 import Lib.CoreEngine.GameComponents.Bullet.Base exposing (BulletInit)
 import Lib.CoreEngine.GameComponents.CutScene.Base exposing (CutSceneInit)
+import Lib.CoreEngine.GameComponents.EnergyCrystal.Base exposing (EnergyCrystalInit)
 import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
 import Lib.CoreEngine.GameComponents.Fireball.Base exposing (FireballInit)
 import Lib.CoreEngine.GameComponents.Fish.Base exposing (FishInit)
@@ -52,7 +55,10 @@ type GameComponentTMsg
     | GameFireballInit FireballInit
     | GameTurtleInit TurtleInit
     | GameCutSceneInit CutSceneInit
-    | GameExitScene String PlayerInitPosition Int
+    | GameExitScene String PlayerInitPosition
+    | GameBoneInit BoneInit
+    | GameEnergyCrystalInit EnergyCrystalInit
+    | GameBallInit BallInit
     | GameStringIntMsg String Int
     | NullGameComponentMsg
 
