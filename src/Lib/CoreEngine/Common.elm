@@ -1,4 +1,4 @@
-module Lib.CoreEngine.Common exposing (..)
+module Lib.CoreEngine.Common exposing (Model)
 
 {-|
 

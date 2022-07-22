@@ -1,4 +1,8 @@
-module Lib.CoreEngine.Physics.NaiveCollision exposing (..)
+module Lib.CoreEngine.Physics.NaiveCollision exposing
+    ( getBoxPos
+    , judgeCollision
+    , judgeInCamera
+    )
 
 {-| This is the doc for this module
 

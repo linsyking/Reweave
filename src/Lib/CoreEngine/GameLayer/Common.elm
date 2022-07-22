@@ -1,4 +1,10 @@
-module Lib.CoreEngine.GameLayer.Common exposing (..)
+module Lib.CoreEngine.GameLayer.Common exposing
+    ( Model
+    , searchNameGC
+    , searchUIDGC
+    , kineticCalc
+    , addenergy
+    )
 
 {-| This is the doc for this module
 

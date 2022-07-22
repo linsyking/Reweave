@@ -1,4 +1,7 @@
-module Components.Hints.Export exposing (..)
+module Components.Hints.Export exposing
+    ( component
+    , initComponent
+    )
 
 {-| This is the doc for this module
 

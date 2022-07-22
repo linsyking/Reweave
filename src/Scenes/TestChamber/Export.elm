@@ -1,4 +1,7 @@
-module Scenes.TestChamber.Export exposing (..)
+module Scenes.TestChamber.Export exposing
+    ( game
+    , scene
+    )
 
 {-| This is the doc for this module
 

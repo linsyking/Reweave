@@ -1,4 +1,8 @@
-module Components.Dialog.Text.Text exposing (..)
+module Components.Dialog.Text.Text exposing
+    ( initText
+    , updateText
+    , viewText
+    )
 
 {-| This is the doc for this module
 

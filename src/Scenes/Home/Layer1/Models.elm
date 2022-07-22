@@ -1,4 +1,10 @@
-module Scenes.Home.Layer1.Models exposing (..)
+module Scenes.Home.Layer1.Models exposing
+    ( length
+    , width
+    , initButton
+    , initModel
+    , updateModel
+    )
 
 {-| This is the doc for this module
 

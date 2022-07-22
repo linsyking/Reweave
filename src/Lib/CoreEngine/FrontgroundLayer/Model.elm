@@ -1,4 +1,9 @@
-module Lib.CoreEngine.FrontgroundLayer.Model exposing (..)
+module Lib.CoreEngine.FrontgroundLayer.Model exposing
+    ( initModel
+    , dealComponentsMsg
+    , dealAllComponentMsg
+    , updateModel
+    )
 
 {-| This is the doc for this module
 

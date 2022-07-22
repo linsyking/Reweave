@@ -1,4 +1,7 @@
-module Scenes.TestChamber.Map exposing (..)
+module Scenes.TestChamber.Map exposing
+    ( sds
+    , mymap
+    )
 
 {-| This is the doc for this module
 

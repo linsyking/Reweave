@@ -1,4 +1,9 @@
-module Lib.CoreEngine.GameComponents.Exit.Model exposing (..)
+module Lib.CoreEngine.GameComponents.Exit.Model exposing
+    ( initData
+    , simplecheckBox
+    , initModel
+    , updateModel
+    )
 
 {-| This is the doc for this module
 

@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Player.Movement exposing (..)
+module Lib.CoreEngine.GameComponents.Player.Movement exposing (solidCollisionMove)
 
 {-| This is the doc for this module
 

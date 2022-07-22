@@ -1,4 +1,10 @@
-module Components.Trans.Trans exposing (..)
+module Components.Trans.Trans exposing
+    ( pausetime
+    , initTrans
+    , updateTrans
+    , viewTrans
+    , shapePos
+    )
 
 {-| This is the doc for this module
 

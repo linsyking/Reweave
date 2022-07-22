@@ -1,4 +1,17 @@
-module Lib.Resources.Base exposing (..)
+module Lib.Resources.Base exposing
+    ( getResourcePath
+    , getTexture
+    , saveSprite
+    , igetSprite
+    , allTexture
+    , charaSprites
+    , beiminSprites
+    , donghaiSprites
+    , jiangnanSprites
+    , longxiSprites
+    , zhongyuanSprites
+    , otherSprites
+    )
 
 {-| This is the doc for this module
 

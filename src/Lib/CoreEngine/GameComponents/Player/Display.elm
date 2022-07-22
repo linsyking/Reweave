@@ -1,4 +1,8 @@
-module Lib.CoreEngine.GameComponents.Player.Display exposing (..)
+module Lib.CoreEngine.GameComponents.Player.Display exposing
+    ( view
+    , getStateFromTime
+    , getStateNumber
+    )
 
 {-| This is the doc for this module
 

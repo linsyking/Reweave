@@ -1,4 +1,9 @@
-module Scenes.Scene1.Model exposing (..)
+module Scenes.Scene1.Model exposing
+    ( initModel
+    , handleLayerMsg
+    , updateModel
+    , viewModel
+    )
 
 {-| This is the doc for this module
 

@@ -1,4 +1,13 @@
-module Lib.Component.ComponentHandler exposing (..)
+module Lib.Component.ComponentHandler exposing
+    ( updateComponents
+    , updateOneComponent
+    , updateSingleComponent
+    , updateSingleComponentByName
+    , genView
+    , getComponent
+    , getComponentFromName
+    , queryComponent
+    )
 
 {-| This is the doc for this module
 

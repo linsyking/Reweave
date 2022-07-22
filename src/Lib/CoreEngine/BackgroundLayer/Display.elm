@@ -1,4 +1,4 @@
-module Lib.CoreEngine.BackgroundLayer.Display exposing (..)
+module Lib.CoreEngine.BackgroundLayer.Display exposing (view)
 
 {-| This is the doc for this module
 

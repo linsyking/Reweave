@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Ball.Display exposing (..)
+module Lib.CoreEngine.GameComponents.Ball.Display exposing (view)
 
 {-| This is the doc for this module
 

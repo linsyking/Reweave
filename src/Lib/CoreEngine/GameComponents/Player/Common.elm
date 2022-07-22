@@ -1,4 +1,7 @@
-module Lib.CoreEngine.GameComponents.Player.Common exposing (..)
+module Lib.CoreEngine.GameComponents.Player.Common exposing
+    ( ExtraData
+    , State
+    )
 
 {-| This is the doc for this module
 

@@ -1,4 +1,7 @@
-module Components.Bar.Export exposing (..)
+module Components.Bar.Export exposing
+    ( component
+    , initComponent
+    )
 
 {-| This is the doc for this module
 

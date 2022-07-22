@@ -1,4 +1,15 @@
-module Lib.CoreEngine.GameComponents.Turtle.Model exposing (..)
+module Lib.CoreEngine.GameComponents.Turtle.Model exposing
+    ( initData
+    , simplecheckBox
+    , headcolBox
+    , bodycolBox
+    , initModel
+    , changeStatus
+    , changeVelocity
+    , randomPos
+    , getInitBulletsMsg
+    , updateModel
+    )
 
 {-| This is the doc for this module
 

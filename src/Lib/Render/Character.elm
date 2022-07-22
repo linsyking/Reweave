@@ -1,4 +1,7 @@
-module Lib.Render.Character exposing (..)
+module Lib.Render.Character exposing
+    ( renderCharacterMove
+    , renderCharacterInAir
+    )
 
 {-| This is the doc for this module
 

@@ -1,4 +1,7 @@
-module Scenes.Home.LayerSettings exposing (..)
+module Scenes.Home.LayerSettings exposing
+    ( LayerDataType(..)
+    , LayerCT
+    )
 
 {-| This is the doc for this module
 

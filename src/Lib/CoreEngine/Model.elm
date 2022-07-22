@@ -1,4 +1,9 @@
-module Lib.CoreEngine.Model exposing (..)
+module Lib.CoreEngine.Model exposing
+    ( initModel
+    , handleLayerMsg
+    , updateModel
+    , viewModel
+    )
 
 {-| This is the doc for this module
 

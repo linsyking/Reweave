@@ -1,4 +1,4 @@
-module Scenes.Level1.Background exposing (..)
+module Scenes.Level1.Background exposing (background)
 
 {-| This is the doc for this module
 

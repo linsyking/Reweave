@@ -1,4 +1,7 @@
-module Lib.CoreEngine.BackgroundLayer.Model exposing (..)
+module Lib.CoreEngine.BackgroundLayer.Model exposing
+    ( initModel
+    , updateModel
+    )
 
 {-| This is the doc for this module
 

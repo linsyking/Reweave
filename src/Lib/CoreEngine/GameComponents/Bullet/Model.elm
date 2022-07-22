@@ -1,4 +1,10 @@
-module Lib.CoreEngine.GameComponents.Bullet.Model exposing (..)
+module Lib.CoreEngine.GameComponents.Bullet.Model exposing
+    ( initData
+    , collisionBox
+    , simplecheckBox
+    , initModel
+    , updateModel
+    )
 
 {-| This is the doc for this module
 

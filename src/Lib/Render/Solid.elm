@@ -1,4 +1,7 @@
-module Lib.Render.Solid exposing (..)
+module Lib.Render.Solid exposing
+    ( renderSolids
+    , renderSingleBlock
+    )
 
 {-| This is the doc for this module
 

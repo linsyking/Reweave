@@ -1,4 +1,4 @@
-module Lib.CoreEngine.Physics.Base exposing (..)
+module Lib.CoreEngine.Physics.Base exposing (Position)
 
 {-| This is the doc for this module
 

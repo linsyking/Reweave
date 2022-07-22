@@ -1,4 +1,8 @@
-module Lib.Audio.Audio exposing (..)
+module Lib.Audio.Audio exposing
+    ( loadAudio
+    , stopAudio
+    , getAudio
+    )
 
 {-| This is the doc for this module
 

@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameLayer.Display exposing (..)
+module Lib.CoreEngine.GameLayer.Display exposing (view)
 
 {-| This is the doc for this module
 

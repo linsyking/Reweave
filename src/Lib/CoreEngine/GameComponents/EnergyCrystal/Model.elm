@@ -1,4 +1,10 @@
-module Lib.CoreEngine.GameComponents.EnergyCrystal.Model exposing (..)
+module Lib.CoreEngine.GameComponents.EnergyCrystal.Model exposing
+    ( initData
+    , simplecheckBox
+    , initModel
+    , randomPos
+    , updateModel
+    )
 
 {-| This is the doc for this module
 

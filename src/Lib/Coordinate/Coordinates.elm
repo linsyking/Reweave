@@ -1,4 +1,14 @@
-module Lib.Coordinate.Coordinates exposing (..)
+module Lib.Coordinate.Coordinates exposing
+    ( floatpairadd
+    , fixedPosToReal
+    , posToReal
+    , widthToReal
+    , heightToReal
+    , maxHandW
+    , getStartPoint
+    , judgeMouse
+    , fromMouseToReal
+    )
 
 {-| This is the doc for this module
 

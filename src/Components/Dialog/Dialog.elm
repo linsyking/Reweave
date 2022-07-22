@@ -1,4 +1,9 @@
-module Components.Dialog.Dialog exposing (..)
+module Components.Dialog.Dialog exposing
+    ( initDialog
+    , checkStatusReport
+    , updateDialog
+    , viewDialog
+    )
 
 {-| This is the doc for this module
 

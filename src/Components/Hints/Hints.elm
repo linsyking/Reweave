@@ -1,4 +1,9 @@
-module Components.Hints.Hints exposing (..)
+module Components.Hints.Hints exposing
+    ( initHints
+    , updateHints
+    , viewHints
+    , genalpha
+    )
 
 {-| This is the doc for this module
 

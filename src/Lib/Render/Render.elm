@@ -1,4 +1,11 @@
-module Lib.Render.Render exposing (..)
+module Lib.Render.Render exposing
+    ( transPoint
+    , renderSprite
+    , renderSpriteWithRev
+    , renderBrickSheet
+    , renderText
+    , renderTextWithColor
+    )
 
 {-| This is the doc for this module
 

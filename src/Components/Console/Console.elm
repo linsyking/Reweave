@@ -1,4 +1,9 @@
-module Components.Console.Console exposing (..)
+module Components.Console.Console exposing
+    ( initModel
+    , updateModel
+    , sendmsg
+    , viewModel
+    )
 
 {-| This is the doc for this module
 

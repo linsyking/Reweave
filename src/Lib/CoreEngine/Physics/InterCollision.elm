@@ -1,4 +1,7 @@
-module Lib.CoreEngine.Physics.InterCollision exposing (..)
+module Lib.CoreEngine.Physics.InterCollision exposing
+    ( gonnaInterColllide
+    , genInterFromOneSide
+    )
 
 {-| This is the doc for this module
 

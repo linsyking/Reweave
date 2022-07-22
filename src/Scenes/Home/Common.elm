@@ -1,4 +1,4 @@
-module Scenes.Home.Common exposing (..)
+module Scenes.Home.Common exposing (XModel)
 
 {-| This is the doc for this module
 

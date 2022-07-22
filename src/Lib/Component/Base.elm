@@ -1,4 +1,10 @@
-module Lib.Component.Base exposing (..)
+module Lib.Component.Base exposing
+    ( ComponentTMsg(..)
+    , DefinedTypes(..)
+    , Component
+    , Data
+    , nullComponent
+    )
 
 {-| This is the doc for this module
 

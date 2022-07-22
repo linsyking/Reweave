@@ -1,4 +1,4 @@
-module Lib.CoreEngine.FrontgroundLayer.Base exposing (..)
+module Lib.CoreEngine.FrontgroundLayer.Base exposing (CTInfo)
 
 {-| This is the doc for this module
 

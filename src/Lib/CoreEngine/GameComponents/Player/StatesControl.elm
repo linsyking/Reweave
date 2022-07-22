@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Player.StatesControl exposing (..)
+module Lib.CoreEngine.GameComponents.Player.StatesControl exposing (stateControl)
 
 {-| This is the doc for this module
 

@@ -1,4 +1,7 @@
-module Lib.CoreEngine.FrontgroundLayer.Display exposing (..)
+module Lib.CoreEngine.FrontgroundLayer.Display exposing
+    ( view
+    , genFPS
+    )
 
 {-| This is the doc for this module
 

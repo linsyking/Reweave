@@ -1,4 +1,7 @@
-module Scenes.Scene1.Layer1.Common exposing (..)
+module Scenes.Scene1.Layer1.Common exposing
+    ( ModelX
+    , SModel
+    )
 
 {-| This is the doc for this module
 

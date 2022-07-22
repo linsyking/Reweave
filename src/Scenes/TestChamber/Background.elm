@@ -1,4 +1,4 @@
-module Scenes.TestChamber.Background exposing (..)
+module Scenes.TestChamber.Background exposing (background)
 
 {-| This is the doc for this module
 

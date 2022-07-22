@@ -1,4 +1,11 @@
-module Lib.CoreEngine.GameComponents.Player.Model exposing (..)
+module Lib.CoreEngine.GameComponents.Player.Model exposing
+    ( initData
+    , initExtraData
+    , collisionBox
+    , initModel
+    , updateModel
+    , reboundPlayer
+    )
 
 {-| This is the doc for this module
 

@@ -1,4 +1,8 @@
-module Scenes.Scene1.Global exposing (..)
+module Scenes.Scene1.Global exposing
+    ( sdata
+    , dtToT
+    , toCT
+    )
 
 {-| This is the doc for this module
 

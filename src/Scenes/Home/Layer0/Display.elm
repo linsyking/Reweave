@@ -1,4 +1,4 @@
-module Scenes.Home.Layer0.Display exposing (..)
+module Scenes.Home.Layer0.Display exposing (dview)
 
 {-| This is the doc for this module
 

@@ -1,4 +1,7 @@
-module Scenes.Home.Layer1.Common exposing (..)
+module Scenes.Home.Layer1.Common exposing
+    ( Button
+    , ModelX
+    )
 
 {-| This is the doc for this module
 

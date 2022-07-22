@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Fireball.Display exposing (..)
+module Lib.CoreEngine.GameComponents.Fireball.Display exposing (view)
 
 {-| This is the doc for this module
 

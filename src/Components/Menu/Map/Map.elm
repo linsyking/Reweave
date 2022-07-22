@@ -1,4 +1,8 @@
-module Components.Menu.Map.Map exposing (..)
+module Components.Menu.Map.Map exposing
+    ( initMap
+    , updateMap
+    , viewMap
+    )
 
 {-| This is the doc for this module
 

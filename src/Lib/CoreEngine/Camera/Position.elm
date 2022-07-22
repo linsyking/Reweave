@@ -1,4 +1,4 @@
-module Lib.CoreEngine.Camera.Position exposing (..)
+module Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 
 {-| This is the doc for this module
 

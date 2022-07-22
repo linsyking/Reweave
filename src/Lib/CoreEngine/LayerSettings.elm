@@ -1,4 +1,7 @@
-module Lib.CoreEngine.LayerSettings exposing (..)
+module Lib.CoreEngine.LayerSettings exposing
+    ( LayerDataType(..)
+    , LayerCT
+    )
 
 {-| This is the doc for this module
 

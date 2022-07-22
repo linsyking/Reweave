@@ -1,4 +1,10 @@
-module Lib.CoreEngine.GameComponents.GoombaEmitter.Model exposing (..)
+module Lib.CoreEngine.GameComponents.GoombaEmitter.Model exposing
+    ( initData
+    , simplecheckBox
+    , initModel
+    , updateModel
+    , queryModel
+    )
 
 {-| This is the doc for this module
 

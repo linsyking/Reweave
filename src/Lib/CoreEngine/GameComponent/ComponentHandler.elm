@@ -1,4 +1,19 @@
-module Lib.CoreEngine.GameComponent.ComponentHandler exposing (..)
+module Lib.CoreEngine.GameComponent.ComponentHandler exposing
+    ( updateOneGameComponent
+    , updateSingleGameComponent
+    , updateSingleGameComponentByName
+    , getGameComponentFromName
+    , genView
+    , renderSingleObject
+    , getGameComponent
+    , simpleUpdateAllGameComponent
+    , isAlive
+    , sendManyMsgGameComponent
+    , sendManyGameComponentMsg
+    , splitPlayerObjs
+    , initGameComponent
+    , getGameComponentCenter
+    )
 
 {-| This is the doc for this module
 

@@ -1,4 +1,11 @@
-module Scenes.TestChamber.Config exposing (..)
+module Scenes.TestChamber.Config exposing
+    ( initFrontGroundComponents
+    , initPlayer
+    , initActors
+    , initCamera
+    , initGameGlobalData
+    , allChartlets
+    )
 
 {-| This is the doc for this module
 

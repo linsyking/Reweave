@@ -1,4 +1,7 @@
-module Components.Dialog.NextButton.Export exposing (..)
+module Components.Dialog.NextButton.Export exposing
+    ( component
+    , initComponent
+    )
 
 {-| This is the doc for this module
 

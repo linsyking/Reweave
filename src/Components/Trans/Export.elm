@@ -1,4 +1,7 @@
-module Components.Trans.Export exposing (..)
+module Components.Trans.Export exposing
+    ( component
+    , initComponent
+    )
 
 {-| This is the doc for this module
 

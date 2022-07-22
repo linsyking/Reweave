@@ -1,4 +1,13 @@
-module Lib.CoreEngine.GameComponents.Fish.Model exposing (..)
+module Lib.CoreEngine.GameComponents.Fish.Model exposing
+    ( initData
+    , simplecheckBox
+    , initModel
+    , changeStatus
+    , changeVelocity
+    , randomPos
+    , getInitBulletsMsg
+    , updateModel
+    )
 
 {-| This is the doc for this module
 
