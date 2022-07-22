@@ -1,6 +1,14 @@
-module Constants exposing (plHeight, plWidth)
+module Constants exposing
+    ( plHeight
+    , plWidth
+    )
 
 {-| This is the constants module
+
+@docs plHeight
+
+@docs plWidth
+
 -}
 
 
