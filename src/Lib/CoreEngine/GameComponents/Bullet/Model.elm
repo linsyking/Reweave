@@ -3,9 +3,12 @@ module Lib.CoreEngine.GameComponents.Bullet.Model exposing (..)
 import Base exposing (GlobalData, Msg(..))
 import Dict
 import Lib.Component.Base exposing (DefinedTypes(..))
+import Lib.Coordinate.Coordinates exposing (judgeMouse)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
+import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
 import Lib.CoreEngine.Physics.SolidCollision exposing (canMove)
+import Lib.CoreEngine.Physics.Velocity exposing (changeCVel)
 import Math.Vector2 exposing (vec2)
 
 
@@ -28,8 +31,8 @@ collisionBox =
     { name = "col"
     , offsetX = 0
     , offsetY = 0
-    , width = 10
-    , height = 10
+    , width = 20
+    , height = 20
     }
 
 
@@ -38,8 +41,8 @@ simplecheckBox =
     { name = "sp"
     , offsetX = 0
     , offsetY = 0
-    , width = 10
-    , height = 10
+    , width = 20
+    , height = 20
     }
 
 
@@ -50,11 +53,11 @@ initModel _ gcm =
             { status = Alive
             , position = info.initPosition
             , velocity = info.initVelocity
-            , mass = 5
+            , mass = 10
             , acceleration = ( 0, 0 )
             , simplecheck = simplecheckBox
             , collisionbox = [ collisionBox ]
-            , extra = Dict.empty
+            , extra = Dict.fromList [ ( "Picture", CDString info.picture ) ]
             , uid = info.uid
             }
 
@@ -63,7 +66,7 @@ initModel _ gcm =
 
 
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
-updateModel msg gct ggd _ ( d, t ) =
+updateModel msg gct ggd gd ( d, t ) =
     case msg of
         Tick _ ->
             case gct of
@@ -78,14 +81,34 @@ updateModel msg gct ggd _ ( d, t ) =
                         ( x, y ) =
                             d.position
                     in
-                    if (vx < 0 && not (canMove d ggd (vec2 -1 0))) || (vx > 0 && not (canMove d ggd (vec2 1 0))) then
+                    if (vx < 0 && not (canMove d ggd (vec2 -1 0))) || (vx > 0 && not (canMove d ggd (vec2 1 0))) || (vy > 0 && not (canMove d ggd (vec2 0 1))) || (vy < 0 && not (canMove d ggd (vec2 0 -1))) then
                         ( { d | status = Dead t, position = ( x + ceiling (vx / 1000), y + ceiling (vy / 1000) ) }, [], ggd )
 
                     else
-                        ( { d | position = ( x + ceiling (vx / 1000), y + ceiling (vy / 1000) ) }, [], ggd )
+                        ( d, [], ggd )
+
+        MouseDown 0 mp ->
+            if judgeMouse gd mp (getPositionUnderCamera d.position ggd) ( d.simplecheck.width, d.simplecheck.height ) then
+                ( d, [], { ggd | selectobj = d.uid } )
+
+            else
+                ( d, [], ggd )
 
         _ ->
             case gct of
+                GameClearVelocity ->
+                    ( { d | velocity = ( 0, 0 ) }, [], ggd )
+
+                GameUseEnergy mp e ->
+                    let
+                        ndd =
+                            changeCVel d mp e
+                    in
+                    ( ndd, [], ggd )
+
+                GameInterCollisionMsg "fish" _ _ ->
+                    ( d, [], ggd )
+
                 GameInterCollisionMsg _ pd _ ->
                     ( { d | status = Dead t }, [ GameActorUidMsg pd.uid (GameStringMsg "die") ], ggd )
 

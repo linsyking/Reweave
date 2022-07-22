@@ -77,7 +77,7 @@ handleLayerMsg lmsg ( model, _ ) =
         LayerStopSoundMsg name ->
             ( model, SOStopAudio name )
 
-        LayerExitMsg et ss ->
+        LayerExitMsg et ss _ ->
             ( model, SOChangeScene ( SceneEngineTMsg et, ss ) )
 
         _ ->

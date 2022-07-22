@@ -1,4 +1,4 @@
-module Lib.CoreEngine.Camera.Base exposing (..)
+module Lib.CoreEngine.Camera.Base exposing (CameraData)
 
 
 type alias CameraData =

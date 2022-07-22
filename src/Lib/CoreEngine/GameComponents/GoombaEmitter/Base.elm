@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.GoombaEmitter.Base exposing (..)
+module Lib.CoreEngine.GameComponents.GoombaEmitter.Base exposing (GoombaEmitterInit)
 
 
 type alias GoombaEmitterInit =

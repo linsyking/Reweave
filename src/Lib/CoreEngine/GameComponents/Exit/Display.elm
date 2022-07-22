@@ -15,9 +15,9 @@ view ( d, t ) ggd gd =
     [ ( group []
             [ renderSprite gd
                 []
-                (getPositionUnderCamera d.position ggd)
-                ( d.simplecheck.width, d.simplecheck.height )
-                "background"
+                (getPositionUnderCamera ( Tuple.first d.position - 100, Tuple.second d.position - 140 ) ggd)
+                ( 200, 200 )
+                "ot/transfer"
             ]
       , 0
       )

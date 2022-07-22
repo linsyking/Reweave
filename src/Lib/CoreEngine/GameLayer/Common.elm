@@ -40,3 +40,12 @@ searchUIDGC s gcs =
 kineticCalc : Int -> ( Float, Float ) -> Float
 kineticCalc mass ( vx, vy ) =
     toFloat mass * (vx * vx + vy * vy) / 10000
+
+
+addenergy : Float -> Float -> Float
+addenergy ori del =
+    if ori + del >= 2000 then
+        2000
+
+    else
+        ori + del

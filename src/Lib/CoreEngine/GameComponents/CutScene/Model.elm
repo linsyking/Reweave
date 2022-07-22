@@ -83,7 +83,7 @@ handlestart d ggd =
             | extra =
                 d.extra
                     |> dsetLComponent "_Child"
-                        [ ( "Dialog", DialogE.initComponent 0 (ComponentDictMsg talkings) ) ]
+                        [ ( "Dialog", DialogE.initComponent 0 (ComponentStringDictMsg "" talkings) ) ]
           }
         , [ GameParentMsg (GameStringMsg "ignoreinput") ]
         , ggd

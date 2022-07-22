@@ -8,8 +8,8 @@ import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (isAlive)
-import Lib.CoreEngine.GameComponents.Player.Base exposing (changebk, changehistory, nullModel)
-import Lib.CoreEngine.GameComponents.Player.InputFilter exposing (afterMove, preCheck)
+import Lib.CoreEngine.GameComponents.Player.Base exposing (SpaceLog(..), changebk, changehistory, fixnotrightdir, nullModel)
+import Lib.CoreEngine.GameComponents.Player.InputFilter exposing (afterMove, judgeFirstJump, preCheck)
 import Lib.CoreEngine.GameComponents.Player.InputHandler exposing (changePlayerVelocity)
 import Lib.CoreEngine.GameComponents.Player.Movement exposing (solidCollisionMove)
 import Lib.CoreEngine.GameComponents.Player.StatesControl exposing (stateControl)
@@ -43,9 +43,9 @@ collisionBox : Box
 collisionBox =
     { name = "col"
     , offsetX = 0
-    , offsetY = 0
+    , offsetY = 15
     , width = 70
-    , height = 120
+    , height = 105
     }
 
 
@@ -73,6 +73,9 @@ updateModel msg gct ggd gd ( d, t ) =
     let
         model =
             dgetPlayer d.extra "model"
+
+        dddd =
+            Debug.log "pv" d.velocity
     in
     case msg of
         Tick _ ->
@@ -120,10 +123,28 @@ updateModel msg gct ggd gd ( d, t ) =
                             aftermoveM =
                                 afterMove afterVelM
 
+                            modfycontrol =
+                                fixnotrightdir aftermoveM.islastright aftermoveM.originKeys
+
+                            afterFixCM =
+                                { aftermoveM | islastright = modfycontrol }
+
                             exportmodel =
-                                dsetPlayer "model" aftermoveM afterAccD.extra
+                                dsetPlayer "model" afterFixCM afterAccD.extra
+
+                            -- Check if is jump
+                            isnewjump =
+                                judgeFirstJump t afterStateM afterStateD
                         in
-                        ( { afterAccD | extra = exportmodel }, [], ggd )
+                        ( { afterAccD | extra = exportmodel }
+                        , if isnewjump then
+                            -- [GameParentMsg (GameStringIntMsg "addenergy" -150)]
+                            []
+
+                          else
+                            []
+                        , ggd
+                        )
 
                     else
                         let
@@ -134,8 +155,11 @@ updateModel msg gct ggd gd ( d, t ) =
 
         KeyDown x ->
             let
+                changebked =
+                    changebk x 1 model.originKeys
+
                 newmodel =
-                    { model | originKeys = changebk x 1 model.originKeys, islastright = changehistory model.islastright x }
+                    { model | originKeys = changebked, islastright = changehistory model.islastright x }
 
                 exportmodel =
                     dsetPlayer "model" newmodel d.extra
@@ -230,7 +254,7 @@ reboundPlayer rbv d =
             if pvy > -200 then
                 200
 
-            else if pvy > -300 then
+            else if pvy > -400 then
                 300
 
             else

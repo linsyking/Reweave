@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.CutScene.Base exposing (..)
+module Lib.CoreEngine.GameComponents.CutScene.Base exposing (CutSceneInit)
 
 
 type alias CutSceneInit =

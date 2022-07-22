@@ -41,7 +41,7 @@ type ComponentTMsg
     | ComponentIntMsg Int
     | ComponentLStringMsg (List String)
     | ComponentLSStringMsg String (List String)
-    | ComponentDictMsg (Dict String DefinedTypes)
+    | ComponentStringDictMsg String (Dict String DefinedTypes)
     | ComponentStringIntMsg String Int
     | NullComponentMsg
 

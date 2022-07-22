@@ -1,4 +1,4 @@
-module Lib.CoreEngine.Base exposing (..)
+module Lib.CoreEngine.Base exposing (GameGlobalData, brickSize, nullGameGlobalData, testGameGlobalData)
 
 import Array2D exposing (Array2D)
 import Lib.CoreEngine.Camera.Base exposing (CameraData)
@@ -12,7 +12,10 @@ type alias GameGlobalData =
     , selectobj : Int
     , energy : Float
     , ingamepause : Bool
+    , settingpause : Bool
     , currentScene : String
+    , collectedMonsters : List String
+    , specialState : Int
     }
 
 
@@ -30,6 +33,9 @@ nullGameGlobalData =
     , energy = 0
     , ingamepause = False
     , currentScene = ""
+    , collectedMonsters = []
+    , settingpause = False
+    , specialState = 0
     }
 
 
@@ -42,6 +48,9 @@ testGameGlobalData =
     , energy = 0
     , ingamepause = False
     , currentScene = "Level1"
+    , collectedMonsters = []
+    , settingpause = False
+    , specialState = 0
     }
 
 

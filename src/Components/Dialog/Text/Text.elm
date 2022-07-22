@@ -52,7 +52,7 @@ updateText mainMsg comMsg globalData ( model, t ) =
                     dgetint model "_wholeTextLength"
 
                 currentLength =
-                    dgetint model "_currentLength" + floor (heightToReal globalData 40)
+                    dgetint model "_currentLength" + floor (heightToReal globalData 33)
 
                 childComponentsList =
                     dgetLComponent model "_Child"
@@ -194,6 +194,6 @@ viewText ( model, t ) globalData =
         -- dasads = Debug.log "Dsaad " dpd
     in
     group []
-        (List.append [ renderSprite globalData [] ( 250, 150 ) ( 130, 130 ) dpd ]
+        (List.append [ renderSprite globalData [] ( 260, 150 ) ( 130, 130 ) dpd ]
             (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
         )

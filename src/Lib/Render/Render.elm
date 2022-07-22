@@ -98,7 +98,7 @@ renderSprite gd ls p ( w, h ) name =
 renderSpriteWithRev : Bool -> GlobalData -> List Setting -> ( Int, Int ) -> ( Int, Int ) -> String -> Renderable
 renderSpriteWithRev rev gd ls p ( w, h ) name =
     if not rev then
-        renderSprite gd [] p ( w, h ) name
+        renderSprite gd ls p ( w, h ) name
 
     else
         let

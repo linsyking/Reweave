@@ -18,8 +18,8 @@ initMap _ _ =
     Dict.fromList
         [ ( "show", CDBool False )
         , ( "posX", CDInt 900 )
-        , ( "posY", CDInt 400 )
-        , ( "radius", CDInt 30 )
+        , ( "posY", CDInt 380 )
+        , ( "radius", CDInt 60 )
         , ( "Data", CDDict Dict.empty )
         ]
 
@@ -45,9 +45,9 @@ updateMap mainMsg comMsg globalData ( model, t ) =
     in
     case mainMsg of
         MouseDown 0 ( x, y ) ->
-            if judgeMouse globalData ( x, y ) ( posX - radius, posY - radius ) ( 2 * radius, 2 * radius ) then
+            if judgeMouse globalData ( x, y ) ( posX, posY ) ( radius, radius ) then
                 ( model
-                    |> dsetbool "show" reverseShowStatus
+                    |> dsetbool "show" True
                 , [ if reverseShowStatus == True then
                         ComponentLSStringMsg "OnShow" [ "Map" ]
 
@@ -81,7 +81,7 @@ updateMap mainMsg comMsg globalData ( model, t ) =
                         _ ->
                             ( model, [], globalData )
 
-                ComponentDictMsg dict ->
+                ComponentStringDictMsg _ dict ->
                     ( model |> dsetDict "Data" dict, [], globalData )
 
                 _ ->
@@ -105,8 +105,16 @@ viewMap ( model, _ ) globalData =
     in
     group []
         (List.append
-            [ shapes [ stroke Color.red ] [ circle (posToReal globalData ( posX, posY )) (widthToReal globalData radius) ]
-            , renderText globalData 50 "M" "sans-serif" ( posX - 20, posY - 30 )
+            [ renderSprite globalData
+                [ if showStatus then
+                    alpha 1
+
+                  else
+                    alpha 0.3
+                ]
+                ( posX, posY )
+                ( radius, radius )
+                "ot/map"
             ]
             (if showStatus then
                 let

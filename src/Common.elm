@@ -1,4 +1,4 @@
-module Common exposing (Model, audio, initGlobalData)
+module Common exposing (..)
 
 import Audio exposing (Audio, AudioData)
 import Base exposing (..)
@@ -19,6 +19,30 @@ type alias Model =
     }
 
 
+updateSceneStartTime : Model -> Model
+updateSceneStartTime m =
+    let
+        ogd =
+            m.currentGlobalData
+
+        ngd =
+            { ogd | scenestarttime = ogd.scenestarttime + 1 }
+    in
+    { m | currentGlobalData = ngd }
+
+
+resetSceneStartTime : Model -> Model
+resetSceneStartTime m =
+    let
+        ogd =
+            m.currentGlobalData
+
+        ngd =
+            { ogd | scenestarttime = 0 }
+    in
+    { m | currentGlobalData = ngd }
+
+
 initGlobalData : GlobalData
 initGlobalData =
     { browserViewPort = ( 1280, 720 )
@@ -28,7 +52,8 @@ initGlobalData =
     , startTop = 0
     , audioVolume = 0.5
     , sprites = Dict.empty
-    , randomnum = 0
+    , scenesFinished = []
+    , scenestarttime = 0
     }
 
 

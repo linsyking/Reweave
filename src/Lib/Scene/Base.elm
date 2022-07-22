@@ -7,6 +7,7 @@ import Lib.Audio.Base exposing (AudioOption)
 import Lib.Component.Base exposing (Component)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent)
+import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInitPosition(..))
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth)
 
 
@@ -54,6 +55,8 @@ type alias EngineInit =
 type alias EngineT =
     { energy : Float
     , playerPosition : PlayerInitPosition
+    , collectedMonsters : List String
+    , specialstate : Int
     }
 
 
@@ -61,9 +64,6 @@ nullEngineT : EngineT
 nullEngineT =
     { energy = 0
     , playerPosition = DefaultPlayerPosition
+    , collectedMonsters = []
+    , specialstate = 0
     }
-
-
-type PlayerInitPosition
-    = DefaultPlayerPosition
-    | CustomPlayerPosition ( Int, Int )

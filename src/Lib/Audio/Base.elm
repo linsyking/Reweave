@@ -1,4 +1,4 @@
-module Lib.Audio.Base exposing (..)
+module Lib.Audio.Base exposing (AudioOption(..), AudioRepo)
 
 import Audio
 import Time

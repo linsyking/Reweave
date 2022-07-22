@@ -1,12 +1,10 @@
 module Lib.CoreEngine.FrontgroundLayer.Export exposing (..)
 
-import Array
-import Canvas exposing (group)
-import Lib.CoreEngine.Base exposing (GameGlobalData)
+import Lib.CoreEngine.Base exposing (GameGlobalData, nullGameGlobalData)
 import Lib.CoreEngine.FrontgroundLayer.Common exposing (Model)
 import Lib.CoreEngine.FrontgroundLayer.Display exposing (view)
 import Lib.CoreEngine.FrontgroundLayer.Model exposing (initModel, updateModel)
-import Lib.Layer.Base exposing (Layer)
+import Lib.Layer.Base exposing (Layer, LayerMsg(..))
 
 
 type alias Data =
@@ -15,7 +13,7 @@ type alias Data =
 
 nullData : Data
 nullData =
-    { render = \_ _ _ -> group [] [], components = Array.empty, fpsrepo = [] }
+    initModel 0 NullLayerMsg nullGameGlobalData
 
 
 layer : Layer GameGlobalData Data

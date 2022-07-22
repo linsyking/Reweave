@@ -1,10 +1,8 @@
-module Lib.CoreEngine.GameComponents.Fish.Base exposing (..)
+module Lib.CoreEngine.GameComponents.Fish.Base exposing (FishInit)
 
 
 type alias FishInit =
     { initPosition : ( Int, Int )
-    , initVelocity : ( Float, Float )
-    , bulletEmitMethod : String
     , triggeruid : Int
     , uid : Int
     }

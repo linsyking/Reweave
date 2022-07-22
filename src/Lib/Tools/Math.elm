@@ -1,4 +1,4 @@
-module Lib.Tools.Math exposing (..)
+module Lib.Tools.Math exposing (rfint, tupleIntToFloat)
 
 import Lib.CoreEngine.Base exposing (brickSize)
 
