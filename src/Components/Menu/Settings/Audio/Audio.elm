@@ -21,7 +21,7 @@ initMap _ comMsg =
                 "AudioDown" ->
                     Dict.fromList
                         [ ( "show", CDBool True )
-                        , ( "posX", CDInt 670 )
+                        , ( "posX", CDInt 910 )
                         , ( "posY", CDInt 680 )
                         , ( "Type", CDString "Down" )
                         , ( "radius", CDInt 30 )
@@ -30,7 +30,7 @@ initMap _ comMsg =
                 "AudioUp" ->
                     Dict.fromList
                         [ ( "show", CDBool True )
-                        , ( "posX", CDInt 750 )
+                        , ( "posX", CDInt 1000 )
                         , ( "posY", CDInt 680 )
                         , ( "Type", CDString "Up" )
                         , ( "radius", CDInt 30 )
@@ -72,7 +72,7 @@ updateMap mainMsg comMsg globalData ( model, t ) =
     in
     case mainMsg of
         MouseDown 0 ( x, y ) ->
-            if judgeMouse globalData ( x, y ) ( posX - radius, posY - radius ) ( 2 * radius, 2 * radius ) then
+            if judgeMouse globalData ( x, y ) ( posX, posY ) ( radius, radius ) then
                 ( model
                 , []
                 , case comType of
@@ -139,19 +139,13 @@ viewMap ( model, _ ) globalData =
 
         radius =
             dgetint model "radius"
-
-        comType =
-            case dgetString model "Type" of
-                "Down" ->
-                    "D"
-
-                "Up" ->
-                    "U"
-
-                _ ->
-                    ""
     in
-    group []
-        [ shapes [ stroke Color.red ] [ circle (posToReal globalData ( posX, posY )) (widthToReal globalData radius) ]
-        , renderText globalData 50 comType "sans-serif" ( posX - 20, posY - 25 )
-        ]
+    case dgetString model "Type" of
+        "Down" ->
+            renderSprite globalData [] ( posX, posY ) ( radius, radius ) "ot/vdown"
+
+        "Up" ->
+            renderSprite globalData [] ( posX, posY ) ( radius, radius ) "ot/vup"
+
+        _ ->
+            group [] []

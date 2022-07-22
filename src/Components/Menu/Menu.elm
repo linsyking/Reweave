@@ -13,7 +13,7 @@ import Dict
 import Lib.Component.Base exposing (Component, ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
 import Lib.DefinedTypes.Parser exposing (dgetDict, dgetLComponent, dgetbool, dsetLComponent, dsetbool)
-import Lib.Render.Render exposing (renderText)
+import Lib.Render.Render exposing (renderSprite, renderText)
 
 
 testData : Dict.Dict String DefinedTypes
@@ -31,7 +31,7 @@ testData =
 initMenu : Int -> ComponentTMsg -> Data
 initMenu _ _ =
     Dict.fromList
-        [ ( "Show", CDBool False )
+        [ ( "Show", CDBool True )
         , ( "Child"
           , CDLComponent
                 [ ( "Status", MenuStatusE.initComponent 0 NullComponentMsg )
@@ -102,7 +102,7 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
             dgetbool model "Show"
     in
     case mainMsg of
-        MouseDown _ ( x, y ) ->
+        MouseDown _ _ ->
             let
                 ( tmpChildComponentsList, tmpChildComponentsMsg, tmpGlobalData ) =
                     List.foldl
@@ -119,14 +119,14 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                 ( newChildComponentsList, newChildComponentsMsg, newGlobalData ) =
                     componentInteract tmpChildComponentsList (List.concat tmpChildComponentsMsg) NullComponentMsg tmpGlobalData
             in
-            if judgeMouse globalData ( x, y ) ( 1100 - 30, 400 - 30 ) ( 2 * 30, 2 * 30 ) then
-                ( model
-                    |> dsetbool "Show" False
-                , [ ComponentStringMsg "OnClose" ]
-                , globalData
-                )
-
-            else if showStatus then
+            -- if judgeMouse globalData ( x, y ) ( 1100 - 30, 400 - 30 ) ( 2 * 30, 2 * 30 ) then
+            --     ( model
+            --         |> dsetbool "Show" False
+            --     , [ ComponentStringMsg "OnClose" ]
+            --     , globalData
+            --     )
+            -- else
+            if showStatus then
                 ( model
                     |> dsetLComponent "Child" newChildComponentsList
                 , newChildComponentsMsg
@@ -190,11 +190,10 @@ viewMenu ( model, t ) globalData =
     if showStatus then
         group []
             (List.append
-                [ shapes [ stroke Color.black ]
-                    [ rect (posToReal globalData ( 400, 300 )) (widthToReal globalData 800) (heightToReal globalData 500)
-                    , circle (posToReal globalData ( 1100, 400 )) (widthToReal globalData 30)
-                    ]
-                , renderText globalData 50 "X" "sans-serif" ( 1100 - 15, 400 - 30 )
+                [ --  shapes [ stroke Color.black ]
+                  -- [ rect (posToReal globalData ( 400, 300 )) (widthToReal globalData 800) (heightToReal globalData 500)
+                  -- ],
+                  renderSprite globalData [] ( 400, 300 ) ( 1120, 500 ) "scroll"
                 ]
                 (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
             )

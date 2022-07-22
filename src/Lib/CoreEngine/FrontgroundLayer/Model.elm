@@ -77,6 +77,15 @@ dealComponentsMsg rmsg model gd ggd =
         ComponentStringMsg "stopGameInput" ->
             ( ( model, ggd, [ ( LayerName "Game", LayerStringMsg "stopinput" ) ] ), gd )
 
+        ComponentStringMsg "restart" ->
+            ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerRestartMsg 10 ) ] ), gd )
+
+        ComponentStringMsg "OnClose" ->
+            ( ( model, ggd, [] ), gd )
+
+        ComponentStringMsg "continue" ->
+            ( ( { model | ispaused = False }, { ggd | ingamepause = False, settingpause = False }, [] ), gd )
+
         ComponentStringMsg "startGameInput" ->
             ( ( model, ggd, [ ( LayerName "Game", LayerStringMsg "startinput" ) ] ), gd )
 
@@ -153,10 +162,10 @@ updateModel msg gd lm ( model, t ) ggd =
                 KeyDown 27 ->
                     if model.ispaused then
                         let
-                            ( newcs, _, newgd ) =
+                            ( newcs, newmsg, newgd ) =
                                 updateSingleComponentByName UnknownMsg (ComponentStringDictMsg "Close" Dict.empty) gd t "Menu" model.components
                         in
-                        ( ( { model | components = newcs, ispaused = False }, { ggd | ingamepause = False, settingpause = False }, [] ), newgd )
+                        dealAllComponentMsg newmsg { model | components = newcs, ispaused = False } newgd { ggd | ingamepause = False, settingpause = False }
 
                     else
                         let

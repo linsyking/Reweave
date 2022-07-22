@@ -124,4 +124,10 @@ otherSprites =
     , ( "ot/scale", getResourcePath "img/Others/scale.png" )
     , ( "ot/fireball1", getResourcePath "img/Others/fire1.png" )
     , ( "ot/fireball2", getResourcePath "img/Others/fire2.png" )
+    , ( "scroll", getResourcePath "img/Others/scroll.png" )
+    , ( "ot/setting", getResourcePath "img/Others/setting.png" )
+    , ( "ot/status", getResourcePath "img/Others/status.png" )
+    , ( "ot/map", getResourcePath "img/Others/map.png" )
+    , ( "ot/vup", getResourcePath "img/Others/volume-up.svg" )
+    , ( "ot/vdown", getResourcePath "img/Others/volume-down.svg" )
     ]
