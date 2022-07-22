@@ -21,7 +21,7 @@ initBar energy _ =
     Dict.fromList
         [ ( "cx", CDFloat 120 ) -- center of circle
         , ( "cy", CDFloat 120 )
-        , ( "radius", CDFloat 30 ) -- radius of circle
+        , ( "radius", CDFloat 50 ) -- radius of circle
         , ( "cp1x", CDFloat 110 ) -- the first controlling point of bezier curve
         , ( "cp1y", CDFloat 28 )
         , ( "cp2x", CDFloat 112 ) -- the second controlling point of bezier curve
@@ -124,7 +124,7 @@ updateBar : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List 
 updateBar _ gMsg globalData ( d, t ) =
     let
         time =
-            3 * ( dgetfloat d "t" )
+            3 * dgetfloat d "t"
 
         angle =
             dgetfloat d "angle"
@@ -155,25 +155,25 @@ viewBar ( d, _ ) gd =
             dgetfloat d "angle"
 
         cx =
-            widthToReal gd ( ceiling ( dgetfloat d "cx" ) ) 
+            widthToReal gd (ceiling (dgetfloat d "cx"))
 
         cy =
-            heightToReal gd ( ceiling ( dgetfloat d "cy" ) ) 
+            heightToReal gd (ceiling (dgetfloat d "cy"))
 
         radius =
-            widthToReal gd ( ceiling ( dgetfloat d "radius" ) ) 
+            widthToReal gd (ceiling (dgetfloat d "radius"))
 
         cp1x =
-            widthToReal gd ( ceiling ( dgetfloat d "cp1x" ) ) 
+            widthToReal gd (ceiling (dgetfloat d "cp1x"))
 
         cp1y =
-            heightToReal gd ( ceiling ( dgetfloat d "cp1y" ) ) 
+            heightToReal gd (ceiling (dgetfloat d "cp1y"))
 
         cp2x =
-            widthToReal gd ( ceiling ( dgetfloat d "cp2x" ) )  
+            widthToReal gd (ceiling (dgetfloat d "cp2x"))
 
         cp2y =
-            heightToReal gd ( ceiling ( dgetfloat d "cp2y" ) ) 
+            heightToReal gd (ceiling (dgetfloat d "cp2y"))
     in
     if angle == -90 then
         group
@@ -181,12 +181,12 @@ viewBar ( d, _ ) gd =
             [ shapes
                 [ fill Color.green
                 ]
-                [ circle ( cx, cy ) radius 
+                [ circle ( cx, cy ) radius
                 ]
             , shapes
                 [ stroke Color.darkGreen
                 ]
-                [ circle ( cx, cy ) ( radius + 5 )
+                [ circle ( cx, cy ) (radius + 5)
                 ]
             ]
 
@@ -203,13 +203,13 @@ viewBar ( d, _ ) gd =
             [ shapes
                 [ fill Color.green
                 ]
-                [ path ( x, y ) [ renderBezier angle ( cx, cy ) radius ( cp1x, cp1y) ( cp2x, cp2y) ]
-                , renderArc angle ( cx, cy) radius
+                [ path ( x, y ) [ renderBezier angle ( cx, cy ) radius ( cp1x, cp1y ) ( cp2x, cp2y ) ]
+                , renderArc angle ( cx, cy ) radius
                 ]
             , shapes
                 [ stroke Color.darkGreen
                 ]
-                [ circle ( cx, cy ) ( radius + 5 ) 
+                [ circle ( cx, cy ) (radius + 5)
                 ]
             ]
 
