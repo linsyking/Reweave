@@ -54,7 +54,7 @@ bezier clockwise t d =
             cy + radius * sin (degrees angle)
 
         k =
-            (90 - abs angle) / 3
+            (90 - abs angle) / 7
 
         m =
             radius * cos (degrees angle) / 8
@@ -149,31 +149,31 @@ updateBar _ gMsg globalData ( d, t ) =
 
 
 viewBar : ( Data, Int ) -> GlobalData -> Renderable
-viewBar ( d, _ ) globalData =
+viewBar ( d, _ ) gd =
     let
         angle =
             dgetfloat d "angle"
 
         cx =
-            dgetfloat d "cx"
+            widthToReal gd ( ceiling ( dgetfloat d "cx" ) ) 
 
         cy =
-            dgetfloat d "cy"
+            heightToReal gd ( ceiling ( dgetfloat d "cy" ) ) 
 
         radius =
-            dgetfloat d "radius"
+            widthToReal gd ( ceiling ( dgetfloat d "radius" ) ) 
 
         cp1x =
-            dgetfloat d "cp1x"
+            widthToReal gd ( ceiling ( dgetfloat d "cp1x" ) ) 
 
         cp1y =
-            dgetfloat d "cp1y"
+            heightToReal gd ( ceiling ( dgetfloat d "cp1y" ) ) 
 
         cp2x =
-            dgetfloat d "cp2x"
+            widthToReal gd ( ceiling ( dgetfloat d "cp2x" ) )  
 
         cp2y =
-            dgetfloat d "cp2y"
+            heightToReal gd ( ceiling ( dgetfloat d "cp2y" ) ) 
     in
     if angle == -90 then
         group
@@ -181,12 +181,12 @@ viewBar ( d, _ ) globalData =
             [ shapes
                 [ fill Color.green
                 ]
-                [ circle ( cx, cy ) radius
+                [ circle ( cx, cy ) radius 
                 ]
             , shapes
                 [ stroke Color.darkGreen
                 ]
-                [ circle ( cx, cy ) (radius + 5)
+                [ circle ( cx, cy ) ( radius + 5 )
                 ]
             ]
 
@@ -203,19 +203,19 @@ viewBar ( d, _ ) globalData =
             [ shapes
                 [ fill Color.green
                 ]
-                [ path ( x, y ) [ renderBezier angle cx cy radius cp1x cp1y cp2x cp2y ]
-                , renderArc angle cx cy radius
+                [ path ( x, y ) [ renderBezier angle ( cx, cy ) radius ( cp1x, cp1y) ( cp2x, cp2y) ]
+                , renderArc angle ( cx, cy) radius
                 ]
             , shapes
                 [ stroke Color.darkGreen
                 ]
-                [ circle ( cx, cy ) (radius + 5)
+                [ circle ( cx, cy ) ( radius + 5 ) 
                 ]
             ]
 
 
-renderArc : Float -> Float -> Float -> Float -> Shape
-renderArc angle cx cy radius =
+renderArc : Float -> ( Float, Float ) -> Float -> Shape
+renderArc angle ( cx, cy ) radius =
     if angle > 0 then
         arc ( cx, cy ) radius { startAngle = degrees angle, endAngle = degrees 180 - degrees angle, clockwise = True }
 
@@ -223,8 +223,8 @@ renderArc angle cx cy radius =
         arc ( cx, cy ) radius { endAngle = degrees 180 - degrees angle, startAngle = degrees 360 + degrees angle, clockwise = True }
 
 
-renderBezier : Float -> Float -> Float -> Float -> Float -> Float -> Float -> Float -> PathSegment
-renderBezier angle cx cy radius cp1x cp1y cp2x cp2y =
+renderBezier : Float -> ( Float, Float ) -> Float -> ( Float, Float ) -> ( Float, Float ) -> PathSegment
+renderBezier angle ( cx, cy ) radius ( cp1x, cp1y ) ( cp2x, cp2y ) =
     let
         x =
             cx + radius * cos (degrees angle)
