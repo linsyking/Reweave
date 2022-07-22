@@ -1,12 +1,9 @@
 module Lib.CoreEngine.FrontgroundLayer.Display exposing (..)
 
 import Base exposing (GlobalData)
-import Canvas exposing (Renderable, group, rect, shapes)
-import Canvas.Settings exposing (fill)
+import Canvas exposing (Renderable, group)
 import Canvas.Settings.Advanced exposing (alpha)
-import Color exposing (black)
 import Lib.Component.ComponentHandler exposing (genView)
-import Lib.Coordinate.Coordinates exposing (heightToReal, posToReal, widthToReal)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.FrontgroundLayer.Common exposing (Model)
 import Lib.Render.Render exposing (renderText)
@@ -18,11 +15,6 @@ view ( model, t ) ggd gd =
         [ genView gd t model.components
         , model.render t ggd gd
         , genFPS model gd
-        , if ggd.ingamepause then
-            shapes [ fill black, alpha 0.5 ] [ rect (posToReal gd ( 0, 0 )) (widthToReal gd 1920) (heightToReal gd 1080) ]
-
-          else
-            group [] []
         ]
 
 

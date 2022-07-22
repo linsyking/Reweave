@@ -15,7 +15,7 @@ import Lib.CoreEngine.FrontgroundLayer.Common exposing (Model)
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInitPosition(..))
 import Lib.CoreEngine.GameLayer.Common exposing (addenergy)
 import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget(..))
-import Lib.Scene.Base exposing (EngineT)
+import Lib.Scene.Base exposing (EngineT, nullEngineT)
 import Time exposing (posixToMillis)
 
 
@@ -36,11 +36,16 @@ initModel t lm _ =
                     f.components
             , fpsrepo = []
             , ispaused = False
-            , exitinfo = EngineT 0 DefaultPlayerPosition
+            , exitinfo = nullEngineT
             }
 
         _ ->
-            { render = \_ _ _ -> group [] [], components = Array.empty, fpsrepo = [], ispaused = False, exitinfo = EngineT 0 DefaultPlayerPosition }
+            { render = \_ _ _ -> group [] []
+            , components = Array.empty
+            , fpsrepo = []
+            , ispaused = False
+            , exitinfo = nullEngineT
+            }
 
 
 dealComponentsMsg : ComponentTMsg -> Model -> GlobalData -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
@@ -62,12 +67,12 @@ dealComponentsMsg rmsg model gd ggd =
                         addenergy originenergy 500
 
                 newexitmsg =
-                    LayerExitMsg { originet | energy = newenergy } s
+                    LayerExitMsg { originet | energy = newenergy } s 0
             in
             ( ( model, ggd, [ ( LayerParentScene, newexitmsg ) ] ), { gd | scenesFinished = gd.scenesFinished ++ [ ggd.currentScene ] } )
 
         ComponentLStringMsg ("restart" :: _) ->
-            ( ( model, ggd, [ ( LayerParentScene, LayerExitMsg (EngineT 0 DefaultPlayerPosition) ggd.currentScene ) ] ), gd )
+            ( ( model, ggd, [ ( LayerParentScene, LayerExitMsg model.exitinfo ggd.currentScene 0 ) ] ), gd )
 
         ComponentStringMsg "stopGameInput" ->
             ( ( model, ggd, [ ( LayerName "Game", LayerStringMsg "stopinput" ) ] ), gd )
@@ -99,19 +104,19 @@ dealAllComponentMsg rmsg model gd ggd =
 updateModel : Msg -> GlobalData -> LayerMsg -> ( Model, Int ) -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
 updateModel msg gd lm ( model, t ) ggd =
     case lm of
-        LayerExitMsg et s ->
+        LayerExitMsg et s transt ->
             let
                 ( newcs, _, newgd ) =
-                    updateSingleComponentByName UnknownMsg (ComponentLStringMsg [ "start", "cloud", "50", "nextscene", s ]) gd t "Trans" model.components
+                    updateSingleComponentByName UnknownMsg (ComponentLStringMsg [ "start", "cloud", String.fromInt transt, "nextscene", s ]) gd t "Trans" model.components
             in
             ( ( { model | components = newcs, exitinfo = et }, ggd, [] ), newgd )
 
-        LayerRestartMsg ->
+        LayerRestartMsg transt ->
             let
                 ( newcs, _, newgd ) =
-                    updateSingleComponentByName UnknownMsg (ComponentLStringMsg [ "start", "cloud", "10", "restart" ]) gd t "Trans" model.components
+                    updateSingleComponentByName UnknownMsg (ComponentLStringMsg [ "start", "cloud", String.fromInt transt, "restart", ggd.currentScene ]) gd t "Trans" model.components
             in
-            ( ( { model | components = newcs }, ggd, [] ), newgd )
+            ( ( { model | components = newcs, exitinfo = EngineT 0 DefaultPlayerPosition ggd.collectedMonsters }, ggd, [] ), newgd )
 
         _ ->
             case msg of
@@ -151,14 +156,14 @@ updateModel msg gd lm ( model, t ) ggd =
                             ( newcs, _, newgd ) =
                                 updateSingleComponentByName UnknownMsg (ComponentStringDictMsg "Close" Dict.empty) gd t "Menu" model.components
                         in
-                        ( ( { model | components = newcs, ispaused = False }, { ggd | ingamepause = False }, [] ), newgd )
+                        ( ( { model | components = newcs, ispaused = False }, { ggd | ingamepause = False, settingpause = False }, [] ), newgd )
 
                     else
                         let
                             ( newcs, _, newgd ) =
                                 updateSingleComponentByName UnknownMsg (ComponentStringDictMsg "Activate" Dict.empty) gd t "Menu" model.components
                         in
-                        ( ( { model | components = newcs, ispaused = True }, { ggd | ingamepause = True }, [] ), newgd )
+                        ( ( { model | components = newcs, ispaused = True }, { ggd | ingamepause = True, settingpause = True }, [] ), newgd )
 
                 KeyDown _ ->
                     let

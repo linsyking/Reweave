@@ -40,8 +40,8 @@ initCamera =
     CameraData ( 0, 1120 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * 119 - 1, 70 * 32 - 1 ) ) ( ( 0.2, 0.3 ), ( 0.4, 0.4 ) )
 
 
-initGameGlobalData : Float -> GameGlobalData
-initGameGlobalData e =
+initGameGlobalData : Float -> List String -> GameGlobalData
+initGameGlobalData e col =
     { camera = initCamera
     , solidmap = mymap
     , mapsize = ( 120, 70 )
@@ -49,6 +49,8 @@ initGameGlobalData e =
     , energy = e
     , ingamepause = False
     , currentScene = "Platformtest"
+    , collectedMonsters = col
+    , settingpause = False
     }
 
 

@@ -3,17 +3,12 @@ module Scenes.TestChamber.Config exposing (..)
 import Array exposing (Array)
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable)
-import Components.Hints.Export as Hints
 import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Base exposing (CameraData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentTMsg(..))
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (initGameComponent)
-import Lib.CoreEngine.GameComponents.CutScene.Base exposing (CutSceneInit)
-import Lib.CoreEngine.GameComponents.CutScene.Export as CutScene
-import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
-import Lib.CoreEngine.GameComponents.Exit.Export as Exit
 import Lib.CoreEngine.GameComponents.Fish.Base exposing (FishInit)
 import Lib.CoreEngine.GameComponents.Fish.Export as Fish
 import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
@@ -32,7 +27,7 @@ import Scenes.TestChamber.Map exposing (mymap)
 
 
 initFrontGroundComponents : Int -> Array Component
-initFrontGroundComponents t =
+initFrontGroundComponents _ =
     Array.fromList
         []
 
@@ -73,8 +68,8 @@ initCamera =
     CameraData ( 0, 1120 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * 119 - 1, 70 * 32 - 1 ) ) ( ( 0.2, 0.3 ), ( 0.4, 0.4 ) )
 
 
-initGameGlobalData : Float -> GameGlobalData
-initGameGlobalData e =
+initGameGlobalData : Float -> List String -> GameGlobalData
+initGameGlobalData e col =
     { camera = initCamera
     , solidmap = mymap
     , mapsize = ( 120, 70 )
@@ -82,6 +77,8 @@ initGameGlobalData e =
     , energy = e
     , ingamepause = False
     , currentScene = "Test"
+    , collectedMonsters = col
+    , settingpause = False
     }
 
 

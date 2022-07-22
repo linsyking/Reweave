@@ -25,7 +25,7 @@ game t sm =
             , actors = initActors t
             , chartlets = allChartlets
             , globalData =
-                initGameGlobalData engineMsg.energy
+                initGameGlobalData engineMsg.energy engineMsg.collectedMonsters
             , background = ( Array.empty, background )
             , frontground = ( initFrontGroundComponents t, \_ _ _ -> group [] [] )
             }

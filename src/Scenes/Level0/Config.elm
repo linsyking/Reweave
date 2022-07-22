@@ -61,8 +61,8 @@ dialogues =
     ]
 
 
-initGameGlobalData : Float -> GameGlobalData
-initGameGlobalData e =
+initGameGlobalData : Float -> List String -> GameGlobalData
+initGameGlobalData e col =
     { camera = initCamera
     , solidmap = mymap
     , mapsize = ( 120, 70 )
@@ -70,6 +70,8 @@ initGameGlobalData e =
     , energy = e
     , ingamepause = False
     , currentScene = "Level0"
+    , collectedMonsters = col
+    , settingpause = False
     }
 
 

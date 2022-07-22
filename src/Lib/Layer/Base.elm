@@ -27,8 +27,8 @@ type LayerMsg
     | LayerStopSoundMsg String
     | LayerInitGameLayer GameLayerInit
     | LayerCTMsg CTInfo
-    | LayerExitMsg EngineT String
-    | LayerRestartMsg
+    | LayerExitMsg EngineT String Int
+    | LayerRestartMsg Int
     | NullLayerMsg
 
 

@@ -349,10 +349,10 @@ dealParentMsg : GameComponentTMsg -> GlobalData -> ( Model, Int ) -> GameGlobalD
 dealParentMsg gct gd ( model, t ) ggd =
     case gct of
         GameExitScene s pls ->
-            ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerExitMsg (EngineT ggd.energy pls) s ) ] ), gd )
+            ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerExitMsg (EngineT ggd.energy pls ggd.collectedMonsters) s 50 ) ] ), gd )
 
         GameStringMsg "restart" ->
-            ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerRestartMsg ) ] ), gd )
+            ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerRestartMsg 10 ) ] ), gd )
 
         GameStringMsg "ignoreinput" ->
             let

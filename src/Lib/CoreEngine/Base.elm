@@ -12,7 +12,9 @@ type alias GameGlobalData =
     , selectobj : Int
     , energy : Float
     , ingamepause : Bool
+    , settingpause : Bool
     , currentScene : String
+    , collectedMonsters : List String
     }
 
 
@@ -30,6 +32,8 @@ nullGameGlobalData =
     , energy = 0
     , ingamepause = False
     , currentScene = ""
+    , collectedMonsters = []
+    , settingpause = False
     }
 
 
@@ -42,6 +46,8 @@ testGameGlobalData =
     , energy = 0
     , ingamepause = False
     , currentScene = "Level1"
+    , collectedMonsters = []
+    , settingpause = False
     }
 
 

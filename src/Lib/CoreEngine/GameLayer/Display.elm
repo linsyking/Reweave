@@ -2,7 +2,11 @@ module Lib.CoreEngine.GameLayer.Display exposing (..)
 
 import Array
 import Base exposing (GlobalData)
-import Canvas exposing (Renderable, group)
+import Canvas exposing (Renderable, group, rect, shapes)
+import Canvas.Settings exposing (fill)
+import Canvas.Settings.Advanced exposing (alpha)
+import Color exposing (black)
+import Lib.Coordinate.Coordinates exposing (heightToReal, posToReal, widthToReal)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (genView)
@@ -59,4 +63,9 @@ view ( model, ot ) ggd gd =
         , renderChartletsBehindSolids model ggd gd
         , renderSolids ggd gd
         , renderChartletsFront model ggd gd
+        , if ggd.ingamepause && ggd.settingpause then
+            shapes [ fill black, alpha 0.5 ] [ rect (posToReal gd ( 0, 0 )) (widthToReal gd 1920) (heightToReal gd 1080) ]
+
+          else
+            group [] []
         ]
