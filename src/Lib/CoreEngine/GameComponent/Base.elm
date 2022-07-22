@@ -5,6 +5,7 @@ import Canvas exposing (Renderable)
 import Dict exposing (Dict)
 import Lib.Component.Base exposing (DefinedTypes)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
+import Lib.CoreEngine.GameComponents.Bone.Base exposing (BoneInit)
 import Lib.CoreEngine.GameComponents.Bullet.Base exposing (BulletInit)
 import Lib.CoreEngine.GameComponents.CutScene.Base exposing (CutSceneInit)
 import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
@@ -53,6 +54,7 @@ type GameComponentTMsg
     | GameTurtleInit TurtleInit
     | GameCutSceneInit CutSceneInit
     | GameExitScene String PlayerInitPosition
+    | GameBoneInit BoneInit
     | GameStringIntMsg String Int
     | NullGameComponentMsg
 

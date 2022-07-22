@@ -9,6 +9,8 @@ import Lib.CoreEngine.Camera.Base exposing (CameraData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentTMsg(..))
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (initGameComponent)
+import Lib.CoreEngine.GameComponents.Bone.Base exposing (BoneInit)
+import Lib.CoreEngine.GameComponents.Bone.Export as Bone
 import Lib.CoreEngine.GameComponents.Fish.Base exposing (FishInit)
 import Lib.CoreEngine.GameComponents.Fish.Export as Fish
 import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
@@ -49,6 +51,7 @@ initActors t =
         , initGameComponent t (GameGoombaInit (GoombaInit ( 1000, 1800 ) ( 0, 0 ) 5)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 2000, 800 ) ( 0, 0 ) 2)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 3500, 500 ) ( 0, 0 ) 3)) Goomba.gameComponent
+        , initGameComponent t (GameBoneInit (BoneInit ( 2900, 1800 ) ( 100, 100 ) 17)) Bone.gameComponent
 
         -- , initGameComponent t (GameExitInit (ExitInit ( 3600, 1750 ) "Level4" 9)) Exit.gameComponent
         -- , initGameComponent t (GameCutSceneInit (CutSceneInit ( 2900, 1800 ) ( 100, 160 ) 88 [ ( "p_profile", "Dear master, I want learn something from you" ), ( "master", "Yes, please go ahead." ) ] True)) CutScene.gameComponent

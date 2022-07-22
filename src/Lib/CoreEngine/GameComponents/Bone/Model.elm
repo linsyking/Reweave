@@ -34,7 +34,7 @@ simplecheckBox ( w, h ) =
 initModel : Int -> GameComponentTMsg -> Data
 initModel _ gct =
     case gct of
-        GameSpikeInit info ->
+        GameBoneInit info ->
             { status = Alive
             , position = info.initPosition
             , velocity = ( 0, 0 )
