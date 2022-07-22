@@ -73,6 +73,9 @@ updateModel msg gct ggd gd ( d, t ) =
     let
         model =
             dgetPlayer d.extra "model"
+
+        dddd =
+            Debug.log "pv" d.velocity
     in
     case msg of
         Tick _ ->

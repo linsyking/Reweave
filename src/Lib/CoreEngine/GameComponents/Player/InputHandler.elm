@@ -111,7 +111,7 @@ delLargeVelocity ct model d cj =
     if space == 0 then
         if cj then
             if vx > 0 then
-                if left == 1 && left == 0 then
+                if left == 1 && right == 0 then
                     ( model, { d | velocity = ( vx / 1.1, vy ) } )
 
                 else if right == 1 && left == 0 then
@@ -120,7 +120,7 @@ delLargeVelocity ct model d cj =
                 else
                     ( model, { d | velocity = ( vx / 1.05, vy ) } )
 
-            else if left == 1 && left == 0 then
+            else if left == 1 && right == 0 then
                 ( model, { d | velocity = ( vx / 1.04, vy ) } )
 
             else if right == 1 && left == 0 then
@@ -130,7 +130,7 @@ delLargeVelocity ct model d cj =
                 ( model, { d | velocity = ( vx / 1.05, vy ) } )
 
         else if vx > 0 then
-            if left == 1 && left == 0 then
+            if left == 1 && right == 0 then
                 ( model, { d | velocity = ( vx / 1.1, vy ) } )
 
             else if right == 1 && left == 0 then
@@ -139,7 +139,7 @@ delLargeVelocity ct model d cj =
             else
                 ( model, { d | velocity = ( vx / 1.05, vy ) } )
 
-        else if left == 1 && left == 0 then
+        else if left == 1 && right == 0 then
             ( model, { d | velocity = ( vx / 1.01, vy ) } )
 
         else if right == 1 && left == 0 then

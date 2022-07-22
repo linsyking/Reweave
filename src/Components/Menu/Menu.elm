@@ -31,7 +31,7 @@ testData =
 initMenu : Int -> ComponentTMsg -> Data
 initMenu _ _ =
     Dict.fromList
-        [ ( "Show", CDBool True )
+        [ ( "Show", CDBool False )
         , ( "Child"
           , CDLComponent
                 [ ( "Status", MenuStatusE.initComponent 0 NullComponentMsg )
