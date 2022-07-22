@@ -1,4 +1,8 @@
-module Lib.CoreEngine.BackgroundLayer.Export exposing (..)
+module Lib.CoreEngine.BackgroundLayer.Export exposing
+    ( Data
+    , nullData
+    , layer
+    )
 
 {-| This is the doc for this module
 

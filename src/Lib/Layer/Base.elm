@@ -1,4 +1,9 @@
-module Lib.Layer.Base exposing (..)
+module Lib.Layer.Base exposing
+    ( LayerMsg(..)
+    , LayerTarget(..)
+    , Layer
+    , GameLayerInit
+    )
 
 {-| This is the doc for this module
 

@@ -1,4 +1,4 @@
-module Lib.CoreEngine.Physics.Velocity exposing (..)
+module Lib.CoreEngine.Physics.Velocity exposing (changeCVel)
 
 {-| This is the doc for this module
 

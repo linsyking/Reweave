@@ -1,4 +1,8 @@
-module Lib.Render.Chartlet exposing (..)
+module Lib.Render.Chartlet exposing
+    ( renderChartletsFront
+    , renderChartletsBehindActor
+    , renderChartletsBehindSolids
+    )
 
 {-| This is the doc for this module
 

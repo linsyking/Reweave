@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Turtle.Base exposing (..)
+module Lib.CoreEngine.GameComponents.Turtle.Base exposing (TurtleInit)
 
 {-| This is the doc for this module
 

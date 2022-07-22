@@ -1,4 +1,10 @@
-module Lib.CoreEngine.GameComponents.Spike.Model exposing (..)
+module Lib.CoreEngine.GameComponents.Spike.Model exposing
+    ( initData
+    , simplecheckBox
+    , colBox
+    , initModel
+    , updateModel
+    )
 
 {-| This is the doc for this module
 

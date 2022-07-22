@@ -1,4 +1,9 @@
-module Lib.Scene.SceneLoader exposing (..)
+module Lib.Scene.SceneLoader exposing
+    ( getScene
+    , loadScene
+    , loadSceneByName
+    , getCurrentScene
+    )
 
 {-| This is the doc for this module
 

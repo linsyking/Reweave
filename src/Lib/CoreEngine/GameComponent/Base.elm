@@ -1,4 +1,11 @@
-module Lib.CoreEngine.GameComponent.Base exposing (..)
+module Lib.CoreEngine.GameComponent.Base exposing
+    ( GameComponentMsgType(..)
+    , GameComponentTMsg(..)
+    , LifeStatus(..)
+    , GameComponent
+    , Data
+    , Box
+    )
 
 {-| This is the doc for this module
 

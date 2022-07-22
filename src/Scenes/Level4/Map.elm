@@ -1,4 +1,7 @@
-module Scenes.Level4.Map exposing (..)
+module Scenes.Level4.Map exposing
+    ( sds
+    , mymap
+    )
 
 {-| This is the doc for this module
 

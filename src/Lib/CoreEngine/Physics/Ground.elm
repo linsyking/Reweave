@@ -1,4 +1,8 @@
-module Lib.CoreEngine.Physics.Ground exposing (..)
+module Lib.CoreEngine.Physics.Ground exposing
+    ( isInAir
+    , canJump
+    , isOnground
+    )
 
 {-| This is the doc for this module
 

@@ -1,4 +1,10 @@
-module Lib.CoreEngine.GameComponents.Player.InputFilter exposing (..)
+module Lib.CoreEngine.GameComponents.Player.InputFilter exposing
+    ( isNope
+    , isFirstJump
+    , afterMove
+    , preCheck
+    , judgeFirstJump
+    )
 
 {-| This is the doc for this module
 

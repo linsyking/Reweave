@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.EnergyCrystal.Base exposing (..)
+module Lib.CoreEngine.GameComponents.EnergyCrystal.Base exposing (EnergyCrystalInit)
 
 {-| This is the doc for this module
 

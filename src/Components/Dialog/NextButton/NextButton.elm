@@ -1,4 +1,8 @@
-module Components.Dialog.NextButton.NextButton exposing (..)
+module Components.Dialog.NextButton.NextButton exposing
+    ( initButton
+    , updateButton
+    , viewButton
+    )
 
 {-| This is the doc for this module
 

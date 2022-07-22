@@ -1,4 +1,25 @@
-module Lib.DefinedTypes.Parser exposing (..)
+module Lib.DefinedTypes.Parser exposing
+    ( dgetint
+    , dsetint
+    , dgetfloat
+    , dsetfloat
+    , dgetbool
+    , dsetbool
+    , dgetString
+    , dsetstring
+    , dgetLString
+    , dsetlstring
+    , dgetPlayer
+    , dsetPlayer
+    , dgetLComponent
+    , dsetLComponent
+    , findComponentsInList
+    , findFirstFitComponentInList
+    , setComponentsInList
+    , setFirstFitComponentInList
+    , dgetDict
+    , dsetDict
+    )
 
 {-| This is the doc for this module
 

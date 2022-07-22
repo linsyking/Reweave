@@ -1,4 +1,10 @@
-module Lib.CoreEngine.Export exposing (..)
+module Lib.CoreEngine.Export exposing
+    ( Data
+    , nullData
+    , scene
+    , initEngine
+    , genEngineScene
+    )
 
 {-| This is the doc for this module
 

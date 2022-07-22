@@ -1,4 +1,9 @@
-module Components.Dialog.Text.Word.Word exposing (..)
+module Components.Dialog.Text.Word.Word exposing
+    ( initWord
+    , randomPos
+    , updateWord
+    , viewWord
+    )
 
 {-| This is the doc for this module
 

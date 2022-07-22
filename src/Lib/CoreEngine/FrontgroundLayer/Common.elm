@@ -1,4 +1,4 @@
-module Lib.CoreEngine.FrontgroundLayer.Common exposing (..)
+module Lib.CoreEngine.FrontgroundLayer.Common exposing (Model)
 
 {-| This is the doc for this module
 

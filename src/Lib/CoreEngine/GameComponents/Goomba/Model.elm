@@ -1,4 +1,11 @@
-module Lib.CoreEngine.GameComponents.Goomba.Model exposing (..)
+module Lib.CoreEngine.GameComponents.Goomba.Model exposing
+    ( initData
+    , collisionBox
+    , reboundBox
+    , simplecheckBox
+    , initModel
+    , updateModel
+    )
 
 {-| This is the doc for this module
 

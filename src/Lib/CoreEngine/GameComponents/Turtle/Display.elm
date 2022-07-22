@@ -1,4 +1,7 @@
-module Lib.CoreEngine.GameComponents.Turtle.Display exposing (..)
+module Lib.CoreEngine.GameComponents.Turtle.Display exposing
+    ( view
+    , viewbar
+    )
 
 {-| This is the doc for this module
 

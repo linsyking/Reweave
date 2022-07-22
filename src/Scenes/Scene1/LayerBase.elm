@@ -1,4 +1,4 @@
-module Scenes.Scene1.LayerBase exposing (..)
+module Scenes.Scene1.LayerBase exposing (CommonData)
 
 {-| This is the doc for this module
 

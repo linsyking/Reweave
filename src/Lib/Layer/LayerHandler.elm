@@ -1,4 +1,16 @@
-module Lib.Layer.LayerHandler exposing (..)
+module Lib.Layer.LayerHandler exposing
+    ( getLayerMsg
+    , applyOnce
+    , applyOnceOnlyNew
+    , updateOnce
+    , updateOnceOnlyNew
+    , updateLayer
+    , judgeEnd
+    , filterLayerParentMsg
+    , filterLayerParentMsgT
+    , updateLayerRecursive
+    , viewLayer
+    )
 
 {-| This is the doc for this module
 

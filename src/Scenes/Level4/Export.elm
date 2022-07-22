@@ -1,4 +1,7 @@
-module Scenes.Level4.Export exposing (..)
+module Scenes.Level4.Export exposing
+    ( game
+    , scene
+    )
 
 {-| This is the doc for this module
 

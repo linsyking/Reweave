@@ -1,4 +1,4 @@
-module Lib.Render.Energy exposing (..)
+module Lib.Render.Energy exposing (renderEnergyPoint)
 
 {-| This is the doc for this module
 

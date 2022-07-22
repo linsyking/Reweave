@@ -1,4 +1,7 @@
-module Components.Menu.Map.Export exposing (..)
+module Components.Menu.Map.Export exposing
+    ( component
+    , initComponent
+    )
 
 {-| This is the doc for this module
 

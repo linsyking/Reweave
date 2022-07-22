@@ -1,4 +1,13 @@
-module Scenes.Level0.Config exposing (..)
+module Scenes.Level0.Config exposing
+    ( initFrontGroundComponents
+    , initPlayer
+    , initActors
+    , initCamera
+    , dialogues
+    , initGameGlobalData
+    , allChartlets
+    , makemanybamboos
+    )
 
 {-| This is the doc for this module
 

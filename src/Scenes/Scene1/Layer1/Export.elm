@@ -1,4 +1,8 @@
-module Scenes.Scene1.Layer1.Export exposing (..)
+module Scenes.Scene1.Layer1.Export exposing
+    ( Data
+    , nullData
+    , layer
+    )
 
 {-| This is the doc for this module
 

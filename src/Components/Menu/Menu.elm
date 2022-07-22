@@ -1,4 +1,10 @@
-module Components.Menu.Menu exposing (..)
+module Components.Menu.Menu exposing
+    ( testData
+    , initMenu
+    , componentInteract
+    , updateMenu
+    , viewMenu
+    )
 
 {-| This is the doc for this module
 

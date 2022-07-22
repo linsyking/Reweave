@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Fish.Display exposing (..)
+module Lib.CoreEngine.GameComponents.Fish.Display exposing (view)
 
 {-| This is the doc for this module
 

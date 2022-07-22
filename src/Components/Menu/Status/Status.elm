@@ -1,4 +1,8 @@
-module Components.Menu.Status.Status exposing (..)
+module Components.Menu.Status.Status exposing
+    ( initStatus
+    , updateStatus
+    , viewStatus
+    )
 
 {-| This is the doc for this module
 

@@ -1,4 +1,7 @@
-module Lib.CoreEngine.GameComponents.Goomba.Movement exposing (..)
+module Lib.CoreEngine.GameComponents.Goomba.Movement exposing
+    ( checkCollision
+    , solidCollisionMove
+    )
 
 {-| This is the doc for this module
 

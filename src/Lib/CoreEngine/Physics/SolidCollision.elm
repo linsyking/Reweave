@@ -1,4 +1,19 @@
-module Lib.CoreEngine.Physics.SolidCollision exposing (..)
+module Lib.CoreEngine.Physics.SolidCollision exposing
+    ( pointIsSolid
+    , pointOfSolid
+    , blockIsSolid
+    , lineHasSolid
+    , velToDis
+    , canMove
+    , movePointPlain
+    , gonnaSolidCollide
+    , genSplits
+    , ceilFloored
+    , gonnaCollideSolidOrigin
+    , judgeEasyCollision
+    , moveTilCollide
+    , getNearBySolid
+    )
 
 {-| This is the doc for this module
 

@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Fireball.Export exposing (..)
+module Lib.CoreEngine.GameComponents.Fireball.Export exposing (gameComponent)
 
 {-| This is the doc for this module
 

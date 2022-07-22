@@ -1,4 +1,11 @@
-module Lib.CoreEngine.GameComponents.CutScene.Model exposing (..)
+module Lib.CoreEngine.GameComponents.CutScene.Model exposing
+    ( initData
+    , simplecheckBox
+    , decodeTalkings
+    , initModel
+    , handlestart
+    , updateModel
+    )
 
 {-| This is the doc for this module
 

@@ -1,4 +1,7 @@
-module Lib.CoreEngine.GameComponents.Spike.Display exposing (..)
+module Lib.CoreEngine.GameComponents.Spike.Display exposing
+    ( view
+    , renderSingleSpike
+    )
 
 {-| This is the doc for this module
 

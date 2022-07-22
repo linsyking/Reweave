@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Bone.Display exposing (..)
+module Lib.CoreEngine.GameComponents.Bone.Display exposing (view)
 
 {-| This is the doc for this module
 

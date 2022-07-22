@@ -1,4 +1,17 @@
-module Lib.CoreEngine.Camera.Camera exposing (..)
+module Lib.CoreEngine.Camera.Camera exposing
+    ( getNewCamera
+    , cameraWidth
+    , cameraHeight
+    , moveCamera
+    , judgeInBound
+    , changeCP
+    , dealInboundSpeed
+    , calcMoveVec
+    , judgeInBox
+    , getCameraInbox
+    , getPlayerCenter
+    , getCameraInboxCenter
+    )
 
 {-| This is the doc for this module
 

@@ -1,4 +1,12 @@
-module Lib.Scene.Base exposing (..)
+module Lib.Scene.Base exposing
+    ( SceneMsg(..)
+    , SceneOutputMsg(..)
+    , Scene
+    , EngineInit
+    , EngineT
+    , nullScene
+    , nullEngineT
+    )
 
 {-| This is the doc for this module
 

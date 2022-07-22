@@ -1,4 +1,23 @@
-module Lib.CoreEngine.GameComponents.Player.InputHandler exposing (..)
+module Lib.CoreEngine.GameComponents.Player.InputHandler exposing
+    ( VelDirMsg(..)
+    , VelTypeMsg(..)
+    , DelVelocityFunction
+    , pressedVelocityFunction
+    , oppositeVelocityFunction
+    , blankVelocityFunction
+    , jumpPressedVelocityFunction
+    , jumpOppositeVelocityFunction
+    , jumpBlankVelocityFunction
+    , changePlayerVelocity
+    , delLargeVelocity
+    , delVelocityFunction
+    , changePlayerVelocityX
+    , changePlayerVelocityY
+    , changePlayerVelocityHelper
+    , delVelocityFunctionHelper
+    , boundXY
+    , sign
+    )
 
 {-| This is the doc for this module
 

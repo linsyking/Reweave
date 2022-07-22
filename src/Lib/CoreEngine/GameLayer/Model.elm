@@ -1,4 +1,19 @@
-module Lib.CoreEngine.GameLayer.Model exposing (..)
+module Lib.CoreEngine.GameLayer.Model exposing
+    ( initModel
+    , deleteObjects
+    , releaseObjects
+    , playerMove
+    , judgePlayerOK
+    , clearWrongVelocity
+    , solidCollision
+    , interCollision
+    , calcDRate
+    , calcRPer
+    , getDSEnergy
+    , dealParentMsg
+    , dealAllParentMsg
+    , updateModel
+    )
 
 {-| This is the doc for this module
 

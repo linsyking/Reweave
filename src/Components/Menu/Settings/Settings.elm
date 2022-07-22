@@ -1,4 +1,8 @@
-module Components.Menu.Settings.Settings exposing (..)
+module Components.Menu.Settings.Settings exposing
+    ( initSettings
+    , updateSettings
+    , viewSettings
+    )
 
 {-| This is the doc for this module
 

@@ -1,4 +1,9 @@
-module Lib.CoreEngine.Physics.CollisionShape exposing (..)
+module Lib.CoreEngine.Physics.CollisionShape exposing
+    ( CShape(..)
+    , judgeYSame
+    , judgeXSame
+    , judgeShape
+    )
 
 {-| This is the doc for this module
 

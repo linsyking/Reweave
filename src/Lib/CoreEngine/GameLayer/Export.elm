@@ -1,4 +1,8 @@
-module Lib.CoreEngine.GameLayer.Export exposing (..)
+module Lib.CoreEngine.GameLayer.Export exposing
+    ( Data
+    , nullData
+    , layer
+    )
 
 {-| This is the doc for this module
 

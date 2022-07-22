@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponent.GenUID exposing (..)
+module Lib.CoreEngine.GameComponent.GenUID exposing (genUID)
 
 {-| This is the doc for this module
 

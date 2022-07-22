@@ -1,4 +1,7 @@
-module Components.Menu.Settings.Export exposing (..)
+module Components.Menu.Settings.Export exposing
+    ( component
+    , initComponent
+    )
 
 {-| This is the doc for this module
 

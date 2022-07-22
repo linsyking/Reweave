@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Bullet.Export exposing (..)
+module Lib.CoreEngine.GameComponents.Bullet.Export exposing (gameComponent)
 
 {-| This is the doc for this module
 

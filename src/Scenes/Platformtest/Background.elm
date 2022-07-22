@@ -1,4 +1,4 @@
-module Scenes.Platformtest.Background exposing (..)
+module Scenes.Platformtest.Background exposing (background)
 
 {-| This is the doc for this module
 

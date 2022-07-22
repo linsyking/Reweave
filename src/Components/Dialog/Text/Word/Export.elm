@@ -1,4 +1,7 @@
-module Components.Dialog.Text.Word.Export exposing (..)
+module Components.Dialog.Text.Word.Export exposing
+    ( component
+    , initComponent
+    )
 
 {-| This is the doc for this module
 

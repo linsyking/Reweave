@@ -1,4 +1,7 @@
-module Scenes.Platformtest.Export exposing (..)
+module Scenes.Platformtest.Export exposing
+    ( game
+    , scene
+    )
 
 {-| This is the doc for this module
 

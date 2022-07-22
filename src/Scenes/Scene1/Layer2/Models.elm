@@ -1,4 +1,7 @@
-module Scenes.Scene1.Layer2.Models exposing (..)
+module Scenes.Scene1.Layer2.Models exposing
+    ( initModel
+    , updateModel
+    )
 
 {-| This is the doc for this module
 

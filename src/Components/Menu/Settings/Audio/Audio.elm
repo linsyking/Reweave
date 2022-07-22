@@ -1,4 +1,8 @@
-module Components.Menu.Settings.Audio.Audio exposing (..)
+module Components.Menu.Settings.Audio.Audio exposing
+    ( initMap
+    , updateMap
+    , viewMap
+    )
 
 {-| This is the doc for this module
 

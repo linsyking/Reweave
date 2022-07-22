@@ -1,4 +1,7 @@
-module Lib.CoreEngine.Physics.Vector exposing (..)
+module Lib.CoreEngine.Physics.Vector exposing
+    ( addIntVec
+    , addFloatVec
+    )
 
 {-| This is the doc for this module
 

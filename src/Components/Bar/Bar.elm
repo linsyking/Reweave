@@ -1,4 +1,11 @@
-module Components.Bar.Bar exposing (..)
+module Components.Bar.Bar exposing
+    ( initBar
+    , bezier
+    , updateBar
+    , viewBar
+    , renderArc
+    , renderBezier
+    )
 
 {-| This is the doc for this module
 

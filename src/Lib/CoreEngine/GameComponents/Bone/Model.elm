@@ -1,4 +1,9 @@
-module Lib.CoreEngine.GameComponents.Bone.Model exposing (..)
+module Lib.CoreEngine.GameComponents.Bone.Model exposing
+    ( initData
+    , simplecheckBox
+    , initModel
+    , updateModel
+    )
 
 {-| This is the doc for this module
 
