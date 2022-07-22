@@ -50,6 +50,7 @@ initModel _ comMsg =
                 Dict.fromList
                     [ ( "TriggerUID", CDInt info.triggeruid )
                     , ( "Timer", CDInt 0 )
+                    , ( "Life", CDInt 2000 )
                     , ( "Status", CDString "Away" )
                     ]
             , uid = info.uid
@@ -180,7 +181,7 @@ getInitBulletsMsg t model =
                             ( List.append bulletList
                                 [ GameParentMsg
                                     (GameFireballInit
-                                        { initPosition = ( posX + floor (cos (degrees index) * 400), posY + floor (sin (degrees index) * 400) )
+                                        { initPosition = ( posX + floor (cos (degrees index) * 650), posY + floor (sin (degrees index) * 650) )
                                         , initVelocity = ( cos (degrees index) * 100, sin (degrees index) * -100 )
                                         , uid = 0
                                         , size = 200
@@ -292,12 +293,39 @@ updateModel mainMsg comMsg gameGlobalData _ ( model, t ) =
 
         _ ->
             case comMsg of
+                GameStringMsg "decreaseHP" ->
+                    let
+                        uid =
+                            dgetint model.extra "TriggerUID"
+
+                        curhp =
+                            dgetint model.extra "Life"
+
+                        newmodelextra =
+                            dsetint "Life"
+                                (if curhp - 500 <= 0 then
+                                    0
+
+                                 else
+                                    curhp - 500
+                                )
+                                model.extra
+                    in
+                    if curhp - 500 <= 0 then
+                        ( { model | status = Dead t, extra = newmodelextra }, [ GameActorUidMsg uid (GameStringMsg "start") ], gameGlobalData )
+
+                    else
+                        ( { model | extra = newmodelextra }, [], gameGlobalData )
+
                 GameInterCollisionMsg "player" _ _ ->
                     let
                         uid =
                             dgetint model.extra "TriggerUID"
+
+                        newmodelextra =
+                            dsetint "Life" 0 model.extra
                     in
-                    ( { model | status = Dead t }, [ GameActorUidMsg uid (GameStringMsg "start") ], gameGlobalData )
+                    ( { model | status = Dead t, extra = newmodelextra }, [ GameActorUidMsg uid (GameStringMsg "start") ], gameGlobalData )
 
                 _ ->
                     ( model, [], gameGlobalData )

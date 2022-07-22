@@ -96,8 +96,16 @@ updateModel msg gct ggd gd ( d, t ) =
                     in
                     ( ndd, [], ggd )
 
-                GameInterCollisionMsg "turtle" _ _ ->
-                    ( d, [], ggd )
+                GameInterCollisionMsg "turtle" pd _ ->
+                    let
+                        mass =
+                            d.mass
+                    in
+                    if mass >= 400 then
+                        ( { d | status = Dead t }, [ GameActorUidMsg pd.uid (GameStringMsg "decreaseHP") ], ggd )
+
+                    else
+                        ( d, [], ggd )
 
                 GameInterCollisionMsg "fireball" _ _ ->
                     ( d, [], ggd )
