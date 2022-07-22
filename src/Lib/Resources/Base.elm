@@ -18,20 +18,6 @@ module Lib.Resources.Base exposing
 
 @docs allTexture
 
-@docs charaSprites
-
-@docs beiminSprites
-
-@docs donghaiSprites
-
-@docs jiangnanSprites
-
-@docs longxiSprites
-
-@docs zhongyuanSprites
-
-@docs otherSprites
-
 -}
 
 import Base exposing (Msg(..))
