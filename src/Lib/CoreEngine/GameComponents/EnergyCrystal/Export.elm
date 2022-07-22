@@ -1,13 +1,13 @@
-module Lib.CoreEngine.GameComponents.Bone.Export exposing (..)
+module Lib.CoreEngine.GameComponents.EnergyCrystal.Export exposing (..)
 
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent)
-import Lib.CoreEngine.GameComponents.Bone.Display exposing (view)
-import Lib.CoreEngine.GameComponents.Bone.Model exposing (initData, initModel, updateModel)
+import Lib.CoreEngine.GameComponents.EnergyCrystal.Display exposing (view)
+import Lib.CoreEngine.GameComponents.EnergyCrystal.Model exposing (initData, initModel, updateModel)
 
 
 gameComponent : GameComponent
 gameComponent =
-    { name = "bone"
+    { name = "energyCrystal"
     , data = initData
     , init = initModel
     , update = updateModel

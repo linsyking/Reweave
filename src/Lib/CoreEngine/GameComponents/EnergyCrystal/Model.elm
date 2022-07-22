@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Bone.Model exposing (..)
+module Lib.CoreEngine.GameComponents.EnergyCrystal.Model exposing (..)
 
 import Base exposing (GlobalData, Msg)
 import Dict

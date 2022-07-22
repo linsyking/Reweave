@@ -1,7 +1,7 @@
-module Lib.CoreEngine.GameComponents.Bone.Base exposing (..)
+module Lib.CoreEngine.GameComponents.EnergyCrystal.Base exposing (..)
 
 
-type alias BoneInit =
+type alias EnergyCrystalInit =
     { initPosition : ( Int, Int )
     , initSize : ( Int, Int )
     , uid : Int
