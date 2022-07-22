@@ -15,7 +15,7 @@ import Lib.CoreEngine.GameComponents.Ball.Model exposing (initData, initModel, u
 -}
 gameComponent : GameComponent
 gameComponent =
-    { name = "fireball"
+    { name = "ball"
     , data = initData
     , init = initModel
     , update = updateModel

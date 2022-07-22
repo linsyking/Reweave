@@ -19,7 +19,7 @@ import Lib.Render.Render exposing (renderSprite)
 view : ( Data, Int ) -> GameGlobalData -> GlobalData -> List ( Renderable, Int )
 view ( d, t ) ggd gd =
     [ ( group []
-            [ renderSprite gd [] (getPositionUnderCamera d.position ggd) ( d.simplecheck.width, d.simplecheck.height ) "ot/fireball1"
+            [ renderSprite gd [] (getPositionUnderCamera d.position ggd) ( d.simplecheck.width, d.simplecheck.height ) "ot/ball"
             ]
       , 0
       )
