@@ -56,6 +56,7 @@ type GameComponentTMsg
     | GameCutSceneInit CutSceneInit
     | GameExitScene String PlayerInitPosition
     | GameBoneInit BoneInit
+    | GameBallInit BallInit
     | GameStringIntMsg String Int
     | NullGameComponentMsg
 

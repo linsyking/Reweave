@@ -40,7 +40,7 @@ simplecheckBox size =
 initModel : Int -> GameComponentTMsg -> Data
 initModel _ gcm =
     case gcm of
-        GameFireballInit info ->
+        GameBallInit info ->
             { status = Alive
             , position = info.initPosition
             , velocity = ( 0, 0 )
@@ -60,26 +60,21 @@ updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data
 updateModel msg gct ggd gd ( d, t ) =
     case msg of
         Tick _ ->
-            case gct of
-                GameSolidCollisionMsg _ ->
-                    ( { d | status = Dead t }, [], ggd )
+            let
+                newModel =
+                    putAccOn d
 
-                _ ->
-                    let
-                        newModel =
-                            putAccOn d
+                ( vx, vy ) =
+                    newModel.velocity
 
-                        ( vx, vy ) =
-                            d.velocity
+                ( x, y ) =
+                    newModel.position
+            in
+            if (vx < 0 && not (canMove d ggd (vec2 -1 0))) || (vx > 0 && not (canMove d ggd (vec2 1 0))) || (vy > 0 && not (canMove d ggd (vec2 0 1))) || (vy < 0 && not (canMove d ggd (vec2 0 -1))) then
+                ( { newModel | status = Dead t, position = ( x + ceiling (vx / 1000), y + ceiling (vy / 1000) ) }, [], ggd )
 
-                        ( x, y ) =
-                            d.position
-                    in
-                    if (vx < 0 && not (canMove d ggd (vec2 -1 0))) || (vx > 0 && not (canMove d ggd (vec2 1 0))) || (vy > 0 && not (canMove d ggd (vec2 0 1))) || (vy < 0 && not (canMove d ggd (vec2 0 -1))) then
-                        ( { newModel | status = Dead t, position = ( x + ceiling (vx / 1000), y + ceiling (vy / 1000) ) }, [], ggd )
-
-                    else
-                        ( newModel, [], ggd )
+            else
+                ( newModel, [], ggd )
 
         MouseDown 0 mp ->
             if judgeMouse gd mp (getPositionUnderCamera d.position ggd) ( d.simplecheck.width, d.simplecheck.height ) then
