@@ -41,7 +41,7 @@ initModel _ comMsg =
         GameTurtleInit info ->
             { status = Alive
             , position = info.initPosition
-            , velocity = info.initVelocity
+            , velocity = ( 0, 0 )
             , mass = 70
             , acceleration = ( 0, 0 )
             , simplecheck = simplecheckBox
@@ -49,7 +49,6 @@ initModel _ comMsg =
             , extra =
                 Dict.fromList
                     [ ( "TriggerUID", CDInt info.triggeruid )
-                    , ( "BulletMethod", CDString info.bulletEmitMethod )
                     , ( "Timer", CDInt 0 )
                     , ( "Status", CDString "Away" )
                     ]
@@ -89,7 +88,7 @@ changeStatus model =
                         |> dsetint "Timer" 0
             }
 
-        ( "Wave", 9 ) ->
+        ( "Wave", 40 ) ->
             { model
                 | extra =
                     data
@@ -184,6 +183,7 @@ getInitBulletsMsg t model =
                                         { initPosition = ( posX + floor (cos (degrees index) * 400), posY + floor (sin (degrees index) * 400) )
                                         , initVelocity = ( cos (degrees index) * 100, sin (degrees index) * -100 )
                                         , uid = 0
+                                        , size = 200
                                         }
                                     )
                                 ]
@@ -204,6 +204,7 @@ getInitBulletsMsg t model =
                                         { initPosition = ( posX + floor (cos (degrees index) * 400), posY + floor (sin (degrees index) * 400) )
                                         , initVelocity = ( cos (degrees index) * 100, sin (degrees index) * -100 )
                                         , uid = 0
+                                        , size = 100
                                         }
                                     )
                                 ]
@@ -228,6 +229,7 @@ getInitBulletsMsg t model =
                                         { initPosition = ( posX + randomPos seed -1000 1000, 500 )
                                         , initVelocity = ( 0, toFloat (randomPos seed -150 -50) )
                                         , uid = 0
+                                        , size = 100
                                         }
                                     )
                                 ]
@@ -242,18 +244,20 @@ getInitBulletsMsg t model =
                 []
 
         "Wave" ->
-            if modBy 3 timer == 0 then
+            if modBy 10 timer == 0 then
                 [ GameParentMsg
                     (GameFireballInit
                         { initPosition = ( Tuple.first model.position, Tuple.second model.position + 500 )
-                        , initVelocity = ( -200, 0 )
+                        , initVelocity = ( -100, 0 )
+                        , size = 100
                         , uid = 0
                         }
                     )
                 , GameParentMsg
                     (GameFireballInit
                         { initPosition = ( Tuple.first model.position + 600, Tuple.second model.position + 500 )
-                        , initVelocity = ( 200, 0 )
+                        , initVelocity = ( 100, 0 )
+                        , size = 100
                         , uid = 0
                         }
                     )

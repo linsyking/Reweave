@@ -3,9 +3,12 @@ module Lib.CoreEngine.GameComponents.Bullet.Model exposing (..)
 import Base exposing (GlobalData, Msg(..))
 import Dict
 import Lib.Component.Base exposing (DefinedTypes(..))
+import Lib.Coordinate.Coordinates exposing (judgeMouse)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
+import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
 import Lib.CoreEngine.Physics.SolidCollision exposing (canMove)
+import Lib.CoreEngine.Physics.Velocity exposing (changeCVel)
 import Math.Vector2 exposing (vec2)
 
 
@@ -50,7 +53,7 @@ initModel _ gcm =
             { status = Alive
             , position = info.initPosition
             , velocity = info.initVelocity
-            , mass = 5
+            , mass = 10
             , acceleration = ( 0, 0 )
             , simplecheck = simplecheckBox
             , collisionbox = [ collisionBox ]
@@ -63,7 +66,7 @@ initModel _ gcm =
 
 
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
-updateModel msg gct ggd _ ( d, t ) =
+updateModel msg gct ggd gd ( d, t ) =
     case msg of
         Tick _ ->
             case gct of
@@ -84,9 +87,25 @@ updateModel msg gct ggd _ ( d, t ) =
                     else
                         ( d, [], ggd )
 
-        -- { d | position = ( x + ceiling (vx / 1000), y + ceiling (vy / 1000) ) }
+        MouseDown 0 mp ->
+            if judgeMouse gd mp (getPositionUnderCamera d.position ggd) ( d.simplecheck.width, d.simplecheck.height ) then
+                ( d, [], { ggd | selectobj = d.uid } )
+
+            else
+                ( d, [], ggd )
+
         _ ->
             case gct of
+                GameClearVelocity ->
+                    ( { d | velocity = ( 0, 0 ) }, [], ggd )
+
+                GameUseEnergy mp e ->
+                    let
+                        ndd =
+                            changeCVel d mp e
+                    in
+                    ( ndd, [], ggd )
+
                 GameInterCollisionMsg "fish" _ _ ->
                     ( d, [], ggd )
 
