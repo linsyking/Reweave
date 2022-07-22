@@ -351,7 +351,6 @@ dealParentMsg gct gd ( model, t ) ggd =
         GameExitScene s ->
             ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerExitMsg (EngineT 0 DefaultPlayerPosition) s ) ] ), gd )
 
-        -- ( ( model, { ggd | ingamepause = True }, [ ( LayerParentScene, LayerExitMsg (EngineT ggd.energy ggd.currentScene) s ) ] ), gd )
         GameStringMsg "restart" ->
             ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerRestartMsg ) ] ), gd )
 
@@ -391,6 +390,12 @@ dealParentMsg gct gd ( model, t ) ggd =
 
         GameStringMsg "reactinput" ->
             ( ( { model | ignoreInput = False }, ggd, [] ), gd )
+
+        GameStringMsg "stopgamelayer" ->
+            ( ( model, { ggd | ingamepause = True }, [] ), gd )
+
+        GameStringMsg "startgamelayer" ->
+            ( ( model, { ggd | ingamepause = False }, [] ), gd )
 
         GameGoombaInit info ->
             -- Create a goomba
@@ -433,8 +438,8 @@ dealParentMsg gct gd ( model, t ) ggd =
 
 addenergy : Float -> Float -> Float
 addenergy ori del =
-    if ori + del >= 4000 then
-        4000
+    if ori + del >= 2000 then
+        2000
 
     else
         ori + del
@@ -462,6 +467,12 @@ updateModel msg gd lm ( model, t ) ggd =
 
         LayerStringMsg "startinput" ->
             ( ( { model | ignoreInput = False }, ggd, [] ), gd )
+
+        LayerStringMsg "stoplayer" ->
+            ( ( model, { ggd | ingamepause = True }, [] ), gd )
+
+        LayerStringMsg "startlayer" ->
+            ( ( model, { ggd | ingamepause = False }, [] ), gd )
 
         _ ->
             if ggd.ingamepause then

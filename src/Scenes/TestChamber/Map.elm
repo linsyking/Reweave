@@ -22,4 +22,7 @@ mymap =
         |> buildrect ( 41, 61 ) ( 1, 1 ) 1
         |> buildrect ( 47, 52 ) ( 10, 1 ) 1
         |> buildrect ( 60, 48 ) ( 10, 1 ) 1
-        |> buildrect ( 75, 55 ) ( 44, 1 ) 1
+
+
+
+-- |> buildrect ( 75, 55 ) ( 44, 1 ) 1

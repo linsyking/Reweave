@@ -103,6 +103,7 @@ longxiSprites =
     , ( "lx/PieceOfGround", getResourcePath "img/LongXi/PieceOfGround.png" )
     , ( "lx/mountain", getResourcePath "img/LongXi/mountain.png" )
     , ( "lx/ground", getResourcePath "img/LongXi/ground.png" )
+    , ( "bamboo", getResourcePath "img/LongXi/bamboo.png" )
     ]
 
 
@@ -110,7 +111,7 @@ zhongyuanSprites : List ( String, String )
 zhongyuanSprites =
     [ ( "zy/stick", getResourcePath "img/ZhongYuan/stick.png" )
     , ( "zy/platform", getResourcePath "img/ZhongYuan/platform.png" )
-    , ( "zy/buiding", getResourcePath "img/ZhongYuan/buiding.png" )
+    , ( "zy/building", getResourcePath "img/ZhongYuan/building.png" )
     ]
 
 

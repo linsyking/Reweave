@@ -41,7 +41,7 @@ initModel _ comMsg =
         GameFishInit info ->
             { status = Alive
             , position = info.initPosition
-            , velocity = info.initVelocity
+            , velocity = ( 0, 0 )
             , mass = 70
             , acceleration = ( 0, 0 )
             , simplecheck = simplecheckBox
@@ -49,7 +49,6 @@ initModel _ comMsg =
             , extra =
                 Dict.fromList
                     [ ( "TriggerUID", CDInt info.triggeruid )
-                    , ( "BulletMethod", CDString info.bulletEmitMethod )
                     , ( "Timer", CDInt 0 )
                     , ( "Status", CDString "Away" )
                     ]

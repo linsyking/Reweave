@@ -11,4 +11,5 @@ type alias Model =
     { render : Int -> GameGlobalData -> GlobalData -> Renderable
     , components : Array Component
     , fpsrepo : List Int
+    , ispaused : Bool
     }

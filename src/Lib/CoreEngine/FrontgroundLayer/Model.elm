@@ -7,6 +7,7 @@ import Components.Bar.Export as Bar
 import Components.Console.Export as Console
 import Components.Menu.Export as Menu
 import Components.Trans.Export as Trans
+import Dict
 import Lib.Component.Base exposing (ComponentTMsg(..))
 import Lib.Component.ComponentHandler exposing (updateComponents, updateSingleComponentByName)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
@@ -32,10 +33,11 @@ initModel t lm _ =
                     )
                     f.components
             , fpsrepo = []
+            , ispaused = False
             }
 
         _ ->
-            { render = \_ _ _ -> group [] [], components = Array.empty, fpsrepo = [] }
+            { render = \_ _ _ -> group [] [], components = Array.empty, fpsrepo = [], ispaused = False }
 
 
 dealComponentsMsg : ComponentTMsg -> Model -> GlobalData -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
@@ -99,7 +101,7 @@ updateModel msg gd lm ( model, t ) ggd =
                             updateComponents t msg gd model.components
 
                         ( newcs2, _, _ ) =
-                            updateSingleComponentByName msg (ComponentIntMsg 23) gd t "Bar" newcs
+                            updateSingleComponentByName msg (ComponentIntMsg (floor (ggd.energy / 2000 * 100))) gd t "Bar" newcs
 
                         curtime =
                             posixToMillis tick
@@ -124,11 +126,19 @@ updateModel msg gd lm ( model, t ) ggd =
                     ( ( { model | components = newcs }, ggd, [] ), newgd )
 
                 KeyDown 27 ->
-                    let
-                        ( newcs, _, newgd ) =
-                            updateSingleComponentByName UnknownMsg (ComponentLStringMsg [ "Activate", "NONE" ]) gd t "Menu" model.components
-                    in
-                    ( ( { model | components = newcs }, ggd, [] ), newgd )
+                    if model.ispaused then
+                        let
+                            ( newcs, _, newgd ) =
+                                updateSingleComponentByName UnknownMsg (ComponentStringDictMsg "Close" Dict.empty) gd t "Menu" model.components
+                        in
+                        ( ( { model | components = newcs, ispaused = False }, { ggd | ingamepause = False }, [] ), newgd )
+
+                    else
+                        let
+                            ( newcs, _, newgd ) =
+                                updateSingleComponentByName UnknownMsg (ComponentStringDictMsg "Activate" Dict.empty) gd t "Menu" model.components
+                        in
+                        ( ( { model | components = newcs, ispaused = True }, { ggd | ingamepause = True }, [] ), newgd )
 
                 KeyDown _ ->
                     let

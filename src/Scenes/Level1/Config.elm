@@ -3,6 +3,7 @@ module Scenes.Level1.Config exposing (..)
 import Array exposing (Array)
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable)
+import Components.Hints.Export as Hints
 import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Base exposing (CameraData)
@@ -22,9 +23,10 @@ import Scenes.Level1.Map exposing (mymap)
 
 
 initFrontGroundComponents : Int -> Array Component
-initFrontGroundComponents _ =
+initFrontGroundComponents t =
     Array.fromList
-        []
+        [ Hints.initComponent t (ComponentLStringMsg [ "20", "300", "100", "50", "Beimin   北溟" ])
+        ]
 
 
 initPlayer : Int -> PlayerInitPosition -> GameComponent
