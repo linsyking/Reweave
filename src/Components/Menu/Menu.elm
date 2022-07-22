@@ -4,7 +4,6 @@ import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (..)
 import Canvas.Settings exposing (..)
 import Canvas.Settings.Advanced exposing (..)
-import Color
 import Components.Menu.Map.Export as MenuMapE
 import Components.Menu.Settings.Export as MenuSettingsE
 import Components.Menu.Status.Export as MenuStatusE
@@ -13,7 +12,7 @@ import Dict
 import Lib.Component.Base exposing (Component, ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
 import Lib.DefinedTypes.Parser exposing (dgetDict, dgetLComponent, dgetbool, dsetLComponent, dsetbool)
-import Lib.Render.Render exposing (renderSprite, renderText)
+import Lib.Render.Render exposing (renderSprite)
 
 
 testData : Dict.Dict String DefinedTypes
@@ -150,7 +149,7 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                                         (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
                                             let
                                                 ( tmpCom, tmpComMsg, gD ) =
-                                                    comModel.update mainMsg (ComponentStringDictMsg "" tmpData) tmpGData ( comModel.data, t )
+                                                    comModel.update mainMsg (ComponentStringDictMsg "Init" tmpData) tmpGData ( comModel.data, t )
                                             in
                                             ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
                                         )
