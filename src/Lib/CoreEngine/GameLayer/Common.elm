@@ -77,5 +77,8 @@ addenergy ori del =
     if ori + del >= 2000 then
         2000
 
+    else if ori + del <= 0 then
+        0
+
     else
         ori + del

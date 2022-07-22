@@ -7,6 +7,8 @@ all:
 
 format:
 	elm-format src/ --yes
+	python tools/formatdoc.py ./src
+	elm-format src/ --yes
 
 clean:
 	rm -rf build/

@@ -17,21 +17,51 @@ if not isupper(levelname[0]):
     print('Not Valid Levelname')
     exit(0)
 
-bg = '''module Scenes.$!.Background exposing (..)
+bg = '''module Scenes.$!.Background exposing (background)
+
+{-| This is the doc for this module
+
+@docs background
+
+-}
 
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable)
-import Canvas.Settings.Advanced exposing (alpha)
+import Lib.CoreEngine.BackgroundLayer.ImageRolling exposing (genBackground)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
-import Lib.Render.Render exposing (renderSprite)
 
 
+{-| background
+-}
 background : Int -> GameGlobalData -> GlobalData -> Renderable
-background _ _ gd =
-    renderSprite gd [ alpha 0.3 ] ( 0, 0 ) ( 1920, 1080 ) "background"
+background _ ggd gd =
+    genBackground 0.5 "bg/bm" ggd gd
 '''.replace("$!", levelname)
 
-config = '''module Scenes.$!.Config exposing (..)
+config = '''module Scenes.$!.Config exposing
+    ( initFrontGroundComponents
+    , initPlayer
+    , initActors
+    , initCamera
+    , initGameGlobalData
+    , allChartlets
+    )
+
+{-| This is the doc for this module
+
+@docs initFrontGroundComponents
+
+@docs initPlayer
+
+@docs initActors
+
+@docs initCamera
+
+@docs initGameGlobalData
+
+@docs allChartlets
+
+-}
 
 import Array exposing (Array)
 import Base exposing (GlobalData)
@@ -53,12 +83,16 @@ import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
 import Scenes.$!.Map exposing (mymap)
 
 
+{-| initFrontGroundComponents
+-}
 initFrontGroundComponents : Int -> Array Component
 initFrontGroundComponents _ =
     Array.fromList
         []
 
 
+{-| initPlayer
+-}
 initPlayer : Int -> PlayerInitPosition -> GameComponent
 initPlayer t pos =
     case pos of
@@ -69,6 +103,8 @@ initPlayer t pos =
             initGameComponent t (GamePlayerInit (PlayerInit x)) Player.gameComponent
 
 
+{-| initActors
+-}
 initActors : Int -> Array GameComponent
 initActors t =
     Array.fromList
@@ -77,17 +113,21 @@ initActors t =
         , initGameComponent t (GameGoombaInit (GoombaInit ( 2000, 800 ) ( 0, 0 ) 2)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 3500, 500 ) ( 0, 0 ) 3)) Goomba.gameComponent
         , initGameComponent t (GameExitInit (ExitInit ( 3800, 1600 ) "Scene1" DefaultPlayerPosition 0 9)) Exit.gameComponent
-        , initGameComponent t (GameSpikeInit (SpikeInit ( 864, 2016 ) HorDown 15 12)) Spike.gameComponent
+        , initGameComponent t (GameSpikeInit (SpikeInit ( 864, 2016 ) HorDown 15 True 12)) Spike.gameComponent
         ]
 
 
+{-| initCamera
+-}
 initCamera : CameraData
 initCamera =
     CameraData ( 0, 1120 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * 119 - 1, 70 * 32 - 1 ) ) ( ( 0.2, 0.3 ), ( 0.4, 0.4 ) )
 
 
-initGameGlobalData : Float -> List String -> Int -> GameGlobalData
-initGameGlobalData e col spstate =
+{-| initGameGlobalData
+-}
+initGameGlobalData : Float -> List String -> GameGlobalData
+initGameGlobalData e col =
     { camera = initCamera
     , solidmap = mymap
     , mapsize = ( 120, 70 )
@@ -97,16 +137,29 @@ initGameGlobalData e col spstate =
     , currentScene = "$!"
     , collectedMonsters = col
     , settingpause = False
-    , specialState = spstate
+    , specialState = 0
     }
 
 
+{-| allChartlets
+-}
 allChartlets : List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
 allChartlets =
     []
 '''.replace("$!", levelname)
 
-export = '''module Scenes.$!.Export exposing (..)
+export = '''module Scenes.$!.Export exposing
+    ( game
+    , scene
+    )
+
+{-| This is the doc for this module
+
+@docs game
+
+@docs scene
+
+-}
 
 import Array
 import Canvas exposing (group)
@@ -116,6 +169,8 @@ import Scenes.$!.Background exposing (background)
 import Scenes.$!.Config exposing (allChartlets, initActors, initFrontGroundComponents, initGameGlobalData, initPlayer)
 
 
+{-| game
+-}
 game : Int -> SceneMsg -> Data
 game t sm =
     let
@@ -133,29 +188,43 @@ game t sm =
             , actors = initActors t
             , chartlets = allChartlets
             , globalData =
-                initGameGlobalData engineMsg.energy engineMsg.collectedMonsters engineMsg.specialstate
+                initGameGlobalData engineMsg.energy engineMsg.collectedMonsters
             , background = ( Array.empty, background )
             , frontground = ( initFrontGroundComponents t, \_ _ _ -> group [] [] )
             }
         )
 
 
+{-| scene
+-}
 scene : Scene Data
 scene =
     genEngineScene game
 '''.replace("$!", levelname)
 
-map = '''module Scenes.$!.Map exposing (..)
+map = '''module Scenes.$!.Map exposing (mymap)
+
+{-| This is the doc for this module
+
+@docs sds
+
+@docs mymap
+
+-}
 
 import Array2D
 import Lib.Map.Poly exposing (buildrect)
 
 
+{-| sds
+-}
 sds : Array2D.Array2D Int
 sds =
     Array2D.repeat 120 70 0
 
 
+{-| mymap
+-}
 mymap : Array2D.Array2D Int
 mymap =
     sds
@@ -166,7 +235,7 @@ mymap =
 with open('./src/Scenes/AllScenes.elm', 'r') as f:
     als = f.readlines()
 
-als.insert(2, f"import Scenes.{levelname}.Export as {levelname}\n")
+als.insert(8, f"import Scenes.{levelname}.Export as {levelname}\n")
 als = "".join(als)
 als = als.replace(
     "    ]", f"    , ( \"{levelname}\", CEG.toCT {levelname}.scene )\n    ]")

@@ -34,14 +34,14 @@ mymap =
         |> buildzystick ( 35, 63 )
         |> buildzystick ( 45, 60 )
         |> buildplatforms ( 51, 60 ) 8
-        |> buildrect ( 65, 60 ) ( 20, 1 ) 2
+        |> buildrect ( 69, 60 ) ( 22, 1 ) 2
         |> buildrect ( 72, 52 ) ( 12, 4 ) 2
         |> buildrect ( 68, 52 ) ( 4, 2 ) 2
         |> buildrect ( 84, 52 ) ( 4, 2 ) 2
         |> buildrect ( 69, 53 ) ( 4, 2 ) 2
         |> buildrect ( 83, 53 ) ( 4, 2 ) 2
-        |> buildplatforms ( 85, 60 ) 7
         |> buildrect ( 116, 60 ) ( 3, 1 ) 2
+        |> buildplatforms ( 85, 60 ) 7
         |> buildlxrock ( 20, 67 )
         |> buildlxrock ( 32, 67 )
         |> buildlxrock ( 33, 66 )

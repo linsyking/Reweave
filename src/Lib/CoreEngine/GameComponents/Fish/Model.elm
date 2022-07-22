@@ -295,7 +295,12 @@ updateModel mainMsg comMsg gameGlobalData _ ( model, t ) =
                         uid =
                             dgetint model.extra "TriggerUID"
                     in
-                    ( { model | status = Dead t }, [ GameActorUidMsg uid (GameStringMsg "start") ], gameGlobalData )
+                    ( { model | status = Dead t }
+                    , [ GameActorUidMsg uid (GameStringMsg "start")
+                      , GameParentMsg (GameLStringMsg [ "collectmonster", "turtle" ])
+                      ]
+                    , gameGlobalData
+                    )
 
                 _ ->
                     ( model, [], gameGlobalData )

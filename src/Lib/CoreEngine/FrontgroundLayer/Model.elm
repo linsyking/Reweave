@@ -25,7 +25,7 @@ import Components.Console.Export as Console
 import Components.Menu.Export as Menu
 import Components.Trans.Export as Trans
 import Dict
-import Lib.Component.Base exposing (ComponentTMsg(..))
+import Lib.Component.Base exposing (ComponentTMsg(..), DefinedTypes(..))
 import Lib.Component.ComponentHandler exposing (updateComponents, updateSingleComponentByName)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.FrontgroundLayer.Common exposing (Model)
@@ -45,6 +45,7 @@ initModel t lm _ =
             { render = f.timeseries
             , components =
                 Array.append
+                    f.components
                     (Array.fromList
                         [ Bar.initComponent t NullComponentMsg
                         , Trans.initComponent t (ComponentLStringMsg [ "end", "cloud", "0" ])
@@ -52,7 +53,6 @@ initModel t lm _ =
                         , Console.initComponent t NullComponentMsg
                         ]
                     )
-                    f.components
             , fpsrepo = []
             , ispaused = False
             , exitinfo = nullEngineT
@@ -88,7 +88,7 @@ dealComponentsMsg rmsg model gd ggd =
                         addenergy originenergy 500
 
                 newexitmsg =
-                    LayerExitMsg { originet | energy = newenergy } s 0
+                    LayerExitMsg { originet | energy = newenergy, collectedMonsters = ggd.collectedMonsters } s 0
             in
             ( ( model, ggd, [ ( LayerParentScene, newexitmsg ) ] ), { gd | scenesFinished = gd.scenesFinished ++ [ ggd.currentScene ] } )
 
@@ -150,7 +150,25 @@ updateModel msg gd lm ( model, t ) ggd =
                 ( newcs, _, newgd ) =
                     updateSingleComponentByName UnknownMsg (ComponentLStringMsg [ "start", "cloud", String.fromInt transt, "restart", ggd.currentScene ]) gd t "Trans" model.components
             in
-            ( ( { model | components = newcs, exitinfo = EngineT 0 DefaultPlayerPosition ggd.collectedMonsters ggd.specialState }, ggd, [] ), newgd )
+            ( ( { model
+                    | components = newcs
+                    , exitinfo =
+                        EngineT
+                            (if ggd.energy >= 500 then
+                                500
+
+                             else
+                                addenergy ggd.energy -(ggd.energy / 1.5)
+                            )
+                            DefaultPlayerPosition
+                            ggd.collectedMonsters
+                            ggd.specialState
+                }
+              , ggd
+              , []
+              )
+            , newgd
+            )
 
         _ ->
             case msg of
@@ -195,7 +213,19 @@ updateModel msg gd lm ( model, t ) ggd =
                     else
                         let
                             ( newcs, _, newgd ) =
-                                updateSingleComponentByName UnknownMsg (ComponentStringDictMsg "Activate" Dict.empty) gd t "Menu" model.components
+                                updateSingleComponentByName UnknownMsg
+                                    (ComponentStringDictMsg "Activate"
+                                        (Dict.fromList
+                                            [ ( "collectedMonsters", CDLString ggd.collectedMonsters )
+                                            , ( "currentScene", CDString ggd.currentScene )
+                                            , ( "energy", CDInt (floor ggd.energy) )
+                                            ]
+                                        )
+                                    )
+                                    gd
+                                    t
+                                    "Menu"
+                                    model.components
                         in
                         ( ( { model | components = newcs, ispaused = True }, { ggd | ingamepause = True, settingpause = True }, [] ), newgd )
 

@@ -1,17 +1,5 @@
 module Lib.CoreEngine.GameLayer.Model exposing
     ( initModel
-    , deleteObjects
-    , releaseObjects
-    , playerMove
-    , judgePlayerOK
-    , clearWrongVelocity
-    , solidCollision
-    , interCollision
-    , calcDRate
-    , calcRPer
-    , getDSEnergy
-    , dealParentMsg
-    , dealAllParentMsg
     , updateModel
     )
 
@@ -431,6 +419,9 @@ dealParentMsg gct gd ( model, t ) ggd =
         GameStringMsg "restart" ->
             ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerRestartMsg 10 ) ] ), gd )
 
+        GameLStringMsg ("collectmonster" :: pic :: _) ->
+            ( ( model, { ggd | collectedMonsters = ggd.collectedMonsters ++ [ pic ] }, [] ), gd )
+
         GameStringMsg "ignoreinput" ->
             let
                 player =
@@ -513,20 +504,21 @@ dealParentMsg gct gd ( model, t ) ggd =
             ( ( model, ggd, [] ), gd )
 
 
-{-| dealAllParentMsg
--}
-dealAllParentMsg : List GameComponentTMsg -> GlobalData -> ( Model, Int ) -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
-dealAllParentMsg allparentmsg gd ( model, t ) ggd =
-    List.foldl
-        (\tm ( ( cm, cggd, cam ), cgd ) ->
-            let
-                ( ( nnm, nnggd, nndmd ), nngd ) =
-                    dealParentMsg tm cgd ( cm, t ) cggd
-            in
-            ( ( nnm, nnggd, cam ++ nndmd ), nngd )
-        )
-        ( ( model, ggd, [] ), gd )
-        allparentmsg
+
+-- {-| dealAllParentMsg
+-- -}
+-- dealAllParentMsg : List GameComponentTMsg -> GlobalData -> ( Model, Int ) -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
+-- dealAllParentMsg allparentmsg gd ( model, t ) ggd =
+--     List.foldl
+--         (\tm ( ( cm, cggd, cam ), cgd ) ->
+--             let
+--                 ( ( nnm, nnggd, nndmd ), nngd ) =
+--                     dealParentMsg tm cgd ( cm, t ) cggd
+--             in
+--             ( ( nnm, nnggd, cam ++ nndmd ), nngd )
+--         )
+--         ( ( model, ggd, [] ), gd )
+--         allparentmsg
 
 
 {-| updateModel
@@ -781,9 +773,6 @@ updateModel msg gd lm ( model, t ) ggd =
 
                                 else
                                     let
-                                        dddd =
-                                            Debug.log "dsd" xsable
-
                                         ( px, py ) =
                                             posToReal gd (getPositionUnderCamera (getGameComponentCenter model.player) ggd)
 

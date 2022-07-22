@@ -2,7 +2,6 @@ module Lib.CoreEngine.GameComponents.EnergyCrystal.Model exposing
     ( initData
     , simplecheckBox
     , initModel
-    , randomPos
     , updateModel
     )
 
@@ -14,8 +13,6 @@ module Lib.CoreEngine.GameComponents.EnergyCrystal.Model exposing
 
 @docs initModel
 
-@docs randomPos
-
 @docs updateModel
 
 -}
@@ -25,8 +22,8 @@ import Dict
 import Lib.Component.Base exposing (DefinedTypes(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
-import Lib.DefinedTypes.Parser exposing (dgetLString, dsetlstring)
-import Random
+import Lib.CoreEngine.GameLayer.Common exposing (addenergy)
+import Lib.DefinedTypes.Parser exposing (dgetbool, dgetint)
 
 
 {-| initData
@@ -38,8 +35,8 @@ initData =
     , velocity = ( 0, 0 )
     , mass = 0
     , acceleration = ( 0, 0 )
-    , simplecheck = simplecheckBox ( 0, 0 )
-    , collisionbox = [ simplecheckBox ( 0, 0 ) ]
+    , simplecheck = simplecheckBox
+    , collisionbox = [ simplecheckBox ]
     , extra = Dict.empty
     , uid = 999
     }
@@ -47,13 +44,13 @@ initData =
 
 {-| simplecheckBox
 -}
-simplecheckBox : ( Int, Int ) -> Box
-simplecheckBox ( w, h ) =
+simplecheckBox : Box
+simplecheckBox =
     { name = "sp"
     , offsetX = 0
     , offsetY = 0
-    , width = w
-    , height = h
+    , width = 20
+    , height = 40
     }
 
 
@@ -68,11 +65,12 @@ initModel _ gct =
             , velocity = ( 0, 0 )
             , mass = 0
             , acceleration = ( 0, 0 )
-            , simplecheck = simplecheckBox ( info.initRadius, info.initRadius )
-            , collisionbox = [ simplecheckBox ( info.initRadius, info.initRadius ) ]
+            , simplecheck = simplecheckBox
+            , collisionbox = [ simplecheckBox ]
             , extra =
                 Dict.fromList
-                    [ ( "EmitPos", CDLString (List.repeat 5 (String.fromInt (Tuple.first info.initPosition) ++ "_" ++ String.fromInt (Tuple.second info.initPosition))) )
+                    [ ( "energy", CDInt info.energy )
+                    , ( "recover", CDBool info.recoverable )
                     ]
             , uid = info.uid
             }
@@ -81,57 +79,46 @@ initModel _ gct =
             initData
 
 
-{-| randomPos
--}
-randomPos : Int -> Int -> Int -> Int
-randomPos t l r =
-    Tuple.first (Random.step (Random.int l r) (Random.initialSeed t))
-
-
 {-| updateModel
 -}
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
 updateModel mainMsg gct ggd _ ( d, t ) =
+    let
+        energy =
+            dgetint d.extra "energy"
+    in
     case gct of
         GameInterCollisionMsg "player" _ _ ->
-            ( { d | status = Dead t }
-            , []
-            , { ggd
-                | energy =
-                    if ggd.energy + 100 > 2000 then
-                        2000
+            case d.status of
+                Dead _ ->
+                    ( d, [], ggd )
 
-                    else
-                        ggd.energy + 200
-              }
-            )
+                Alive ->
+                    ( { d | status = Dead t }
+                    , []
+                    , { ggd
+                        | energy =
+                            addenergy ggd.energy (toFloat energy)
+                      }
+                    )
 
         _ ->
             case mainMsg of
                 Tick _ ->
-                    let
-                        tmpEmitPos =
-                            dgetLString d.extra "EmitPos"
+                    case d.status of
+                        Alive ->
+                            ( d, [], ggd )
 
-                        newEmitPos =
-                            List.map
-                                (\str ->
-                                    let
-                                        list =
-                                            String.split "_" str
+                        Dead t0 ->
+                            let
+                                recover =
+                                    dgetbool d.extra "recover"
+                            in
+                            if recover && t - t0 >= 400 then
+                                ( { d | status = Alive }, [], ggd )
 
-                                        posX =
-                                            Maybe.withDefault 0 (String.toInt (Maybe.withDefault "" (List.head list)))
-
-                                        posY =
-                                            Maybe.withDefault 0 (String.toInt (Maybe.withDefault "" (List.head (List.reverse list))))
-                                    in
-                                    String.fromInt (posX + randomPos (t + posY) -d.simplecheck.width d.simplecheck.width) ++ "_" ++ String.fromInt (posY + randomPos (t + posX) (-d.simplecheck.width - 1) (d.simplecheck.width + 1))
-                                )
-                                tmpEmitPos
-                                |> List.drop 1
-                    in
-                    ( { d | extra = d.extra |> dsetlstring "EmitPos" (newEmitPos ++ [ String.fromInt (Tuple.first d.position) ++ "_" ++ String.fromInt (Tuple.second d.position) ]) }, [], ggd )
+                            else
+                                ( d, [], ggd )
 
                 _ ->
                     ( d, [], ggd )

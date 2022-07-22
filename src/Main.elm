@@ -1,11 +1,4 @@
-port module Main exposing
-    ( initModel
-    , main
-    , init
-    , update
-    , subscriptions
-    , view
-    )
+port module Main exposing (main)
 
 {-| This is the doc for this module
 
@@ -88,7 +81,7 @@ init : Flags -> ( Model, Cmd Msg, AudioCmd Msg )
 init flags =
     let
         ms =
-            loadSceneByName initModel "Level1" NullSceneMsg
+            loadSceneByName initModel "Test" NullSceneMsg
 
         oldgd =
             ms.currentGlobalData
