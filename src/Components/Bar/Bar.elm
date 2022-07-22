@@ -21,7 +21,7 @@ initBar energy _ =
     Dict.fromList
         [ ( "cx", CDFloat 120 ) -- center of circle
         , ( "cy", CDFloat 120 )
-        , ( "radius", CDFloat 30 ) -- radius of circle
+        , ( "radius", CDFloat 50 ) -- radius of circle
         , ( "cp1x", CDFloat 110 ) -- the first controlling point of bezier curve
         , ( "cp1y", CDFloat 28 )
         , ( "cp2x", CDFloat 112 ) -- the second controlling point of bezier curve
