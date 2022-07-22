@@ -313,7 +313,7 @@ viewDialog ( model, t ) globalData =
                         []
 
                      else
-                        [ renderSprite globalData [] ( 959 - 72 * timer, 50 ) ( 154 * timer, 300 ) "dialogue" ]
+                        [ renderSprite globalData [] ( 859 - 72 * timer, 50 ) ( 154 * timer, 300 ) "dialogue" ]
                     )
                     (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
                 )
