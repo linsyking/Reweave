@@ -2,6 +2,7 @@ module Lib.CoreEngine.GameComponents.EnergyCrystal.Model exposing (..)
 
 import Base exposing (GlobalData, Msg)
 import Dict
+import Energy exposing (Energy)
 import Lib.Component.Base exposing (DefinedTypes(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
@@ -53,8 +54,8 @@ initModel _ gct =
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
 updateModel _ gct ggd _ ( d, t ) =
     case gct of
-        GameInterCollisionMsg _ pd _ ->
-            ( d, [ GameActorUidMsg pd.uid (GameStringMsg "die") ], ggd )
+        GameInterCollisionMsg "player" _ _ ->
+            ( d, [], { ggd | energy = ggd.energy + 100 } )
 
         _ ->
             ( d, [], ggd )
