@@ -74,6 +74,7 @@ type GameComponentTMsg
     | GameClearVelocity
     | GameUseEnergy ( Float, Float ) Float
     | GameStringMsg String
+    | GameLStringMsg (List String)
     | GamePlayerInit PlayerInit
     | GameGoombaInit GoombaInit
     | GameGoombaEmitterInit GoombaEmitterInit

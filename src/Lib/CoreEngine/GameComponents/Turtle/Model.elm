@@ -387,7 +387,12 @@ updateModel mainMsg comMsg gameGlobalData _ ( model, t ) =
                                 model.extra
                     in
                     if curhp - 500 <= 0 then
-                        ( { model | status = Dead t, extra = newmodelextra }, [ GameActorUidMsg uid (GameStringMsg "start") ], gameGlobalData )
+                        ( { model | status = Dead t, extra = newmodelextra }
+                        , [ GameActorUidMsg uid (GameStringMsg "start")
+                          , GameParentMsg (GameLStringMsg [ "collectmonster", "turtle" ])
+                          ]
+                        , gameGlobalData
+                        )
 
                     else
                         ( { model | extra = newmodelextra }, [], gameGlobalData )
@@ -400,7 +405,12 @@ updateModel mainMsg comMsg gameGlobalData _ ( model, t ) =
                         newmodelextra =
                             dsetint "Life" 0 model.extra
                     in
-                    ( { model | status = Dead t, extra = newmodelextra }, [ GameActorUidMsg uid (GameStringMsg "start") ], gameGlobalData )
+                    ( { model | status = Dead t, extra = newmodelextra }
+                    , [ GameActorUidMsg uid (GameStringMsg "start")
+                      , GameParentMsg (GameLStringMsg [ "collectmonster", "turtle" ])
+                      ]
+                    , gameGlobalData
+                    )
 
                 _ ->
                     ( model, [], gameGlobalData )

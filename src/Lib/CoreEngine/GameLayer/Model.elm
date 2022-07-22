@@ -431,6 +431,9 @@ dealParentMsg gct gd ( model, t ) ggd =
         GameStringMsg "restart" ->
             ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerRestartMsg 10 ) ] ), gd )
 
+        GameLStringMsg ("collectmonster" :: pic :: _) ->
+            ( ( model, { ggd | collectedMonsters = ggd.collectedMonsters ++ [ pic ] }, [] ), gd )
+
         GameStringMsg "ignoreinput" ->
             let
                 player =
@@ -781,9 +784,6 @@ updateModel msg gd lm ( model, t ) ggd =
 
                                 else
                                     let
-                                        dddd =
-                                            Debug.log "dsd" xsable
-
                                         ( px, py ) =
                                             posToReal gd (getPositionUnderCamera (getGameComponentCenter model.player) ggd)
 

@@ -13,7 +13,7 @@ module Scenes.Level1.Map exposing
 
 import Array2D
 import Lib.Map.Beimin exposing (buildbmleaf, buildbmlotus)
-import Lib.Map.Donghai exposing (builddhrock, builddhsmallrock)
+import Lib.Map.Donghai exposing (builddhsmallrock)
 import Lib.Map.Poly exposing (buildrect)
 import Lib.Map.Zhongyuan exposing (buildzystick)
 

@@ -11,6 +11,7 @@ module Lib.CoreEngine.GameComponents.EnergyCrystal.Base exposing (EnergyCrystalI
 -}
 type alias EnergyCrystalInit =
     { initPosition : ( Int, Int )
-    , initRadius : Int
+    , energy : Int
+    , recoverable : Bool
     , uid : Int
     }

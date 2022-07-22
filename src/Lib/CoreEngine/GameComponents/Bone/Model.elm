@@ -33,8 +33,8 @@ initData =
     , velocity = ( 0, 0 )
     , mass = 0
     , acceleration = ( 0, 0 )
-    , simplecheck = simplecheckBox ( 0, 0 )
-    , collisionbox = [ simplecheckBox ( 0, 0 ) ]
+    , simplecheck = simplecheckBox 0
+    , collisionbox = [ simplecheckBox 0 ]
     , extra = Dict.empty
     , uid = 999
     }
@@ -42,13 +42,13 @@ initData =
 
 {-| simplecheckBox
 -}
-simplecheckBox : ( Int, Int ) -> Box
-simplecheckBox ( w, h ) =
+simplecheckBox : Int -> Box
+simplecheckBox w =
     { name = "sp"
     , offsetX = 0
     , offsetY = 0
     , width = w
-    , height = h
+    , height = floor (toFloat w / 3 * 2)
     }
 
 

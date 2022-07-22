@@ -88,7 +88,7 @@ dealComponentsMsg rmsg model gd ggd =
                         addenergy originenergy 500
 
                 newexitmsg =
-                    LayerExitMsg { originet | energy = newenergy } s 0
+                    LayerExitMsg { originet | energy = newenergy, collectedMonsters = ggd.collectedMonsters } s 0
             in
             ( ( model, ggd, [ ( LayerParentScene, newexitmsg ) ] ), { gd | scenesFinished = gd.scenesFinished ++ [ ggd.currentScene ] } )
 

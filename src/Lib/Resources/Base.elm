@@ -72,22 +72,18 @@ igetSprite name dst =
 -}
 allTexture : List ( String, String )
 allTexture =
-    [ ( "background", getResourcePath "img/bg.jpg" )
+    [ ( "background", getResourcePath "img/Background/DongHai.jpg" )
     , ( "lcloud", getResourcePath "img/cloud.png" )
     , ( "spikeL", getResourcePath "img/Spike/spikeL.png" )
     , ( "spikeR", getResourcePath "img/Spike/spikeR.png" )
     , ( "spikeT", getResourcePath "img/Spike/spikeT.png" )
     , ( "spikeB", getResourcePath "img/Spike/spikeB.png" )
+    , ( "blueshadow", getResourcePath "img/ki.png" )
     , ( "skull", getResourcePath "img/Spike/skull.png" )
     , ( "dialogue", getResourcePath "img/dialogue.png" )
     , ( "downbutton", getResourcePath "img/down.png" )
     , ( "bullet", getResourcePath "img/bullet.png" )
-    , ( "fish", getResourcePath "img/Monsters/fish.png" )
-    , ( "turtle", getResourcePath "img/Monsters/turtle.png" )
     , ( "whiteshadow", getResourcePath "img/white-shadow.png" )
-    , ( "blueshadow", getResourcePath "img/ki.png" )
-    , ( "goomba", getResourcePath "img/Monsters/small.png" )
-    , ( "goombadie", getResourcePath "img/Monsters/smalldie.png" )
     ]
         ++ charaSprites
         ++ beiminSprites
@@ -97,6 +93,16 @@ allTexture =
         ++ zhongyuanSprites
         ++ otherSprites
         ++ backgroundSprites
+        ++ monsterSprites
+
+
+monsterSprites : List ( String, String )
+monsterSprites =
+    [ ( "fish", getResourcePath "img/Monsters/fish.png" )
+    , ( "turtle", getResourcePath "img/Monsters/turtle.png" )
+    , ( "goomba", getResourcePath "img/Monsters/small.png" )
+    , ( "goombadie", getResourcePath "img/Monsters/smalldie.png" )
+    ]
 
 
 {-| charaSprites
@@ -188,6 +194,9 @@ otherSprites =
     , ( "ot/map", getResourcePath "img/Others/map.png" )
     , ( "ot/vup", getResourcePath "img/Others/volume-up.png" )
     , ( "ot/vdown", getResourcePath "img/Others/volume-down.png" )
+    , ( "ot/crystal", getResourcePath "img/Others/crystal.png" )
+    , ( "ot/crystaldead", getResourcePath "img/Others/crystaldead.png" )
+    , ( "ot/ball", getResourcePath "img/Others/ball.png" )
     ]
 
 
