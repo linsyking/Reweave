@@ -5,7 +5,7 @@ import Canvas exposing (Renderable, circle, group, rect, shapes)
 import Canvas.Settings exposing (fill)
 import Canvas.Settings.Advanced exposing (alpha)
 import Color
-import Lib.Coordinate.Coordinates exposing (heightToReal, posToReal, widthToReal)
+import Lib.Coordinate.Coordinates exposing (heightToReal, widthToReal)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Data, LifeStatus(..))

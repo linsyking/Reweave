@@ -5,7 +5,7 @@ import Dict
 import Lib.Component.Base exposing (DefinedTypes(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
-import Lib.DefinedTypes.Parser exposing (dgetLString, dgetint, dsetlstring)
+import Lib.DefinedTypes.Parser exposing (dgetLString, dsetlstring)
 import Random
 
 
