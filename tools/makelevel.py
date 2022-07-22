@@ -206,8 +206,6 @@ map = '''module Scenes.$!.Map exposing (mymap)
 
 {-| This is the doc for this module
 
-@docs sds
-
 @docs mymap
 
 -}
@@ -216,8 +214,6 @@ import Array2D
 import Lib.Map.Poly exposing (buildrect)
 
 
-{-| sds
--}
 sds : Array2D.Array2D Int
 sds =
     Array2D.repeat 120 70 0
