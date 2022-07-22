@@ -12,7 +12,7 @@ import Lib.Render.Render exposing (renderSprite)
 view : ( Data, Int ) -> GameGlobalData -> GlobalData -> List ( Renderable, Int )
 view ( d, _ ) ggd gd =
     [ ( group []
-            [ renderSprite gd [] (getPositionUnderCamera d.position ggd) ( d.simplecheck.width, d.simplecheck.height ) "background" ]
+            [ renderSprite gd [] (getPositionUnderCamera d.position ggd) ( d.simplecheck.width, d.simplecheck.height ) "skull" ]
       , 0
       )
     ]
