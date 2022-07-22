@@ -1,11 +1,4 @@
-port module Main exposing
-    ( initModel
-    , main
-    , init
-    , update
-    , subscriptions
-    , view
-    )
+port module Main exposing (main)
 
 {-| This is the doc for this module
 
