@@ -7,6 +7,7 @@ import Lib.Coordinate.Coordinates exposing (judgeMouse)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
+import Lib.CoreEngine.Physics.Acceleration exposing (putAccOn)
 import Lib.CoreEngine.Physics.SolidCollision exposing (canMove)
 import Lib.CoreEngine.Physics.Velocity exposing (changeCVel)
 import Math.Vector2 exposing (vec2)
@@ -42,9 +43,9 @@ initModel _ gcm =
         GameFireballInit info ->
             { status = Alive
             , position = info.initPosition
-            , velocity = info.initVelocity
+            , velocity = ( 0, 0 )
             , mass = floor (toFloat info.size * 2)
-            , acceleration = ( 0, 0 )
+            , acceleration = ( 0, -8 )
             , simplecheck = simplecheckBox info.size
             , collisionbox = [ simplecheckBox info.size ]
             , extra = Dict.empty
@@ -65,6 +66,9 @@ updateModel msg gct ggd gd ( d, t ) =
 
                 _ ->
                     let
+                        newModel =
+                            putAccOn d
+
                         ( vx, vy ) =
                             d.velocity
 
@@ -72,10 +76,10 @@ updateModel msg gct ggd gd ( d, t ) =
                             d.position
                     in
                     if (vx < 0 && not (canMove d ggd (vec2 -1 0))) || (vx > 0 && not (canMove d ggd (vec2 1 0))) || (vy > 0 && not (canMove d ggd (vec2 0 1))) || (vy < 0 && not (canMove d ggd (vec2 0 -1))) then
-                        ( { d | status = Dead t, position = ( x + ceiling (vx / 1000), y + ceiling (vy / 1000) ) }, [], ggd )
+                        ( { newModel | status = Dead t, position = ( x + ceiling (vx / 1000), y + ceiling (vy / 1000) ) }, [], ggd )
 
                     else
-                        ( d, [], ggd )
+                        ( newModel, [], ggd )
 
         MouseDown 0 mp ->
             if judgeMouse gd mp (getPositionUnderCamera d.position ggd) ( d.simplecheck.width, d.simplecheck.height ) then
