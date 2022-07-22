@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Exit.Base exposing (..)
+module Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
 
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInitPosition)
 

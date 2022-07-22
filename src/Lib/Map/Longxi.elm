@@ -1,4 +1,4 @@
-module Lib.Map.Longxi exposing (..)
+module Lib.Map.Longxi exposing (buildlxgroundmiddle, buildlxlongground, buildlxplain, buildlxrock, bulidlxgroundleft, bulidlxgroundright)
 
 import Array2D
 import Lib.Map.Poly exposing (buildrect)

@@ -1,4 +1,4 @@
-module Lib.Map.Poly exposing (..)
+module Lib.Map.Poly exposing (buildrect)
 
 import Array2D
 

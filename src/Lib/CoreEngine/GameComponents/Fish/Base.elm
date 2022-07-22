@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Fish.Base exposing (..)
+module Lib.CoreEngine.GameComponents.Fish.Base exposing (FishInit)
 
 
 type alias FishInit =

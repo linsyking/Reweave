@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Bullet.Base exposing (..)
+module Lib.CoreEngine.GameComponents.Bullet.Base exposing (BulletInit)
 
 
 type alias BulletInit =

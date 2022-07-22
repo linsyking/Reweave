@@ -1,4 +1,4 @@
-module Lib.Map.Beimin exposing (..)
+module Lib.Map.Beimin exposing (buildbmground, buildbmleaf, buildbmlongground, buildbmlotus)
 
 import Array2D
 import Lib.Map.Poly exposing (buildrect)

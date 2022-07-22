@@ -1,4 +1,4 @@
-module Lib.Map.Donghai exposing (..)
+module Lib.Map.Donghai exposing (builddhbigrock, builddhrock, builddhsmallrock)
 
 import Array2D
 import Lib.Map.Poly exposing (buildrect)

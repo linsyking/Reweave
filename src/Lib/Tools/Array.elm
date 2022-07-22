@@ -1,4 +1,4 @@
-module Lib.Tools.Array exposing (..)
+module Lib.Tools.Array exposing (delSame, locate)
 
 import Array exposing (Array)
 

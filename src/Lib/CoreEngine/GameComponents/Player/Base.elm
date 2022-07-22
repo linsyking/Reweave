@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Player.Base exposing (..)
+module Lib.CoreEngine.GameComponents.Player.Base exposing (BoundKey, Model, PlayerInit, PlayerInitPosition(..), PlayerState(..), SpaceLog(..), StateData, changebk, changehistory, fixnotrightdir, nullModel)
 
 
 type alias PlayerInit =

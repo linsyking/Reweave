@@ -1,4 +1,4 @@
-module Lib.Map.Chartlet exposing (..)
+module Lib.Map.Chartlet exposing (renderBackgroundChartletsFromSolid, renderSingleBlock)
 
 import Array2D
 import Base exposing (GlobalData)

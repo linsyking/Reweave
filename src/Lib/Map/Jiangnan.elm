@@ -1,4 +1,4 @@
-module Lib.Map.Jiangnan exposing (..)
+module Lib.Map.Jiangnan exposing (buildjnleaf, buildlongroof, buildroofleft, buildroofmiddle, buildroofright)
 
 import Array2D
 import Lib.Map.Poly exposing (buildrect)

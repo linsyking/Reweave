@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Goomba.Base exposing (..)
+module Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
 
 
 type alias GoombaInit =

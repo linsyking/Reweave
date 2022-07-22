@@ -1,4 +1,4 @@
-module Lib.Map.Zhongyuan exposing (..)
+module Lib.Map.Zhongyuan exposing (buildplatforms, buildzystick)
 
 import Array2D
 import Lib.Map.Poly exposing (buildrect)

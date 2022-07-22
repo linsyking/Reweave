@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Fireball.Base exposing (..)
+module Lib.CoreEngine.GameComponents.Fireball.Base exposing (FireballInit)
 
 
 type alias FireballInit =

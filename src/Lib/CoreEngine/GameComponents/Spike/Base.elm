@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Spike.Base exposing (..)
+module Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..), SpikeInit)
 
 
 type alias SpikeInit =

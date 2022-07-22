@@ -1,4 +1,4 @@
-module Lib.CoreEngine.Base exposing (..)
+module Lib.CoreEngine.Base exposing (GameGlobalData, brickSize, nullGameGlobalData, testGameGlobalData)
 
 import Array2D exposing (Array2D)
 import Lib.CoreEngine.Camera.Base exposing (CameraData)
