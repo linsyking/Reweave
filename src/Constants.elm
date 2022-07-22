@@ -12,11 +12,15 @@ module Constants exposing
 -}
 
 
+{-| width
+-}
 plWidth : Int
 plWidth =
     1920
 
 
+{-| height
+-}
 plHeight : Int
 plHeight =
     1080
