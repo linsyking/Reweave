@@ -55,7 +55,7 @@ type GameComponentTMsg
     | GameFireballInit FireballInit
     | GameTurtleInit TurtleInit
     | GameCutSceneInit CutSceneInit
-    | GameExitScene String PlayerInitPosition
+    | GameExitScene String PlayerInitPosition Int
     | GameBoneInit BoneInit
     | GameEnergyCrystalInit EnergyCrystalInit
     | GameBallInit BallInit
