@@ -300,11 +300,17 @@ calcDRate p1 p2 ( w, h ) =
     else if p2Y < p1Y && k >= k4 && k <= k3 then
         1 - p2Y / p1Y
 
-    else if p2X < p1X && k < k1 || k > k3 then
+    else if p2X < p1X && ( k < k1 || k > k3 ) then
         1 - p2X / p1X
 
-    else if p2X > p1X && k < k4 || k > k2 then
+    else if p2X > p1X && ( k < k4 || k > k2 ) then
         1 - (w - p2X) / (w - p1X)
+
+    else if p1Y == p2Y && p2X > p1X then
+        ( p2X - p1X ) / ( w - p1X )
+
+    else if p1Y == p2Y && p2X < p1X then
+        ( p1X - p2X ) / p1X
 
     else
         0
