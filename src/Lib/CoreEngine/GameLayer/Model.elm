@@ -7,30 +7,6 @@ module Lib.CoreEngine.GameLayer.Model exposing
 
 @docs initModel
 
-@docs deleteObjects
-
-@docs releaseObjects
-
-@docs playerMove
-
-@docs judgePlayerOK
-
-@docs clearWrongVelocity
-
-@docs solidCollision
-
-@docs interCollision
-
-@docs calcDRate
-
-@docs calcRPer
-
-@docs getDSEnergy
-
-@docs dealParentMsg
-
-@docs dealAllParentMsg
-
 @docs updateModel
 
 -}
