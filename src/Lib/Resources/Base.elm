@@ -1,31 +1,69 @@
 module Lib.Resources.Base exposing (..)
 
+{-| This is the doc for this module
+
+@docs getResourcePath
+
+@docs getTexture
+
+@docs saveSprite
+
+@docs igetSprite
+
+@docs allTexture
+
+@docs charaSprites
+
+@docs beiminSprites
+
+@docs donghaiSprites
+
+@docs jiangnanSprites
+
+@docs longxiSprites
+
+@docs zhongyuanSprites
+
+@docs otherSprites
+
+-}
+
 import Base exposing (Msg(..))
 import Canvas exposing (text)
 import Canvas.Texture as Texture exposing (Texture)
 import Dict exposing (Dict)
 
 
+{-| getResourcePath
+-}
 getResourcePath : String -> String
 getResourcePath x =
     "assets/" ++ x
 
 
+{-| getTexture
+-}
 getTexture : List (Texture.Source Msg)
 getTexture =
     List.map (\( x, y ) -> Texture.loadFromImageUrl y (TextureLoaded x)) allTexture
 
 
+{-| saveSprite
+-}
 saveSprite : Dict String Texture -> String -> Texture -> Dict String Texture
 saveSprite dst name text =
     Dict.insert name text dst
 
 
+{-| igetSprite
+-}
 igetSprite : String -> Dict String Texture -> Maybe Texture
 igetSprite name dst =
     Dict.get name dst
 
 
+{-| allTexture
+-}
 allTexture : List ( String, String )
 allTexture =
     [ ( "background", getResourcePath "img/bg.jpg" )
@@ -55,6 +93,8 @@ allTexture =
         ++ otherSprites
 
 
+{-| charaSprites
+-}
 charaSprites : List ( String, String )
 charaSprites =
     [ ( "p_jump", getResourcePath "img/Characters/p_jump.png" )
@@ -71,6 +111,8 @@ charaSprites =
     ]
 
 
+{-| beiminSprites
+-}
 beiminSprites : List ( String, String )
 beiminSprites =
     [ ( "bm/ground", getResourcePath "img/BeiMin/ground.png" )
@@ -80,6 +122,8 @@ beiminSprites =
     ]
 
 
+{-| donghaiSprites
+-}
 donghaiSprites : List ( String, String )
 donghaiSprites =
     [ ( "dh/smallrock", getResourcePath "img/DongHai/smallrock.png" )
@@ -88,6 +132,8 @@ donghaiSprites =
     ]
 
 
+{-| jiangnanSprites
+-}
 jiangnanSprites : List ( String, String )
 jiangnanSprites =
     [ ( "jn/roof", getResourcePath "img/JiangNan/roof.png" )
@@ -97,6 +143,8 @@ jiangnanSprites =
     ]
 
 
+{-| longxiSprites
+-}
 longxiSprites : List ( String, String )
 longxiSprites =
     [ ( "lx/rock", getResourcePath "img/LongXi/rock.png" )
@@ -108,6 +156,8 @@ longxiSprites =
     ]
 
 
+{-| zhongyuanSprites
+-}
 zhongyuanSprites : List ( String, String )
 zhongyuanSprites =
     [ ( "zy/stick", getResourcePath "img/ZhongYuan/stick.png" )
@@ -116,6 +166,8 @@ zhongyuanSprites =
     ]
 
 
+{-| otherSprites
+-}
 otherSprites : List ( String, String )
 otherSprites =
     [ ( "ot/transfer", getResourcePath "img/Others/transfer.png" )

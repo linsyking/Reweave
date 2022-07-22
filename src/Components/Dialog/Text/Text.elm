@@ -1,5 +1,15 @@
 module Components.Dialog.Text.Text exposing (..)
 
+{-| This is the doc for this module
+
+@docs initText
+
+@docs updateText
+
+@docs viewText
+
+-}
+
 import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (..)
 import Canvas.Settings exposing (..)
@@ -18,6 +28,8 @@ import Lib.Render.Render exposing (renderSprite)
 -- OnShow : OnLoadChild -> (OnShowChild ->) OnDeChild (OnDeconstructChild)
 
 
+{-| initText
+-}
 initText : Int -> ComponentTMsg -> Data
 initText _ comMsg =
     case comMsg of
@@ -37,6 +49,8 @@ initText _ comMsg =
             Dict.empty
 
 
+{-| updateText
+-}
 updateText : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateText mainMsg comMsg globalData ( model, t ) =
     case mainMsg of
@@ -182,6 +196,8 @@ updateText mainMsg comMsg globalData ( model, t ) =
                     ( model, [ ComponentLSStringMsg "StatusReport" [ status ] ], globalData )
 
 
+{-| viewText
+-}
 viewText : ( Data, Int ) -> GlobalData -> Renderable
 viewText ( model, t ) globalData =
     let

@@ -1,5 +1,19 @@
 module Scenes.Home.Layer1.Models exposing (..)
 
+{-| This is the doc for this module
+
+@docs length
+
+@docs width
+
+@docs initButton
+
+@docs initModel
+
+@docs updateModel
+
+-}
+
 import Base exposing (..)
 import Constants exposing (..)
 import Lib.Component.Base exposing (ComponentTMsg(..))
@@ -15,21 +29,29 @@ import Scenes.Home.LayerBase exposing (CommonData)
 -- The width of the button is width * 2
 
 
+{-| length
+-}
 length : number
 length =
     60
 
 
+{-| width
+-}
 width : number
 width =
     40
 
 
+{-| initButton
+-}
 initButton : String -> ( Int, Int ) -> Int -> Int -> Button
 initButton description ( x, y ) len wid =
     Button description ( x, y ) len wid
 
 
+{-| initModel
+-}
 initModel : Int -> LayerMsg -> CommonData -> ModelX
 initModel _ _ _ =
     { ico = 1
@@ -39,6 +61,8 @@ initModel _ _ _ =
     }
 
 
+{-| updateModel
+-}
 updateModel : Msg -> GlobalData -> LayerMsg -> ( ModelX, Int ) -> CommonData -> ( ( ModelX, CommonData, List ( LayerTarget, LayerMsg ) ), GlobalData )
 updateModel msg gd _ ( model, t ) cd =
     case msg of

@@ -1,5 +1,17 @@
 module Components.Console.Console exposing (..)
 
+{-| This is the doc for this module
+
+@docs initModel
+
+@docs updateModel
+
+@docs sendmsg
+
+@docs viewModel
+
+-}
+
 import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (Renderable, group, rect, shapes)
 import Canvas.Settings.Advanced exposing (alpha)
@@ -11,6 +23,8 @@ import Lib.DefinedTypes.Parser exposing (dgetString, dgetbool, dsetbool, dsetstr
 import Lib.Render.Render exposing (renderText)
 
 
+{-| initModel
+-}
 initModel : Int -> ComponentTMsg -> Data
 initModel _ _ =
     Dict.fromList
@@ -19,6 +33,8 @@ initModel _ _ =
         ]
 
 
+{-| updateModel
+-}
 updateModel : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateModel msg _ gd ( d, _ ) =
     let
@@ -66,6 +82,8 @@ updateModel msg _ gd ( d, _ ) =
             ( d, [], gd )
 
 
+{-| sendmsg
+-}
 sendmsg : String -> ComponentTMsg
 sendmsg command =
     let
@@ -102,6 +120,8 @@ sendmsg command =
         NullComponentMsg
 
 
+{-| viewModel
+-}
 viewModel : ( Data, Int ) -> GlobalData -> Renderable
 viewModel ( d, t ) gd =
     let

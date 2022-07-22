@@ -1,5 +1,25 @@
 module Lib.CoreEngine.GameComponents.Fish.Model exposing (..)
 
+{-| This is the doc for this module
+
+@docs initData
+
+@docs simplecheckBox
+
+@docs initModel
+
+@docs changeStatus
+
+@docs changeVelocity
+
+@docs randomPos
+
+@docs getInitBulletsMsg
+
+@docs updateModel
+
+-}
+
 -- import Lib.CoreEngine.Physics.Velocity exposing (changeCVel)
 
 import Base exposing (GlobalData, Msg(..))
@@ -11,6 +31,8 @@ import Lib.DefinedTypes.Parser exposing (dgetString, dgetint, dsetint, dsetstrin
 import Random
 
 
+{-| initData
+-}
 initData : Data
 initData =
     { status = Alive
@@ -25,6 +47,8 @@ initData =
     }
 
 
+{-| simplecheckBox
+-}
 simplecheckBox : Box
 simplecheckBox =
     { name = "sp"
@@ -35,6 +59,8 @@ simplecheckBox =
     }
 
 
+{-| initModel
+-}
 initModel : Int -> GameComponentTMsg -> Data
 initModel _ comMsg =
     case comMsg of
@@ -59,6 +85,8 @@ initModel _ comMsg =
             initData
 
 
+{-| changeStatus
+-}
 changeStatus : Data -> Data
 changeStatus model =
     let
@@ -120,6 +148,8 @@ changeStatus model =
             }
 
 
+{-| changeVelocity
+-}
 changeVelocity : Data -> Data
 changeVelocity model =
     let
@@ -151,11 +181,15 @@ changeVelocity model =
             { model | velocity = ( 0, 0 ) }
 
 
+{-| randomPos
+-}
 randomPos : Random.Seed -> Int -> Int -> Int
 randomPos seed l r =
     Tuple.first (Random.step (Random.int l r) seed)
 
 
+{-| getInitBulletsMsg
+-}
 getInitBulletsMsg : Int -> Data -> List GameComponentMsgType
 getInitBulletsMsg t model =
     let
@@ -223,6 +257,8 @@ getInitBulletsMsg t model =
             []
 
 
+{-| updateModel
+-}
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
 updateModel mainMsg comMsg gameGlobalData _ ( model, t ) =
     case mainMsg of

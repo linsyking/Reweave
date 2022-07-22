@@ -1,5 +1,31 @@
 module Lib.Layer.LayerHandler exposing (..)
 
+{-| This is the doc for this module
+
+@docs getLayerMsg
+
+@docs applyOnce
+
+@docs applyOnceOnlyNew
+
+@docs updateOnce
+
+@docs updateOnceOnlyNew
+
+@docs updateLayer
+
+@docs judgeEnd
+
+@docs filterLayerParentMsg
+
+@docs filterLayerParentMsgT
+
+@docs updateLayerRecursive
+
+@docs viewLayer
+
+-}
+
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
 import Lib.Layer.Base exposing (Layer, LayerMsg(..), LayerTarget(..))
@@ -9,6 +35,8 @@ import Lib.Layer.Base exposing (Layer, LayerMsg(..), LayerTarget(..))
 --- Handle Layer
 
 
+{-| getLayerMsg
+-}
 getLayerMsg : List ( LayerTarget, LayerMsg ) -> String -> List LayerMsg
 getLayerMsg xs s =
     let
@@ -31,6 +59,8 @@ getLayerMsg xs s =
     List.map (\( _, x ) -> x) ref
 
 
+{-| applyOnce
+-}
 applyOnce : Msg -> GlobalData -> Int -> a -> List ( LayerTarget, LayerMsg ) -> List ( LayerTarget, LayerMsg ) -> List ( String, Layer a b ) -> List ( String, Layer a b ) -> ( ( List ( LayerTarget, LayerMsg ), List ( String, Layer a b ), a ), GlobalData )
 applyOnce msg gd t cd lms ms dxs xs =
     case xs of
@@ -68,6 +98,8 @@ applyOnce msg gd t cd lms ms dxs xs =
             applyOnce msg newgd t newcd (lms ++ newmsg) ms (dxs ++ [ ( name, { layer | data = newdata } ) ]) lxs
 
 
+{-| applyOnceOnlyNew
+-}
 applyOnceOnlyNew : Msg -> GlobalData -> Int -> a -> List ( LayerTarget, LayerMsg ) -> List ( LayerTarget, LayerMsg ) -> List ( String, Layer a b ) -> List ( String, Layer a b ) -> ( ( List ( LayerTarget, LayerMsg ), List ( String, Layer a b ), a ), GlobalData )
 applyOnceOnlyNew msg gd t cd lms ms dxs xs =
     case xs of
@@ -101,11 +133,15 @@ applyOnceOnlyNew msg gd t cd lms ms dxs xs =
             applyOnceOnlyNew msg newgd t newcd (lms ++ newmsg) ms (dxs ++ [ ( name, { layer | data = newdata } ) ]) lxs
 
 
+{-| updateOnce
+-}
 updateOnce : Msg -> GlobalData -> Int -> a -> List ( LayerTarget, LayerMsg ) -> List ( String, Layer a b ) -> ( ( List ( LayerTarget, LayerMsg ), List ( String, Layer a b ), a ), GlobalData )
 updateOnce msg gd t cd msgs xs =
     applyOnce msg gd t cd [] msgs [] xs
 
 
+{-| updateOnceOnlyNew
+-}
 updateOnceOnlyNew : Msg -> GlobalData -> Int -> a -> List ( LayerTarget, LayerMsg ) -> List ( String, Layer a b ) -> ( ( List ( LayerTarget, LayerMsg ), List ( String, Layer a b ), a ), GlobalData )
 updateOnceOnlyNew msg gd t cd msgs xs =
     applyOnceOnlyNew msg gd t cd [] msgs [] xs
@@ -115,6 +151,8 @@ updateOnceOnlyNew msg gd t cd msgs xs =
 --- msg, t, ms and xs doesn't change
 
 
+{-| updateLayer
+-}
 updateLayer : Msg -> GlobalData -> Int -> a -> List ( String, Layer a b ) -> ( ( List ( String, Layer a b ), a, List LayerMsg ), GlobalData )
 updateLayer msg gd t cd xs =
     let
@@ -124,6 +162,8 @@ updateLayer msg gd t cd xs =
     updateLayerRecursive msg newgd t fcd fmsg fdata
 
 
+{-| judgeEnd
+-}
 judgeEnd : List ( LayerTarget, LayerMsg ) -> Bool
 judgeEnd xs =
     List.all
@@ -141,6 +181,8 @@ judgeEnd xs =
         xs
 
 
+{-| filterLayerParentMsg
+-}
 filterLayerParentMsg : List ( LayerTarget, LayerMsg ) -> List ( LayerTarget, LayerMsg )
 filterLayerParentMsg xs =
     List.filter
@@ -155,6 +197,8 @@ filterLayerParentMsg xs =
         xs
 
 
+{-| filterLayerParentMsgT
+-}
 filterLayerParentMsgT : List ( LayerTarget, LayerMsg ) -> List LayerMsg
 filterLayerParentMsgT xs =
     let
@@ -173,6 +217,8 @@ filterLayerParentMsgT xs =
     List.map (\( _, x ) -> x) css
 
 
+{-| updateLayerRecursive
+-}
 updateLayerRecursive : Msg -> GlobalData -> Int -> a -> List ( LayerTarget, LayerMsg ) -> List ( String, Layer a b ) -> ( ( List ( String, Layer a b ), a, List LayerMsg ), GlobalData )
 updateLayerRecursive msg gd t cd msgs xs =
     if judgeEnd msgs then
@@ -191,6 +237,8 @@ updateLayerRecursive msg gd t cd msgs xs =
         updateLayerRecursive msg newgd t newcd (newmsgs ++ tmsgs) newdata
 
 
+{-| viewLayer
+-}
 viewLayer : GlobalData -> Int -> a -> List ( String, Layer a b ) -> Renderable
 viewLayer vp t cd xs =
     Canvas.group []

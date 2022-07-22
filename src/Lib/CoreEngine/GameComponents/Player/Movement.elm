@@ -1,5 +1,11 @@
 module Lib.CoreEngine.GameComponents.Player.Movement exposing (..)
 
+{-| This is the doc for this module
+
+@docs solidCollisionMove
+
+-}
+
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Data)
 import Lib.CoreEngine.Physics.CollisionShape exposing (CShape(..), judgeShape)
@@ -10,6 +16,8 @@ import Lib.CoreEngine.Physics.SolidCollision exposing (getNearBySolid, moveTilCo
 -- Deal with movement
 
 
+{-| solidCollisionMove
+-}
 solidCollisionMove : List ( Int, Int ) -> GameGlobalData -> Data -> Data
 solidCollisionMove ls ggd d =
     let

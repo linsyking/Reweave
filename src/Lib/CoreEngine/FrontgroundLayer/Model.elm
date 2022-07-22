@@ -1,5 +1,17 @@
 module Lib.CoreEngine.FrontgroundLayer.Model exposing (..)
 
+{-| This is the doc for this module
+
+@docs initModel
+
+@docs dealComponentsMsg
+
+@docs dealAllComponentMsg
+
+@docs updateModel
+
+-}
+
 import Array
 import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (group)
@@ -19,6 +31,8 @@ import Lib.Scene.Base exposing (EngineT, nullEngineT)
 import Time exposing (posixToMillis)
 
 
+{-| initModel
+-}
 initModel : Int -> LayerMsg -> GameGlobalData -> Model
 initModel t lm _ =
     case lm of
@@ -48,6 +62,8 @@ initModel t lm _ =
             }
 
 
+{-| dealComponentsMsg
+-}
 dealComponentsMsg : ComponentTMsg -> Model -> GlobalData -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
 dealComponentsMsg rmsg model gd ggd =
     case rmsg of
@@ -96,6 +112,8 @@ dealComponentsMsg rmsg model gd ggd =
             ( ( model, ggd, [] ), gd )
 
 
+{-| dealAllComponentMsg
+-}
 dealAllComponentMsg : List ComponentTMsg -> Model -> GlobalData -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
 dealAllComponentMsg rmsg model gd ggd =
     List.foldl
@@ -110,6 +128,8 @@ dealAllComponentMsg rmsg model gd ggd =
         rmsg
 
 
+{-| updateModel
+-}
 updateModel : Msg -> GlobalData -> LayerMsg -> ( Model, Int ) -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
 updateModel msg gd lm ( model, t ) ggd =
     case lm of

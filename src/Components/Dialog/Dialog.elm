@@ -1,5 +1,17 @@
 module Components.Dialog.Dialog exposing (..)
 
+{-| This is the doc for this module
+
+@docs initDialog
+
+@docs checkStatusReport
+
+@docs updateDialog
+
+@docs viewDialog
+
+-}
+
 import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (..)
 import Canvas.Settings exposing (..)
@@ -19,6 +31,8 @@ import Lib.Render.Render exposing (renderSprite)
 -- OnShow : OnLoadChild -> (OnShowChild ->) OnDeChild (OnDeconstructChild) -> OnEnd
 
 
+{-| initDialog
+-}
 initDialog : Int -> ComponentTMsg -> Data
 initDialog _ comMsg =
     case comMsg of
@@ -33,6 +47,8 @@ initDialog _ comMsg =
             Dict.empty
 
 
+{-| checkStatusReport
+-}
 checkStatusReport : List String -> List ( String, Component ) -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 checkStatusReport list childComponentsList globalData ( model, t ) =
     let
@@ -133,6 +149,8 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
             )
 
 
+{-| updateDialog
+-}
 updateDialog : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateDialog mainMsg _ globalData ( model, t ) =
     case mainMsg of
@@ -293,6 +311,8 @@ updateDialog mainMsg _ globalData ( model, t ) =
                     ( model |> dsetLComponent "_Child" newChildComponentsList, [], globalData )
 
 
+{-| viewDialog
+-}
 viewDialog : ( Data, Int ) -> GlobalData -> Renderable
 viewDialog ( model, t ) globalData =
     let
@@ -313,7 +333,7 @@ viewDialog ( model, t ) globalData =
                         []
 
                      else
-                        [ renderSprite globalData [] ( 189, 200 - 15 * timer ) ( 1542, 30 * timer ) "dialogue" ]
+                        [ renderSprite globalData [] ( 859 - 72 * timer, 50 ) ( 154 * timer, 300 ) "dialogue" ]
                     )
                     (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
                 )
@@ -321,7 +341,7 @@ viewDialog ( model, t ) globalData =
         "OnDeBuild" ->
             group []
                 (List.append
-                    [ renderSprite globalData [] ( 189, 50 + 15 * timer ) ( 1542, 300 - 30 * timer ) "dialogue" ]
+                    [ renderSprite globalData [] ( 189 + 72 * timer, 50 ) ( 1540 - 154 * timer, 300 ) "dialogue" ]
                     (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
                 )
 
@@ -331,6 +351,6 @@ viewDialog ( model, t ) globalData =
         _ ->
             group []
                 (List.append
-                    [ renderSprite globalData [] ( 189, 50 ) ( 1542, 300 ) "dialogue" ]
+                    [ renderSprite globalData [] ( 189, 50 ) ( 1540, 300 ) "dialogue" ]
                     (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
                 )

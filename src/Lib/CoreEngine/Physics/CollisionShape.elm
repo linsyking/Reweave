@@ -1,5 +1,17 @@
 module Lib.CoreEngine.Physics.CollisionShape exposing (..)
 
+{-| This is the doc for this module
+
+@docs CShape
+
+@docs judgeYSame
+
+@docs judgeXSame
+
+@docs judgeShape
+
+-}
+
 import Lib.CoreEngine.Base exposing (brickSize)
 import Lib.CoreEngine.GameComponent.Base exposing (Data)
 import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos)
@@ -9,6 +21,8 @@ import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos)
 -- Judge the collision shape
 
 
+{-| CShape
+-}
 type CShape
     = CTOP
     | CBOTTOM
@@ -26,6 +40,8 @@ type CShape
     | CLCORNERBOOST
 
 
+{-| judgeYSame
+-}
 judgeYSame : List ( Int, Int ) -> Bool
 judgeYSame ls =
     let
@@ -35,6 +51,8 @@ judgeYSame ls =
     List.all (\( _, y ) -> y == h) ls
 
 
+{-| judgeXSame
+-}
 judgeXSame : List ( Int, Int ) -> Bool
 judgeXSame ls =
     let
@@ -44,6 +62,8 @@ judgeXSame ls =
     List.all (\( x, _ ) -> x == h) ls
 
 
+{-| judgeShape
+-}
 judgeShape : Data -> List ( Int, Int ) -> CShape
 judgeShape d ls =
     let

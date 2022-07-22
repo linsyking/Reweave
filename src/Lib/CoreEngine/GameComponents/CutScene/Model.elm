@@ -1,5 +1,21 @@
 module Lib.CoreEngine.GameComponents.CutScene.Model exposing (..)
 
+{-| This is the doc for this module
+
+@docs initData
+
+@docs simplecheckBox
+
+@docs decodeTalkings
+
+@docs initModel
+
+@docs handlestart
+
+@docs updateModel
+
+-}
+
 import Base exposing (GlobalData, Msg(..))
 import Components.Dialog.Export as DialogE
 import Dict
@@ -9,6 +25,8 @@ import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgTy
 import Lib.DefinedTypes.Parser exposing (dgetLComponent, dgetbool, dsetLComponent)
 
 
+{-| initData
+-}
 initData : Data
 initData =
     { status = Alive
@@ -23,6 +41,8 @@ initData =
     }
 
 
+{-| simplecheckBox
+-}
 simplecheckBox : ( Int, Int ) -> Box
 simplecheckBox ( w, h ) =
     { name = "sp"
@@ -33,6 +53,8 @@ simplecheckBox ( w, h ) =
     }
 
 
+{-| decodeTalkings
+-}
 decodeTalkings : List ( String, String ) -> List ( String, DefinedTypes )
 decodeTalkings talkings =
     List.concat
@@ -53,6 +75,8 @@ decodeTalkings talkings =
         ]
 
 
+{-| initModel
+-}
 initModel : Int -> GameComponentTMsg -> Data
 initModel _ gcm =
     case gcm of
@@ -72,6 +96,8 @@ initModel _ gcm =
             initData
 
 
+{-| handlestart
+-}
 handlestart : Data -> GameGlobalData -> ( Data, List GameComponentMsgType, GameGlobalData )
 handlestart d ggd =
     let
@@ -93,6 +119,8 @@ handlestart d ggd =
         ( d, [], ggd )
 
 
+{-| updateModel
+-}
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
 updateModel msg gct ggd globalData ( d, t ) =
     case gct of

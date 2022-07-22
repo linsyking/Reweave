@@ -1,8 +1,16 @@
 module Lib.Map.Poly exposing (buildrect)
 
+{-| This is the doc for this module
+
+@docs buildrect
+
+-}
+
 import Array2D
 
 
+{-| buildrect
+-}
 buildrect : ( Int, Int ) -> ( Int, Int ) -> Int -> Array2D.Array2D Int -> Array2D.Array2D Int
 buildrect ( x, y ) ( w, h ) v ss =
     let

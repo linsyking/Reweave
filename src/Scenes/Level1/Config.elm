@@ -1,5 +1,25 @@
 module Scenes.Level1.Config exposing (..)
 
+{-| This is the doc for this module
+
+@docs initFrontGroundComponents
+
+@docs initPlayer
+
+@docs initActors
+
+@docs dialogues
+
+@docs initCamera
+
+@docs initGameGlobalData
+
+@docs allChartlets
+
+@docs makemanywaves
+
+-}
+
 import Array exposing (Array)
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable)
@@ -25,6 +45,8 @@ import Lib.Render.Render exposing (renderSprite)
 import Scenes.Level1.Map exposing (mymap)
 
 
+{-| initFrontGroundComponents
+-}
 initFrontGroundComponents : Int -> Array Component
 initFrontGroundComponents t =
     Array.fromList
@@ -32,6 +54,8 @@ initFrontGroundComponents t =
         ]
 
 
+{-| initPlayer
+-}
 initPlayer : Int -> PlayerInitPosition -> GameComponent
 initPlayer t pos =
     case pos of
@@ -43,6 +67,8 @@ initPlayer t pos =
             initGameComponent t (GamePlayerInit (PlayerInit x)) Player.gameComponent
 
 
+{-| initActors
+-}
 initActors : Int -> Array GameComponent
 initActors t =
     Array.fromList
@@ -55,6 +81,8 @@ initActors t =
         ]
 
 
+{-| dialogues
+-}
 dialogues : List ( String, String )
 dialogues =
     [ ( "p_profile", "Hello, master." )
@@ -62,11 +90,15 @@ dialogues =
     ]
 
 
+{-| initCamera
+-}
 initCamera : CameraData
 initCamera =
     CameraData ( 0, 700 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * 119 - 1, 70 * 32 - 1 ) ) ( ( 0.2, 0.1 ), ( 0.4, 0.1 ) )
 
 
+{-| initGameGlobalData
+-}
 initGameGlobalData : Float -> List String -> GameGlobalData
 initGameGlobalData e col =
     { camera = initCamera
@@ -82,6 +114,8 @@ initGameGlobalData e col =
     }
 
 
+{-| allChartlets
+-}
 allChartlets : List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
 allChartlets =
     [ ( \gd ggd ->
@@ -120,6 +154,8 @@ allChartlets =
         ++ makemanywaves 4
 
 
+{-| makemanywaves
+-}
 makemanywaves : Int -> List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
 makemanywaves n =
     List.foldl

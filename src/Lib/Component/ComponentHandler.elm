@@ -1,5 +1,25 @@
 module Lib.Component.ComponentHandler exposing (..)
 
+{-| This is the doc for this module
+
+@docs updateComponents
+
+@docs updateOneComponent
+
+@docs updateSingleComponent
+
+@docs updateSingleComponentByName
+
+@docs genView
+
+@docs getComponent
+
+@docs getComponentFromName
+
+@docs queryComponent
+
+-}
+
 import Array exposing (Array)
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
@@ -7,6 +27,8 @@ import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 import Lib.Tools.Array exposing (locate)
 
 
+{-| updateComponents
+-}
 updateComponents : Int -> Msg -> GlobalData -> Array Component -> ( Array Component, List ComponentTMsg, GlobalData )
 updateComponents t msg gd xs =
     Array.foldl
@@ -21,6 +43,8 @@ updateComponents t msg gd xs =
         xs
 
 
+{-| updateOneComponent
+-}
 updateOneComponent : Msg -> ComponentTMsg -> GlobalData -> Int -> Component -> ( Component, List ComponentTMsg, GlobalData )
 updateOneComponent msg ct gd t c =
     let
@@ -30,6 +54,8 @@ updateOneComponent msg ct gd t c =
     ( { c | data = newx }, newmsg, newgd )
 
 
+{-| updateSingleComponent
+-}
 updateSingleComponent : Msg -> ComponentTMsg -> GlobalData -> Int -> Int -> Array Component -> ( Array Component, List ComponentTMsg, GlobalData )
 updateSingleComponent msg ct gd t n xs =
     case getComponent n xs of
@@ -44,6 +70,8 @@ updateSingleComponent msg ct gd t n xs =
             ( xs, [], gd )
 
 
+{-| updateSingleComponentByName
+-}
 updateSingleComponentByName : Msg -> ComponentTMsg -> GlobalData -> Int -> String -> Array Component -> ( Array Component, List ComponentTMsg, GlobalData )
 updateSingleComponentByName msg ct gd t s xs =
     let
@@ -62,21 +90,29 @@ updateSingleComponentByName msg ct gd t s xs =
             ( xs, [], gd )
 
 
+{-| genView
+-}
 genView : GlobalData -> Int -> Array Component -> Renderable
 genView vp t xs =
     Canvas.group [] (Array.toList (Array.map (\x -> x.view ( x.data, t ) vp) xs))
 
 
+{-| getComponent
+-}
 getComponent : Int -> Array Component -> Maybe Component
 getComponent n xs =
     Array.get n xs
 
 
+{-| getComponentFromName
+-}
 getComponentFromName : String -> Array Component -> Int
 getComponentFromName s xs =
     Maybe.withDefault -1 (List.head (locate (\x -> x.name == s) xs))
 
 
+{-| queryComponent
+-}
 queryComponent : Int -> String -> Int -> Array Component -> ComponentTMsg
 queryComponent n s t xs =
     case getComponent n xs of

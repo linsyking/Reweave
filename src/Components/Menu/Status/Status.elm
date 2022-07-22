@@ -1,5 +1,15 @@
 module Components.Menu.Status.Status exposing (..)
 
+{-| This is the doc for this module
+
+@docs initStatus
+
+@docs updateStatus
+
+@docs viewStatus
+
+-}
+
 import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (..)
 import Canvas.Settings exposing (..)
@@ -13,6 +23,8 @@ import Lib.DefinedTypes.Parser exposing (dgetDict, dgetbool, dgetfloat, dgetint,
 import Lib.Render.Render exposing (..)
 
 
+{-| initStatus
+-}
 initStatus : Int -> ComponentTMsg -> Data
 initStatus _ _ =
     Dict.fromList
@@ -24,6 +36,8 @@ initStatus _ _ =
         ]
 
 
+{-| updateStatus
+-}
 updateStatus : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateStatus mainMsg comMsg globalData ( model, t ) =
     let
@@ -88,6 +102,8 @@ updateStatus mainMsg comMsg globalData ( model, t ) =
                     ( model, [], globalData )
 
 
+{-| viewStatus
+-}
 viewStatus : ( Data, Int ) -> GlobalData -> Renderable
 viewStatus ( model, _ ) globalData =
     let

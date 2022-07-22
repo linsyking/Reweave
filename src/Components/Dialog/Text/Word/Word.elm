@@ -1,5 +1,17 @@
 module Components.Dialog.Text.Word.Word exposing (..)
 
+{-| This is the doc for this module
+
+@docs initWord
+
+@docs randomPos
+
+@docs updateWord
+
+@docs viewWord
+
+-}
+
 import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (..)
 import Canvas.Settings exposing (..)
@@ -19,6 +31,8 @@ import Random
 -- OnShow : OnLoadChild -> (OnShowChild ->) OnDeChild (OnDeconstructChild)
 
 
+{-| initWord
+-}
 initWord : Int -> ComponentTMsg -> Data
 initWord pos comMsg =
     case comMsg of
@@ -35,11 +49,15 @@ initWord pos comMsg =
             Dict.empty
 
 
+{-| randomPos
+-}
 randomPos : Int -> Int -> Int -> Int
 randomPos t l r =
     Tuple.first (Random.step (Random.int l r) (Random.initialSeed t))
 
 
+{-| updateWord
+-}
 updateWord : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateWord mainMsg comMsg globalData ( model, t ) =
     case mainMsg of
@@ -132,6 +150,8 @@ updateWord mainMsg comMsg globalData ( model, t ) =
                     ( model, [ ComponentLSStringMsg "StatusReport" [ status ] ], globalData )
 
 
+{-| viewWord
+-}
 viewWord : ( Data, Int ) -> GlobalData -> Renderable
 viewWord ( model, t ) globalData =
     let

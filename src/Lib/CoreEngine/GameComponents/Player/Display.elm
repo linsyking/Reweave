@@ -1,5 +1,15 @@
 module Lib.CoreEngine.GameComponents.Player.Display exposing (..)
 
+{-| This is the doc for this module
+
+@docs view
+
+@docs getStateFromTime
+
+@docs getStateNumber
+
+-}
+
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable, group)
 import Canvas.Settings.Advanced exposing (alpha)
@@ -11,6 +21,8 @@ import Lib.DefinedTypes.Parser exposing (dgetPlayer)
 import Lib.Render.Character exposing (renderCharacterInAir, renderCharacterMove)
 
 
+{-| view
+-}
 view : ( Data, Int ) -> GameGlobalData -> GlobalData -> List ( Renderable, Int )
 view ( d, t ) ggd gd =
     let
@@ -69,6 +81,8 @@ view ( d, t ) ggd gd =
                     []
 
 
+{-| getStateFromTime
+-}
 getStateFromTime : Int -> Int
 getStateFromTime t =
     let
@@ -81,6 +95,8 @@ getStateFromTime t =
     modBy realr t // frate + 1
 
 
+{-| getStateNumber
+-}
 getStateNumber : Int -> Data -> String
 getStateNumber t d =
     let

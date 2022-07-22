@@ -1,9 +1,19 @@
 module Components.Dialog.Text.Word.Export exposing (..)
 
+{-| This is the doc for this module
+
+@docs component
+
+@docs initComponent
+
+-}
+
 import Components.Dialog.Text.Word.Word exposing (initWord, updateWord, viewWord)
 import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 
 
+{-| component
+-}
 component : Component
 component =
     { name = "Word"
@@ -15,6 +25,8 @@ component =
     }
 
 
+{-| initComponent
+-}
 initComponent : Int -> ComponentTMsg -> Component
 initComponent t ct =
     { component | data = component.init t ct }

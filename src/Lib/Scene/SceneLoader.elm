@@ -1,5 +1,17 @@
 module Lib.Scene.SceneLoader exposing (..)
 
+{-| This is the doc for this module
+
+@docs getScene
+
+@docs loadScene
+
+@docs loadSceneByName
+
+@docs getCurrentScene
+
+-}
+
 import Common exposing (..)
 import Html exposing (i)
 import Lib.Scene.Base exposing (SceneMsg)
@@ -12,6 +24,8 @@ import Scenes.SceneSettings exposing (..)
 -- import Scenes.Scene1.Export exposing (Scene1DataT)
 
 
+{-| getScene
+-}
 getScene : String -> SceneCT
 getScene i =
     let
@@ -32,6 +46,8 @@ getScene i =
             nullSceneCT
 
 
+{-| loadScene
+-}
 loadScene : Model -> SceneCT -> SceneMsg -> Model
 loadScene model cs tm =
     let
@@ -44,6 +60,8 @@ loadScene model cs tm =
     ld
 
 
+{-| loadSceneByName
+-}
 loadSceneByName : Model -> String -> SceneMsg -> Model
 loadSceneByName model i tm =
     let
@@ -53,6 +71,8 @@ loadSceneByName model i tm =
     loadScene model sc tm
 
 
+{-| getCurrentScene
+-}
 getCurrentScene : Model -> SceneCT
 getCurrentScene model =
     model.currentScene

@@ -1,11 +1,19 @@
 module Lib.Render.Energy exposing (..)
 
+{-| This is the doc for this module
+
+@docs renderEnergyPoint
+
+-}
+
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable)
 import Canvas.Settings.Advanced exposing (alpha)
 import Lib.Render.Render exposing (renderSprite)
 
 
+{-| renderEnergyPoint
+-}
 renderEnergyPoint : Int -> GlobalData -> Float -> ( ( Int, Int ), ( Int, Int ) ) -> Renderable
 renderEnergyPoint t gd energy ( ( px, py ), ( px2, py2 ) ) =
     let

@@ -1,5 +1,11 @@
 module Lib.CoreEngine.GameLayer.Display exposing (..)
 
+{-| This is the doc for this module
+
+@docs view
+
+-}
+
 import Array
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable, group, rect, shapes)
@@ -19,6 +25,8 @@ import Lib.Render.Render exposing (renderText)
 import Lib.Render.Solid exposing (renderSolids)
 
 
+{-| view
+-}
 view : ( Model, Int ) -> GameGlobalData -> GlobalData -> Renderable
 view ( model, ot ) ggd gd =
     let

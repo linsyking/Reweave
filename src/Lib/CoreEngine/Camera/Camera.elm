@@ -1,5 +1,33 @@
 module Lib.CoreEngine.Camera.Camera exposing (..)
 
+{-| This is the doc for this module
+
+@docs getNewCamera
+
+@docs cameraWidth
+
+@docs cameraHeight
+
+@docs moveCamera
+
+@docs judgeInBound
+
+@docs changeCP
+
+@docs dealInboundSpeed
+
+@docs calcMoveVec
+
+@docs judgeInBox
+
+@docs getCameraInbox
+
+@docs getPlayerCenter
+
+@docs getCameraInboxCenter
+
+-}
+
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Base exposing (CameraData)
 import Lib.CoreEngine.GameComponent.Base exposing (Data)
@@ -7,6 +35,8 @@ import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos)
 import Math.Vector2 exposing (Vec2, vec2)
 
 
+{-| getNewCamera
+-}
 getNewCamera : GameGlobalData -> Data -> CameraData
 getNewCamera ggd d =
     let
@@ -29,16 +59,22 @@ getNewCamera ggd d =
     moveCamera newd
 
 
+{-| cameraWidth
+-}
 cameraWidth : Int
 cameraWidth =
     1920
 
 
+{-| cameraHeight
+-}
 cameraHeight : Int
 cameraHeight =
     1080
 
 
+{-| moveCamera
+-}
 moveCamera : GameGlobalData -> CameraData
 moveCamera ggd =
     let
@@ -90,6 +126,8 @@ moveCamera ggd =
     judgeInBound ffggd
 
 
+{-| judgeInBound
+-}
 judgeInBound : GameGlobalData -> CameraData
 judgeInBound ggd =
     let
@@ -133,11 +171,15 @@ judgeInBound ggd =
         verticalD
 
 
+{-| changeCP
+-}
 changeCP : CameraData -> ( Int, Int ) -> CameraData
 changeCP c q =
     { c | position = q }
 
 
+{-| dealInboundSpeed
+-}
 dealInboundSpeed : GameGlobalData -> ( Float, Float )
 dealInboundSpeed ggd =
     let
@@ -157,6 +199,8 @@ dealInboundSpeed ggd =
         ( vx / 10, vy / 10 )
 
 
+{-| calcMoveVec
+-}
 calcMoveVec : GameGlobalData -> Data -> ( Float, Float )
 calcMoveVec ggd d =
     let
@@ -188,6 +232,8 @@ calcMoveVec ggd d =
     ( Math.Vector2.getX velc, Math.Vector2.getY velc )
 
 
+{-| judgeInBox
+-}
 judgeInBox : GameGlobalData -> Data -> Bool
 judgeInBox ggd d =
     let
@@ -204,6 +250,8 @@ judgeInBox ggd d =
         False
 
 
+{-| getCameraInbox
+-}
 getCameraInbox : GameGlobalData -> ( ( Int, Int ), ( Int, Int ) )
 getCameraInbox ggd =
     let
@@ -228,6 +276,8 @@ getCameraInbox ggd =
     ( p, q )
 
 
+{-| getPlayerCenter
+-}
 getPlayerCenter : Data -> Vec2
 getPlayerCenter d =
     let
@@ -243,6 +293,8 @@ getPlayerCenter d =
     vec2 cx cy
 
 
+{-| getCameraInboxCenter
+-}
 getCameraInboxCenter : GameGlobalData -> Vec2
 getCameraInboxCenter ggd =
     let

@@ -1,5 +1,45 @@
 module Lib.CoreEngine.GameComponents.Player.InputHandler exposing (..)
 
+{-| This is the doc for this module
+
+@docs VelDirMsg
+
+@docs VelTypeMsg
+
+@docs DelVelocityFunction
+
+@docs pressedVelocityFunction
+
+@docs oppositeVelocityFunction
+
+@docs blankVelocityFunction
+
+@docs jumpPressedVelocityFunction
+
+@docs jumpOppositeVelocityFunction
+
+@docs jumpBlankVelocityFunction
+
+@docs changePlayerVelocity
+
+@docs delLargeVelocity
+
+@docs delVelocityFunction
+
+@docs changePlayerVelocityX
+
+@docs changePlayerVelocityY
+
+@docs changePlayerVelocityHelper
+
+@docs delVelocityFunctionHelper
+
+@docs boundXY
+
+@docs sign
+
+-}
+
 import Array exposing (..)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Data)
@@ -11,6 +51,8 @@ import Lib.CoreEngine.Physics.Ground exposing (canJump)
 -- Function Type y=ax^2+bx+c
 
 
+{-| DelVelocityFunction
+-}
 type alias DelVelocityFunction =
     { funcA : Float
     , funcB : Float
@@ -18,36 +60,50 @@ type alias DelVelocityFunction =
     }
 
 
+{-| pressedVelocityFunction
+-}
 pressedVelocityFunction : DelVelocityFunction
 pressedVelocityFunction =
     DelVelocityFunction (1 / 320.0) -0.75 40
 
 
+{-| oppositeVelocityFunction
+-}
 oppositeVelocityFunction : DelVelocityFunction
 oppositeVelocityFunction =
     DelVelocityFunction (-1 / 640.0) -0.25 -10
 
 
+{-| blankVelocityFunction
+-}
 blankVelocityFunction : DelVelocityFunction
 blankVelocityFunction =
     DelVelocityFunction (-1 / 160.0) 0 0
 
 
+{-| jumpPressedVelocityFunction
+-}
 jumpPressedVelocityFunction : DelVelocityFunction
 jumpPressedVelocityFunction =
     DelVelocityFunction (1 / 1280.0) -0.3125 20
 
 
+{-| jumpOppositeVelocityFunction
+-}
 jumpOppositeVelocityFunction : DelVelocityFunction
 jumpOppositeVelocityFunction =
     DelVelocityFunction (-1 / 640.0) -0.125 -10
 
 
+{-| jumpBlankVelocityFunction
+-}
 jumpBlankVelocityFunction : DelVelocityFunction
 jumpBlankVelocityFunction =
     DelVelocityFunction (-1 / 460.0) 0 0
 
 
+{-| changePlayerVelocity
+-}
 changePlayerVelocity : Int -> Data -> GameGlobalData -> Model -> ( Model, Data )
 changePlayerVelocity t char ggd model =
     let
@@ -93,6 +149,8 @@ changePlayerVelocity t char ggd model =
         ( { model | keyPressed = Nope }, changePlayerVelocityHelper char (boundXY (changePlayerVelocityX char model Xdir) char.velocity) )
 
 
+{-| delLargeVelocity
+-}
 delLargeVelocity : Int -> Model -> Data -> Bool -> ( Model, Data )
 delLargeVelocity ct model d cj =
     let
@@ -161,11 +219,15 @@ delLargeVelocity ct model d cj =
                 ( { model | keyPressed = PressTime ct }, { d | velocity = ( vx, vy + 120 ) } )
 
 
+{-| VelDirMsg
+-}
 type VelDirMsg
     = Xdir
     | Ydir
 
 
+{-| VelTypeMsg
+-}
 type VelTypeMsg
     = Pressed VelDirMsg Float
     | Opposite VelDirMsg Float
@@ -179,6 +241,8 @@ type VelTypeMsg
 -- You can use `isRiding to test if the object is riding on something or in the sky`
 
 
+{-| delVelocityFunction
+-}
 delVelocityFunction : DelVelocityFunction -> Float -> Float
 delVelocityFunction f vel =
     let
@@ -202,6 +266,8 @@ delVelocityFunction f vel =
         delVel
 
 
+{-| changePlayerVelocityX
+-}
 changePlayerVelocityX : Data -> Model -> VelDirMsg -> ( Float, Float )
 changePlayerVelocityX char model dir =
     let
@@ -259,6 +325,8 @@ changePlayerVelocityX char model dir =
         charVelocity
 
 
+{-| changePlayerVelocityY
+-}
 changePlayerVelocityY : Data -> Int -> ( Float, Float )
 changePlayerVelocityY char flag =
     let
@@ -279,11 +347,15 @@ changePlayerVelocityY char flag =
             charVelocity
 
 
+{-| changePlayerVelocityHelper
+-}
 changePlayerVelocityHelper : Data -> ( Float, Float ) -> Data
 changePlayerVelocityHelper cd nv =
     { cd | velocity = nv }
 
 
+{-| delVelocityFunctionHelper
+-}
 delVelocityFunctionHelper : ( Float, Float ) -> VelTypeMsg -> ( Float, Float )
 delVelocityFunctionHelper vec velTypeMsg =
     let
@@ -325,11 +397,15 @@ delVelocityFunctionHelper vec velTypeMsg =
             ( vecX, vecY )
 
 
+{-| boundXY
+-}
 boundXY : ( Float, Float ) -> ( Float, Float ) -> ( Float, Float )
 boundXY ( a, _ ) ( _, b ) =
     ( a, b )
 
 
+{-| sign
+-}
 sign : Float -> Int
 sign x =
     if x > 0 then

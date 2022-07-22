@@ -1,5 +1,17 @@
 module Lib.Layer.Base exposing (..)
 
+{-| This is the doc for this module
+
+@docs LayerMsg
+
+@docs LayerTarget
+
+@docs Layer
+
+@docs GameLayerInit
+
+-}
+
 import Array exposing (Array)
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
@@ -11,6 +23,8 @@ import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth)
 import Lib.Scene.Base exposing (EngineT)
 
 
+{-| Layer
+-}
 type alias Layer a b =
     --- b is the layer data, a is the common data that shares between layers
     { data : b
@@ -20,6 +34,8 @@ type alias Layer a b =
     }
 
 
+{-| LayerMsg
+-}
 type LayerMsg
     = LayerStringMsg String
     | LayerIntMsg Int
@@ -32,6 +48,8 @@ type LayerMsg
     | NullLayerMsg
 
 
+{-| GameLayerInit
+-}
 type alias GameLayerInit =
     { player : GameComponent
     , actors : Array GameComponent
@@ -39,6 +57,8 @@ type alias GameLayerInit =
     }
 
 
+{-| LayerTarget
+-}
 type LayerTarget
     = LayerParentScene
     | LayerName String

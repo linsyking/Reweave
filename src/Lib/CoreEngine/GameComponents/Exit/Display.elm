@@ -1,5 +1,11 @@
 module Lib.CoreEngine.GameComponents.Exit.Display exposing (..)
 
+{-| This is the doc for this module
+
+@docs view
+
+-}
+
 -- Display is only for testing
 
 import Base exposing (GlobalData)
@@ -10,6 +16,8 @@ import Lib.CoreEngine.GameComponent.Base exposing (Data)
 import Lib.Render.Render exposing (renderSprite)
 
 
+{-| view
+-}
 view : ( Data, Int ) -> GameGlobalData -> GlobalData -> List ( Renderable, Int )
 view ( d, t ) ggd gd =
     [ ( group []

@@ -1,5 +1,15 @@
 module Components.Menu.Settings.Settings exposing (..)
 
+{-| This is the doc for this module
+
+@docs initSettings
+
+@docs updateSettings
+
+@docs viewSettings
+
+-}
+
 import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (..)
 import Canvas.Settings exposing (..)
@@ -13,6 +23,8 @@ import Lib.DefinedTypes.Parser exposing (dgetLComponent, dgetbool, dgetint, dset
 import Lib.Render.Render exposing (..)
 
 
+{-| initSettings
+-}
 initSettings : Int -> ComponentTMsg -> Data
 initSettings _ _ =
     Dict.fromList
@@ -29,6 +41,8 @@ initSettings _ _ =
         ]
 
 
+{-| updateSettings
+-}
 updateSettings : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateSettings mainMsg comMsg globalData ( model, t ) =
     let
@@ -131,6 +145,8 @@ updateSettings mainMsg comMsg globalData ( model, t ) =
                     ( model |> dsetLComponent "Child" tmpChildComponentsList, [ newComMsg ], newGlobalData )
 
 
+{-| viewSettings
+-}
 viewSettings : ( Data, Int ) -> GlobalData -> Renderable
 viewSettings ( model, _ ) globalData =
     let

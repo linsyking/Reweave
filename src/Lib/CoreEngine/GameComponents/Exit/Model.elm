@@ -1,5 +1,17 @@
 module Lib.CoreEngine.GameComponents.Exit.Model exposing (..)
 
+{-| This is the doc for this module
+
+@docs initData
+
+@docs simplecheckBox
+
+@docs initModel
+
+@docs updateModel
+
+-}
+
 import Base exposing (GlobalData, Msg(..))
 import Dict
 import Lib.Component.Base exposing (DefinedTypes(..))
@@ -9,6 +21,8 @@ import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInitPosition(..
 import Lib.DefinedTypes.Parser exposing (dgetString, dgetbool, dgetint)
 
 
+{-| initData
+-}
 initData : Data
 initData =
     { status = Alive
@@ -23,6 +37,8 @@ initData =
     }
 
 
+{-| simplecheckBox
+-}
 simplecheckBox : ( Int, Int ) -> Box
 simplecheckBox ( w, h ) =
     { name = "sp"
@@ -33,6 +49,8 @@ simplecheckBox ( w, h ) =
     }
 
 
+{-| initModel
+-}
 initModel : Int -> GameComponentTMsg -> Data
 initModel _ gcm =
     case gcm of
@@ -86,6 +104,8 @@ initModel _ gcm =
             initData
 
 
+{-| updateModel
+-}
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
 updateModel _ gct ggd _ ( d, t ) =
     case gct of

@@ -1,4 +1,18 @@
-module Base exposing (Flags, GlobalData, Msg(..))
+module Base exposing
+    ( Msg(..)
+    , GlobalData
+    , Flags
+    )
+
+{-| This is the doc for this module
+
+@docs Msg
+
+@docs GlobalData
+
+@docs Flags
+
+-}
 
 import Audio
 import Canvas.Texture exposing (Texture)
@@ -14,6 +28,8 @@ import Time
 --- This message is the GLOBAL scope message. This message limits what messsages you can get inside a scene.
 
 
+{-| Msg
+-}
 type Msg
     = Tick Time.Posix
     | KeyDown Int
@@ -27,6 +43,8 @@ type Msg
     | UnknownMsg
 
 
+{-| GlobalData
+-}
 type alias GlobalData =
     { browserViewPort : ( Int, Int )
     , realWidth : Int
@@ -40,6 +58,8 @@ type alias GlobalData =
     }
 
 
+{-| Flags
+-}
 type alias Flags =
     { windowWidth : Int
     , windowHeight : Int

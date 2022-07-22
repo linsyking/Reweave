@@ -1,10 +1,33 @@
-module Lib.CoreEngine.Base exposing (GameGlobalData, brickSize, nullGameGlobalData, testGameGlobalData)
+module Lib.CoreEngine.Base exposing
+    ( GameGlobalData
+    , brickSize
+    , nullGameGlobalData
+    , testGameGlobalData
+    )
+
+{-| This is the doc for this module
+
+@docs GameGlobalData
+
+@docs brickSize
+
+@docs nullGameGlobalData
+
+@docs testGameGlobalData
+
+@docs sds
+
+@docs ps
+
+-}
 
 import Array2D exposing (Array2D)
 import Lib.CoreEngine.Camera.Base exposing (CameraData)
 import Lib.Map.Poly exposing (buildrect)
 
 
+{-| GameGlobalData
+-}
 type alias GameGlobalData =
     { camera : CameraData
     , solidmap : Array2D Int
@@ -19,11 +42,15 @@ type alias GameGlobalData =
     }
 
 
+{-| brickSize
+-}
 brickSize : Int
 brickSize =
     32
 
 
+{-| nullGameGlobalData
+-}
 nullGameGlobalData : GameGlobalData
 nullGameGlobalData =
     { camera = CameraData ( 0, 0 ) ( 0, 0 ) ( ( 0, 0 ), ( 0, 0 ) ) ( ( 0, 0 ), ( 0, 0 ) )
@@ -39,6 +66,8 @@ nullGameGlobalData =
     }
 
 
+{-| testGameGlobalData
+-}
 testGameGlobalData : GameGlobalData
 testGameGlobalData =
     { camera = CameraData ( 0, 1120 ) ( 0, 0 ) ( ( 0, 0 ), ( 32 * 120 - 1, 70 * 32 - 1 ) ) ( ( 0.2, 0.3 ), ( 0.4, 0.4 ) )
@@ -54,11 +83,15 @@ testGameGlobalData =
     }
 
 
+{-| sds
+-}
 sds : Array2D.Array2D Int
 sds =
     Array2D.repeat 120 70 0
 
 
+{-| ps
+-}
 ps : Array2D.Array2D Int
 ps =
     sds

@@ -1,12 +1,31 @@
 module Lib.CoreEngine.GameComponent.Base exposing (..)
 
+{-| This is the doc for this module
+
+@docs GameComponentMsgType
+
+@docs GameComponentTMsg
+
+@docs LifeStatus
+
+@docs GameComponent
+
+@docs Data
+
+@docs Box
+
+-}
+
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
 import Dict exposing (Dict)
 import Lib.Component.Base exposing (DefinedTypes)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
+import Lib.CoreEngine.GameComponents.Ball.Base exposing (BallInit)
+import Lib.CoreEngine.GameComponents.Bone.Base exposing (BoneInit)
 import Lib.CoreEngine.GameComponents.Bullet.Base exposing (BulletInit)
 import Lib.CoreEngine.GameComponents.CutScene.Base exposing (CutSceneInit)
+import Lib.CoreEngine.GameComponents.EnergyCrystal.Base exposing (EnergyCrystalInit)
 import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
 import Lib.CoreEngine.GameComponents.Fireball.Base exposing (FireballInit)
 import Lib.CoreEngine.GameComponents.Fish.Base exposing (FishInit)
@@ -21,6 +40,8 @@ import Lib.CoreEngine.GameComponents.Turtle.Base exposing (TurtleInit)
 --- Component Base
 
 
+{-| GameComponent
+-}
 type alias GameComponent =
     { name : String
     , data : Data
@@ -30,12 +51,16 @@ type alias GameComponent =
     }
 
 
+{-| GameComponentMsgType
+-}
 type GameComponentMsgType
     = GameParentMsg GameComponentTMsg
     | GameActorUidMsg Int GameComponentTMsg
     | GameActorNameMsg String GameComponentTMsg
 
 
+{-| GameComponentTMsg
+-}
 type GameComponentTMsg
     = GameSolidCollisionMsg (List ( Int, Int ))
     | GameInterCollisionMsg String Data (List Box)
@@ -53,10 +78,15 @@ type GameComponentTMsg
     | GameTurtleInit TurtleInit
     | GameCutSceneInit CutSceneInit
     | GameExitScene String PlayerInitPosition Int
+    | GameBoneInit BoneInit
+    | GameEnergyCrystalInit EnergyCrystalInit
+    | GameBallInit BallInit
     | GameStringIntMsg String Int
     | NullGameComponentMsg
 
 
+{-| Data
+-}
 type alias Data =
     { status : LifeStatus
     , uid : Int
@@ -70,11 +100,15 @@ type alias Data =
     }
 
 
+{-| LifeStatus
+-}
 type LifeStatus
     = Alive
     | Dead Int -- Record the death time
 
 
+{-| Box
+-}
 type alias Box =
     { name : String
     , offsetX : Int

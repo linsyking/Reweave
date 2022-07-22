@@ -1,5 +1,15 @@
 module Lib.Render.Chartlet exposing (..)
 
+{-| This is the doc for this module
+
+@docs renderChartletsFront
+
+@docs renderChartletsBehindActor
+
+@docs renderChartletsBehindSolids
+
+-}
+
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable, group)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
@@ -8,6 +18,8 @@ import Lib.CoreEngine.GameLayer.Common exposing (Model)
 import Lib.Map.Chartlet exposing (renderBackgroundChartletsFromSolid)
 
 
+{-| renderChartletsFront
+-}
 renderChartletsFront : Model -> GameGlobalData -> GlobalData -> Renderable
 renderChartletsFront model ggd gd =
     group []
@@ -24,6 +36,8 @@ renderChartletsFront model ggd gd =
         )
 
 
+{-| renderChartletsBehindActor
+-}
 renderChartletsBehindActor : Model -> GameGlobalData -> GlobalData -> Renderable
 renderChartletsBehindActor model ggd gd =
     group []
@@ -40,6 +54,8 @@ renderChartletsBehindActor model ggd gd =
         )
 
 
+{-| renderChartletsBehindSolids
+-}
 renderChartletsBehindSolids : Model -> GameGlobalData -> GlobalData -> Renderable
 renderChartletsBehindSolids model ggd gd =
     group []

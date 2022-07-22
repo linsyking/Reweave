@@ -1,5 +1,21 @@
 module Scenes.TestChamber.Config exposing (..)
 
+{-| This is the doc for this module
+
+@docs initFrontGroundComponents
+
+@docs initPlayer
+
+@docs initActors
+
+@docs initCamera
+
+@docs initGameGlobalData
+
+@docs allChartlets
+
+-}
+
 import Array exposing (Array)
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable)
@@ -9,6 +25,8 @@ import Lib.CoreEngine.Camera.Base exposing (CameraData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentTMsg(..))
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (initGameComponent)
+import Lib.CoreEngine.GameComponents.EnergyCrystal.Base exposing (EnergyCrystalInit)
+import Lib.CoreEngine.GameComponents.EnergyCrystal.Export as EnergyCrystal
 import Lib.CoreEngine.GameComponents.Fish.Base exposing (FishInit)
 import Lib.CoreEngine.GameComponents.Fish.Export as Fish
 import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
@@ -26,12 +44,16 @@ import Lib.Render.Render exposing (renderSprite, renderText)
 import Scenes.TestChamber.Map exposing (mymap)
 
 
+{-| initFrontGroundComponents
+-}
 initFrontGroundComponents : Int -> Array Component
 initFrontGroundComponents _ =
     Array.fromList
         []
 
 
+{-| initPlayer
+-}
 initPlayer : Int -> PlayerInitPosition -> GameComponent
 initPlayer t pos =
     case pos of
@@ -42,6 +64,8 @@ initPlayer t pos =
             initGameComponent t (GamePlayerInit (PlayerInit x)) Player.gameComponent
 
 
+{-| initActors
+-}
 initActors : Int -> Array GameComponent
 initActors t =
     Array.fromList
@@ -49,6 +73,7 @@ initActors t =
         , initGameComponent t (GameGoombaInit (GoombaInit ( 1000, 1800 ) ( 0, 0 ) 5)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 2000, 800 ) ( 0, 0 ) 2)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 3500, 500 ) ( 0, 0 ) 3)) Goomba.gameComponent
+        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 2200, 2000 ) 10 17)) EnergyCrystal.gameComponent
 
         -- , initGameComponent t (GameExitInit (ExitInit ( 3600, 1750 ) "Level4" 9)) Exit.gameComponent
         -- , initGameComponent t (GameCutSceneInit (CutSceneInit ( 2900, 1800 ) ( 100, 160 ) 88 [ ( "p_profile", "Dear master, I want learn something from you" ), ( "master", "Yes, please go ahead." ) ] True)) CutScene.gameComponent
@@ -63,11 +88,15 @@ initActors t =
         ]
 
 
+{-| initCamera
+-}
 initCamera : CameraData
 initCamera =
     CameraData ( 0, 1120 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * 119 - 1, 70 * 32 - 1 ) ) ( ( 0.2, 0.3 ), ( 0.4, 0.4 ) )
 
 
+{-| initGameGlobalData
+-}
 initGameGlobalData : Float -> List String -> GameGlobalData
 initGameGlobalData e col =
     { camera = initCamera
@@ -83,6 +112,8 @@ initGameGlobalData e col =
     }
 
 
+{-| allChartlets
+-}
 allChartlets : List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
 allChartlets =
     [ ( \gd ggd -> renderText gd 50 "Hit those goombas!" "Times New Roman" (getPositionUnderCamera ( 900, 2100 ) ggd), BehindActors )

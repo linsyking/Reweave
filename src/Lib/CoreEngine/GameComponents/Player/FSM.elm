@@ -1,5 +1,35 @@
 module Lib.CoreEngine.GameComponents.Player.FSM exposing (..)
 
+{-| This is the doc for this module
+
+@docs getStateFunction
+
+@docs getPlayerStates
+
+@docs getPlayerState
+
+@docs delPlayerStates
+
+@docs addPlayerStates
+
+@docs updateState
+
+@docs exitState
+
+@docs addState
+
+@docs queryIsState
+
+@docs queryStateStarttime
+
+@docs getEmptyStates
+
+@docs allStates
+
+@docs nullState
+
+-}
+
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Data)
 import Lib.CoreEngine.GameComponents.Player.Base exposing (Model, PlayerState(..), StateData)
@@ -12,11 +42,15 @@ import Lib.CoreEngine.Physics.Ground exposing (isInAir, isOnground)
 --- Deal with the player's state
 
 
+{-| getStateFunction
+-}
 getStateFunction : String -> State
 getStateFunction s =
     Maybe.withDefault nullState (List.head (List.filter (\x -> x.key == s) allStates))
 
 
+{-| getPlayerStates
+-}
 getPlayerStates : Model -> List ( State, Int )
 getPlayerStates model =
     case model.playerStates of
@@ -24,6 +58,8 @@ getPlayerStates model =
             List.map (\ps -> ( getStateFunction ps.stype, ps.starttime )) x
 
 
+{-| getPlayerState
+-}
 getPlayerState : Model -> String -> ( State, Int )
 getPlayerState model s =
     case model.playerStates of
@@ -38,6 +74,8 @@ getPlayerState model s =
             ( getStateFunction treal.stype, treal.starttime )
 
 
+{-| delPlayerStates
+-}
 delPlayerStates : Model -> String -> PlayerState
 delPlayerStates model s =
     case model.playerStates of
@@ -45,6 +83,8 @@ delPlayerStates model s =
             PlayerStates (List.filter (\t -> t.stype /= s) x)
 
 
+{-| addPlayerStates
+-}
 addPlayerStates : Int -> Model -> String -> PlayerState
 addPlayerStates t model s =
     case model.playerStates of
@@ -52,6 +92,8 @@ addPlayerStates t model s =
             PlayerStates (x ++ [ StateData s t ])
 
 
+{-| updateState
+-}
 updateState : Int -> Model -> Data -> GameGlobalData -> String -> ( Model, Data )
 updateState t model gc ggd key =
     let
@@ -61,6 +103,8 @@ updateState t model gc ggd key =
     ( model, s.doing p t model gc ggd )
 
 
+{-| exitState
+-}
 exitState : Int -> Model -> Data -> GameGlobalData -> String -> ( Model, Data )
 exitState t model gc ggd key =
     let
@@ -84,6 +128,8 @@ exitState t model gc ggd key =
     ( { model | playerStates = deled }, tr )
 
 
+{-| addState
+-}
 addState : Int -> Model -> Data -> GameGlobalData -> String -> ( Model, Data )
 addState t model gc ggd key =
     let
@@ -96,11 +142,15 @@ addState t model gc ggd key =
     ( { model | playerStates = addPlayerStates t model key }, newgc )
 
 
+{-| queryIsState
+-}
 queryIsState : Model -> String -> Bool
 queryIsState model qs =
     List.any (\( x, _ ) -> x.key == qs) (getPlayerStates model)
 
 
+{-| queryStateStarttime
+-}
 queryStateStarttime : Model -> String -> Int
 queryStateStarttime model s =
     let
@@ -115,6 +165,8 @@ queryStateStarttime model s =
             0
 
 
+{-| getEmptyStates
+-}
 getEmptyStates : Model -> List State
 getEmptyStates m =
     List.filter
@@ -124,6 +176,8 @@ getEmptyStates m =
         allStates
 
 
+{-| allStates
+-}
 allStates : List State
 allStates =
     [ { key = "onground"
@@ -150,6 +204,8 @@ allStates =
     ]
 
 
+{-| nullState
+-}
 nullState : State
 nullState =
     { key = ""

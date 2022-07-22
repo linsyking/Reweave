@@ -1,5 +1,17 @@
 module Components.Hints.Hints exposing (..)
 
+{-| This is the doc for this module
+
+@docs initHints
+
+@docs updateHints
+
+@docs viewHints
+
+@docs genalpha
+
+-}
+
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable, group)
 import Canvas.Settings.Advanced exposing (alpha)
@@ -9,6 +21,8 @@ import Lib.DefinedTypes.Parser exposing (dgetLString, dgetint)
 import Lib.Render.Render exposing (renderText)
 
 
+{-| initHints
+-}
 initHints : Int -> ComponentTMsg -> Data
 initHints t ct =
     case ct of
@@ -26,11 +40,15 @@ initHints t ct =
             Dict.empty
 
 
+{-| updateHints
+-}
 updateHints : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateHints _ _ gd ( d, _ ) =
     ( d, [], gd )
 
 
+{-| viewHints
+-}
 viewHints : ( Data, Int ) -> GlobalData -> Renderable
 viewHints ( d, t ) gd =
     let
@@ -71,6 +89,8 @@ viewHints ( d, t ) gd =
         group [ alpha (genalpha stage) ] [ renderText gd fs curh "Times New Roman" pp ]
 
 
+{-| genalpha
+-}
 genalpha : Int -> Float
 genalpha k =
     if k < 0 then

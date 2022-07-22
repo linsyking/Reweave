@@ -1,5 +1,11 @@
 module Scenes.AllScenes exposing (allScenes)
 
+{-| This is the doc for this module
+
+@docs allScenes
+
+-}
+
 import Lib.CoreEngine.Export as CE
 import Lib.CoreEngine.Global as CEG
 import Scenes.Home.Export as H
@@ -15,6 +21,8 @@ import Scenes.SceneSettings exposing (..)
 import Scenes.TestChamber.Export as TC
 
 
+{-| allScenes
+-}
 allScenes : List ( String, SceneCT )
 allScenes =
     [ ( "Scene1", S1G.toCT S1.scene )

@@ -1,5 +1,17 @@
 module Scenes.Scene1.Model exposing (..)
 
+{-| This is the doc for this module
+
+@docs initModel
+
+@docs handleLayerMsg
+
+@docs updateModel
+
+@docs viewModel
+
+-}
+
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
 import Lib.Layer.Base exposing (LayerMsg(..))
@@ -12,6 +24,8 @@ import Scenes.Scene1.Layer2.Export as L2
 import Scenes.Scene1.Layer2.Global as L2G
 
 
+{-| initModel
+-}
 initModel : Int -> SceneMsg -> XModel
 initModel t _ =
     let
@@ -39,6 +53,8 @@ initModel t _ =
     }
 
 
+{-| handleLayerMsg
+-}
 handleLayerMsg : LayerMsg -> ( XModel, Int ) -> ( XModel, SceneOutputMsg )
 handleLayerMsg lmsg ( model, _ ) =
     case lmsg of
@@ -59,6 +75,8 @@ handleLayerMsg lmsg ( model, _ ) =
             ( model, NullSceneOutputMsg )
 
 
+{-| updateModel
+-}
 updateModel : Msg -> GlobalData -> ( XModel, Int ) -> ( XModel, SceneOutputMsg, GlobalData )
 updateModel msg gd ( model, t ) =
     let
@@ -74,6 +92,8 @@ updateModel msg gd ( model, t ) =
     ( newmodel, newso, newgd )
 
 
+{-| viewModel
+-}
 viewModel : ( XModel, Int ) -> GlobalData -> Renderable
 viewModel ( model, t ) gd =
     viewLayer gd t model.commonData model.layers

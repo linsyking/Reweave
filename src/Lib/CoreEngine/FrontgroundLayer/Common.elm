@@ -1,5 +1,11 @@
 module Lib.CoreEngine.FrontgroundLayer.Common exposing (..)
 
+{-| This is the doc for this module
+
+@docs Model
+
+-}
+
 import Array exposing (Array)
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable)
@@ -8,6 +14,8 @@ import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.Scene.Base exposing (EngineT)
 
 
+{-| Model
+-}
 type alias Model =
     { render : Int -> GameGlobalData -> GlobalData -> Renderable
     , components : Array Component

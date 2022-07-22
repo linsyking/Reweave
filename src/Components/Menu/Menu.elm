@@ -1,10 +1,23 @@
 module Components.Menu.Menu exposing (..)
 
+{-| This is the doc for this module
+
+@docs testData
+
+@docs initMenu
+
+@docs componentInteract
+
+@docs updateMenu
+
+@docs viewMenu
+
+-}
+
 import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (..)
 import Canvas.Settings exposing (..)
 import Canvas.Settings.Advanced exposing (..)
-import Color
 import Components.Menu.Map.Export as MenuMapE
 import Components.Menu.Settings.Export as MenuSettingsE
 import Components.Menu.Status.Export as MenuStatusE
@@ -13,9 +26,11 @@ import Dict
 import Lib.Component.Base exposing (Component, ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
 import Lib.DefinedTypes.Parser exposing (dgetDict, dgetLComponent, dgetbool, dsetLComponent, dsetbool)
-import Lib.Render.Render exposing (renderSprite, renderText)
+import Lib.Render.Render exposing (renderSprite)
 
 
+{-| testData
+-}
 testData : Dict.Dict String DefinedTypes
 testData =
     Dict.fromList
@@ -28,6 +43,8 @@ testData =
         ]
 
 
+{-| initMenu
+-}
 initMenu : Int -> ComponentTMsg -> Data
 initMenu _ _ =
     Dict.fromList
@@ -43,6 +60,8 @@ initMenu _ _ =
         ]
 
 
+{-| componentInteract
+-}
 componentInteract : List ( String, Component ) -> List ComponentTMsg -> ComponentTMsg -> GlobalData -> ( List ( String, Component ), List ComponentTMsg, GlobalData )
 componentInteract comList comMsgList newMsg globalData =
     case comMsgList of
@@ -92,6 +111,8 @@ componentInteract comList comMsgList newMsg globalData =
             ( comList, [ newMsg ], globalData )
 
 
+{-| updateMenu
+-}
 updateMenu : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateMenu mainMsg comMsg globalData ( model, t ) =
     let
@@ -150,7 +171,7 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                                         (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
                                             let
                                                 ( tmpCom, tmpComMsg, gD ) =
-                                                    comModel.update mainMsg (ComponentStringDictMsg "" tmpData) tmpGData ( comModel.data, t )
+                                                    comModel.update mainMsg (ComponentStringDictMsg "Init" tmpData) tmpGData ( comModel.data, t )
                                             in
                                             ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
                                         )
@@ -178,6 +199,8 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                     ( model, [], globalData )
 
 
+{-| viewMenu
+-}
 viewMenu : ( Data, Int ) -> GlobalData -> Renderable
 viewMenu ( model, t ) globalData =
     let

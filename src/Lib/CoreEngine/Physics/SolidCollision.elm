@@ -1,5 +1,37 @@
 module Lib.CoreEngine.Physics.SolidCollision exposing (..)
 
+{-| This is the doc for this module
+
+@docs pointIsSolid
+
+@docs pointOfSolid
+
+@docs blockIsSolid
+
+@docs lineHasSolid
+
+@docs velToDis
+
+@docs canMove
+
+@docs movePointPlain
+
+@docs gonnaSolidCollide
+
+@docs genSplits
+
+@docs ceilFloored
+
+@docs gonnaCollideSolidOrigin
+
+@docs judgeEasyCollision
+
+@docs moveTilCollide
+
+@docs getNearBySolid
+
+-}
+
 import Array
 import Array2D
 import Lib.CoreEngine.Base exposing (GameGlobalData, brickSize)
@@ -10,11 +42,15 @@ import Lib.Tools.Math exposing (rfint)
 import Math.Vector2 exposing (Vec2, vec2)
 
 
+{-| pointIsSolid
+-}
 pointIsSolid : ( Int, Int ) -> GameGlobalData -> Bool
 pointIsSolid ( x, y ) model =
     blockIsSolid model ( rfint x, rfint y )
 
 
+{-| pointOfSolid
+-}
 pointOfSolid : ( Int, Int ) -> GameGlobalData -> Maybe ( Int, Int )
 pointOfSolid ( x, y ) model =
     case Array2D.get (rfint x) (rfint y) model.solidmap of
@@ -33,6 +69,8 @@ pointOfSolid ( x, y ) model =
                 Nothing
 
 
+{-| blockIsSolid
+-}
 blockIsSolid : GameGlobalData -> ( Int, Int ) -> Bool
 blockIsSolid model ( x, y ) =
     case Array2D.get x y model.solidmap of
@@ -55,6 +93,8 @@ blockIsSolid model ( x, y ) =
 -- Judge if the line has some points that are solid
 
 
+{-| lineHasSolid
+-}
 lineHasSolid : ( Int, Int ) -> ( Int, Int ) -> GameGlobalData -> Bool
 lineHasSolid ( x1, y1 ) ( x2, y2 ) model =
     let
@@ -105,6 +145,8 @@ lineHasSolid ( x1, y1 ) ( x2, y2 ) model =
         True
 
 
+{-| velToDis
+-}
 velToDis : Float -> Float
 velToDis x =
     x / 15
@@ -114,6 +156,8 @@ velToDis x =
 --- Judge if an actor can move toward a specific direction (If there exists gap)
 
 
+{-| canMove
+-}
 canMove : Data -> GameGlobalData -> Vec2 -> Bool
 canMove actor model drt =
     let
@@ -149,6 +193,8 @@ canMove actor model drt =
         False
 
 
+{-| movePointPlain
+-}
 movePointPlain : Vec2 -> ( Int, Int ) -> ( Int, Int )
 movePointPlain vec ( x, y ) =
     let
@@ -161,6 +207,8 @@ movePointPlain vec ( x, y ) =
     ( x + floor (velToDis vx), y + floor -(velToDis vy) )
 
 
+{-| gonnaSolidCollide
+-}
 gonnaSolidCollide : Data -> GameGlobalData -> List ( Int, Int )
 gonnaSolidCollide gc ggd =
     let
@@ -170,6 +218,8 @@ gonnaSolidCollide gc ggd =
     delSame op []
 
 
+{-| genSplits
+-}
 genSplits : Int -> Int -> Int -> Array.Array Int
 genSplits a b s =
     if a >= b then
@@ -187,6 +237,8 @@ genSplits a b s =
             Array.push b (Array.map (\x -> x * s + a) (Array.fromList (List.range 0 fgs)))
 
 
+{-| ceilFloored
+-}
 ceilFloored : Float -> Int
 ceilFloored x =
     if x == 0 then
@@ -202,6 +254,8 @@ ceilFloored x =
         floor x
 
 
+{-| gonnaCollideSolidOrigin
+-}
 gonnaCollideSolidOrigin : Data -> GameGlobalData -> Array.Array ( Int, Int )
 gonnaCollideSolidOrigin actor model =
     let
@@ -347,6 +401,8 @@ gonnaCollideSolidOrigin actor model =
 --- Judge if next frame the actor will collide with solid
 
 
+{-| judgeEasyCollision
+-}
 judgeEasyCollision : Data -> ( Int, Int ) -> Bool
 judgeEasyCollision d ( x, y ) =
     let
@@ -361,6 +417,8 @@ judgeEasyCollision d ( x, y ) =
     res
 
 
+{-| moveTilCollide
+-}
 moveTilCollide : Data -> List ( Int, Int ) -> Data
 moveTilCollide d xs =
     let
@@ -407,6 +465,8 @@ moveTilCollide d xs =
     { d | position = qh }
 
 
+{-| getNearBySolid
+-}
 getNearBySolid : GameGlobalData -> Data -> List ( Int, Int )
 getNearBySolid ggd d =
     let

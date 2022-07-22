@@ -1,5 +1,19 @@
 module Lib.CoreEngine.GameComponents.Player.InputFilter exposing (..)
 
+{-| This is the doc for this module
+
+@docs isNope
+
+@docs isFirstJump
+
+@docs afterMove
+
+@docs preCheck
+
+@docs judgeFirstJump
+
+-}
+
 import Lib.CoreEngine.GameComponent.Base exposing (Data)
 import Lib.CoreEngine.GameComponents.Player.Base exposing (Model, SpaceLog(..))
 import Lib.CoreEngine.GameComponents.Player.FSM exposing (queryIsState, queryStateStarttime)
@@ -9,6 +23,8 @@ import Lib.CoreEngine.GameComponents.Player.FSM exposing (queryIsState, querySta
 --- Filter input
 
 
+{-| isNope
+-}
 isNope : Model -> Bool
 isNope model =
     case model.keyPressed of
@@ -19,6 +35,8 @@ isNope model =
             False
 
 
+{-| isFirstJump
+-}
 isFirstJump : Model -> Bool
 isFirstJump model =
     if model.lastOriginKeys.space == 0 && model.originKeys.space == 1 then
@@ -28,12 +46,16 @@ isFirstJump model =
         False
 
 
+{-| afterMove
+-}
 afterMove : Model -> Model
 afterMove model =
     --- Copy current keys to backup
     { model | lastOriginKeys = model.originKeys }
 
 
+{-| preCheck
+-}
 preCheck : Int -> Model -> Data -> ( Model, Data )
 preCheck t model d =
     let
@@ -92,6 +114,8 @@ preCheck t model d =
     ( { model | jStartTime = jst, currentKeys = newkeys }, newd )
 
 
+{-| judgeFirstJump
+-}
 judgeFirstJump : Int -> Model -> Data -> Bool
 judgeFirstJump t model _ =
     let

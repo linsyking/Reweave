@@ -1,5 +1,21 @@
 module Lib.CoreEngine.GameComponents.Player.Model exposing (..)
 
+{-| This is the doc for this module
+
+@docs initData
+
+@docs initExtraData
+
+@docs collisionBox
+
+@docs initModel
+
+@docs updateModel
+
+@docs reboundPlayer
+
+-}
+
 import Base exposing (GlobalData, Msg(..))
 import Dict exposing (Dict)
 import Lib.Component.Base exposing (DefinedTypes(..))
@@ -18,6 +34,8 @@ import Lib.CoreEngine.Physics.Velocity exposing (changeCVel)
 import Lib.DefinedTypes.Parser exposing (dgetPlayer, dsetPlayer)
 
 
+{-| initData
+-}
 initData : Data
 initData =
     { status = Alive
@@ -32,6 +50,8 @@ initData =
     }
 
 
+{-| initExtraData
+-}
 initExtraData : Dict String DefinedTypes
 initExtraData =
     Dict.fromList
@@ -39,6 +59,8 @@ initExtraData =
         ]
 
 
+{-| collisionBox
+-}
 collisionBox : Box
 collisionBox =
     { name = "col"
@@ -49,6 +71,8 @@ collisionBox =
     }
 
 
+{-| initModel
+-}
 initModel : Int -> GameComponentTMsg -> Data
 initModel _ gcm =
     case gcm of
@@ -68,6 +92,8 @@ initModel _ gcm =
             initData
 
 
+{-| updateModel
+-}
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
 updateModel msg gct ggd gd ( d, t ) =
     let
@@ -241,6 +267,8 @@ updateModel msg gct ggd gd ( d, t ) =
                     ( d, [], ggd )
 
 
+{-| reboundPlayer
+-}
 reboundPlayer : Float -> Data -> Data
 reboundPlayer rbv d =
     let

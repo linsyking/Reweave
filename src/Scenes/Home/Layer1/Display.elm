@@ -1,5 +1,11 @@
 module Scenes.Home.Layer1.Display exposing (..)
 
+{-| This is the doc for this module
+
+@docs dview
+
+-}
+
 import Base exposing (..)
 import Canvas exposing (Renderable, group, rect, shapes)
 import Canvas.Settings exposing (fill)
@@ -13,6 +19,8 @@ import Scenes.Home.Layer1.Common exposing (..)
 import Scenes.Home.LayerBase exposing (CommonData)
 
 
+{-| dview
+-}
 dview : ( ModelX, Int ) -> CommonData -> GlobalData -> Renderable
 dview ( m, _ ) _ gd =
     let
