@@ -76,6 +76,7 @@ beiminSprites =
     [ ( "bm/ground", getResourcePath "img/BeiMin/ground.png" )
     , ( "bm/leaf", getResourcePath "img/BeiMin/leaf.png" )
     , ( "bm/lotus", getResourcePath "img/BeiMin/lotus.png" )
+    , ( "bm/smallwave", getResourcePath "img/BeiMin/smallwave.png" )
     ]
 
 

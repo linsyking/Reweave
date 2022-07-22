@@ -51,14 +51,14 @@ initActors t sp =
         0 ->
             Array.fromList
                 [ initGameComponent t (GameExitInit (ExitInit ( 3700, 1910 ) "Level1" DefaultPlayerPosition 0 2)) Exit.gameComponent
-                , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2220 ) HorUp 100 3)) Spike.gameComponent
+                , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2220 ) HorUp 100 False 3)) Spike.gameComponent
                 , initGameComponent t (GameCutSceneInit (CutSceneInit ( 2440, 1820 ) ( 100, 100 ) 88 dialogues True)) CutScene.gameComponent
                 ]
 
         1 ->
             Array.fromList
                 [ initGameComponent t (GameExitInit (ExitInit ( 3700, 1910 ) "Level1" DefaultPlayerPosition 0 2)) Exit.gameComponent
-                , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2220 ) HorUp 100 3)) Spike.gameComponent
+                , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2220 ) HorUp 100 False 3)) Spike.gameComponent
                 ]
 
         _ ->

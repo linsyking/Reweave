@@ -52,10 +52,10 @@ initActors t =
         , initGameComponent t (GameExitInit (ExitInit ( 6350, 1920 ) "Scene1" DefaultPlayerPosition 0 99)) Exit.gameComponent
 
         --, initGameComponent t (GameCutSceneInit (CutSceneInit ( 100, 1800 ) ( 100, 160 ) 88 [ ( "1", "Dear master, I want learn something from you", True ), ( "1", "Yes, please go ahead.", False ) ])) CutScene.gameComponent
-        , initGameComponent t (GameSpikeInit (SpikeInit ( 640, 2060 ) HorUp 3 12)) Spike.gameComponent
-        , initGameComponent t (GameSpikeInit (SpikeInit ( 1568, 2060 ) HorUp 3 13)) Spike.gameComponent
-        , initGameComponent t (GameSpikeInit (SpikeInit ( 3360, 1408 ) HorDown 9 10)) Spike.gameComponent
-        , initGameComponent t (GameSpikeInit (SpikeInit ( 3232, 2160 ) HorUp 15 11)) Spike.gameComponent
+        , initGameComponent t (GameSpikeInit (SpikeInit ( 640, 2060 ) HorUp 3 True 12)) Spike.gameComponent
+        , initGameComponent t (GameSpikeInit (SpikeInit ( 1568, 2060 ) HorUp 3 True 13)) Spike.gameComponent
+        , initGameComponent t (GameSpikeInit (SpikeInit ( 3360, 1408 ) HorDown 9 True 10)) Spike.gameComponent
+        , initGameComponent t (GameSpikeInit (SpikeInit ( 3232, 2160 ) HorUp 15 True 11)) Spike.gameComponent
 
         -- , initGameComponent t (GameFishInit (FishInit ( 5632, 100 ) ( 0, 0 ) "default" 100 12)) Monster.gameComponent
         ]

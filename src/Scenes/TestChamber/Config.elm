@@ -53,9 +53,9 @@ initActors t =
         -- , initGameComponent t (GameExitInit (ExitInit ( 3600, 1750 ) "Level4" 9)) Exit.gameComponent
         -- , initGameComponent t (GameCutSceneInit (CutSceneInit ( 2900, 1800 ) ( 100, 160 ) 88 [ ( "p_profile", "Dear master, I want learn something from you" ), ( "master", "Yes, please go ahead." ) ] True)) CutScene.gameComponent
         , initGameComponent t (GameGoombaEmitterInit (GoombaEmitterInit ( 900, 1800 ) 200 ( -50, 0 ) 6)) GoombaEmitter.gameComponent
-        , initGameComponent t (GameSpikeInit (SpikeInit ( 704, 2028 ) HorUp 1 10)) Spike.gameComponent
-        , initGameComponent t (GameSpikeInit (SpikeInit ( 736, 2048 ) VerRight 3 11)) Spike.gameComponent
-        , initGameComponent t (GameSpikeInit (SpikeInit ( 864, 2016 ) HorDown 15 12)) Spike.gameComponent
+        , initGameComponent t (GameSpikeInit (SpikeInit ( 704, 2028 ) HorUp 1 True 10)) Spike.gameComponent
+        , initGameComponent t (GameSpikeInit (SpikeInit ( 736, 2048 ) VerRight 3 True 11)) Spike.gameComponent
+        , initGameComponent t (GameSpikeInit (SpikeInit ( 864, 2016 ) HorDown 15 True 12)) Spike.gameComponent
         , initGameComponent t (GameFishInit (FishInit ( 100, 100 ) 88 229)) Fish.gameComponent
 
         -- , initGameComponent t (GameFireballInit (FireballInit ( 500, 1530 ) ( -5, 0 ) 18)) Fireball.gameComponent

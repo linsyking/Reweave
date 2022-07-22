@@ -5,6 +5,7 @@ type alias SpikeInit =
     { initPosition : ( Int, Int )
     , direction : SpikeDirection
     , spikesnum : Int
+    , visible : Bool
     , uid : Int
     }
 

@@ -124,6 +124,7 @@ initModel _ gct =
                             )
                       )
                     , ( "number", CDInt info.spikesnum )
+                    , ( "visible", CDBool info.visible )
                     ]
             , uid = info.uid
             }
