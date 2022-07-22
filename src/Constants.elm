@@ -1,6 +1,7 @@
 module Constants exposing (plHeight, plWidth)
 
---- Constants
+{-| This is the constants module
+-}
 
 
 plWidth : Int
