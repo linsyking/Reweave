@@ -1,5 +1,11 @@
 module Lib.CoreEngine.GameComponent.GenUID exposing (..)
 
+{-| This is the doc for this module
+
+@docs genUID
+
+-}
+
 import Array
 import Lib.CoreEngine.GameLayer.Common exposing (Model)
 
@@ -8,6 +14,8 @@ import Lib.CoreEngine.GameLayer.Common exposing (Model)
 -- Generate available UID
 
 
+{-| genUID
+-}
 genUID : Model -> Int
 genUID model =
     let

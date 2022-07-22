@@ -1,10 +1,23 @@
-module Lib.Map.Zhongyuan exposing (buildplatforms, buildzystick)
+module Lib.Map.Zhongyuan exposing
+    ( buildzystick
+    , buildplatforms
+    )
+
+{-| This is the doc for this module
+
+@docs buildzystick
+
+@docs buildplatforms
+
+-}
 
 import Array2D
 import Lib.Map.Poly exposing (buildrect)
 import List exposing (foldl)
 
 
+{-| buildzystick
+-}
 buildzystick : ( Int, Int ) -> Array2D.Array2D Int -> Array2D.Array2D Int
 buildzystick ( x, y ) ss =
     ss
@@ -12,6 +25,8 @@ buildzystick ( x, y ) ss =
         |> buildrect ( x + 1, y ) ( 4, 1 ) 2
 
 
+{-| buildplatforms
+-}
 buildplatforms : ( Int, Int ) -> Int -> Array2D.Array2D Int -> Array2D.Array2D Int
 buildplatforms ( x, y ) mn ss =
     foldl

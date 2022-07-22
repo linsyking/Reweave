@@ -1,5 +1,21 @@
 module Lib.Render.Render exposing (..)
 
+{-| This is the doc for this module
+
+@docs transPoint
+
+@docs renderSprite
+
+@docs renderSpriteWithRev
+
+@docs renderBrickSheet
+
+@docs renderText
+
+@docs renderTextWithColor
+
+-}
+
 import Base exposing (GlobalData)
 import Canvas exposing (Point, Renderable, text, texture)
 import Canvas.Settings exposing (Setting, fill)
@@ -13,11 +29,15 @@ import Lib.CoreEngine.Base exposing (brickSize)
 import Lib.Resources.Base exposing (igetSprite)
 
 
+{-| transPoint
+-}
 transPoint : GlobalData -> ( Int, Int ) -> Point
 transPoint gd p =
     posToReal gd p
 
 
+{-| renderSprite
+-}
 renderSprite : GlobalData -> List Setting -> ( Int, Int ) -> ( Int, Int ) -> String -> Renderable
 renderSprite gd ls p ( w, h ) name =
     let
@@ -95,6 +115,8 @@ renderSprite gd ls p ( w, h ) name =
             text [] (transPoint gd p) "Wrong Sprite"
 
 
+{-| renderSpriteWithRev
+-}
 renderSpriteWithRev : Bool -> GlobalData -> List Setting -> ( Int, Int ) -> ( Int, Int ) -> String -> Renderable
 renderSpriteWithRev rev gd ls p ( w, h ) name =
     if not rev then
@@ -179,6 +201,8 @@ renderSpriteWithRev rev gd ls p ( w, h ) name =
                 text [] (transPoint gd p) "Wrong Sprite"
 
 
+{-| renderBrickSheet
+-}
 renderBrickSheet : GlobalData -> List Setting -> ( Int, Int ) -> ( Int, Int ) -> String -> Dict String Texture -> Renderable
 renderBrickSheet gd ls p ( x, y ) name dst =
     case igetSprite name dst of
@@ -216,6 +240,8 @@ renderBrickSheet gd ls p ( x, y ) name dst =
             text [] (transPoint gd p) "Wrong Sprite"
 
 
+{-| renderText
+-}
 renderText : GlobalData -> Int -> String -> String -> ( Int, Int ) -> Renderable
 renderText gd size s ft ( x, y ) =
     let
@@ -233,6 +259,8 @@ renderText gd size s ft ( x, y ) =
         s
 
 
+{-| renderTextWithColor
+-}
 renderTextWithColor : GlobalData -> Int -> String -> String -> Color -> ( Int, Int ) -> Renderable
 renderTextWithColor gd size s ft col ( x, y ) =
     let

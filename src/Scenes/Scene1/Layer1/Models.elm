@@ -1,5 +1,13 @@
 module Scenes.Scene1.Layer1.Models exposing (..)
 
+{-| This is the doc for this module
+
+@docs initModel
+
+@docs updateModel
+
+-}
+
 --- Init a model, and update it
 
 import Base exposing (..)
@@ -12,12 +20,16 @@ import Scenes.Scene1.Layer1.Common exposing (..)
 import Scenes.Scene1.LayerBase exposing (CommonData)
 
 
+{-| initModel
+-}
 initModel : Int -> LayerMsg -> CommonData -> ModelX
 initModel _ _ _ =
     { s = 0
     }
 
 
+{-| updateModel
+-}
 updateModel : Msg -> GlobalData -> LayerMsg -> SModel -> CommonData -> ( ( ModelX, CommonData, List ( LayerTarget, LayerMsg ) ), GlobalData )
 updateModel msg gd _ ( model, t ) cd =
     case msg of

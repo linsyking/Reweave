@@ -1,5 +1,19 @@
 module Components.Menu.Menu exposing (..)
 
+{-| This is the doc for this module
+
+@docs testData
+
+@docs initMenu
+
+@docs componentInteract
+
+@docs updateMenu
+
+@docs viewMenu
+
+-}
+
 import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (..)
 import Canvas.Settings exposing (..)
@@ -15,6 +29,8 @@ import Lib.DefinedTypes.Parser exposing (dgetDict, dgetLComponent, dgetbool, dse
 import Lib.Render.Render exposing (renderSprite)
 
 
+{-| testData
+-}
 testData : Dict.Dict String DefinedTypes
 testData =
     Dict.fromList
@@ -27,6 +43,8 @@ testData =
         ]
 
 
+{-| initMenu
+-}
 initMenu : Int -> ComponentTMsg -> Data
 initMenu _ _ =
     Dict.fromList
@@ -42,6 +60,8 @@ initMenu _ _ =
         ]
 
 
+{-| componentInteract
+-}
 componentInteract : List ( String, Component ) -> List ComponentTMsg -> ComponentTMsg -> GlobalData -> ( List ( String, Component ), List ComponentTMsg, GlobalData )
 componentInteract comList comMsgList newMsg globalData =
     case comMsgList of
@@ -91,6 +111,8 @@ componentInteract comList comMsgList newMsg globalData =
             ( comList, [ newMsg ], globalData )
 
 
+{-| updateMenu
+-}
 updateMenu : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateMenu mainMsg comMsg globalData ( model, t ) =
     let
@@ -177,6 +199,8 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                     ( model, [], globalData )
 
 
+{-| viewMenu
+-}
 viewMenu : ( Data, Int ) -> GlobalData -> Renderable
 viewMenu ( model, t ) globalData =
     let

@@ -1,14 +1,26 @@
 module Scenes.Level4.Map exposing (..)
 
+{-| This is the doc for this module
+
+@docs sds
+
+@docs mymap
+
+-}
+
 import Array2D
 import Lib.Map.Poly exposing (buildrect)
 
 
+{-| sds
+-}
 sds : Array2D.Array2D Int
 sds =
     Array2D.repeat 200 70 0
 
 
+{-| mymap
+-}
 mymap : Array2D.Array2D Int
 mymap =
     sds

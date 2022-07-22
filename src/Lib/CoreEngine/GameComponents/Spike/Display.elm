@@ -1,5 +1,13 @@
 module Lib.CoreEngine.GameComponents.Spike.Display exposing (..)
 
+{-| This is the doc for this module
+
+@docs view
+
+@docs renderSingleSpike
+
+-}
+
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable, group)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
@@ -9,6 +17,8 @@ import Lib.DefinedTypes.Parser exposing (dgetbool, dgetint)
 import Lib.Render.Render exposing (renderSprite)
 
 
+{-| view
+-}
 view : ( Data, Int ) -> GameGlobalData -> GlobalData -> List ( Renderable, Int )
 view ( d, _ ) ggd gd =
     let
@@ -32,6 +42,8 @@ view ( d, _ ) ggd gd =
         ]
 
 
+{-| renderSingleSpike
+-}
 renderSingleSpike : Data -> GameGlobalData -> GlobalData -> Int -> Int -> Renderable
 renderSingleSpike d ggd gd dir num =
     let

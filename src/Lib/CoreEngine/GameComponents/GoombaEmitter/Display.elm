@@ -1,5 +1,11 @@
 module Lib.CoreEngine.GameComponents.GoombaEmitter.Display exposing (..)
 
+{-| This is the doc for this module
+
+@docs view
+
+-}
+
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
@@ -9,6 +15,8 @@ import Lib.DefinedTypes.Parser exposing (dgetfloat)
 import Lib.Render.Render exposing (renderSpriteWithRev)
 
 
+{-| view
+-}
 view : ( Data, Int ) -> GameGlobalData -> GlobalData -> List ( Renderable, Int )
 view ( d, _ ) ggd gd =
     let

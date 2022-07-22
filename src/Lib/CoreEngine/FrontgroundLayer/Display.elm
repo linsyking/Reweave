@@ -1,5 +1,13 @@
 module Lib.CoreEngine.FrontgroundLayer.Display exposing (..)
 
+{-| This is the doc for this module
+
+@docs view
+
+@docs genFPS
+
+-}
+
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable, group)
 import Canvas.Settings.Advanced exposing (alpha)
@@ -9,6 +17,8 @@ import Lib.CoreEngine.FrontgroundLayer.Common exposing (Model)
 import Lib.Render.Render exposing (renderText)
 
 
+{-| view
+-}
 view : ( Model, Int ) -> GameGlobalData -> GlobalData -> Renderable
 view ( model, t ) ggd gd =
     group []
@@ -18,6 +28,8 @@ view ( model, t ) ggd gd =
         ]
 
 
+{-| genFPS
+-}
 genFPS : Model -> GlobalData -> Renderable
 genFPS model gd =
     let

@@ -1,16 +1,28 @@
 module Scenes.Level0.Map exposing (..)
 
+{-| This is the doc for this module
+
+@docs sds
+
+@docs mymap
+
+-}
+
 import Array2D
 import Lib.Map.Longxi exposing (buildlxlongground, buildlxrock)
 import Lib.Map.Poly exposing (buildrect)
 import Lib.Map.Zhongyuan exposing (buildplatforms, buildzystick)
 
 
+{-| sds
+-}
 sds : Array2D.Array2D Int
 sds =
     Array2D.repeat 120 70 0
 
 
+{-| mymap
+-}
 mymap : Array2D.Array2D Int
 mymap =
     sds

@@ -1,5 +1,25 @@
 module Scenes.Level0.Config exposing (..)
 
+{-| This is the doc for this module
+
+@docs initFrontGroundComponents
+
+@docs initPlayer
+
+@docs initActors
+
+@docs initCamera
+
+@docs dialogues
+
+@docs initGameGlobalData
+
+@docs allChartlets
+
+@docs makemanybamboos
+
+-}
+
 import Array exposing (Array)
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable, group)
@@ -23,6 +43,8 @@ import Lib.Render.Render exposing (renderSprite)
 import Scenes.Level0.Map exposing (mymap)
 
 
+{-| initFrontGroundComponents
+-}
 initFrontGroundComponents : Int -> Int -> Array Component
 initFrontGroundComponents t sp =
     case sp of
@@ -35,6 +57,8 @@ initFrontGroundComponents t sp =
             Array.empty
 
 
+{-| initPlayer
+-}
 initPlayer : Int -> PlayerInitPosition -> GameComponent
 initPlayer t pos =
     case pos of
@@ -45,6 +69,8 @@ initPlayer t pos =
             initGameComponent t (GamePlayerInit (PlayerInit x)) Player.gameComponent
 
 
+{-| initActors
+-}
 initActors : Int -> Int -> Array GameComponent
 initActors t sp =
     case sp of
@@ -65,11 +91,15 @@ initActors t sp =
             Array.empty
 
 
+{-| initCamera
+-}
 initCamera : CameraData
 initCamera =
     CameraData ( 0, 1120 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * 119 - 1, 69 * 32 - 1 ) ) ( ( 0.2, 0.3 ), ( 0.4, 0.4 ) )
 
 
+{-| dialogues
+-}
 dialogues : List ( String, String )
 dialogues =
     [ ( "p_profile", "Hello, master." )
@@ -77,6 +107,8 @@ dialogues =
     ]
 
 
+{-| initGameGlobalData
+-}
 initGameGlobalData : Float -> List String -> Int -> GameGlobalData
 initGameGlobalData e col spstate =
     { camera = initCamera
@@ -92,6 +124,8 @@ initGameGlobalData e col spstate =
     }
 
 
+{-| allChartlets
+-}
 allChartlets : Int -> List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
 allChartlets sp =
     makemanybamboos 9
@@ -111,6 +145,8 @@ allChartlets sp =
            ]
 
 
+{-| makemanybamboos
+-}
 makemanybamboos : Int -> List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
 makemanybamboos n =
     List.foldl

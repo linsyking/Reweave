@@ -1,5 +1,19 @@
 module Components.Trans.Trans exposing (..)
 
+{-| This is the doc for this module
+
+@docs pausetime
+
+@docs initTrans
+
+@docs updateTrans
+
+@docs viewTrans
+
+@docs shapePos
+
+-}
+
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (..)
 import Canvas.Settings exposing (..)
@@ -17,11 +31,15 @@ import String exposing (toInt)
 --the length of the movement time
 
 
+{-| pausetime
+-}
 pausetime : Int
 pausetime =
     40
 
 
+{-| initTrans
+-}
 initTrans : Int -> ComponentTMsg -> Data
 initTrans t ct =
     case ct of
@@ -46,6 +64,8 @@ initTrans t ct =
                 ]
 
 
+{-| updateTrans
+-}
 updateTrans : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateTrans _ gMsg globalData ( d, t ) =
     let
@@ -80,6 +100,8 @@ updateTrans _ gMsg globalData ( d, t ) =
                 ( d, [], globalData )
 
 
+{-| viewTrans
+-}
 viewTrans : ( Data, Int ) -> GlobalData -> Renderable
 viewTrans ( d, t ) gd =
     let
@@ -129,6 +151,8 @@ viewTrans ( d, t ) gd =
         group [] []
 
 
+{-| shapePos
+-}
 shapePos : Int -> ( Int, Int ) -> ( Int, Int ) -> ( Int, Int )
 shapePos time ( startX, startY ) ( endX, endY ) =
     if time > pausetime then

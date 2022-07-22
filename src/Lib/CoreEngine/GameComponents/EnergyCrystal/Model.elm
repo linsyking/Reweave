@@ -1,5 +1,19 @@
 module Lib.CoreEngine.GameComponents.EnergyCrystal.Model exposing (..)
 
+{-| This is the doc for this module
+
+@docs initData
+
+@docs simplecheckBox
+
+@docs initModel
+
+@docs randomPos
+
+@docs updateModel
+
+-}
+
 import Base exposing (GlobalData, Msg(..))
 import Dict
 import Lib.Component.Base exposing (DefinedTypes(..))
@@ -9,6 +23,8 @@ import Lib.DefinedTypes.Parser exposing (dgetLString, dsetlstring)
 import Random
 
 
+{-| initData
+-}
 initData : Data
 initData =
     { status = Alive
@@ -23,6 +39,8 @@ initData =
     }
 
 
+{-| simplecheckBox
+-}
 simplecheckBox : ( Int, Int ) -> Box
 simplecheckBox ( w, h ) =
     { name = "sp"
@@ -33,6 +51,8 @@ simplecheckBox ( w, h ) =
     }
 
 
+{-| initModel
+-}
 initModel : Int -> GameComponentTMsg -> Data
 initModel _ gct =
     case gct of
@@ -55,11 +75,15 @@ initModel _ gct =
             initData
 
 
+{-| randomPos
+-}
 randomPos : Int -> Int -> Int -> Int
 randomPos t l r =
     Tuple.first (Random.step (Random.int l r) (Random.initialSeed t))
 
 
+{-| updateModel
+-}
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
 updateModel mainMsg gct ggd _ ( d, t ) =
     case gct of

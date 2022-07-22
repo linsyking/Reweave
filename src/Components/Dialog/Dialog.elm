@@ -1,5 +1,17 @@
 module Components.Dialog.Dialog exposing (..)
 
+{-| This is the doc for this module
+
+@docs initDialog
+
+@docs checkStatusReport
+
+@docs updateDialog
+
+@docs viewDialog
+
+-}
+
 import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (..)
 import Canvas.Settings exposing (..)
@@ -19,6 +31,8 @@ import Lib.Render.Render exposing (renderSprite)
 -- OnShow : OnLoadChild -> (OnShowChild ->) OnDeChild (OnDeconstructChild) -> OnEnd
 
 
+{-| initDialog
+-}
 initDialog : Int -> ComponentTMsg -> Data
 initDialog _ comMsg =
     case comMsg of
@@ -33,6 +47,8 @@ initDialog _ comMsg =
             Dict.empty
 
 
+{-| checkStatusReport
+-}
 checkStatusReport : List String -> List ( String, Component ) -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 checkStatusReport list childComponentsList globalData ( model, t ) =
     let
@@ -133,6 +149,8 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
             )
 
 
+{-| updateDialog
+-}
 updateDialog : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateDialog mainMsg _ globalData ( model, t ) =
     case mainMsg of
@@ -293,6 +311,8 @@ updateDialog mainMsg _ globalData ( model, t ) =
                     ( model |> dsetLComponent "_Child" newChildComponentsList, [], globalData )
 
 
+{-| viewDialog
+-}
 viewDialog : ( Data, Int ) -> GlobalData -> Renderable
 viewDialog ( model, t ) globalData =
     let

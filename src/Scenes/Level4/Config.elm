@@ -1,5 +1,21 @@
 module Scenes.Level4.Config exposing (..)
 
+{-| This is the doc for this module
+
+@docs initFrontGroundComponents
+
+@docs initPlayer
+
+@docs initActors
+
+@docs initCamera
+
+@docs initGameGlobalData
+
+@docs allChartlets
+
+-}
+
 import Array exposing (Array)
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable)
@@ -20,11 +36,15 @@ import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
 import Scenes.Level4.Map exposing (mymap)
 
 
+{-| initFrontGroundComponents
+-}
 initFrontGroundComponents : Int -> Array Component
 initFrontGroundComponents _ =
     Array.empty
 
 
+{-| initPlayer
+-}
 initPlayer : Int -> PlayerInitPosition -> GameComponent
 initPlayer t pos =
     case pos of
@@ -36,6 +56,8 @@ initPlayer t pos =
             initGameComponent t (GamePlayerInit (PlayerInit x)) Player.gameComponent
 
 
+{-| initActors
+-}
 initActors : Int -> Array GameComponent
 initActors t =
     Array.fromList
@@ -61,11 +83,15 @@ initActors t =
         ]
 
 
+{-| initCamera
+-}
 initCamera : CameraData
 initCamera =
     CameraData ( 0, 1120 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * 199 - 1, 70 * 32 - 1 ) ) ( ( 0.2, 0.3 ), ( 0.4, 0.4 ) )
 
 
+{-| initGameGlobalData
+-}
 initGameGlobalData : Float -> List String -> GameGlobalData
 initGameGlobalData e col =
     { camera = initCamera
@@ -81,6 +107,8 @@ initGameGlobalData e col =
     }
 
 
+{-| allChartlets
+-}
 allChartlets : List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
 allChartlets =
     []

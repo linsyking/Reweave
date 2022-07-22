@@ -1,5 +1,13 @@
 module Lib.Render.Solid exposing (..)
 
+{-| This is the doc for this module
+
+@docs renderSolids
+
+@docs renderSingleBlock
+
+-}
+
 import Array2D
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable, group)
@@ -9,6 +17,8 @@ import Lib.Render.Render exposing (renderSprite, renderSpriteWithRev)
 import Lib.Tools.Math exposing (rfint)
 
 
+{-| renderSolids
+-}
 renderSolids : GameGlobalData -> GlobalData -> Renderable
 renderSolids ggd gd =
     let
@@ -58,6 +68,8 @@ renderSolids ggd gd =
     group [] sls
 
 
+{-| renderSingleBlock
+-}
 renderSingleBlock : Int -> ( Int, Int ) -> GameGlobalData -> GlobalData -> Renderable
 renderSingleBlock tp p ggd gd =
     let

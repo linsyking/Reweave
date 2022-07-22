@@ -1,9 +1,19 @@
 module Lib.CoreEngine.Physics.InterCollision exposing (..)
 
+{-| This is the doc for this module
+
+@docs gonnaInterColllide
+
+@docs genInterFromOneSide
+
+-}
+
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentTMsg(..))
 import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos, judgeCollision)
 
 
+{-| gonnaInterColllide
+-}
 gonnaInterColllide : GameComponent -> GameComponent -> ( GameComponentTMsg, GameComponentTMsg )
 gonnaInterColllide gc1 gc2 =
     let
@@ -30,6 +40,8 @@ gonnaInterColllide gc1 gc2 =
 -- Send information to gc1
 
 
+{-| genInterFromOneSide
+-}
 genInterFromOneSide : GameComponent -> GameComponent -> GameComponentTMsg
 genInterFromOneSide gc1 gc2 =
     let

@@ -1,5 +1,21 @@
 port module Main exposing (..)
 
+{-| This is the doc for this module
+
+@docs initModel
+
+@docs main
+
+@docs init
+
+@docs update
+
+@docs subscriptions
+
+@docs view
+
+-}
+
 import Audio exposing (AudioCmd, AudioData)
 import Base exposing (..)
 import Browser.Events exposing (onKeyDown, onKeyUp, onMouseDown, onResize)
@@ -29,6 +45,8 @@ port audioPortToJS : Encode.Value -> Cmd msg
 port audioPortFromJS : (Decode.Value -> msg) -> Sub msg
 
 
+{-| initModel
+-}
 initModel : Model
 initModel =
     { currentData = NullSceneData
@@ -39,6 +57,8 @@ initModel =
     }
 
 
+{-| main
+-}
 main : Program Flags (Audio.Model Msg Model) (Audio.Msg Msg)
 main =
     Audio.elementWithAudio
@@ -55,6 +75,8 @@ main =
 --INIT
 
 
+{-| init
+-}
 init : Flags -> ( Model, Cmd Msg, AudioCmd Msg )
 init flags =
     let
@@ -80,6 +102,8 @@ init flags =
 --UPDATE
 
 
+{-| update
+-}
 update : AudioData -> Msg -> Model -> ( Model, Cmd Msg, AudioCmd Msg )
 update _ msg model =
     case msg of
@@ -199,6 +223,8 @@ update _ msg model =
                         ( updateSceneStartTime bnewmodel, Cmd.none, Audio.cmdNone )
 
 
+{-| subscriptions
+-}
 subscriptions : AudioData -> Model -> Sub Msg
 subscriptions _ _ =
     Sub.batch
@@ -210,6 +236,8 @@ subscriptions _ _ =
         ]
 
 
+{-| view
+-}
 view : AudioData -> Model -> Html Msg
 view _ model =
     Canvas.toHtmlWith

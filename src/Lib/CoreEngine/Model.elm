@@ -1,5 +1,17 @@
 module Lib.CoreEngine.Model exposing (..)
 
+{-| This is the doc for this module
+
+@docs initModel
+
+@docs handleLayerMsg
+
+@docs updateModel
+
+@docs viewModel
+
+-}
+
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
 import Lib.CoreEngine.BackgroundLayer.Export as BGL
@@ -16,6 +28,8 @@ import Lib.Layer.LayerHandler exposing (updateLayer, viewLayer)
 import Lib.Scene.Base exposing (SceneMsg(..), SceneOutputMsg(..))
 
 
+{-| initModel
+-}
 initModel : Int -> SceneMsg -> Model
 initModel t sm =
     case sm of
@@ -68,6 +82,8 @@ initModel t sm =
             }
 
 
+{-| handleLayerMsg
+-}
 handleLayerMsg : LayerMsg -> ( Model, Int ) -> ( Model, SceneOutputMsg )
 handleLayerMsg lmsg ( model, _ ) =
     case lmsg of
@@ -84,6 +100,8 @@ handleLayerMsg lmsg ( model, _ ) =
             ( model, NullSceneOutputMsg )
 
 
+{-| updateModel
+-}
 updateModel : Msg -> GlobalData -> ( Model, Int ) -> ( Model, SceneOutputMsg, GlobalData )
 updateModel msg gd ( model, t ) =
     let
@@ -99,6 +117,8 @@ updateModel msg gd ( model, t ) =
     ( newmodel, newso, newgd )
 
 
+{-| viewModel
+-}
 viewModel : ( Model, Int ) -> GlobalData -> Renderable
 viewModel ( model, t ) gd =
     viewLayer gd t model.gameGlobalData model.layers

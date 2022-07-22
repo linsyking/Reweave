@@ -1,5 +1,11 @@
 module Lib.CoreEngine.GameComponents.CutScene.Display exposing (..)
 
+{-| This is the doc for this module
+
+@docs view
+
+-}
+
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable, group)
 import Canvas.Settings.Advanced exposing (alpha)
@@ -11,6 +17,8 @@ import Lib.DefinedTypes.Parser exposing (dgetLComponent)
 import Lib.Render.Render exposing (renderSprite)
 
 
+{-| view
+-}
 view : ( Data, Int ) -> GameGlobalData -> GlobalData -> List ( Renderable, Int )
 view ( d, t ) ggd gd =
     let

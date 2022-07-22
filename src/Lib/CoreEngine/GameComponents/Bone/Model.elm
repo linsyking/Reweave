@@ -1,5 +1,17 @@
 module Lib.CoreEngine.GameComponents.Bone.Model exposing (..)
 
+{-| This is the doc for this module
+
+@docs initData
+
+@docs simplecheckBox
+
+@docs initModel
+
+@docs updateModel
+
+-}
+
 import Base exposing (GlobalData, Msg)
 import Dict
 import Lib.Component.Base exposing (DefinedTypes(..))
@@ -7,6 +19,8 @@ import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
 
 
+{-| initData
+-}
 initData : Data
 initData =
     { status = Alive
@@ -21,6 +35,8 @@ initData =
     }
 
 
+{-| simplecheckBox
+-}
 simplecheckBox : ( Int, Int ) -> Box
 simplecheckBox ( w, h ) =
     { name = "sp"
@@ -31,6 +47,8 @@ simplecheckBox ( w, h ) =
     }
 
 
+{-| initModel
+-}
 initModel : Int -> GameComponentTMsg -> Data
 initModel _ gct =
     case gct of
@@ -50,6 +68,8 @@ initModel _ gct =
             initData
 
 
+{-| updateModel
+-}
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
 updateModel _ gct ggd _ ( d, t ) =
     case gct of

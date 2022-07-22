@@ -1,5 +1,13 @@
 module Scenes.Platformtest.Map exposing (..)
 
+{-| This is the doc for this module
+
+@docs sds
+
+@docs mymap
+
+-}
+
 import Array2D
 import Lib.Map.Beimin exposing (buildbmleaf, buildbmlongground, buildbmlotus)
 import Lib.Map.Donghai exposing (builddhbigrock, builddhrock, builddhsmallrock)
@@ -9,11 +17,15 @@ import Lib.Map.Poly exposing (buildrect)
 import Lib.Map.Zhongyuan exposing (buildplatforms, buildzystick)
 
 
+{-| sds
+-}
 sds : Array2D.Array2D Int
 sds =
     Array2D.repeat 120 70 0
 
 
+{-| mymap
+-}
 mymap : Array2D.Array2D Int
 mymap =
     sds

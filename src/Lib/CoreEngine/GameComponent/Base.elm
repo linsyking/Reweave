@@ -1,5 +1,21 @@
 module Lib.CoreEngine.GameComponent.Base exposing (..)
 
+{-| This is the doc for this module
+
+@docs GameComponentMsgType
+
+@docs GameComponentTMsg
+
+@docs LifeStatus
+
+@docs GameComponent
+
+@docs Data
+
+@docs Box
+
+-}
+
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
 import Dict exposing (Dict)
@@ -24,6 +40,8 @@ import Lib.CoreEngine.GameComponents.Turtle.Base exposing (TurtleInit)
 --- Component Base
 
 
+{-| GameComponent
+-}
 type alias GameComponent =
     { name : String
     , data : Data
@@ -33,12 +51,16 @@ type alias GameComponent =
     }
 
 
+{-| GameComponentMsgType
+-}
 type GameComponentMsgType
     = GameParentMsg GameComponentTMsg
     | GameActorUidMsg Int GameComponentTMsg
     | GameActorNameMsg String GameComponentTMsg
 
 
+{-| GameComponentTMsg
+-}
 type GameComponentTMsg
     = GameSolidCollisionMsg (List ( Int, Int ))
     | GameInterCollisionMsg String Data (List Box)
@@ -63,6 +85,8 @@ type GameComponentTMsg
     | NullGameComponentMsg
 
 
+{-| Data
+-}
 type alias Data =
     { status : LifeStatus
     , uid : Int
@@ -76,11 +100,15 @@ type alias Data =
     }
 
 
+{-| LifeStatus
+-}
 type LifeStatus
     = Alive
     | Dead Int -- Record the death time
 
 
+{-| Box
+-}
 type alias Box =
     { name : String
     , offsetX : Int

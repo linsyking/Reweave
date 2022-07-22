@@ -1,5 +1,13 @@
 module Scenes.Level4.Export exposing (..)
 
+{-| This is the doc for this module
+
+@docs game
+
+@docs scene
+
+-}
+
 import Array
 import Canvas exposing (group)
 import Lib.CoreEngine.Export exposing (Data, genEngineScene, initEngine)
@@ -8,6 +16,8 @@ import Scenes.Level4.Background exposing (background)
 import Scenes.Level4.Config exposing (allChartlets, initActors, initFrontGroundComponents, initGameGlobalData, initPlayer)
 
 
+{-| game
+-}
 game : Int -> SceneMsg -> Data
 game t sm =
     let
@@ -32,6 +42,8 @@ game t sm =
         )
 
 
+{-| scene
+-}
 scene : Scene Data
 scene =
     genEngineScene game

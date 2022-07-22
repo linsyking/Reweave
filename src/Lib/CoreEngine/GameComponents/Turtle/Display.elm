@@ -1,5 +1,13 @@
 module Lib.CoreEngine.GameComponents.Turtle.Display exposing (..)
 
+{-| This is the doc for this module
+
+@docs view
+
+@docs viewbar
+
+-}
+
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable, group, rect, shapes)
 import Canvas.Settings exposing (fill)
@@ -14,6 +22,8 @@ import Lib.DefinedTypes.Parser exposing (dgetint)
 import Lib.Render.Render exposing (renderSprite, renderSpriteWithRev)
 
 
+{-| view
+-}
 view : ( Data, Int ) -> GameGlobalData -> GlobalData -> List ( Renderable, Int )
 view ( d, t ) ggd gd =
     let
@@ -63,6 +73,8 @@ view ( d, t ) ggd gd =
     ]
 
 
+{-| viewbar
+-}
 viewbar : Int -> Data -> GameGlobalData -> GlobalData -> ( Renderable, Int )
 viewbar hp d ggd gd =
     let

@@ -1,5 +1,11 @@
 module Lib.CoreEngine.GameComponents.EnergyCrystal.Display exposing (..)
 
+{-| This is the doc for this module
+
+@docs view
+
+-}
+
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable, circle, group, rect, shapes)
 import Canvas.Settings exposing (fill)
@@ -13,6 +19,8 @@ import Lib.DefinedTypes.Parser exposing (dgetLString)
 import Lib.Render.Render exposing (transPoint)
 
 
+{-| view
+-}
 view : ( Data, Int ) -> GameGlobalData -> GlobalData -> List ( Renderable, Int )
 view ( model, _ ) ggd globalData =
     case model.status of

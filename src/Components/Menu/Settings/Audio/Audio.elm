@@ -1,5 +1,15 @@
 module Components.Menu.Settings.Audio.Audio exposing (..)
 
+{-| This is the doc for this module
+
+@docs initMap
+
+@docs updateMap
+
+@docs viewMap
+
+-}
+
 import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (..)
 import Canvas.Settings exposing (..)
@@ -13,6 +23,8 @@ import Lib.DefinedTypes.Parser exposing (dgetString, dgetint, dsetbool)
 import Lib.Render.Render exposing (..)
 
 
+{-| initMap
+-}
 initMap : Int -> ComponentTMsg -> Data
 initMap _ comMsg =
     case comMsg of
@@ -55,6 +67,8 @@ initMap _ comMsg =
                 ]
 
 
+{-| updateMap
+-}
 updateMap : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateMap mainMsg comMsg globalData ( model, t ) =
     let
@@ -128,6 +142,8 @@ updateMap mainMsg comMsg globalData ( model, t ) =
                     ( model, [], globalData )
 
 
+{-| viewMap
+-}
 viewMap : ( Data, Int ) -> GlobalData -> Renderable
 viewMap ( model, _ ) globalData =
     let

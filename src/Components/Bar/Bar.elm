@@ -1,5 +1,21 @@
 module Components.Bar.Bar exposing (..)
 
+{-| This is the doc for this module
+
+@docs initBar
+
+@docs bezier
+
+@docs updateBar
+
+@docs viewBar
+
+@docs renderArc
+
+@docs renderBezier
+
+-}
+
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (..)
 import Canvas.Settings exposing (..)
@@ -12,6 +28,8 @@ import Lib.Coordinate.Coordinates exposing (..)
 import Lib.DefinedTypes.Parser exposing (dgetfloat, dsetfloat)
 
 
+{-| initBar
+-}
 initBar : Int -> ComponentTMsg -> Data
 initBar energy _ =
     let
@@ -32,6 +50,8 @@ initBar energy _ =
         ]
 
 
+{-| bezier
+-}
 bezier : Int -> Float -> Data -> Data
 bezier clockwise t d =
     let
@@ -120,6 +140,8 @@ bezier clockwise t d =
             d
 
 
+{-| updateBar
+-}
 updateBar : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateBar _ gMsg globalData ( d, t ) =
     let
@@ -148,6 +170,8 @@ updateBar _ gMsg globalData ( d, t ) =
             ( d, [], globalData )
 
 
+{-| viewBar
+-}
 viewBar : ( Data, Int ) -> GlobalData -> Renderable
 viewBar ( d, _ ) gd =
     let
@@ -214,6 +238,8 @@ viewBar ( d, _ ) gd =
             ]
 
 
+{-| renderArc
+-}
 renderArc : Float -> ( Float, Float ) -> Float -> Shape
 renderArc angle ( cx, cy ) radius =
     if angle > 0 then
@@ -223,6 +249,8 @@ renderArc angle ( cx, cy ) radius =
         arc ( cx, cy ) radius { endAngle = degrees 180 - degrees angle, startAngle = degrees 360 + degrees angle, clockwise = True }
 
 
+{-| renderBezier
+-}
 renderBezier : Float -> ( Float, Float ) -> Float -> ( Float, Float ) -> ( Float, Float ) -> PathSegment
 renderBezier angle ( cx, cy ) radius ( cp1x, cp1y ) ( cp2x, cp2y ) =
     let

@@ -1,5 +1,13 @@
 module Lib.Render.Character exposing (..)
 
+{-| This is the doc for this module
+
+@docs renderCharacterMove
+
+@docs renderCharacterInAir
+
+-}
+
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable)
 import Lib.Render.Render exposing (renderSpriteWithRev)
@@ -9,6 +17,8 @@ import Lib.Render.Render exposing (renderSpriteWithRev)
 -- Render characters
 
 
+{-| renderCharacterMove
+-}
 renderCharacterMove : Bool -> Int -> GlobalData -> ( Int, Int ) -> Renderable
 renderCharacterMove rev st gd ( px, py ) =
     if st >= 0 then
@@ -18,6 +28,8 @@ renderCharacterMove rev st gd ( px, py ) =
         renderSpriteWithRev rev gd [] ( px - 30, py ) ( 130, 0 ) "p_stand"
 
 
+{-| renderCharacterInAir
+-}
 renderCharacterInAir : Bool -> Bool -> GlobalData -> ( Int, Int ) -> Renderable
 renderCharacterInAir sta rev gd ( px, py ) =
     if sta then

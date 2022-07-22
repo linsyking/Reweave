@@ -1,5 +1,9 @@
 # Introduction
 
+{-| This is the doc for this module
+        
+-}
+
 `CoreEngine` is a submodule for our game. Its function is to construct the game level.
 
 The engine mainly includes the following things:

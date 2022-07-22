@@ -1,4 +1,15 @@
-module Lib.Map.Chartlet exposing (renderBackgroundChartletsFromSolid, renderSingleBlock)
+module Lib.Map.Chartlet exposing
+    ( renderBackgroundChartletsFromSolid
+    , renderSingleBlock
+    )
+
+{-| This is the doc for this module
+
+@docs renderBackgroundChartletsFromSolid
+
+@docs renderSingleBlock
+
+-}
 
 import Array2D
 import Base exposing (GlobalData)
@@ -10,6 +21,8 @@ import Lib.Render.Render exposing (renderSprite)
 import Lib.Tools.Math exposing (rfint)
 
 
+{-| renderBackgroundChartletsFromSolid
+-}
 renderBackgroundChartletsFromSolid : GameGlobalData -> GlobalData -> List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
 renderBackgroundChartletsFromSolid ggd _ =
     let
@@ -63,6 +76,8 @@ renderBackgroundChartletsFromSolid ggd _ =
 -- TODO:
 
 
+{-| renderSingleBlock
+-}
 renderSingleBlock : Int -> ( Int, Int ) -> List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
 renderSingleBlock tp p =
     case tp of

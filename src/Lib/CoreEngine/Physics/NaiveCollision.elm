@@ -1,11 +1,23 @@
 module Lib.CoreEngine.Physics.NaiveCollision exposing (..)
 
+{-| This is the doc for this module
+
+@docs getBoxPos
+
+@docs judgeCollision
+
+@docs judgeInCamera
+
+-}
+
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, GameComponent)
 import Lib.CoreEngine.Physics.Base exposing (Position)
 import Lib.CoreEngine.Physics.Vector exposing (addIntVec)
 
 
+{-| getBoxPos
+-}
 getBoxPos : Position -> Box -> ( Position, Position )
 getBoxPos ( x1, y1 ) b =
     let
@@ -24,6 +36,8 @@ getBoxPos ( x1, y1 ) b =
     ( ( rx1, ry1 ), ( rx2, ry2 ) )
 
 
+{-| judgeCollision
+-}
 judgeCollision : ( Position, Position ) -> ( Position, Position ) -> Bool
 judgeCollision ( p1, p2 ) ( p3, p4 ) =
     let
@@ -58,6 +72,8 @@ judgeCollision ( p1, p2 ) ( p3, p4 ) =
         False
 
 
+{-| judgeInCamera
+-}
 judgeInCamera : GameComponent -> GameGlobalData -> Bool
 judgeInCamera gc ggd =
     let

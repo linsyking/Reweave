@@ -1,8 +1,16 @@
 module Lib.CoreEngine.Camera.Position exposing (..)
 
+{-| This is the doc for this module
+
+@docs getPositionUnderCamera
+
+-}
+
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 
 
+{-| getPositionUnderCamera
+-}
 getPositionUnderCamera : ( Int, Int ) -> GameGlobalData -> ( Int, Int )
 getPositionUnderCamera ( x, y ) ggd =
     let

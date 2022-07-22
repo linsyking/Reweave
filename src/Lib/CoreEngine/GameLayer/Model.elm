@@ -1,5 +1,37 @@
 module Lib.CoreEngine.GameLayer.Model exposing (..)
 
+{-| This is the doc for this module
+
+@docs initModel
+
+@docs deleteObjects
+
+@docs releaseObjects
+
+@docs playerMove
+
+@docs judgePlayerOK
+
+@docs clearWrongVelocity
+
+@docs solidCollision
+
+@docs interCollision
+
+@docs calcDRate
+
+@docs calcRPer
+
+@docs getDSEnergy
+
+@docs dealParentMsg
+
+@docs dealAllParentMsg
+
+@docs updateModel
+
+-}
+
 import Array
 import Array.Extra
 import Base exposing (GlobalData, Msg(..))
@@ -26,6 +58,8 @@ import Lib.Scene.Base exposing (EngineT)
 import Math.Vector2 exposing (vec2)
 
 
+{-| initModel
+-}
 initModel : Int -> LayerMsg -> GameGlobalData -> Model
 initModel _ lm _ =
     case lm of
@@ -36,6 +70,8 @@ initModel _ lm _ =
             { player = Player.gameComponent, actors = Array.fromList [ Goomba.gameComponent ], chartlets = [], lastuseEnergyTime = 0, ignoreInput = False }
 
 
+{-| deleteObjects
+-}
 deleteObjects : GameGlobalData -> Array.Array GameComponent -> Array.Array GameComponent
 deleteObjects ggd gcs =
     Array.filter
@@ -54,6 +90,8 @@ deleteObjects ggd gcs =
         gcs
 
 
+{-| releaseObjects
+-}
 releaseObjects : GameGlobalData -> Array.Array GameComponent -> GameGlobalData
 releaseObjects ggd gcs =
     if
@@ -78,6 +116,8 @@ releaseObjects ggd gcs =
         ggd
 
 
+{-| playerMove
+-}
 playerMove : Data -> Data
 playerMove player =
     let
@@ -99,6 +139,8 @@ playerMove player =
     newplayer
 
 
+{-| judgePlayerOK
+-}
 judgePlayerOK : GameGlobalData -> GameComponent -> Bool
 judgePlayerOK ggd player =
     case player.data.status of
@@ -113,6 +155,8 @@ judgePlayerOK ggd player =
                 False
 
 
+{-| clearWrongVelocity
+-}
 clearWrongVelocity : GameGlobalData -> Array.Array GameComponent -> Array.Array GameComponent
 clearWrongVelocity ggd gcs =
     Array.map
@@ -156,6 +200,8 @@ clearWrongVelocity ggd gcs =
         gcs
 
 
+{-| solidCollision
+-}
 solidCollision : Msg -> Int -> GameGlobalData -> GlobalData -> Array.Array GameComponent -> ( Array.Array GameComponent, List GameComponentMsgType, GameGlobalData )
 solidCollision msg t ggd gd gcs =
     Array.foldl
@@ -183,6 +229,8 @@ solidCollision msg t ggd gd gcs =
         gcs
 
 
+{-| interCollision
+-}
 interCollision : Msg -> Int -> GameGlobalData -> GlobalData -> Array.Array GameComponent -> ( Array.Array GameComponent, List GameComponentMsgType, GameGlobalData )
 interCollision _ t ggd gd gcs =
     let
@@ -270,6 +318,8 @@ interCollision _ t ggd gd gcs =
     ( appliedgc, appliedmsg, appliedggc )
 
 
+{-| calcDRate
+-}
 calcDRate : ( Float, Float ) -> ( Float, Float ) -> ( Float, Float ) -> Float
 calcDRate p1 p2 ( w, h ) =
     let
@@ -316,6 +366,8 @@ calcDRate p1 p2 ( w, h ) =
         0
 
 
+{-| calcRPer
+-}
 calcRPer : ( Float, Float ) -> ( Float, Float ) -> GlobalData -> Float
 calcRPer ( px, py ) ( mx, my ) gd =
     let
@@ -329,6 +381,8 @@ calcRPer ( px, py ) ( mx, my ) gd =
         ds
 
 
+{-| getDSEnergy
+-}
 getDSEnergy : ( Float, Float ) -> ( Float, Float ) -> GlobalData -> GameGlobalData -> ( Float, GameGlobalData )
 getDSEnergy p m gd ggd =
     let
@@ -351,6 +405,8 @@ getDSEnergy p m gd ggd =
         ( gpc, { ggd | energy = curenergy - gpc } )
 
 
+{-| dealParentMsg
+-}
 dealParentMsg : GameComponentTMsg -> GlobalData -> ( Model, Int ) -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
 dealParentMsg gct gd ( model, t ) ggd =
     case gct of
@@ -442,6 +498,8 @@ dealParentMsg gct gd ( model, t ) ggd =
             ( ( model, ggd, [] ), gd )
 
 
+{-| dealAllParentMsg
+-}
 dealAllParentMsg : List GameComponentTMsg -> GlobalData -> ( Model, Int ) -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
 dealAllParentMsg allparentmsg gd ( model, t ) ggd =
     List.foldl
@@ -456,6 +514,8 @@ dealAllParentMsg allparentmsg gd ( model, t ) ggd =
         allparentmsg
 
 
+{-| updateModel
+-}
 updateModel : Msg -> GlobalData -> LayerMsg -> ( Model, Int ) -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
 updateModel msg gd lm ( model, t ) ggd =
     case lm of
