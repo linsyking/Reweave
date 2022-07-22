@@ -5,7 +5,6 @@ import Dict
 import Lib.Component.Base exposing (DefinedTypes(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
-import Maybe exposing (withDefault)
 
 
 initData : Data
