@@ -14,13 +14,12 @@ import Lib.CoreEngine.GameComponents.CutScene.Base exposing (CutSceneInit)
 import Lib.CoreEngine.GameComponents.CutScene.Export as CutScene
 import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
 import Lib.CoreEngine.GameComponents.Exit.Export as Exit
-import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit)
+import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit, PlayerInitPosition(..))
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..), SpikeInit)
 import Lib.CoreEngine.GameComponents.Spike.Export as Spike
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
 import Lib.Render.Render exposing (renderSprite)
-import Lib.Scene.Base exposing (PlayerInitPosition(..))
 import Scenes.Level0.Map exposing (mymap)
 
 
@@ -44,7 +43,7 @@ initPlayer t pos =
 initActors : Int -> Array GameComponent
 initActors t =
     Array.fromList
-        [ initGameComponent t (GameExitInit (ExitInit ( 3700, 1910 ) "Level1" 2)) Exit.gameComponent
+        [ initGameComponent t (GameExitInit (ExitInit ( 3700, 1910 ) "Level1" DefaultPlayerPosition 2)) Exit.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2220 ) HorUp 100 3)) Spike.gameComponent
         , initGameComponent t (GameCutSceneInit (CutSceneInit ( 2440, 1820 ) ( 100, 100 ) 88 dialogues True)) CutScene.gameComponent
         ]

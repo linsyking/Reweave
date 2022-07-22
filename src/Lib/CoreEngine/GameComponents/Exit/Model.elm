@@ -5,7 +5,8 @@ import Dict
 import Lib.Component.Base exposing (DefinedTypes(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
-import Lib.DefinedTypes.Parser exposing (dgetString)
+import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInitPosition(..))
+import Lib.DefinedTypes.Parser exposing (dgetString, dgetbool, dgetint)
 
 
 initData : Data
@@ -46,6 +47,36 @@ initModel _ gcm =
             , extra =
                 Dict.fromList
                     [ ( "togo", CDString info.togo )
+                    , ( "isdefault"
+                      , CDBool
+                            (case info.newPlayerPosition of
+                                DefaultPlayerPosition ->
+                                    True
+
+                                _ ->
+                                    False
+                            )
+                      )
+                    , ( "posx"
+                      , CDInt
+                            (case info.newPlayerPosition of
+                                DefaultPlayerPosition ->
+                                    0
+
+                                CustomPlayerPosition ( px, _ ) ->
+                                    px
+                            )
+                      )
+                    , ( "posy"
+                      , CDInt
+                            (case info.newPlayerPosition of
+                                DefaultPlayerPosition ->
+                                    0
+
+                                CustomPlayerPosition ( _, py ) ->
+                                    py
+                            )
+                      )
                     ]
             , uid = info.uid
             }
@@ -58,7 +89,19 @@ updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data
 updateModel _ gct ggd _ ( d, t ) =
     case gct of
         GameInterCollisionMsg "player" _ _ ->
-            ( d, [ GameParentMsg (GameExitScene (dgetString d.extra "togo")) ], ggd )
+            let
+                isdefault =
+                    dgetbool d.extra "isdefault"
+            in
+            if isdefault then
+                ( d, [ GameParentMsg (GameExitScene (dgetString d.extra "togo") DefaultPlayerPosition) ], ggd )
+
+            else
+                let
+                    pp =
+                        ( dgetint d.extra "posx", dgetint d.extra "posy" )
+                in
+                ( d, [ GameParentMsg (GameExitScene (dgetString d.extra "togo") (CustomPlayerPosition pp)) ], ggd )
 
         _ ->
             ( d, [], ggd )

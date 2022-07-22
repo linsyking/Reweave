@@ -13,7 +13,7 @@ import Lib.CoreEngine.GameComponent.GenUID exposing (genUID)
 import Lib.CoreEngine.GameComponents.Bullet.Export as Bullet
 import Lib.CoreEngine.GameComponents.Fireball.Export as Fireball
 import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
-import Lib.CoreEngine.GameComponents.Player.Base exposing (BoundKey)
+import Lib.CoreEngine.GameComponents.Player.Base exposing (BoundKey, PlayerInitPosition(..))
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameComponents.Player.FSM exposing (queryIsState)
 import Lib.CoreEngine.GameLayer.Common exposing (Model, addenergy, kineticCalc, searchNameGC, searchUIDGC)
@@ -22,7 +22,7 @@ import Lib.CoreEngine.Physics.NaiveCollision exposing (judgeInCamera)
 import Lib.CoreEngine.Physics.SolidCollision exposing (canMove, gonnaSolidCollide, movePointPlain)
 import Lib.DefinedTypes.Parser exposing (dgetPlayer, dsetPlayer)
 import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget(..))
-import Lib.Scene.Base exposing (EngineT, PlayerInitPosition(..))
+import Lib.Scene.Base exposing (EngineT)
 import Math.Vector2 exposing (vec2)
 
 
@@ -348,8 +348,8 @@ getDSEnergy p m gd ggd =
 dealParentMsg : GameComponentTMsg -> GlobalData -> ( Model, Int ) -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
 dealParentMsg gct gd ( model, t ) ggd =
     case gct of
-        GameExitScene s ->
-            ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerExitMsg (EngineT 0 DefaultPlayerPosition) s ) ] ), gd )
+        GameExitScene s pls ->
+            ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerExitMsg (EngineT ggd.energy pls) s ) ] ), gd )
 
         GameStringMsg "restart" ->
             ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerRestartMsg ) ] ), gd )

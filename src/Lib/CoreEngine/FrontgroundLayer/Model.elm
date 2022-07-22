@@ -12,9 +12,10 @@ import Lib.Component.Base exposing (ComponentTMsg(..))
 import Lib.Component.ComponentHandler exposing (updateComponents, updateSingleComponentByName)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.FrontgroundLayer.Common exposing (Model)
+import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInitPosition(..))
 import Lib.CoreEngine.GameLayer.Common exposing (addenergy)
 import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget(..))
-import Lib.Scene.Base exposing (EngineT, PlayerInitPosition(..))
+import Lib.Scene.Base exposing (EngineT)
 import Time exposing (posixToMillis)
 
 
@@ -35,21 +36,35 @@ initModel t lm _ =
                     f.components
             , fpsrepo = []
             , ispaused = False
+            , exitinfo = EngineT 0 DefaultPlayerPosition
             }
 
         _ ->
-            { render = \_ _ _ -> group [] [], components = Array.empty, fpsrepo = [], ispaused = False }
+            { render = \_ _ _ -> group [] [], components = Array.empty, fpsrepo = [], ispaused = False, exitinfo = EngineT 0 DefaultPlayerPosition }
 
 
 dealComponentsMsg : ComponentTMsg -> Model -> GlobalData -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
 dealComponentsMsg rmsg model gd ggd =
     case rmsg of
         ComponentLStringMsg ("nextscene" :: s :: _) ->
-            if List.any (\x -> x == s) gd.scenesFinished then
-                ( ( model, ggd, [ ( LayerParentScene, LayerExitMsg (EngineT ggd.energy DefaultPlayerPosition) s ) ] ), { gd | scenesFinished = gd.scenesFinished ++ [ ggd.currentScene ] } )
+            let
+                originet =
+                    model.exitinfo
 
-            else
-                ( ( model, ggd, [ ( LayerParentScene, LayerExitMsg (EngineT (addenergy ggd.energy 500) DefaultPlayerPosition) s ) ] ), { gd | scenesFinished = gd.scenesFinished ++ [ ggd.currentScene ] } )
+                originenergy =
+                    originet.energy
+
+                newenergy =
+                    if List.any (\x -> x == s) gd.scenesFinished then
+                        originenergy
+
+                    else
+                        addenergy originenergy 500
+
+                newexitmsg =
+                    LayerExitMsg { originet | energy = newenergy } s
+            in
+            ( ( model, ggd, [ ( LayerParentScene, newexitmsg ) ] ), { gd | scenesFinished = gd.scenesFinished ++ [ ggd.currentScene ] } )
 
         ComponentLStringMsg ("restart" :: _) ->
             ( ( model, ggd, [ ( LayerParentScene, LayerExitMsg (EngineT 0 DefaultPlayerPosition) ggd.currentScene ) ] ), gd )
@@ -84,12 +99,12 @@ dealAllComponentMsg rmsg model gd ggd =
 updateModel : Msg -> GlobalData -> LayerMsg -> ( Model, Int ) -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
 updateModel msg gd lm ( model, t ) ggd =
     case lm of
-        LayerExitMsg _ s ->
+        LayerExitMsg et s ->
             let
                 ( newcs, _, newgd ) =
                     updateSingleComponentByName UnknownMsg (ComponentLStringMsg [ "start", "cloud", "50", "nextscene", s ]) gd t "Trans" model.components
             in
-            ( ( { model | components = newcs }, ggd, [] ), newgd )
+            ( ( { model | components = newcs, exitinfo = et }, ggd, [] ), newgd )
 
         LayerRestartMsg ->
             let

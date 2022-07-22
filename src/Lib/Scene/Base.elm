@@ -7,6 +7,7 @@ import Lib.Audio.Base exposing (AudioOption)
 import Lib.Component.Base exposing (Component)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent)
+import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInitPosition(..))
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth)
 
 
@@ -62,8 +63,3 @@ nullEngineT =
     { energy = 0
     , playerPosition = DefaultPlayerPosition
     }
-
-
-type PlayerInitPosition
-    = DefaultPlayerPosition
-    | CustomPlayerPosition ( Int, Int )

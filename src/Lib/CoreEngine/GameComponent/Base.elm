@@ -12,7 +12,7 @@ import Lib.CoreEngine.GameComponents.Fireball.Base exposing (FireballInit)
 import Lib.CoreEngine.GameComponents.Fish.Base exposing (FishInit)
 import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
 import Lib.CoreEngine.GameComponents.GoombaEmitter.Base exposing (GoombaEmitterInit)
-import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit)
+import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit, PlayerInitPosition)
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeInit)
 import Lib.CoreEngine.GameComponents.Turtle.Base exposing (TurtleInit)
 
@@ -52,7 +52,7 @@ type GameComponentTMsg
     | GameFireballInit FireballInit
     | GameTurtleInit TurtleInit
     | GameCutSceneInit CutSceneInit
-    | GameExitScene String
+    | GameExitScene String PlayerInitPosition
     | GameStringIntMsg String Int
     | NullGameComponentMsg
 

@@ -20,7 +20,7 @@ import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
 import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
 import Lib.CoreEngine.GameComponents.GoombaEmitter.Base exposing (GoombaEmitterInit)
 import Lib.CoreEngine.GameComponents.GoombaEmitter.Export as GoombaEmitter
-import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit)
+import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit, PlayerInitPosition(..))
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..), SpikeInit)
 import Lib.CoreEngine.GameComponents.Spike.Export as Spike
@@ -28,7 +28,6 @@ import Lib.CoreEngine.GameComponents.Turtle.Base exposing (TurtleInit)
 import Lib.CoreEngine.GameComponents.Turtle.Export as Turtle
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
 import Lib.Render.Render exposing (renderSprite, renderText)
-import Lib.Scene.Base exposing (PlayerInitPosition(..))
 import Scenes.TestChamber.Map exposing (mymap)
 
 

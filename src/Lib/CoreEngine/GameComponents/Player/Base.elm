@@ -95,3 +95,8 @@ fixnotrightdir o bk =
 
     else
         o
+
+
+type PlayerInitPosition
+    = DefaultPlayerPosition
+    | CustomPlayerPosition ( Int, Int )

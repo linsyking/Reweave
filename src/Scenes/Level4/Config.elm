@@ -12,12 +12,11 @@ import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
 import Lib.CoreEngine.GameComponents.Exit.Export as Exit
 import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
 import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
-import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit)
+import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit, PlayerInitPosition(..))
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..), SpikeInit)
 import Lib.CoreEngine.GameComponents.Spike.Export as Spike
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
-import Lib.Scene.Base exposing (PlayerInitPosition(..))
 import Scenes.Level4.Map exposing (mymap)
 
 
@@ -50,7 +49,7 @@ initActors t =
         , initGameComponent t (GameGoombaInit (GoombaInit ( 2240, 1800 ) ( 0, 0 ) 9)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 3840, 2080 ) ( 0, 0 ) 15)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 4160, 2080 ) ( 0, 0 ) 16)) Goomba.gameComponent
-        , initGameComponent t (GameExitInit (ExitInit ( 6350, 1920 ) "Scene1" 9)) Exit.gameComponent
+        , initGameComponent t (GameExitInit (ExitInit ( 6350, 1920 ) "Scene1" DefaultPlayerPosition 9)) Exit.gameComponent
 
         --, initGameComponent t (GameCutSceneInit (CutSceneInit ( 100, 1800 ) ( 100, 160 ) 88 [ ( "1", "Dear master, I want learn something from you", True ), ( "1", "Yes, please go ahead.", False ) ])) CutScene.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 640, 2060 ) HorUp 3 12)) Spike.gameComponent

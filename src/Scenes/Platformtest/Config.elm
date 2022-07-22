@@ -8,10 +8,9 @@ import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Base exposing (CameraData)
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentTMsg(..))
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (initGameComponent)
-import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit)
+import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit, PlayerInitPosition(..))
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
-import Lib.Scene.Base exposing (PlayerInitPosition(..))
 import Scenes.Platformtest.Map exposing (mymap)
 
 
