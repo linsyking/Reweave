@@ -65,7 +65,7 @@ initActors t =
         , initGameComponent t (GameFishInit (FishInit ( 100, 100 ) 88 229)) Fish.gameComponent
 
         -- , initGameComponent t (GameFireballInit (FireballInit ( 500, 1530 ) ( -5, 0 ) 18)) Fireball.gameComponent
-        , initGameComponent t (GameTurtleInit (TurtleInit ( 2700, 1300 ) 88 100)) Turtle.gameComponent
+        , initGameComponent t (GameTurtleInit (TurtleInit ( 2700, 1000 ) 88 100)) Turtle.gameComponent
         ]
 
 

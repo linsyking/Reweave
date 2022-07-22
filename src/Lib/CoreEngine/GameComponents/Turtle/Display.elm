@@ -3,14 +3,15 @@ module Lib.CoreEngine.GameComponents.Turtle.Display exposing (..)
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable, group, rect, shapes)
 import Canvas.Settings exposing (fill)
-import Canvas.Settings.Advanced exposing (rotate, transform)
+import Canvas.Settings.Advanced exposing (alpha, rotate, transform)
 import Color
 import Lib.Coordinate.Coordinates exposing (heightToReal, posToReal, widthToReal)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Data, LifeStatus(..))
+import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos)
 import Lib.DefinedTypes.Parser exposing (dgetint)
-import Lib.Render.Render exposing (renderSpriteWithRev)
+import Lib.Render.Render exposing (renderSprite, renderSpriteWithRev)
 
 
 view : ( Data, Int ) -> GameGlobalData -> GlobalData -> List ( Renderable, Int )
@@ -21,6 +22,9 @@ view ( d, t ) ggd gd =
 
         hp =
             dgetint d.extra "Life"
+
+        cboxs =
+            List.map (\x -> getBoxPos d.position x) d.collisionbox
     in
     [ ( group []
             [ renderSpriteWithRev (vx > 0)
@@ -38,6 +42,21 @@ view ( d, t ) ggd gd =
                 ( d.simplecheck.width, d.simplecheck.height )
                 "turtle"
             ]
+      , 0
+      )
+    , ( group []
+            (List.map
+                (\( ( p1x, p1y ), ( p2x, p2y ) ) ->
+                    renderSprite
+                        gd
+                        [ alpha 0.4
+                        ]
+                        (getPositionUnderCamera ( p1x, p1y ) ggd)
+                        ( p2x - p1x, p2y - p1y )
+                        "background"
+                )
+                cboxs
+            )
       , 0
       )
     , viewbar hp d ggd gd

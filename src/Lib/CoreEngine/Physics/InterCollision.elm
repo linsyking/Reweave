@@ -44,13 +44,19 @@ genInterFromOneSide gc1 gc2 =
 
         target =
             gc2.data.collisionbox
+
+        result =
+            List.foldl
+                (\x o ->
+                    o ++ List.filter (\y -> judgeCollision (getBoxPos op x) (getBoxPos tp y)) target
+                )
+                []
+                origin
     in
-    GameInterCollisionMsg gc2.name
-        gc2.data
-        (List.foldl
-            (\x o ->
-                o ++ List.filter (\y -> judgeCollision (getBoxPos op x) (getBoxPos tp y)) target
-            )
-            []
-            origin
-        )
+    if result == [] then
+        NullGameComponentMsg
+
+    else
+        GameInterCollisionMsg gc2.name
+            gc2.data
+            result

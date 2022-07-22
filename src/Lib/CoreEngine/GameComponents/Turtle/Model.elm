@@ -35,6 +35,26 @@ simplecheckBox =
     }
 
 
+headcolBox : Box
+headcolBox =
+    { name = "col"
+    , offsetX = 0
+    , offsetY = 300
+    , width = 590
+    , height = 200
+    }
+
+
+bodycolBox : Box
+bodycolBox =
+    { name = "col"
+    , offsetX = 200
+    , offsetY = 200
+    , width = 390
+    , height = 200
+    }
+
+
 initModel : Int -> GameComponentTMsg -> Data
 initModel _ comMsg =
     case comMsg of
@@ -45,7 +65,7 @@ initModel _ comMsg =
             , mass = 70
             , acceleration = ( 0, 0 )
             , simplecheck = simplecheckBox
-            , collisionbox = [ simplecheckBox ]
+            , collisionbox = [ headcolBox, bodycolBox ]
             , extra =
                 Dict.fromList
                     [ ( "TriggerUID", CDInt info.triggeruid )
