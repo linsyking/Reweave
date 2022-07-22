@@ -235,7 +235,7 @@ mymap =
 with open('./src/Scenes/AllScenes.elm', 'r') as f:
     als = f.readlines()
 
-als.insert(2, f"import Scenes.{levelname}.Export as {levelname}\n")
+als.insert(8, f"import Scenes.{levelname}.Export as {levelname}\n")
 als = "".join(als)
 als = als.replace(
     "    ]", f"    , ( \"{levelname}\", CEG.toCT {levelname}.scene )\n    ]")
