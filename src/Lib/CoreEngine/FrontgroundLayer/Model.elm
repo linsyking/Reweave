@@ -25,7 +25,7 @@ import Components.Console.Export as Console
 import Components.Menu.Export as Menu
 import Components.Trans.Export as Trans
 import Dict
-import Lib.Component.Base exposing (ComponentTMsg(..))
+import Lib.Component.Base exposing (ComponentTMsg(..), DefinedTypes(..))
 import Lib.Component.ComponentHandler exposing (updateComponents, updateSingleComponentByName)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.FrontgroundLayer.Common exposing (Model)
@@ -213,7 +213,19 @@ updateModel msg gd lm ( model, t ) ggd =
                     else
                         let
                             ( newcs, _, newgd ) =
-                                updateSingleComponentByName UnknownMsg (ComponentStringDictMsg "Activate" Dict.empty) gd t "Menu" model.components
+                                updateSingleComponentByName UnknownMsg
+                                    (ComponentStringDictMsg "Activate"
+                                        (Dict.fromList
+                                            [ ( "collectedMonsters", CDLString ggd.collectedMonsters )
+                                            , ( "currentScene", CDString ggd.currentScene )
+                                            , ( "energy", CDInt (floor ggd.energy) )
+                                            ]
+                                        )
+                                    )
+                                    gd
+                                    t
+                                    "Menu"
+                                    model.components
                         in
                         ( ( { model | components = newcs, ispaused = True }, { ggd | ingamepause = True, settingpause = True }, [] ), newgd )
 
