@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Fireball.Model exposing (..)
+module Lib.CoreEngine.GameComponents.Ball.Model exposing (..)
 
 import Base exposing (GlobalData, Msg(..))
 import Dict

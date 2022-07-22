@@ -1,8 +1,8 @@
-module Lib.CoreEngine.GameComponents.Fireball.Export exposing (..)
+module Lib.CoreEngine.GameComponents.Ball.Export exposing (..)
 
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent)
-import Lib.CoreEngine.GameComponents.Fireball.Display exposing (view)
-import Lib.CoreEngine.GameComponents.Fireball.Model exposing (initData, initModel, updateModel)
+import Lib.CoreEngine.GameComponents.Ball.Display exposing (view)
+import Lib.CoreEngine.GameComponents.Ball.Model exposing (initData, initModel, updateModel)
 
 
 gameComponent : GameComponent

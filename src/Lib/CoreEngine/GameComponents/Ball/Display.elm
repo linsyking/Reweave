@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Fireball.Display exposing (..)
+module Lib.CoreEngine.GameComponents.Ball.Display exposing (..)
 
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable, group)
