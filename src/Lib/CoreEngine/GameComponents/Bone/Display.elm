@@ -5,7 +5,6 @@ import Canvas exposing (Renderable, group)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Data)
-import Lib.DefinedTypes.Parser exposing (dgetint)
 import Lib.Render.Render exposing (renderSprite)
 
 
