@@ -1,4 +1,4 @@
-module Common exposing (Model, audio, initGlobalData, resetSceneStartTime, updateSceneStartTime)
+module Common exposing (..)
 
 import Audio exposing (Audio, AudioData)
 import Base exposing (..)
@@ -52,7 +52,7 @@ initGlobalData =
     , startTop = 0
     , audioVolume = 0.5
     , sprites = Dict.empty
-    , randomnum = 0
+    , scenesFinished = []
     , scenestarttime = 0
     }
 

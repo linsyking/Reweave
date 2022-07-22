@@ -59,7 +59,7 @@ init : Flags -> ( Model, Cmd Msg, AudioCmd Msg )
 init flags =
     let
         ms =
-            loadSceneByName initModel "Test" NullSceneMsg
+            loadSceneByName initModel "Level0" NullSceneMsg
 
         oldgd =
             ms.currentGlobalData
@@ -154,7 +154,7 @@ update _ msg model =
                         cs.update msg model.currentGlobalData cm
 
                     ntmodel =
-                        { model | time = model.time + 1 }
+                        { model | time = model.time + 1, currentGlobalData = newgd }
 
                     tmodel =
                         case msg of
@@ -169,8 +169,15 @@ update _ msg model =
                 in
                 case som of
                     SOChangeScene ( tm, s ) ->
+                        -- let
+                        --     dsdd = Debug.log "changescene" (tmodel.currentGlobalData.scenesFinished)
+                        -- in
                         --- Load new scene
-                        ( resetSceneStartTime (loadSceneByName tmodel s tm), Cmd.none, Audio.cmdNone )
+                        ( loadSceneByName tmodel s tm
+                            |> resetSceneStartTime
+                        , Cmd.none
+                        , Audio.cmdNone
+                        )
 
                     SOPlayAudio name path opt ->
                         ( bnewmodel, Cmd.none, Audio.loadAudio (SoundLoaded name opt) path )

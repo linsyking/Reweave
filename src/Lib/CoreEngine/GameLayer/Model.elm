@@ -16,7 +16,7 @@ import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
 import Lib.CoreEngine.GameComponents.Player.Base exposing (BoundKey)
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameComponents.Player.FSM exposing (queryIsState)
-import Lib.CoreEngine.GameLayer.Common exposing (Model, kineticCalc, searchNameGC, searchUIDGC)
+import Lib.CoreEngine.GameLayer.Common exposing (Model, addenergy, kineticCalc, searchNameGC, searchUIDGC)
 import Lib.CoreEngine.Physics.InterCollision exposing (gonnaInterColllide)
 import Lib.CoreEngine.Physics.NaiveCollision exposing (judgeInCamera)
 import Lib.CoreEngine.Physics.SolidCollision exposing (canMove, gonnaSolidCollide, movePointPlain)
@@ -434,15 +434,6 @@ dealParentMsg gct gd ( model, t ) ggd =
 
         _ ->
             ( ( model, ggd, [] ), gd )
-
-
-addenergy : Float -> Float -> Float
-addenergy ori del =
-    if ori + del >= 2000 then
-        2000
-
-    else
-        ori + del
 
 
 dealAllParentMsg : List GameComponentTMsg -> GlobalData -> ( Model, Int ) -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )

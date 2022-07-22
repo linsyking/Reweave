@@ -12,6 +12,7 @@ import Lib.Component.Base exposing (ComponentTMsg(..))
 import Lib.Component.ComponentHandler exposing (updateComponents, updateSingleComponentByName)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.FrontgroundLayer.Common exposing (Model)
+import Lib.CoreEngine.GameLayer.Common exposing (addenergy)
 import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget(..))
 import Lib.Scene.Base exposing (EngineT, PlayerInitPosition(..))
 import Time exposing (posixToMillis)
@@ -44,7 +45,11 @@ dealComponentsMsg : ComponentTMsg -> Model -> GlobalData -> GameGlobalData -> ( 
 dealComponentsMsg rmsg model gd ggd =
     case rmsg of
         ComponentLStringMsg ("nextscene" :: s :: _) ->
-            ( ( model, ggd, [ ( LayerParentScene, LayerExitMsg (EngineT ggd.energy DefaultPlayerPosition) s ) ] ), gd )
+            if List.any (\x -> x == s) gd.scenesFinished then
+                ( ( model, ggd, [ ( LayerParentScene, LayerExitMsg (EngineT ggd.energy DefaultPlayerPosition) s ) ] ), { gd | scenesFinished = gd.scenesFinished ++ [ ggd.currentScene ] } )
+
+            else
+                ( ( model, ggd, [ ( LayerParentScene, LayerExitMsg (EngineT (addenergy ggd.energy 500) DefaultPlayerPosition) s ) ] ), { gd | scenesFinished = gd.scenesFinished ++ [ ggd.currentScene ] } )
 
         ComponentLStringMsg ("restart" :: _) ->
             ( ( model, ggd, [ ( LayerParentScene, LayerExitMsg (EngineT 0 DefaultPlayerPosition) ggd.currentScene ) ] ), gd )
