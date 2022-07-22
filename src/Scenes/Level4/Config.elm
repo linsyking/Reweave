@@ -49,7 +49,7 @@ initActors t =
         , initGameComponent t (GameGoombaInit (GoombaInit ( 2240, 1800 ) ( 0, 0 ) 9)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 3840, 2080 ) ( 0, 0 ) 15)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 4160, 2080 ) ( 0, 0 ) 16)) Goomba.gameComponent
-        , initGameComponent t (GameExitInit (ExitInit ( 6350, 1920 ) "Scene1" DefaultPlayerPosition 9)) Exit.gameComponent
+        , initGameComponent t (GameExitInit (ExitInit ( 6350, 1920 ) "Scene1" DefaultPlayerPosition 0 99)) Exit.gameComponent
 
         --, initGameComponent t (GameCutSceneInit (CutSceneInit ( 100, 1800 ) ( 100, 160 ) 88 [ ( "1", "Dear master, I want learn something from you", True ), ( "1", "Yes, please go ahead.", False ) ])) CutScene.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 640, 2060 ) HorUp 3 12)) Spike.gameComponent
@@ -77,6 +77,7 @@ initGameGlobalData e col =
     , currentScene = "Level4"
     , collectedMonsters = col
     , settingpause = False
+    , specialState = 0
     }
 
 

@@ -15,6 +15,7 @@ type alias GameGlobalData =
     , settingpause : Bool
     , currentScene : String
     , collectedMonsters : List String
+    , specialState : Int
     }
 
 
@@ -34,6 +35,7 @@ nullGameGlobalData =
     , currentScene = ""
     , collectedMonsters = []
     , settingpause = False
+    , specialState = 0
     }
 
 
@@ -48,6 +50,7 @@ testGameGlobalData =
     , currentScene = "Level1"
     , collectedMonsters = []
     , settingpause = False
+    , specialState = 0
     }
 
 

@@ -77,6 +77,7 @@ initModel _ gcm =
                                     py
                             )
                       )
+                    , ( "newstate", CDInt info.newState )
                     ]
             , uid = info.uid
             }
@@ -92,16 +93,19 @@ updateModel _ gct ggd _ ( d, t ) =
             let
                 isdefault =
                     dgetbool d.extra "isdefault"
+
+                spstate =
+                    dgetint d.extra "newstate"
             in
             if isdefault then
-                ( d, [ GameParentMsg (GameExitScene (dgetString d.extra "togo") DefaultPlayerPosition) ], ggd )
+                ( d, [ GameParentMsg (GameExitScene (dgetString d.extra "togo") DefaultPlayerPosition spstate) ], ggd )
 
             else
                 let
                     pp =
                         ( dgetint d.extra "posx", dgetint d.extra "posy" )
                 in
-                ( d, [ GameParentMsg (GameExitScene (dgetString d.extra "togo") (CustomPlayerPosition pp)) ], ggd )
+                ( d, [ GameParentMsg (GameExitScene (dgetString d.extra "togo") (CustomPlayerPosition pp) spstate) ], ggd )
 
         _ ->
             ( d, [], ggd )

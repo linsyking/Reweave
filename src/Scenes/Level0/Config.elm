@@ -2,7 +2,7 @@ module Scenes.Level0.Config exposing (..)
 
 import Array exposing (Array)
 import Base exposing (GlobalData)
-import Canvas exposing (Renderable)
+import Canvas exposing (Renderable, group)
 import Components.Hints.Export as Hints
 import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
@@ -23,11 +23,16 @@ import Lib.Render.Render exposing (renderSprite)
 import Scenes.Level0.Map exposing (mymap)
 
 
-initFrontGroundComponents : Int -> Array Component
-initFrontGroundComponents t =
-    Array.fromList
-        [ Hints.initComponent t (ComponentLStringMsg [ "50", "750", "700", "30", "Use A,D to move to left and right, Use C or Space to jump", "Use Esc to call the menu" ])
-        ]
+initFrontGroundComponents : Int -> Int -> Array Component
+initFrontGroundComponents t sp =
+    case sp of
+        0 ->
+            Array.fromList
+                [ Hints.initComponent t (ComponentLStringMsg [ "50", "750", "700", "30", "Use A,D to move to left and right, Use C or Space to jump", "Use Esc to call the menu" ])
+                ]
+
+        _ ->
+            Array.empty
 
 
 initPlayer : Int -> PlayerInitPosition -> GameComponent
@@ -40,13 +45,24 @@ initPlayer t pos =
             initGameComponent t (GamePlayerInit (PlayerInit x)) Player.gameComponent
 
 
-initActors : Int -> Array GameComponent
-initActors t =
-    Array.fromList
-        [ initGameComponent t (GameExitInit (ExitInit ( 3700, 1910 ) "Level1" DefaultPlayerPosition 2)) Exit.gameComponent
-        , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2220 ) HorUp 100 3)) Spike.gameComponent
-        , initGameComponent t (GameCutSceneInit (CutSceneInit ( 2440, 1820 ) ( 100, 100 ) 88 dialogues True)) CutScene.gameComponent
-        ]
+initActors : Int -> Int -> Array GameComponent
+initActors t sp =
+    case sp of
+        0 ->
+            Array.fromList
+                [ initGameComponent t (GameExitInit (ExitInit ( 3700, 1910 ) "Level1" DefaultPlayerPosition 0 2)) Exit.gameComponent
+                , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2220 ) HorUp 100 3)) Spike.gameComponent
+                , initGameComponent t (GameCutSceneInit (CutSceneInit ( 2440, 1820 ) ( 100, 100 ) 88 dialogues True)) CutScene.gameComponent
+                ]
+
+        1 ->
+            Array.fromList
+                [ initGameComponent t (GameExitInit (ExitInit ( 3700, 1910 ) "Level1" DefaultPlayerPosition 0 2)) Exit.gameComponent
+                , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2220 ) HorUp 100 3)) Spike.gameComponent
+                ]
+
+        _ ->
+            Array.empty
 
 
 initCamera : CameraData
@@ -61,8 +77,8 @@ dialogues =
     ]
 
 
-initGameGlobalData : Float -> List String -> GameGlobalData
-initGameGlobalData e col =
+initGameGlobalData : Float -> List String -> Int -> GameGlobalData
+initGameGlobalData e col spstate =
     { camera = initCamera
     , solidmap = mymap
     , mapsize = ( 120, 70 )
@@ -72,21 +88,27 @@ initGameGlobalData e col =
     , currentScene = "Level0"
     , collectedMonsters = col
     , settingpause = False
+    , specialState = spstate
     }
 
 
-allChartlets : List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
-allChartlets =
-    [ ( \gd ggd ->
-            renderSprite gd [] (getPositionUnderCamera ( 1980, 1525 ) ggd) ( 1000, 0 ) "zy/building"
-      , BehindActors
-      )
-    , ( \gd ggd ->
-            renderSprite gd [] (getPositionUnderCamera ( 2440, 1820 ) ggd) ( 100, 0 ) "master"
-      , BehindActors
-      )
-    ]
-        ++ makemanybamboos 9
+allChartlets : Int -> List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
+allChartlets sp =
+    makemanybamboos 9
+        ++ [ ( \gd ggd ->
+                renderSprite gd [] (getPositionUnderCamera ( 1980, 1525 ) ggd) ( 1000, 0 ) "zy/building"
+             , BehindActors
+             )
+           , case sp of
+                0 ->
+                    ( \gd ggd ->
+                        renderSprite gd [] (getPositionUnderCamera ( 2440, 1820 ) ggd) ( 100, 0 ) "master"
+                    , BehindActors
+                    )
+
+                _ ->
+                    ( \_ _ -> group [] [], BehindActors )
+           ]
 
 
 makemanybamboos : Int -> List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )

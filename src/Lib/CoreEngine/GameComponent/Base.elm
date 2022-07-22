@@ -52,7 +52,7 @@ type GameComponentTMsg
     | GameFireballInit FireballInit
     | GameTurtleInit TurtleInit
     | GameCutSceneInit CutSceneInit
-    | GameExitScene String PlayerInitPosition
+    | GameExitScene String PlayerInitPosition Int
     | GameStringIntMsg String Int
     | NullGameComponentMsg
 

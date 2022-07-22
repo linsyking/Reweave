@@ -7,5 +7,6 @@ type alias ExitInit =
     { initPosition : ( Int, Int )
     , togo : String
     , newPlayerPosition : PlayerInitPosition
+    , newState : Int
     , uid : Int
     }

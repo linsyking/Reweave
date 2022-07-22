@@ -22,12 +22,12 @@ game t sm =
     initEngine t
         (SceneEngineMsg
             { player = initPlayer t engineMsg.playerPosition
-            , actors = initActors t
-            , chartlets = allChartlets
+            , actors = initActors t engineMsg.specialstate
+            , chartlets = allChartlets engineMsg.specialstate
             , globalData =
-                initGameGlobalData engineMsg.energy engineMsg.collectedMonsters
+                initGameGlobalData engineMsg.energy engineMsg.collectedMonsters engineMsg.specialstate
             , background = ( Array.empty, background )
-            , frontground = ( initFrontGroundComponents t, \_ _ _ -> group [] [] )
+            , frontground = ( initFrontGroundComponents t engineMsg.specialstate, \_ _ _ -> group [] [] )
             }
         )
 

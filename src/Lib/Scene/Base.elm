@@ -56,6 +56,7 @@ type alias EngineT =
     { energy : Float
     , playerPosition : PlayerInitPosition
     , collectedMonsters : List String
+    , specialstate : Int
     }
 
 
@@ -64,4 +65,5 @@ nullEngineT =
     { energy = 0
     , playerPosition = DefaultPlayerPosition
     , collectedMonsters = []
+    , specialstate = 0
     }

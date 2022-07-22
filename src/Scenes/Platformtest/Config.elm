@@ -51,6 +51,7 @@ initGameGlobalData e col =
     , currentScene = "Platformtest"
     , collectedMonsters = col
     , settingpause = False
+    , specialState = 0
     }
 
 
