@@ -1,11 +1,11 @@
 module Scenes.Level0.Map exposing
-    ( sds
+    ( mapwidth
     , mymap
     )
 
 {-| This is the doc for this module
 
-@docs sds
+@docs mapwidth
 
 @docs mymap
 
@@ -17,11 +17,16 @@ import Lib.Map.Poly exposing (buildPillar, buildrect)
 import Lib.Map.Zhongyuan exposing (buildplatforms, buildzystick)
 
 
-{-| sds
+{-| mapwidth
 -}
+mapwidth : Int
+mapwidth =
+    200
+
+
 sds : Array2D.Array2D Int
 sds =
-    Array2D.repeat 120 70 0
+    Array2D.repeat mapwidth 70 0
 
 
 {-| mymap
@@ -41,7 +46,7 @@ mymap =
         |> buildrect ( 69, 53 ) ( 4, 2 ) 2
         |> buildrect ( 83, 53 ) ( 4, 2 ) 2
         |> buildrect ( 116, 60 ) ( 3, 1 ) 2
-        |> buildplatforms ( 85, 60 ) 7
+        |> buildplatforms ( 85, 60 ) 11
         |> buildPillar ( 70, 61 ) 2
         |> buildPillar ( 87, 61 ) 2
         |> buildlxrock ( 20, 67 )
@@ -52,4 +57,11 @@ mymap =
         |> buildlxrock ( 43, 60 )
         |> buildlxrock ( 41, 62 )
         |> buildlxrock ( 42, 61 )
-        |> buildrect ( 119, 0 ) ( 1, 120 ) 2
+        |> buildrect ( mapwidth - 1, 0 ) ( 1, 70 ) 2
+        -- Tutorial
+        |> buildlxrock ( 117, 59 )
+        |> buildlxrock ( 125, 59 )
+        |> buildzystick ( 127, 53 )
+        |> buildplatforms ( 133, 66 ) 8
+        |> buildplatforms ( 164, 25 ) 7
+        |> buildPillar ( 165, 25 ) 8
