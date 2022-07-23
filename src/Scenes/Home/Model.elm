@@ -65,13 +65,13 @@ handleLayerMsg lmsg ( model, _ ) =
     case lmsg of
         LayerIntMsg i ->
             if i == 1 then
-                ( model, SOChangeScene ( NullSceneMsg, "Scene1" ) )
+                ( model, SOChangeScene ( NullSceneMsg, "Level0" ) )
 
             else if i == 2 then
-                ( model, SOChangeScene ( NullSceneMsg, "Level1" ) )
+                ( model, SOChangeScene ( NullSceneMsg, "Test" ) )
 
             else if i == 3 then
-                ( model, SOChangeScene ( NullSceneMsg, "Scene1" ) )
+                ( model, SOChangeScene ( NullSceneMsg, "Level1" ) )
 
             else
                 ( model, NullSceneOutputMsg )
