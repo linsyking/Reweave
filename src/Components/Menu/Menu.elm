@@ -172,21 +172,37 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                         )
             in
             -- if judgeMouse globalData ( x, y ) ( 1100 - 30, 400 - 30 ) ( 2 * 30, 2 * 30 ) then
-            --     ( model
-            --         |> dsetbool "Show" False
-            --     , [ ComponentStringMsg "OnClose" ]
-            --     , globalData
-            --     )
+            -- ( model
+            --     |> dsetbool "Show" False
+            -- , [ ComponentStringMsg "OnClose" ]
+            -- , globalData
+            -- )
             -- else
-            if showStatus then
-                ( model
-                    |> dsetLComponent "Child" newChildComponentsList
-                , newChildComponentsMsg
-                , newGlobalData
-                )
+            case newChildComponentsMsg of
+                (ComponentLStringMsg ("continue" :: _)) :: _ ->
+                    ( model
+                        |> dsetbool "Show" False
+                    , [ ComponentLStringMsg [ "continue" ] ]
+                    , globalData
+                    )
 
-            else
-                ( model, [], globalData )
+                (ComponentLStringMsg ("restart" :: _)) :: _ ->
+                    ( model
+                        |> dsetbool "Show" False
+                    , [ ComponentLStringMsg [ "restart" ] ]
+                    , globalData
+                    )
+
+                _ ->
+                    if showStatus then
+                        ( model
+                            |> dsetLComponent "Child" newChildComponentsList
+                        , newChildComponentsMsg
+                        , newGlobalData
+                        )
+
+                    else
+                        ( model, [], globalData )
 
         _ ->
             case comMsg of
