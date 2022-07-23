@@ -117,10 +117,6 @@ updateMap mainMsg comMsg globalData ( model, t ) =
         _ ->
             case comMsg of
                 ComponentStringMsg demand ->
-                    let
-                        tmp3 =
-                            Debug.log "DEMAND" demand
-                    in
                     case demand of
                         "Display:HIDE" ->
                             ( model
