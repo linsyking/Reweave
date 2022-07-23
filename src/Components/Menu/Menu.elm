@@ -186,14 +186,14 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                 (ComponentLStringMsg ("continue" :: _)) :: _ ->
                     ( model
                         |> dsetbool "Show" False
-                    , [ ComponentLStringMsg [ "continue" ] ]
+                    , [ ComponentStringMsg "continue" ]
                     , globalData
                     )
 
                 (ComponentLStringMsg ("restart" :: _)) :: _ ->
                     ( model
                         |> dsetbool "Show" False
-                    , [ ComponentLStringMsg [ "restart" ] ]
+                    , [ ComponentStringMsg "restart" ]
                     , globalData
                     )
 

@@ -29,8 +29,10 @@ import Lib.Component.Base exposing (ComponentTMsg(..), DefinedTypes(..))
 import Lib.Component.ComponentHandler exposing (updateComponents, updateSingleComponentByName)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.FrontgroundLayer.Common exposing (Model)
-import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInitPosition(..))
+import Lib.CoreEngine.GameComponent.Base exposing (GameComponent)
+import Lib.CoreEngine.GameComponents.Player.Base exposing (BoundKey, PlayerInitPosition(..))
 import Lib.CoreEngine.GameLayer.Common exposing (addenergy)
+import Lib.DefinedTypes.Parser exposing (dgetPlayer, dsetPlayer)
 import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget(..))
 import Lib.Scene.Base exposing (EngineT, nullEngineT)
 import Time exposing (posixToMillis)
@@ -99,13 +101,13 @@ dealComponentsMsg rmsg model gd ggd =
             ( ( model, ggd, [ ( LayerName "Game", LayerStringMsg "stopinput" ) ] ), gd )
 
         ComponentStringMsg "restart" ->
-            ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerRestartMsg 10 ) ] ), gd )
+            ( ( model, { ggd | ingamepause = True, settingpause = False }, [ ( LayerName "Frontground", LayerRestartMsg 10 ) ] ), gd )
 
         ComponentStringMsg "OnClose" ->
             ( ( model, ggd, [] ), gd )
 
         ComponentStringMsg "continue" ->
-            ( ( { model | ispaused = False }, { ggd | ingamepause = False, settingpause = False }, [] ), gd )
+            ( ( { model | ispaused = False }, { ggd | ingamepause = False, settingpause = False }, [ ( LayerName "Game", LayerStringMsg "clearPlayerInput" ) ] ), gd )
 
         ComponentStringMsg "startGameInput" ->
             ( ( model, ggd, [ ( LayerName "Game", LayerStringMsg "startinput" ) ] ), gd )
@@ -200,10 +202,10 @@ updateModel msg gd lm ( model, t ) ggd =
 
                 MouseDown 0 _ ->
                     let
-                        ( newcs, _, newgd ) =
+                        ( newcs, newmsg, newgd ) =
                             updateSingleComponentByName msg NullComponentMsg gd t "Menu" model.components
                     in
-                    ( ( { model | components = newcs }, ggd, [] ), newgd )
+                    dealAllComponentMsg newmsg { model | components = newcs } newgd ggd
 
                 KeyDown 27 ->
                     if model.ispaused then
