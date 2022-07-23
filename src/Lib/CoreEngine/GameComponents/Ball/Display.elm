@@ -8,11 +8,9 @@ module Lib.CoreEngine.GameComponents.Ball.Display exposing (view)
 
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable, group)
-import Canvas.Settings.Advanced exposing (alpha)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Data, LifeStatus(..))
-import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos)
 import Lib.Render.Render exposing (renderSprite)
 
 

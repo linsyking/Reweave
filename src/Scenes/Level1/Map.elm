@@ -13,8 +13,7 @@ module Scenes.Level1.Map exposing
 
 import Array2D
 import Lib.Map.Beimin exposing (buildbmleaf, buildbmlotus)
-import Lib.Map.Donghai exposing (builddhsmallrock)
-import Lib.Map.Poly exposing (buildrect)
+import Lib.Map.Poly exposing (buildPillar, buildrect)
 import Lib.Map.Zhongyuan exposing (buildzystick)
 
 
@@ -42,7 +41,9 @@ mymap =
         |> buildbmlotus ( 72, 65 )
         |> buildrect ( 80, 64 ) ( 1, 10 ) 1
         |> buildrect ( 90, 60 ) ( 1, 10 ) 1
-        |> buildrect ( 101, 50 ) ( 1, 20 ) 1
+        |> buildPillar ( 101, 50 ) 5
         |> buildrect ( 110, 47 ) ( 10, 30 ) 2
-        |> buildzystick ( 105, 64 )
-        |> builddhsmallrock ( 104, 63 )
+        |> buildbmlotus ( 101, 49 )
+        |> buildbmlotus ( 99, 49 )
+        |> buildbmlotus ( 97, 48 )
+        |> buildbmlotus ( 103, 48 )

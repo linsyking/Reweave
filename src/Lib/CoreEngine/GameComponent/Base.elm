@@ -29,6 +29,7 @@ import Dict exposing (Dict)
 import Lib.Component.Base exposing (DefinedTypes)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponents.Ball.Base exposing (BallInit)
+import Lib.CoreEngine.GameComponents.Bird.Base exposing (BirdInit)
 import Lib.CoreEngine.GameComponents.Bone.Base exposing (BoneInit)
 import Lib.CoreEngine.GameComponents.Bullet.Base exposing (BulletInit)
 import Lib.CoreEngine.GameComponents.CutScene.Base exposing (CutSceneInit)
@@ -89,6 +90,7 @@ type GameComponentTMsg
     | GameBoneInit BoneInit
     | GameEnergyCrystalInit EnergyCrystalInit
     | GameBallInit BallInit
+    | GameBirdInit BirdInit
     | GameStringIntMsg String Int
     | NullGameComponentMsg
 

@@ -422,7 +422,11 @@ dealParentMsg gct gd ( model, t ) ggd =
                     odata.velocity
 
                 newdata =
-                    { odata | extra = newplayer, velocity = ( ovx / 5, ovy / 5 ) }
+                    if ovx + ovy > 400 then
+                        { odata | extra = newplayer, velocity = ( ovx / 2, ovy / 2 ) }
+
+                    else
+                        { odata | extra = newplayer }
 
                 opp =
                     model.player

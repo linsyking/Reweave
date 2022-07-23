@@ -86,6 +86,9 @@ monsterSprites : List ( String, String )
 monsterSprites =
     [ ( "fish", getResourcePath "img/fish.png" )
     , ( "turtle", getResourcePath "img/turtle.png" )
+    , ( "bird", getResourcePath "img/bird.png" )
+    , ( "fox", getResourcePath "img/fox.png" )
+    , ( "lion", getResourcePath "img/lion.png" )
     , ( "goomba", getResourcePath "img/small.png" )
     , ( "goombadie", getResourcePath "img/smalldie.png" )
     ]

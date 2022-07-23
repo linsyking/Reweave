@@ -2,7 +2,6 @@ module Scenes.Level1.Config exposing
     ( initFrontGroundComponents
     , initPlayer
     , initActors
-    , dialogues
     , initCamera
     , initGameGlobalData
     , allChartlets
@@ -16,8 +15,6 @@ module Scenes.Level1.Config exposing
 @docs initPlayer
 
 @docs initActors
-
-@docs dialogues
 
 @docs initCamera
 
@@ -39,12 +36,12 @@ import Lib.CoreEngine.Camera.Base exposing (CameraData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentTMsg(..))
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (initGameComponent)
+import Lib.CoreEngine.GameComponents.Bird.Base exposing (BirdInit)
+import Lib.CoreEngine.GameComponents.Bird.Export as Bird
 import Lib.CoreEngine.GameComponents.CutScene.Base exposing (CutSceneInit)
 import Lib.CoreEngine.GameComponents.CutScene.Export as CutScene
 import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
 import Lib.CoreEngine.GameComponents.Exit.Export as Exit
-import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
-import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit, PlayerInitPosition(..))
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..), SpikeInit)
@@ -71,6 +68,7 @@ initPlayer t pos =
     case pos of
         DefaultPlayerPosition ->
             -- initGameComponent t (GamePlayerInit (PlayerInit ( 3197, 1480 ))) Player.gameComponent
+            -- initGameComponent t (GamePlayerInit (PlayerInit ( 3168, 1000 ))) Player.gameComponent
             initGameComponent t (GamePlayerInit (PlayerInit ( 342, 1160 ))) Player.gameComponent
 
         CustomPlayerPosition x ->
@@ -83,20 +81,28 @@ initActors : Int -> Array GameComponent
 initActors t =
     Array.fromList
         [ initGameComponent t (GameExitInit (ExitInit ( 120, 1240 ) "Level0" (CustomPlayerPosition ( 3446, 1800 )) 1 6)) Exit.gameComponent
-        , initGameComponent t (GameCutSceneInit (CutSceneInit ( 475, 1340 ) ( 100, 100 ) 5 dialogues True)) CutScene.gameComponent
+        , initGameComponent t (GameCutSceneInit (CutSceneInit ( 475, 1340 ) ( 100, 100 ) 5 dialoguesMaster True)) CutScene.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2200 ) HorUp 1000 False 3)) Spike.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 1440, 1900 ) HorUp 1 True 4)) Spike.gameComponent
         , initGameComponent t (GameExitInit (ExitInit ( 3700, 1450 ) "Level2" DefaultPlayerPosition 0 7)) Exit.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 3425, 1928 ) ( 50, 0 ) 8)) Goomba.gameComponent
+
+        -- , initGameComponent t (GameGoombaInit (GoombaInit ( 3425, 1928 ) ( 50, 0 ) 8)) Goomba.gameComponent
+        , initGameComponent t (GameBirdInit (BirdInit ( 3140, 1430 ) 10 9)) Bird.gameComponent
+        , initGameComponent t (GameCutSceneInit (CutSceneInit ( 3140, 1440 ) ( 100, 100 ) 10 dialoguesBird True)) CutScene.gameComponent
         ]
 
 
-{-| dialogues
--}
-dialogues : List ( String, String )
-dialogues =
+dialoguesMaster : List ( String, String )
+dialoguesMaster =
     [ ( "p_profile", "Hello, master." )
     , ( "master", "Hi" )
+    ]
+
+
+dialoguesBird : List ( String, String )
+dialoguesBird =
+    [ ( "p_profile", "Hello, master." )
+    , ( "bird", "Hi" )
     ]
 
 
@@ -104,7 +110,7 @@ dialogues =
 -}
 initCamera : CameraData
 initCamera =
-    CameraData ( 0, 700 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * 119 - 1, 70 * 32 - 1 ) ) ( ( 0.2, 0.1 ), ( 0.4, 0.1 ) )
+    CameraData ( 0, 700 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * 119 - 1, 70 * 32 - 1 ) ) ( ( 0.2, 0.2 ), ( 0.4, 0.1 ) )
 
 
 {-| initGameGlobalData
