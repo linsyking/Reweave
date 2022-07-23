@@ -157,8 +157,11 @@ updateModel msg gd lm ( model, t ) ggd =
                             (if ggd.energy >= 500 then
                                 500
 
+                             else if ggd.energy <= 300 then
+                                300
+
                              else
-                                addenergy ggd.energy -(ggd.energy / 1.5)
+                                ggd.energy
                             )
                             DefaultPlayerPosition
                             ggd.collectedMonsters
