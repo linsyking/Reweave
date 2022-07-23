@@ -89,7 +89,7 @@ initActors t =
         [ initGameComponent t (GameGoombaInit (GoombaInit ( 800, 2100 ) ( 0, 0 ) 3)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 1500, 1750 ) ( 50, 0 ) 4)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 1550, 1750 ) ( -50, 0 ) 5)) Goomba.gameComponent
-        , initGameComponent t (GameExitInit (ExitInit ( 3820, 140 ) "Level3" DefaultPlayerPosition 0 6)) Exit.gameComponent
+        , initGameComponent t (GameExitInit (ExitInit ( 3820, 140 ) "Level4" DefaultPlayerPosition 0 6)) Exit.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 590, 2200 ) HorUp 3 True 7)) Spike.gameComponent
         , initGameComponent t (GameBoneInit (BoneInit ( 1330, 2150 ) 150 8)) Bone.gameComponent
         , initGameComponent t (GameBoneInit (BoneInit ( 1460, 2150 ) 150 9)) Bone.gameComponent
