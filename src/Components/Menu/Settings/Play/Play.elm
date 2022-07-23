@@ -119,7 +119,7 @@ updateMap mainMsg comMsg globalData ( model, t ) =
                 ComponentStringMsg demand ->
                     let
                         tmp3 =
-                            Debug.log "DEMAND" 1
+                            Debug.log "DEMAND" demand
                     in
                     case demand of
                         "Display:HIDE" ->
@@ -153,12 +153,5 @@ viewMap ( model, _ ) globalData =
 
         posY =
             dgetint model "posY"
-
-        status =
-            dgetbool model "show"
     in
-    if status then
-        renderText globalData 30 (dgetString model "Type") "Courier New" ( posX, posY )
-
-    else
-        group [] []
+    renderText globalData 30 (dgetString model "Type") "Courier New" ( posX, posY )

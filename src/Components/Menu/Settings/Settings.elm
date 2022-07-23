@@ -116,9 +116,22 @@ updateSettings mainMsg comMsg globalData ( model, t ) =
     case mainMsg of
         MouseDown 0 ( x, y ) ->
             if judgeMouse globalData ( x, y ) ( posX, posY ) ( radius, radius ) then
+                let
+                    ( newChildComponentsList, _, _ ) =
+                        List.foldl
+                            (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
+                                let
+                                    ( tmpCom, tmpComMsg, gD ) =
+                                        comModel.update UnknownMsg (ComponentStringMsg "Display:SHOW") tmpGData ( comModel.data, t )
+                                in
+                                ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
+                            )
+                            ( [], [], globalData )
+                            tmpChildComponentsList
+                in
                 ( model
                     |> dsetbool "show" True
-                    |> dsetLComponent "Child" tmpChildComponentsList
+                    |> dsetLComponent "Child" newChildComponentsList
                 , List.append [ newComMsg ]
                     [ if reverseShowStatus == True then
                         ComponentLSStringMsg "OnShow" [ "Settings" ]
