@@ -548,6 +548,16 @@ updateModel msg gd lm ( model, t ) ggd =
         LayerStringMsg "startlayer" ->
             ( ( model, { ggd | ingamepause = False }, [] ), gd )
 
+        LayerStringMsg "skipcutscene" ->
+            let
+                alc =
+                    model.actors
+
+                ( newactors, _, newggd ) =
+                    updateSingleGameComponentByName UnknownMsg (GameStringMsg "skip") ggd gd t "CutScene" alc
+            in
+            ( ( { model | actors = newactors, ignoreInput = False }, newggd, [] ), gd )
+
         LayerStringMsg "clearPlayerInput" ->
             let
                 player =

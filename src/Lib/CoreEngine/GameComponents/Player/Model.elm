@@ -250,7 +250,7 @@ updateModel msg gct ggd gd ( d, t ) =
                                         ( ( _, y2 ), _ ) =
                                             getBoxPos icd.position icd.simplecheck
                                     in
-                                    if y1 > y2 && y1 - y2 < 6 then
+                                    if y1 > y2 && y1 - y2 <= 21 then
                                         -- Rebound
                                         ( reboundPlayer gbvy d, [ GameActorUidMsg icd.uid (GameStringMsg "die") ], ggd )
 
