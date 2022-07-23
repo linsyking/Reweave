@@ -35,7 +35,7 @@ initMap _ comMsg =
                         , ( "posX", CDInt 600 )
                         , ( "posY", CDInt 500 )
                         , ( "Type", CDString "continue" )
-                        , ( "Width", CDInt 100 )
+                        , ( "Width", CDInt 160 )
                         , ( "Height", CDInt 50 )
                         ]
 
@@ -45,7 +45,7 @@ initMap _ comMsg =
                         , ( "posX", CDInt 600 )
                         , ( "posY", CDInt 550 )
                         , ( "Type", CDString "restart" )
-                        , ( "Width", CDInt 100 )
+                        , ( "Width", CDInt 140 )
                         , ( "Height", CDInt 50 )
                         ]
 
