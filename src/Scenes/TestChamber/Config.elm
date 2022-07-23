@@ -49,6 +49,8 @@ import Lib.CoreEngine.GameComponents.GoombaEmitter.Base exposing (GoombaEmitterI
 import Lib.CoreEngine.GameComponents.GoombaEmitter.Export as GoombaEmitter
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit, PlayerInitPosition(..))
 import Lib.CoreEngine.GameComponents.Player.Export as Player
+import Lib.CoreEngine.GameComponents.SavePoint.Base exposing (SavePointInit)
+import Lib.CoreEngine.GameComponents.SavePoint.Export as SavePoint
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..), SpikeInit)
 import Lib.CoreEngine.GameComponents.Spike.Export as Spike
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
@@ -96,6 +98,7 @@ initActors t =
 
         -- , initGameComponent t (GameBoneInit (BoneInit ( 2400, 2000 ) 200 13)) Bone.gameComponent
         , initGameComponent t (GameBallInit (BallInit ( 2700, 1800 ) 100 14)) Ball.gameComponent
+        , initGameComponent t (GameSavePointInit (SavePointInit ( 2300, 2000 ) 15)) SavePoint.gameComponent
 
         -- , initGameComponent t (GameFishInit (FishInit ( 100, 1000 ) 88 229)) Fish.gameComponent
         -- , initGameComponent t (GameTurtleInit (TurtleInit ( 2700, 1000 ) 88 100)) Turtle.gameComponent

@@ -57,6 +57,7 @@ initModel t lm _ =
             , fpsrepo = []
             , ispaused = False
             , exitinfo = nullEngineT
+            , savePoint = Nothing
             }
 
         _ ->
@@ -65,6 +66,7 @@ initModel t lm _ =
             , fpsrepo = []
             , ispaused = False
             , exitinfo = nullEngineT
+            , savePoint = Nothing
             }
 
 
@@ -94,7 +96,17 @@ dealComponentsMsg rmsg model gd ggd =
             ( ( model, ggd, [ ( LayerParentScene, newexitmsg ) ] ), { gd | scenesFinished = gd.scenesFinished ++ [ ggd.currentScene ] } )
 
         ComponentLStringMsg ("restart" :: _) ->
-            ( ( model, ggd, [ ( LayerParentScene, LayerExitMsg model.exitinfo ggd.currentScene 0 ) ] ), gd )
+            -- Final Restart
+            case model.savePoint of
+                Nothing ->
+                    ( ( model, ggd, [ ( LayerParentScene, LayerExitMsg model.exitinfo ggd.currentScene 0 ) ] ), gd )
+
+                Just p ->
+                    let
+                        oldex =
+                            model.exitinfo
+                    in
+                    ( ( model, ggd, [ ( LayerParentScene, LayerExitMsg { oldex | playerPosition = CustomPlayerPosition p } ggd.currentScene 0 ) ] ), gd )
 
         ComponentStringMsg "stopGameInput" ->
             ( ( model, ggd, [ ( LayerName "Game", LayerStringMsg "stopinput" ) ] ), gd )
@@ -173,6 +185,9 @@ updateModel msg gd lm ( model, t ) ggd =
               )
             , newgd
             )
+
+        LayerInfoPositionMsg "save" p ->
+            ( ( { model | savePoint = Just p }, ggd, [] ), gd )
 
         _ ->
             case msg of

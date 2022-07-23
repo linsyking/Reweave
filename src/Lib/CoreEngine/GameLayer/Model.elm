@@ -425,6 +425,9 @@ dealParentMsg gct gd ( model, t ) ggd =
         GameLStringMsg ("collectmonster" :: pic :: _) ->
             ( ( model, { ggd | collectedMonsters = ggd.collectedMonsters ++ [ pic ] }, [] ), gd )
 
+        GameInfoPositionMsg "save" p ->
+            ( ( model, ggd, [ ( LayerName "Frontground", LayerInfoPositionMsg "save" p ) ] ), gd )
+
         GameStringMsg "ignoreinput" ->
             let
                 player =
