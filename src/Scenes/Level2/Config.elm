@@ -37,6 +37,8 @@ import Lib.CoreEngine.GameComponents.Bone.Base exposing (BoneInit)
 import Lib.CoreEngine.GameComponents.Bone.Export as Bone
 import Lib.CoreEngine.GameComponents.CutScene.Base exposing (CutSceneInit)
 import Lib.CoreEngine.GameComponents.CutScene.Export as CutScene
+import Lib.CoreEngine.GameComponents.EnergyCrystal.Base exposing (EnergyCrystalInit)
+import Lib.CoreEngine.GameComponents.EnergyCrystal.Export as Energy
 import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
 import Lib.CoreEngine.GameComponents.Exit.Export as Exit
 import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
@@ -72,9 +74,9 @@ initPlayer : Int -> PlayerInitPosition -> GameComponent
 initPlayer t pos =
     case pos of
         DefaultPlayerPosition ->
-            -- initGameComponent t (GamePlayerInit (PlayerInit ( 128, 1864 ))) Player.gameComponent
-            initGameComponent t (GamePlayerInit (PlayerInit ( 2065, 1320 ))) Player.gameComponent
+            initGameComponent t (GamePlayerInit (PlayerInit ( 128, 1864 ))) Player.gameComponent
 
+        -- initGameComponent t (GamePlayerInit (PlayerInit ( 2065, 1320 ))) Player.gameComponent
         CustomPlayerPosition x ->
             initGameComponent t (GamePlayerInit (PlayerInit x)) Player.gameComponent
 
@@ -105,6 +107,7 @@ initActors t =
         , initGameComponent t (GameMonsterInit (MonsterInit ( 3220, 1920 ) ( 400, 300 ) "lion" 21 20)) Monster.gameComponent
         , initGameComponent t (GameCutSceneInit (CutSceneInit ( 3220, 1920 ) ( 400, 300 ) 21 liontalkings False)) CutScene.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 94 * 32, 35 * 32 ) ( 0, 0 ) 22)) Goomba.gameComponent
+        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 36 * 32 + 20, 62 * 32 - 60 ) 300 False 23)) Energy.gameComponent
         ]
 
 
