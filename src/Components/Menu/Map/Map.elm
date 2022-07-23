@@ -22,7 +22,7 @@ import Constants exposing (..)
 import Dict
 import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
-import Lib.DefinedTypes.Parser exposing (dgetDict, dgetbool, dgetfloat, dgetint, dsetDict, dsetbool)
+import Lib.DefinedTypes.Parser exposing (dgetDict, dgetString, dgetbool, dgetint, dsetDict, dsetbool)
 import Lib.Render.Render exposing (..)
 
 
@@ -140,32 +140,29 @@ viewMap ( model, _ ) globalData =
                     data =
                         dgetDict model "Data"
 
-                    charPosX =
-                        dgetfloat data "CharPositionX"
+                    map =
+                        dgetString data "bgimg"
 
-                    charPosY =
-                        dgetfloat data "CharPositionY"
-
-                    mapWidth =
-                        dgetfloat data "MapWidth"
-
-                    mapHeight =
-                        dgetfloat data "MapHeight"
+                    -- charPosX =
+                    --     dgetfloat data "CharPositionX"
+                    -- charPosY =
+                    --     dgetfloat data "CharPositionY"
+                    -- mapWidth =
+                    --     dgetfloat data "MapWidth"
+                    -- mapHeight =
+                    --     dgetfloat data "MapHeight"
                 in
-                [ renderText globalData 30 "Map" "sans-serif" ( 500, 500 )
-                , renderSprite globalData [] ( 500, 550 ) ( 400, 200 ) "background"
-                , shapes []
-                    (case ( floor mapWidth, floor mapHeight ) of
-                        ( 0, _ ) ->
-                            []
-
-                        ( _, 0 ) ->
-                            []
-
-                        _ ->
-                            [ Canvas.circle (posToReal globalData ( floor (500 + charPosX / mapWidth * 400), floor (550 + charPosY / mapHeight * 200) )) (widthToReal globalData 5) ]
-                    )
-                ]
+                [ renderSprite globalData [] ( 550, 480 ) ( 500, 250 ) map ]
+                -- , shapes [ fill Color.red ]
+                --     (case ( floor mapWidth, floor mapHeight ) of
+                --         ( 0, _ ) ->
+                --             []
+                --         ( _, 0 ) ->
+                --             []
+                --         _ ->
+                --             [ Canvas.circle (posToReal globalData ( floor (550 + charPosX / mapWidth * 500), floor (450 + charPosY / mapHeight * 300) )) (widthToReal globalData 5) ]
+                --     )
+                -- ]
 
              else
                 []

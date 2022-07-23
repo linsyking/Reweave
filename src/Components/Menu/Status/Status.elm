@@ -18,11 +18,13 @@ import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (..)
 import Canvas.Settings exposing (..)
 import Canvas.Settings.Advanced exposing (..)
+import Color
+import Components.Menu.Status.Collect.Export as StatusCollectE
 import Constants exposing (..)
 import Dict
 import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
-import Lib.DefinedTypes.Parser exposing (dgetDict, dgetbool, dgetfloat, dgetint, dsetDict, dsetbool)
+import Lib.DefinedTypes.Parser exposing (dgetLComponent, dgetLString, dgetbool, dgetint, dsetDict, dsetLComponent, dsetbool)
 import Lib.Render.Render exposing (..)
 
 
@@ -36,6 +38,40 @@ initStatus _ _ =
         , ( "posY", CDInt 380 )
         , ( "radius", CDInt 60 )
         , ( "Data", CDDict Dict.empty )
+        , ( "Child"
+          , CDLComponent
+                [ ( "fish"
+                  , StatusCollectE.initComponent 0
+                        (ComponentStringDictMsg "fish"
+                            (Dict.fromList [ ( "posX", CDInt 740 ), ( "posY", CDInt 450 ) ])
+                        )
+                  )
+                , ( "turtle"
+                  , StatusCollectE.initComponent 0
+                        (ComponentStringDictMsg "turtle"
+                            (Dict.fromList [ ( "posX", CDInt 840 ), ( "posY", CDInt 550 ) ])
+                        )
+                  )
+                , ( "bird"
+                  , StatusCollectE.initComponent 0
+                        (ComponentStringDictMsg "bird"
+                            (Dict.fromList [ ( "posX", CDInt 640 ), ( "posY", CDInt 550 ) ])
+                        )
+                  )
+                , ( "fox"
+                  , StatusCollectE.initComponent 0
+                        (ComponentStringDictMsg "fox"
+                            (Dict.fromList [ ( "posX", CDInt 740 ), ( "posY", CDInt 550 ) ])
+                        )
+                  )
+                , ( "lion"
+                  , StatusCollectE.initComponent 0
+                        (ComponentStringDictMsg "lion"
+                            (Dict.fromList [ ( "posX", CDInt 740 ), ( "posY", CDInt 650 ) ])
+                        )
+                  )
+                ]
+          )
         ]
 
 
@@ -99,7 +135,38 @@ updateStatus mainMsg comMsg globalData ( model, t ) =
                             ( model, [], globalData )
 
                 ComponentStringDictMsg _ dict ->
-                    ( model |> dsetDict "Data" dict, [], globalData )
+                    let
+                        collectList =
+                            dgetLString dict "collectedMonsters"
+
+                        childComponentsList =
+                            dgetLComponent model "Child"
+
+                        ( newChildComponentsList, _, _ ) =
+                            List.foldl
+                                (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
+                                    let
+                                        flag =
+                                            List.filter (\name -> name == comName) collectList
+
+                                        ( tmpCom, tmpComMsg, gD ) =
+                                            if List.isEmpty flag then
+                                                comModel.update mainMsg NullComponentMsg tmpGData ( comModel.data, t )
+
+                                            else
+                                                comModel.update mainMsg (ComponentStringMsg "Collected") tmpGData ( comModel.data, t )
+                                    in
+                                    ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
+                                )
+                                ( [], [], globalData )
+                                childComponentsList
+                    in
+                    ( model
+                        |> dsetDict "Data" dict
+                        |> dsetLComponent "Child" newChildComponentsList
+                    , []
+                    , globalData
+                    )
 
                 _ ->
                     ( model, [], globalData )
@@ -108,7 +175,7 @@ updateStatus mainMsg comMsg globalData ( model, t ) =
 {-| viewStatus
 -}
 viewStatus : ( Data, Int ) -> GlobalData -> Renderable
-viewStatus ( model, _ ) globalData =
+viewStatus ( model, t ) globalData =
     let
         showStatus =
             dgetbool model "show"
@@ -121,6 +188,9 @@ viewStatus ( model, _ ) globalData =
 
         radius =
             dgetint model "radius"
+
+        childComponentsList =
+            dgetLComponent model "Child"
     in
     group []
         (List.append
@@ -136,20 +206,8 @@ viewStatus ( model, _ ) globalData =
                 "ot/status"
             ]
             (if showStatus then
-                let
-                    data =
-                        dgetDict model "Data"
-
-                    charLife =
-                        dgetint data "CharLife"
-
-                    charEnergy =
-                        dgetfloat data "energy"
-                in
-                [ renderText globalData 30 "Status" "sans-serif" ( 500, 500 )
-                , renderText globalData 30 ("Life: " ++ String.fromInt charLife) "sans-serif" ( 500, 530 )
-                , renderText globalData 30 ("Energy: " ++ String.fromFloat charEnergy) "sans-serif" ( 500, 560 )
-                ]
+                List.append (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
+                    [ shapes [ stroke Color.black ] [ circle (posToReal globalData ( 780, 590 )) (widthToReal globalData 150) ] ]
 
              else
                 []

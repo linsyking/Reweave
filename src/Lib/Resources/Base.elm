@@ -59,6 +59,7 @@ igetSprite name dst =
 allTexture : List ( String, String )
 allTexture =
     [ ( "background", getResourcePath "img/DongHai.jpg" )
+    , ( "homepage", getResourcePath "img/homepage.jpg" )
     , ( "lcloud", getResourcePath "img/cloud.png" )
     , ( "spikeL", getResourcePath "img/spikeL.png" )
     , ( "spikeR", getResourcePath "img/spikeR.png" )
