@@ -77,6 +77,7 @@ initPlayer : Int -> PlayerInitPosition -> GameComponent
 initPlayer t pos =
     case pos of
         DefaultPlayerPosition ->
+            -- initGameComponent t (GamePlayerInit (PlayerInit ( 1981, 1800 ))) Player.gameComponent
             initGameComponent t (GamePlayerInit (PlayerInit ( 200, 2000 ))) Player.gameComponent
 
         CustomPlayerPosition x ->
@@ -144,7 +145,7 @@ allChartlets : Int -> List ( GlobalData -> GameGlobalData -> Renderable, GameLay
 allChartlets sp =
     makemanybamboos 9
         ++ [ ( \gd ggd ->
-                renderSprite gd [] (getPositionUnderCamera ( 1980, 1525 ) ggd) ( 1000, 0 ) "zy/building"
+                renderSprite gd [] (getPositionUnderCamera ( 2140, 1520 ) ggd) ( 700, 0 ) "zy/building"
              , BehindActors
              )
            , case sp of

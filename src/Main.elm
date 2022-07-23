@@ -2,17 +2,7 @@ port module Main exposing (main)
 
 {-| This is the doc for this module
 
-@docs initModel
-
 @docs main
-
-@docs init
-
-@docs update
-
-@docs subscriptions
-
-@docs view
 
 -}
 
@@ -81,7 +71,7 @@ init : Flags -> ( Model, Cmd Msg, AudioCmd Msg )
 init flags =
     let
         ms =
-            loadSceneByName initModel "Level1" NullSceneMsg
+            loadSceneByName initModel "Test" NullSceneMsg
 
         oldgd =
             ms.currentGlobalData

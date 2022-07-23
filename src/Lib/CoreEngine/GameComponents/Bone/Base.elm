@@ -11,6 +11,6 @@ module Lib.CoreEngine.GameComponents.Bone.Base exposing (BoneInit)
 -}
 type alias BoneInit =
     { initPosition : ( Int, Int )
-    , initSize : ( Int, Int )
+    , initSize : Int
     , uid : Int
     }

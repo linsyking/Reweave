@@ -23,6 +23,13 @@ module Scenes.TestChamber.Config exposing
 
 -}
 
+-- import Lib.CoreEngine.GameComponents.Fish.Base exposing (FishInit)
+-- import Lib.CoreEngine.GameComponents.Fish.Export as Fish
+-- import Lib.CoreEngine.GameComponents.Turtle.Base exposing (TurtleInit)
+-- import Lib.CoreEngine.GameComponents.Turtle.Export as Turtle
+-- import Lib.CoreEngine.GameComponents.Bone.Base exposing (BoneInit)
+-- import Lib.CoreEngine.GameComponents.Bone.Export as Bone
+
 import Array exposing (Array)
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable)
@@ -32,10 +39,10 @@ import Lib.CoreEngine.Camera.Base exposing (CameraData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentTMsg(..))
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (initGameComponent)
+import Lib.CoreEngine.GameComponents.Ball.Base exposing (BallInit)
+import Lib.CoreEngine.GameComponents.Ball.Export as Ball
 import Lib.CoreEngine.GameComponents.EnergyCrystal.Base exposing (EnergyCrystalInit)
 import Lib.CoreEngine.GameComponents.EnergyCrystal.Export as EnergyCrystal
-import Lib.CoreEngine.GameComponents.Fish.Base exposing (FishInit)
-import Lib.CoreEngine.GameComponents.Fish.Export as Fish
 import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
 import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
 import Lib.CoreEngine.GameComponents.GoombaEmitter.Base exposing (GoombaEmitterInit)
@@ -44,8 +51,6 @@ import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit, PlayerIni
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..), SpikeInit)
 import Lib.CoreEngine.GameComponents.Spike.Export as Spike
-import Lib.CoreEngine.GameComponents.Turtle.Base exposing (TurtleInit)
-import Lib.CoreEngine.GameComponents.Turtle.Export as Turtle
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
 import Lib.Render.Render exposing (renderSprite, renderText)
 import Scenes.TestChamber.Map exposing (mymap)
@@ -80,7 +85,7 @@ initActors t =
         , initGameComponent t (GameGoombaInit (GoombaInit ( 1000, 1800 ) ( 0, 0 ) 5)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 2000, 800 ) ( 0, 0 ) 2)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 3500, 500 ) ( 0, 0 ) 3)) Goomba.gameComponent
-        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 2200, 2000 ) 10 17)) EnergyCrystal.gameComponent
+        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 2200, 2000 ) 300 True 17)) EnergyCrystal.gameComponent
 
         -- , initGameComponent t (GameExitInit (ExitInit ( 3600, 1750 ) "Level4" 9)) Exit.gameComponent
         -- , initGameComponent t (GameCutSceneInit (CutSceneInit ( 2900, 1800 ) ( 100, 160 ) 88 [ ( "p_profile", "Dear master, I want learn something from you" ), ( "master", "Yes, please go ahead." ) ] True)) CutScene.gameComponent
@@ -88,10 +93,12 @@ initActors t =
         , initGameComponent t (GameSpikeInit (SpikeInit ( 704, 2028 ) HorUp 1 True 10)) Spike.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 736, 2048 ) VerRight 3 True 11)) Spike.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 864, 2016 ) HorDown 15 True 12)) Spike.gameComponent
-        , initGameComponent t (GameFishInit (FishInit ( 100, 1000 ) 88 229)) Fish.gameComponent
 
-        -- , initGameComponent t (GameFireballInit (FireballInit ( 500, 1530 ) ( -5, 0 ) 18)) Fireball.gameComponent
-        , initGameComponent t (GameTurtleInit (TurtleInit ( 2700, 1000 ) 88 100)) Turtle.gameComponent
+        -- , initGameComponent t (GameBoneInit (BoneInit ( 2400, 2000 ) 200 13)) Bone.gameComponent
+        , initGameComponent t (GameBallInit (BallInit ( 2700, 1800 ) 100 14)) Ball.gameComponent
+
+        -- , initGameComponent t (GameFishInit (FishInit ( 100, 1000 ) 88 229)) Fish.gameComponent
+        -- , initGameComponent t (GameTurtleInit (TurtleInit ( 2700, 1000 ) 88 100)) Turtle.gameComponent
         ]
 
 
