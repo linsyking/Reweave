@@ -22,7 +22,7 @@ import Dict
 import Lib.Component.Base exposing (DefinedTypes(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
-import Lib.DefinedTypes.Parser exposing (dsetbool)
+import Lib.DefinedTypes.Parser exposing (dgetint, dsetbool, dsetint)
 
 
 {-| initData
@@ -69,6 +69,7 @@ initModel _ gct =
             , extra =
                 Dict.fromList
                     [ ( "Alive", CDBool True )
+                    , ( "firsttouchtime", CDInt -10000 )
                     ]
             , uid = info.uid
             }
@@ -83,10 +84,30 @@ updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data
 updateModel _ gct ggd _ ( d, t ) =
     case gct of
         GameInterCollisionMsg "player" _ _ ->
-            ( { d | extra = dsetbool "Alive" False d.extra }
-            , [ GameParentMsg (GameInfoPositionMsg "save" d.position) ]
-            , ggd
-            )
+            let
+                fir =
+                    dgetint d.extra "firsttouchtime"
+            in
+            if t - fir <= 3 then
+                ( { d
+                    | extra =
+                        d.extra
+                            |> dsetint "firsttouchtime" t
+                  }
+                , []
+                , ggd
+                )
+
+            else
+                ( { d
+                    | extra =
+                        d.extra
+                            |> dsetbool "Alive" False
+                            |> dsetint "firsttouchtime" t
+                  }
+                , [ GameParentMsg (GameInfoPositionMsg "save" d.position) ]
+                , ggd
+                )
 
         _ ->
             ( d, [], ggd )
