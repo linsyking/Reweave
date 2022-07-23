@@ -187,6 +187,14 @@ otherSprites =
     , ( "ot/crystaldead", getResourcePath "img/crystaldead.png" )
     , ( "ot/ball", getResourcePath "img/ball.png" )
     ]
+        ++ flagSprites
+
+
+flagSprites : List ( String, String )
+flagSprites =
+    [ ( "ot/unsave", getResourcePath "img/unsave.png" )
+    , ( "ot/save", getResourcePath "img/save.png" )
+    ]
 
 
 backgroundSprites : List ( String, String )

@@ -30,10 +30,10 @@ view ( d, _ ) ggd gd =
                 (getPositionUnderCamera d.position ggd)
                 ( d.simplecheck.width, d.simplecheck.height )
                 (if not alive then
-                    "ot/crystaldead"
+                    "ot/save"
 
                  else
-                    "ot/crystal"
+                    "ot/unsave"
                 )
             ]
       , 0
