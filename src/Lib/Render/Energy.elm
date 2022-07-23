@@ -20,16 +20,17 @@ renderEnergyPoint t gd energy ( ( px, py ), ( px2, py2 ) ) =
         ( cx, cy ) =
             ( (toFloat px + toFloat px2) / 2, (toFloat py + toFloat py2) / 2 )
 
-        pichalfsize =
-            20
-
-        ( stx, sty ) =
-            ( floor (cx - pichalfsize), floor (cy - pichalfsize) )
-
         sta =
             modBy 80 t - 40
     in
     if energy < 300 then
+        let
+            pichalfsize =
+                20
+
+            ( stx, sty ) =
+                ( floor (cx - pichalfsize), floor (cy - pichalfsize) )
+        in
         renderSprite gd
             [ alpha
                 (1
@@ -46,6 +47,13 @@ renderEnergyPoint t gd energy ( ( px, py ), ( px2, py2 ) ) =
             "whiteshadow"
 
     else
+        let
+            pichalfsize =
+                50
+
+            ( stx, sty ) =
+                ( floor (cx - pichalfsize), floor (cy - pichalfsize) )
+        in
         renderSprite gd
             [ alpha
                 (0.5
