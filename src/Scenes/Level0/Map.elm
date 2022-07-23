@@ -13,7 +13,7 @@ module Scenes.Level0.Map exposing
 
 import Array2D
 import Lib.Map.Longxi exposing (buildlxlongground, buildlxrock)
-import Lib.Map.Poly exposing (buildrect)
+import Lib.Map.Poly exposing (buildPillar, buildrect)
 import Lib.Map.Zhongyuan exposing (buildplatforms, buildzystick)
 
 
@@ -42,6 +42,8 @@ mymap =
         |> buildrect ( 83, 53 ) ( 4, 2 ) 2
         |> buildrect ( 116, 60 ) ( 3, 1 ) 2
         |> buildplatforms ( 85, 60 ) 7
+        |> buildPillar ( 70, 61 ) 2
+        |> buildPillar ( 87, 61 ) 2
         |> buildlxrock ( 20, 67 )
         |> buildlxrock ( 32, 67 )
         |> buildlxrock ( 33, 66 )
