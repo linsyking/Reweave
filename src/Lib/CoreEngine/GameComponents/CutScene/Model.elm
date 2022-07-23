@@ -141,6 +141,13 @@ updateModel msg gct ggd globalData ( d, t ) =
         GameStringMsg "start" ->
             handlestart d ggd
 
+        GameStringMsg "skip" ->
+            if dgetLComponent d.extra "_Child" == [] then
+                ( d, [], ggd )
+
+            else
+                ( { d | extra = Dict.empty }, [], ggd )
+
         _ ->
             let
                 data =

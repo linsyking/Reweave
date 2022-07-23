@@ -36,7 +36,7 @@ initMap _ comMsg =
                 "Continue" ->
                     Dict.fromList
                         [ ( "show", CDBool True )
-                        , ( "posX", CDInt 600 )
+                        , ( "posX", CDInt 560 )
                         , ( "posY", CDInt 500 )
                         , ( "Type", CDString "continue" )
                         , ( "Width", CDInt 160 )
@@ -46,10 +46,20 @@ initMap _ comMsg =
                 "Restart" ->
                     Dict.fromList
                         [ ( "show", CDBool True )
-                        , ( "posX", CDInt 600 )
+                        , ( "posX", CDInt 560 )
                         , ( "posY", CDInt 550 )
                         , ( "Type", CDString "restart" )
                         , ( "Width", CDInt 140 )
+                        , ( "Height", CDInt 50 )
+                        ]
+
+                "Skip Cutscene" ->
+                    Dict.fromList
+                        [ ( "show", CDBool True )
+                        , ( "posX", CDInt 560 )
+                        , ( "posY", CDInt 600 )
+                        , ( "Type", CDString "skipcutscene" )
+                        , ( "Width", CDInt 200 )
                         , ( "Height", CDInt 50 )
                         ]
 

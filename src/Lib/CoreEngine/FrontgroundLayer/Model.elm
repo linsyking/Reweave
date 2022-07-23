@@ -120,6 +120,9 @@ dealComponentsMsg rmsg model gd ggd =
         ComponentStringMsg "continue" ->
             ( ( { model | ispaused = False }, { ggd | ingamepause = False, settingpause = False }, [ ( LayerName "Game", LayerStringMsg "clearPlayerInput" ) ] ), gd )
 
+        ComponentStringMsg "skipcutscene" ->
+            ( ( { model | ispaused = False }, { ggd | ingamepause = False, settingpause = False }, [ ( LayerName "Game", LayerStringMsg "skipcutscene" ) ] ), gd )
+
         ComponentStringMsg "startGameInput" ->
             ( ( model, ggd, [ ( LayerName "Game", LayerStringMsg "startinput" ) ] ), gd )
 
