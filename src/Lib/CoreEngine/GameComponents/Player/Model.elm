@@ -71,9 +71,9 @@ initExtraData =
 collisionBox : Box
 collisionBox =
     { name = "col"
-    , offsetX = 0
+    , offsetX = 5
     , offsetY = 15
-    , width = 70
+    , width = 60
     , height = 105
     }
 
@@ -238,7 +238,7 @@ updateModel msg gct ggd gd ( d, t ) =
                                     ( _, pvy ) =
                                         d.velocity
                                 in
-                                if pvy < -200 || gbvy > 100 then
+                                if pvy < -150 || gbvy > 100 then
                                     -- Rebound!
                                     ( reboundPlayer gbvy d, [ GameActorUidMsg icd.uid (GameStringMsg "die") ], ggd )
 
@@ -282,10 +282,13 @@ reboundPlayer rbv d =
 
         nv =
             if pvy > -200 then
-                200
+                240
 
-            else if pvy > -400 then
+            else if pvy > -300 then
                 300
+
+            else if pvy > -360 then
+                -pvy * 1.1
 
             else
                 400
