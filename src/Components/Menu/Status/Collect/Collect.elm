@@ -9,7 +9,7 @@ import Constants exposing (..)
 import Dict
 import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
-import Lib.DefinedTypes.Parser exposing (dgetString, dgetint, dsetbool)
+import Lib.DefinedTypes.Parser exposing (dgetString, dgetbool, dgetint, dsetbool)
 import Lib.Render.Render exposing (..)
 
 
@@ -54,6 +54,13 @@ updateMap _ comMsg globalData ( model, t ) =
                     , globalData
                     )
 
+                "Collected" ->
+                    ( model
+                        |> dsetbool "Collected" True
+                    , []
+                    , globalData
+                    )
+
                 _ ->
                     ( model, [], globalData )
 
@@ -71,8 +78,17 @@ viewMap ( model, _ ) globalData =
 
         posY =
             dgetint model "posY"
+
+        collected =
+            dgetbool model "Collected"
     in
     group []
-        [ renderSprite globalData [] ( posX, posY ) ( 80, 80 ) (dgetString model "MonsterSprite")
-        , shapes [ stroke Color.black ] [ rect (posToReal globalData ( posX, posY )) (widthToReal globalData 80) (heightToReal globalData 80) ]
-        ]
+        (if collected then
+            [ renderSprite globalData [] ( posX, posY ) ( 80, 80 ) (dgetString model "MonsterSprite")
+            , shapes [ stroke Color.black ] [ rect (posToReal globalData ( posX, posY )) (widthToReal globalData 80) (heightToReal globalData 80) ]
+            ]
+
+         else
+            [ shapes [ stroke Color.black ] [ rect (posToReal globalData ( posX, posY )) (widthToReal globalData 80) (heightToReal globalData 80) ]
+            ]
+        )

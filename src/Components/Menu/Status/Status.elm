@@ -24,7 +24,7 @@ import Constants exposing (..)
 import Dict
 import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
-import Lib.DefinedTypes.Parser exposing (dgetLComponent, dgetLString, dgetbool, dgetint, dsetDict, dsetbool)
+import Lib.DefinedTypes.Parser exposing (dgetLComponent, dgetLString, dgetbool, dgetint, dsetDict, dsetLComponent, dsetbool)
 import Lib.Render.Render exposing (..)
 
 
@@ -138,8 +138,35 @@ updateStatus mainMsg comMsg globalData ( model, t ) =
                     let
                         collectList =
                             dgetLString dict "collectedMonsters"
+
+                        childComponentsList =
+                            dgetLComponent model "Child"
+
+                        ( newChildComponentsList, _, _ ) =
+                            List.foldl
+                                (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
+                                    let
+                                        flag =
+                                            List.filter (\name -> name == comName) collectList
+
+                                        ( tmpCom, tmpComMsg, gD ) =
+                                            if List.isEmpty flag then
+                                                comModel.update mainMsg NullComponentMsg tmpGData ( comModel.data, t )
+
+                                            else
+                                                comModel.update mainMsg (ComponentStringMsg "Collected") tmpGData ( comModel.data, t )
+                                    in
+                                    ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
+                                )
+                                ( [], [], globalData )
+                                childComponentsList
                     in
-                    ( model |> dsetDict "Data" dict, [], globalData )
+                    ( model
+                        |> dsetDict "Data" dict
+                        |> dsetLComponent "Child" newChildComponentsList
+                    , []
+                    , globalData
+                    )
 
                 _ ->
                     ( model, [], globalData )
