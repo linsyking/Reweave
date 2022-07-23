@@ -31,8 +31,8 @@ import Constants exposing (..)
 import Dict
 import Lib.Component.Base exposing (Component, ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
-import Lib.DefinedTypes.Parser exposing (dgetLComponent, dgetbool, dsetLComponent, dsetbool)
-import Lib.Render.Render exposing (renderSprite)
+import Lib.DefinedTypes.Parser exposing (dgetDict, dgetLComponent, dgetString, dgetbool, dgetint, dsetDict, dsetLComponent, dsetbool)
+import Lib.Render.Render exposing (renderSprite, renderText)
 
 
 {-| testData
@@ -229,6 +229,7 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                             ( model
                                 |> dsetbool "Show" True
                                 |> dsetLComponent "Child" newChildComponentsList
+                                |> dsetDict "Data" dict
                             , []
                             , newGlobalData
                             )
@@ -271,6 +272,9 @@ viewMenu ( model, t ) globalData =
 
         showStatus =
             dgetbool model "Show"
+
+        data =
+            dgetDict model "Data"
     in
     if showStatus then
         group []
@@ -279,6 +283,9 @@ viewMenu ( model, t ) globalData =
                   -- [ rect (posToReal globalData ( 400, 300 )) (widthToReal globalData 800) (heightToReal globalData 500)
                   -- ],
                   renderSprite globalData [] ( 400, 300 ) ( 1120, 500 ) "scroll"
+                , renderSprite globalData [] ( 1150, 400 ) ( 200, 200 ) "p_profile"
+                , renderText globalData 30 ("Energy: " ++ String.fromInt (dgetint data "energy")) "sans-serif" ( 1120, 625 )
+                , renderText globalData 30 ("Map Name: " ++ dgetString data "currentScene") "sans-serif" ( 1120, 677 )
                 ]
                 (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
             )
