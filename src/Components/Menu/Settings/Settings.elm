@@ -162,6 +162,28 @@ updateSettings mainMsg comMsg globalData ( model, t ) =
                         _ ->
                             ( model |> dsetLComponent "Child" tmpChildComponentsList, [ newComMsg ], newGlobalData )
 
+                ComponentStringDictMsg _ _ ->
+                    let
+                        ( newChildComponentsList, _, _ ) =
+                            List.foldl
+                                (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
+                                    let
+                                        ( tmpCom, tmpComMsg, gD ) =
+                                            comModel.update UnknownMsg (ComponentStringMsg "Display:SHOW") tmpGData ( comModel.data, t )
+                                    in
+                                    ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
+                                )
+                                ( [], [], globalData )
+                                (dgetLComponent model "Child")
+                    in
+                    ( model
+                        |> dsetbool "show" True
+                        |> dsetLComponent "Child"
+                            newChildComponentsList
+                    , []
+                    , globalData
+                    )
+
                 _ ->
                     ( model |> dsetLComponent "Child" tmpChildComponentsList, [ newComMsg ], newGlobalData )
 

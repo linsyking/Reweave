@@ -144,7 +144,7 @@ viewStatus ( model, _ ) globalData =
                         dgetint data "CharLife"
 
                     charEnergy =
-                        dgetfloat data "CharEnergy"
+                        dgetfloat data "energy"
                 in
                 [ renderText globalData 30 "Status" "sans-serif" ( 500, 500 )
                 , renderText globalData 30 ("Life: " ++ String.fromInt charLife) "sans-serif" ( 500, 530 )
