@@ -169,15 +169,12 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                     case demand of
                         "Activate" ->
                             let
-                                tmpData =
-                                    dgetDict model "Data"
-
                                 ( newChildComponentsList, _, newGlobalData ) =
                                     List.foldl
                                         (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
                                             let
                                                 ( tmpCom, tmpComMsg, gD ) =
-                                                    comModel.update mainMsg (ComponentStringDictMsg "Init" tmpData) tmpGData ( comModel.data, t )
+                                                    comModel.update mainMsg (ComponentStringDictMsg "Init" dict) tmpGData ( comModel.data, t )
                                             in
                                             ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
                                         )
