@@ -1,7 +1,9 @@
-module Scenes.Level1.Config exposing
+module Scenes.Level4boss.Config exposing
     ( initFrontGroundComponents
     , initPlayer
     , initActors
+    , dialoguesMaster
+    , dialoguesBird
     , initCamera
     , initGameGlobalData
     , allChartlets
@@ -15,6 +17,10 @@ module Scenes.Level1.Config exposing
 @docs initPlayer
 
 @docs initActors
+
+@docs dialoguesMaster
+
+@docs dialoguesBird
 
 @docs initCamera
 
@@ -40,8 +46,6 @@ import Lib.CoreEngine.GameComponents.CutScene.Base exposing (CutSceneInit)
 import Lib.CoreEngine.GameComponents.CutScene.Export as CutScene
 import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
 import Lib.CoreEngine.GameComponents.Exit.Export as Exit
-import Lib.CoreEngine.GameComponents.Monster.Base exposing (MonsterInit)
-import Lib.CoreEngine.GameComponents.Monster.Export as Monster
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit, PlayerInitPosition(..))
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..), SpikeInit)
@@ -58,7 +62,7 @@ initFrontGroundComponents : Int -> Array Component
 initFrontGroundComponents t =
     Array.fromList
         [ Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "Beiming  北溟" ])
-        , Hints.initComponent t (ComponentLStringMsg [ "40", "1590", "100", "35", "Near A River 小河边" ])
+        , Hints.initComponent t (ComponentLStringMsg [ "40", "1580", "100", "35", "Near The River 小河边" ])
         ]
 
 
@@ -81,39 +85,32 @@ initPlayer t pos =
 initActors : Int -> List String -> Array GameComponent
 initActors t cs =
     Array.fromList
-        ([ initGameComponent t (GameExitInit (ExitInit ( 10, 1100 ) "Level0" (CustomPlayerPosition ( 3446, 1800 )) 1 6)) Exit.gameComponent
-         , initGameComponent t (GameCutSceneInit (CutSceneInit ( 475, 1680 ) ( 100, 100 ) 5 dialoguesMaster True)) CutScene.gameComponent
-         , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2200 ) HorUp 1000 False 3)) Spike.gameComponent
-         , initGameComponent t (GameSpikeInit (SpikeInit ( 1440, 1900 ) HorUp 1 True 4)) Spike.gameComponent
-         , initGameComponent t (GameExitInit (ExitInit ( 3600, 1300 ) "Level2" DefaultPlayerPosition 0 7)) Exit.gameComponent
+        [ initGameComponent t (GameExitInit (ExitInit ( 120, 1240 ) "Level0" (CustomPlayerPosition ( 3446, 1800 )) 1 6)) Exit.gameComponent
+        , initGameComponent t (GameCutSceneInit (CutSceneInit ( 475, 1340 ) ( 100, 100 ) 5 dialoguesMaster True)) CutScene.gameComponent
+        , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2200 ) HorUp 1000 False 3)) Spike.gameComponent
+        , initGameComponent t (GameSpikeInit (SpikeInit ( 1440, 1900 ) HorUp 1 True 4)) Spike.gameComponent
+        , initGameComponent t (GameExitInit (ExitInit ( 3700, 1450 ) "Level2" DefaultPlayerPosition 0 7)) Exit.gameComponent
 
-         -- , initGameComponent t (GameGoombaInit (GoombaInit ( 3425, 1928 ) ( 50, 0 ) 8)) Goomba.gameComponent
-         , initGameComponent t (GameCutSceneInit (CutSceneInit ( 3140, 1440 ) ( 100, 100 ) 10 dialoguesBird False)) CutScene.gameComponent
-         ]
-            ++ (if isInCollected "bird" cs then
-                    []
-
-                else
-                    [ initGameComponent t (GameMonsterInit (MonsterInit ( 3140, 1430 ) ( 174, 138 ) "bird" 10 9)) Monster.gameComponent ]
-               )
-        )
+        -- , initGameComponent t (GameGoombaInit (GoombaInit ( 3425, 1928 ) ( 50, 0 ) 8)) Goomba.gameComponent
+        , initGameComponent t (GameCutSceneInit (CutSceneInit ( 3140, 1440 ) ( 100, 100 ) 10 dialoguesBird False)) CutScene.gameComponent
+        ]
 
 
+{-| dialoguesMaster
+-}
 dialoguesMaster : List ( String, String )
 dialoguesMaster =
     [ ( "p_profile", "Hello, master." )
-    , ( "master", "I still worry about you." )
-    , ( "master", "There is a monster ahead of you." )
-    , ( "master", "You have to hit it by your body to reweave it." )
-    , ( "p_profile", "OK." )
+    , ( "master", "Hi" )
     ]
 
 
+{-| dialoguesBird
+-}
 dialoguesBird : List ( String, String )
 dialoguesBird =
-    [ ( "p_profile", "Wow, who are you?" )
-    , ( "bird", "Hi, I am the bird" )
-    , ( "p_profile", "Beautiful Bird." )
+    [ ( "p_profile", "Hello, master." )
+    , ( "bird", "Hi" )
     ]
 
 
@@ -162,7 +159,7 @@ allChartlets =
       , FrontSolids
       )
     , ( \gd ggd ->
-            renderSprite gd [] (getPositionUnderCamera ( 475, 1680 ) ggd) ( 100, 0 ) "master"
+            renderSprite gd [] (getPositionUnderCamera ( 475, 1350 ) ggd) ( 100, 0 ) "master"
       , BehindActors
       )
     , ( \gd ggd ->

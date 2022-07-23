@@ -31,10 +31,7 @@ type alias Data =
 -}
 nullData : Data
 nullData =
-    { ico = 1
-    , start = initButton "Start" ( 960, 400 ) 15 10
-    , help = initButton "Help" ( 960, 500 ) 15 10
-    , map = initButton "Map" ( 960, 600 ) 15 10
+    { start = initButton "Start" ( 960, 40 ) 15 10
     }
 
 

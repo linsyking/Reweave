@@ -15,6 +15,7 @@ import Scenes.Level1.Export as Level1
 import Scenes.Level2.Export as Level2
 import Scenes.Level3.Export as Level3
 import Scenes.Level4.Export as LV4
+import Scenes.Level4boss.Export as Level4boss
 import Scenes.Platformtest.Export as Platformtest
 import Scenes.Scene1.Export as S1
 import Scenes.Scene1.Global as S1G
@@ -36,4 +37,6 @@ allScenes =
     , ( "Level0", CEG.toCT Level0.scene )
     , ( "Level1", CEG.toCT Level1.scene )
     , ( "Level3", CEG.toCT Level3.scene )
+    , ( "Level4boss", CEG.toCT Level4boss.scene )
+
     ]

@@ -30,7 +30,7 @@ type alias Data =
 -}
 nullData : Data
 nullData =
-    { commonData = CommonData 0
+    { commonData = CommonData False 0
     , layers = []
     }
 

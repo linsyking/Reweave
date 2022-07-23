@@ -35,8 +35,4 @@ initModel _ lm _ =
 -}
 updateModel : Msg -> GlobalData -> LayerMsg -> ( Model, Int ) -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
 updateModel _ gd _ ( model, t ) ggd =
-    if t == 50 then
-        ( ( model, ggd, [ ( LayerParentScene, LayerSoundMsg "bgm" "./assets/audio/music.mp3" ALoop ) ] ), gd )
-
-    else
-        ( ( model, ggd, [] ), gd )
+    ( ( model, ggd, [] ), gd )

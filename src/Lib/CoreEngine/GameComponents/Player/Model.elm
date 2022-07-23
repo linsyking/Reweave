@@ -32,7 +32,7 @@ import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (isAlive)
 import Lib.CoreEngine.GameComponents.Player.Base exposing (SpaceLog(..), changebk, changehistory, fixnotrightdir, nullModel)
-import Lib.CoreEngine.GameComponents.Player.InputFilter exposing (afterMove, judgeFirstJump, preCheck)
+import Lib.CoreEngine.GameComponents.Player.InputFilter exposing (afterMove, preCheck)
 import Lib.CoreEngine.GameComponents.Player.InputHandler exposing (changePlayerVelocity)
 import Lib.CoreEngine.GameComponents.Player.Movement exposing (solidCollisionMove)
 import Lib.CoreEngine.GameComponents.Player.StatesControl exposing (stateControl)
@@ -163,16 +163,14 @@ updateModel msg gct ggd gd ( d, t ) =
                                 dsetPlayer "model" afterFixCM afterAccD.extra
 
                             -- Check if is jump
-                            isnewjump =
-                                judgeFirstJump t afterStateM afterStateD
+                            -- isnewjump =
+                            --     judgeFirstJump t afterStateM afterStateD
                         in
                         ( { afterAccD | extra = exportmodel }
-                        , if isnewjump then
-                            -- [GameParentMsg (GameStringIntMsg "addenergy" -150)]
-                            []
-
-                          else
-                            []
+                        , -- , if isnewjump && gd.unlockMaster then
+                          --     [ GameParentMsg (GameStringIntMsg "addenergy" -150) ]
+                          --   else
+                          []
                         , ggd
                         )
 
