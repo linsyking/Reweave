@@ -91,9 +91,6 @@ updateSettings mainMsg comMsg globalData ( model, t ) =
             else
                 ( childComponentsList, [], globalData )
 
-        tmp =
-            Debug.log (Debug.toString tmpChildComponentsMsg) "IN"
-
         newComMsg =
             Maybe.withDefault
                 NullComponentMsg
@@ -109,9 +106,6 @@ updateSettings mainMsg comMsg globalData ( model, t ) =
                         (List.concat tmpChildComponentsMsg)
                     )
                 )
-
-        tmp1 =
-            Debug.log (Debug.toString newComMsg) "IN"
     in
     case mainMsg of
         MouseDown 0 ( x, y ) ->
