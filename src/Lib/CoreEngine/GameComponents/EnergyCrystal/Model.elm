@@ -107,7 +107,18 @@ updateModel mainMsg gct ggd _ ( d, t ) =
                 Tick _ ->
                     case d.status of
                         Alive ->
-                            ( d, [], ggd )
+                            let
+                                ( px, py ) =
+                                    d.position
+                            in
+                            if modBy 70 t == 0 then
+                                ( { d | position = ( px, py + 2 ) }, [], ggd )
+
+                            else if modBy 70 t == 35 then
+                                ( { d | position = ( px, py - 2 ) }, [], ggd )
+
+                            else
+                                ( d, [], ggd )
 
                         Dead t0 ->
                             let

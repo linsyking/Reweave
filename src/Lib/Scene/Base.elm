@@ -102,7 +102,7 @@ type alias EngineT =
 -}
 nullEngineT : EngineT
 nullEngineT =
-    { energy = 0
+    { energy = 300
     , playerPosition = DefaultPlayerPosition
     , collectedMonsters = []
     , specialstate = 0
