@@ -31,7 +31,7 @@ import Constants exposing (..)
 import Dict
 import Lib.Component.Base exposing (Component, ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
-import Lib.DefinedTypes.Parser exposing (dgetDict, dgetLComponent, dgetbool, dsetLComponent, dsetbool)
+import Lib.DefinedTypes.Parser exposing (dgetLComponent, dgetbool, dsetLComponent, dsetbool)
 import Lib.Render.Render exposing (renderSprite)
 
 
@@ -143,8 +143,26 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                         ( [], [], globalData )
                         childComponentsList
 
-                ( newChildComponentsList, newChildComponentsMsg, newGlobalData ) =
+                ( newChildComponentsList, tmpChildComponentsMsg1, newGlobalData ) =
                     componentInteract tmpChildComponentsList (List.concat tmpChildComponentsMsg) NullComponentMsg tmpGlobalData
+
+                newChildComponentsMsg =
+                    List.append
+                        (List.filter
+                            (\tmpMsg ->
+                                case tmpMsg of
+                                    ComponentLStringMsg _ ->
+                                        True
+
+                                    _ ->
+                                        False
+                            )
+                            (List.concat tmpChildComponentsMsg)
+                        )
+                        tmpChildComponentsMsg1
+
+                tmp =
+                    Debug.log (Debug.toString newChildComponentsMsg) 10
             in
             -- if judgeMouse globalData ( x, y ) ( 1100 - 30, 400 - 30 ) ( 2 * 30, 2 * 30 ) then
             --     ( model
@@ -189,8 +207,22 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                             )
 
                         "Close" ->
+                            let
+                                ( newChildComponentsList, _, _ ) =
+                                    List.foldl
+                                        (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
+                                            let
+                                                ( tmpCom, tmpComMsg, gD ) =
+                                                    comModel.update mainMsg (ComponentStringMsg "Display:HIDE") tmpGData ( comModel.data, t )
+                                            in
+                                            ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
+                                        )
+                                        ( [], [], globalData )
+                                        childComponentsList
+                            in
                             ( model
                                 |> dsetbool "Show" False
+                                |> dsetLComponent "Child" newChildComponentsList
                             , [ ComponentStringMsg "OnClose" ]
                             , globalData
                             )
