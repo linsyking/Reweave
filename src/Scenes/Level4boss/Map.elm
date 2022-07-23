@@ -1,4 +1,15 @@
-module Scenes.Level4boss.Map exposing (..)
+module Scenes.Level4boss.Map exposing
+    ( sds
+    , mymap
+    )
+
+{-| This is the doc for this module
+
+@docs sds
+
+@docs mymap
+
+-}
 
 import Array2D
 import Lib.Map.Beimin exposing (buildbmleaf, buildbmlotus)
@@ -8,9 +19,17 @@ import Lib.Map.Zhongyuan exposing (buildzystick)
 
 {-| sds
 -}
+
+
+{-| sds
+-}
 sds : Array2D.Array2D Int
 sds =
     Array2D.repeat 120 70 0
+
+
+{-| mymap
+-}
 
 
 {-| mymap

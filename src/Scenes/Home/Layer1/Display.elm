@@ -13,7 +13,7 @@ import Canvas.Settings.Text exposing (TextAlign(..))
 import Color
 import Constants exposing (..)
 import Lib.Coordinate.Coordinates exposing (..)
-import Lib.Render.Render exposing (renderText, renderTextWithColor)
+import Lib.Render.Render exposing (renderTextWithColor)
 import Scenes.Home.Layer1.Common exposing (..)
 import Scenes.Home.LayerBase exposing (CommonData)
 

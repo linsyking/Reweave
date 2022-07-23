@@ -1,4 +1,36 @@
-module Scenes.Level4boss.Config exposing (..)
+module Scenes.Level4boss.Config exposing
+    ( initFrontGroundComponents
+    , initPlayer
+    , initActors
+    , dialoguesMaster
+    , dialoguesBird
+    , initCamera
+    , initGameGlobalData
+    , allChartlets
+    , makemanywaves
+    )
+
+{-| This is the doc for this module
+
+@docs initFrontGroundComponents
+
+@docs initPlayer
+
+@docs initActors
+
+@docs dialoguesMaster
+
+@docs dialoguesBird
+
+@docs initCamera
+
+@docs initGameGlobalData
+
+@docs allChartlets
+
+@docs makemanywaves
+
+-}
 
 import Array exposing (Array)
 import Base exposing (GlobalData)
@@ -10,8 +42,6 @@ import Lib.CoreEngine.Camera.Base exposing (CameraData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentTMsg(..))
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (initGameComponent)
-import Lib.CoreEngine.GameComponents.Bird.Base exposing (BirdInit)
-import Lib.CoreEngine.GameComponents.Bird.Export as Bird
 import Lib.CoreEngine.GameComponents.CutScene.Base exposing (CutSceneInit)
 import Lib.CoreEngine.GameComponents.CutScene.Export as CutScene
 import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
@@ -55,24 +85,19 @@ initPlayer t pos =
 initActors : Int -> List String -> Array GameComponent
 initActors t cs =
     Array.fromList
-        ([ initGameComponent t (GameExitInit (ExitInit ( 120, 1240 ) "Level0" (CustomPlayerPosition ( 3446, 1800 )) 1 6)) Exit.gameComponent
-         , initGameComponent t (GameCutSceneInit (CutSceneInit ( 475, 1340 ) ( 100, 100 ) 5 dialoguesMaster True)) CutScene.gameComponent
-         , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2200 ) HorUp 1000 False 3)) Spike.gameComponent
-         , initGameComponent t (GameSpikeInit (SpikeInit ( 1440, 1900 ) HorUp 1 True 4)) Spike.gameComponent
-         , initGameComponent t (GameExitInit (ExitInit ( 3700, 1450 ) "Level2" DefaultPlayerPosition 0 7)) Exit.gameComponent
+        [ initGameComponent t (GameExitInit (ExitInit ( 120, 1240 ) "Level0" (CustomPlayerPosition ( 3446, 1800 )) 1 6)) Exit.gameComponent
+        , initGameComponent t (GameCutSceneInit (CutSceneInit ( 475, 1340 ) ( 100, 100 ) 5 dialoguesMaster True)) CutScene.gameComponent
+        , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2200 ) HorUp 1000 False 3)) Spike.gameComponent
+        , initGameComponent t (GameSpikeInit (SpikeInit ( 1440, 1900 ) HorUp 1 True 4)) Spike.gameComponent
+        , initGameComponent t (GameExitInit (ExitInit ( 3700, 1450 ) "Level2" DefaultPlayerPosition 0 7)) Exit.gameComponent
 
-         -- , initGameComponent t (GameGoombaInit (GoombaInit ( 3425, 1928 ) ( 50, 0 ) 8)) Goomba.gameComponent
-         , initGameComponent t (GameCutSceneInit (CutSceneInit ( 3140, 1440 ) ( 100, 100 ) 10 dialoguesBird False)) CutScene.gameComponent
-         ]
-            ++ (if isInCollected "bird" cs then
-                    []
-
-                else
-                    [ initGameComponent t (GameBirdInit (BirdInit ( 3140, 1430 ) 10 9)) Bird.gameComponent ]
-               )
-        )
+        -- , initGameComponent t (GameGoombaInit (GoombaInit ( 3425, 1928 ) ( 50, 0 ) 8)) Goomba.gameComponent
+        , initGameComponent t (GameCutSceneInit (CutSceneInit ( 3140, 1440 ) ( 100, 100 ) 10 dialoguesBird False)) CutScene.gameComponent
+        ]
 
 
+{-| dialoguesMaster
+-}
 dialoguesMaster : List ( String, String )
 dialoguesMaster =
     [ ( "p_profile", "Hello, master." )
@@ -80,6 +105,8 @@ dialoguesMaster =
     ]
 
 
+{-| dialoguesBird
+-}
 dialoguesBird : List ( String, String )
 dialoguesBird =
     [ ( "p_profile", "Hello, master." )

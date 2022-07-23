@@ -1,4 +1,10 @@
-module Scenes.Level4boss.Background exposing (..)
+module Scenes.Level4boss.Background exposing (background)
+
+{-| This is the doc for this module
+
+@docs background
+
+-}
 
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable)

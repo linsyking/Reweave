@@ -1,4 +1,15 @@
-module Scenes.Level4boss.Export exposing (..)
+module Scenes.Level4boss.Export exposing
+    ( game
+    , scene
+    )
+
+{-| This is the doc for this module
+
+@docs game
+
+@docs scene
+
+-}
 
 import Array
 import Canvas exposing (group)
