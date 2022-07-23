@@ -182,6 +182,9 @@ updateModel msg gct ggd gd ( d, t ) =
                         in
                         ( afterAccD, [], ggd )
 
+        KeyDown 69 ->
+            ( d, [], { ggd | selectobj = 1 } )
+
         KeyDown x ->
             let
                 changebked =

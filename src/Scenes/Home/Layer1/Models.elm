@@ -84,7 +84,7 @@ updateModel msg gd _ ( model, t ) cd =
         case msg of
             MouseDown 0 ( x, y ) ->
                 if judgeMouse gd ( x, y ) ( 0, 0 ) ( 1920, 1080 ) then
-                    ( ( model, { cd | started = True }, [ ( LayerParentScene, LayerIntMsg 2 ) ] ), gd )
+                    ( ( model, { cd | started = True, presstime = t }, [ ( LayerParentScene, LayerIntMsg 2 ) ] ), gd )
 
                 else
                     ( ( model, cd, [ ( NullLayerTarget, NullLayerMsg ) ] ), gd )
