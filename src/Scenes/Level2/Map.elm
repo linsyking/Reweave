@@ -35,6 +35,7 @@ mymap =
         |> buildlxrock ( 5 + 3, 69 )
         |> buildlxrock ( 5 + 17, 68 )
         |> buildlxrock ( 33, 68 )
+        |> buildlxrock ( 22, 67 )
         |> buildlxplain ( 36, 62 )
         |> builddhbigrock ( 1, 62 )
         |> builddhbigrock ( 37, 64 )
@@ -43,10 +44,12 @@ mymap =
         |> buildlxplain ( 51, 57 )
         |> buildlxplain ( 54, 57 )
         |> buildlxrock ( 44, 56 )
+        |> buildlxrock ( 44, 55 )
         |> buildlxrock ( 56, 56 )
         |> buildlxrock ( 56, 55 )
         |> buildrect ( 40, 69 ) ( 10, 1 ) 0
         |> buildlxplain ( 46, 50 )
+        |> buildPillar ( 47, 29 ) 4
         |> buildlxplain ( 60, 45 )
         |> buildlxplain ( 64, 45 )
         |> buildlxrock ( 75, 68 )

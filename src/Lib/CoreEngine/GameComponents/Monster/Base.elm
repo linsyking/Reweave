@@ -2,12 +2,12 @@ module Lib.CoreEngine.GameComponents.Monster.Base exposing (MonsterInit)
 
 {-| This is the doc for this module
 
-@docs BirdInit
+@docs MonsterInit
 
 -}
 
 
-{-| BirdInit
+{-| MonsterInit
 -}
 type alias MonsterInit =
     { initPosition : ( Int, Int )

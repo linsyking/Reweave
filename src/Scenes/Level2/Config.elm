@@ -89,15 +89,16 @@ initActors t =
         [ initGameComponent t (GameGoombaInit (GoombaInit ( 800, 2100 ) ( 0, 0 ) 3)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 1500, 1750 ) ( 50, 0 ) 4)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 1550, 1750 ) ( -50, 0 ) 5)) Goomba.gameComponent
-        , initGameComponent t (GameExitInit (ExitInit ( 3820, 140 ) "Level3" DefaultPlayerPosition 0 6)) Exit.gameComponent
+        , initGameComponent t (GameExitInit (ExitInit ( 3820, 140 ) "Level4" DefaultPlayerPosition 0 6)) Exit.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 590, 2200 ) HorUp 3 True 7)) Spike.gameComponent
         , initGameComponent t (GameBoneInit (BoneInit ( 1330, 2150 ) 150 8)) Bone.gameComponent
         , initGameComponent t (GameBoneInit (BoneInit ( 1460, 2150 ) 150 9)) Bone.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 46 * 32, 50 * 32 + 20 ) HorDown 2 True 10)) Spike.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 46 * 32, 50 * 32 - 20 ) HorUp 2 True 11)) Spike.gameComponent
-        , initGameComponent t (GameSpikeInit (SpikeInit ( 32 * 50, 2190 ) HorUp 25 True 12)) Spike.gameComponent
+        , initGameComponent t (GameSpikeInit (SpikeInit ( 32 * 50, 2190 ) HorUp 30 True 12)) Spike.gameComponent
         , initGameComponent t (GameGoombaEmitterInit (GoombaEmitterInit ( 32 * 94, 53 * 32 ) 360 ( -50, 0 ) 13)) GoombaEmitter.gameComponent
-        , initGameComponent t (GameSpikeInit (SpikeInit ( 32 * 80, 2195 ) HorUp 2 True 14)) Spike.gameComponent
+
+        -- , initGameComponent t (GameSpikeInit (SpikeInit ( 32 * 80, 2195 ) HorUp 2 True 14)) Spike.gameComponent
         , initGameComponent t (GameSavePointInit (SavePointInit ( 1924, 1320 ) 15)) Save.gameComponent
         , initGameComponent t (GameExitInit (ExitInit ( -20, 1820 ) "Level1" (CustomPlayerPosition ( 3536, 1384 )) 0 16)) Exit.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 32 * 5 + 5, 2000 ) VerRight 2 True 17)) Spike.gameComponent
@@ -107,14 +108,15 @@ initActors t =
         , initGameComponent t (GameMonsterInit (MonsterInit ( 3220, 1920 ) ( 400, 300 ) "lion" 21 20)) Monster.gameComponent
         , initGameComponent t (GameCutSceneInit (CutSceneInit ( 3220, 1920 ) ( 400, 300 ) 21 liontalkings False)) CutScene.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 94 * 32, 35 * 32 ) ( 0, 0 ) 22)) Goomba.gameComponent
-        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 36 * 32 + 20, 62 * 32 - 60 ) 300 False 23)) Energy.gameComponent
+        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 36 * 32 + 20, 62 * 32 - 60 ) 300 True 23)) Energy.gameComponent
+        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 2670, 1060 ) 1000 True 24)) Energy.gameComponent
         ]
 
 
 liontalkings : List ( String, String )
 liontalkings =
-    [ ( "p_profile", "dd" )
-    , ( "lion", "sda" )
+    [ ( "p_profile", "Hi, who are you?" )
+    , ( "lion", "I am the lion." )
     ]
 
 

@@ -82,7 +82,7 @@ initActors : Int -> List String -> Array GameComponent
 initActors t cs =
     Array.fromList
         ([ initGameComponent t (GameExitInit (ExitInit ( 10, 1100 ) "Level0" (CustomPlayerPosition ( 3446, 1800 )) 1 6)) Exit.gameComponent
-         , initGameComponent t (GameCutSceneInit (CutSceneInit ( 475, 1340 ) ( 100, 100 ) 5 dialoguesMaster True)) CutScene.gameComponent
+         , initGameComponent t (GameCutSceneInit (CutSceneInit ( 475, 1680 ) ( 100, 100 ) 5 dialoguesMaster True)) CutScene.gameComponent
          , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2200 ) HorUp 1000 False 3)) Spike.gameComponent
          , initGameComponent t (GameSpikeInit (SpikeInit ( 1440, 1900 ) HorUp 1 True 4)) Spike.gameComponent
          , initGameComponent t (GameExitInit (ExitInit ( 3600, 1300 ) "Level2" DefaultPlayerPosition 0 7)) Exit.gameComponent
@@ -102,14 +102,18 @@ initActors t cs =
 dialoguesMaster : List ( String, String )
 dialoguesMaster =
     [ ( "p_profile", "Hello, master." )
-    , ( "master", "Hi" )
+    , ( "master", "I still worry about you." )
+    , ( "master", "There is a monster ahead of you." )
+    , ( "master", "You have to hit it by your body to reweave it." )
+    , ( "p_profile", "OK." )
     ]
 
 
 dialoguesBird : List ( String, String )
 dialoguesBird =
-    [ ( "p_profile", "Hello, master." )
-    , ( "bird", "Hi" )
+    [ ( "p_profile", "Wow, who are you?" )
+    , ( "bird", "Hi, I am the bird" )
+    , ( "p_profile", "Beautiful Bird." )
     ]
 
 
@@ -158,7 +162,7 @@ allChartlets =
       , FrontSolids
       )
     , ( \gd ggd ->
-            renderSprite gd [] (getPositionUnderCamera ( 475, 1370 ) ggd) ( 100, 0 ) "master"
+            renderSprite gd [] (getPositionUnderCamera ( 475, 1680 ) ggd) ( 100, 0 ) "master"
       , BehindActors
       )
     , ( \gd ggd ->
