@@ -13,9 +13,10 @@ module Lib.CoreEngine.BackgroundLayer.Model exposing
 
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (group)
+import Lib.Audio.Base exposing (AudioOption(..))
 import Lib.CoreEngine.BackgroundLayer.Common exposing (Model)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
-import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget)
+import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget(..))
 
 
 {-| initModel
@@ -33,5 +34,9 @@ initModel _ lm _ =
 {-| updateModel
 -}
 updateModel : Msg -> GlobalData -> LayerMsg -> ( Model, Int ) -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
-updateModel _ gd _ ( model, _ ) ggd =
-    ( ( model, ggd, [] ), gd )
+updateModel _ gd _ ( model, t ) ggd =
+    if t == 50 then
+        ( ( model, ggd, [ ( LayerParentScene, LayerSoundMsg "bgm" "./assets/audio/music.mp3" ALoop ) ] ), gd )
+
+    else
+        ( ( model, ggd, [] ), gd )
