@@ -46,6 +46,7 @@ buildPillar ( x, y ) n ss =
         (\i sc ->
             sc
                 |> buildrect ( x, y + 5 * i ) ( 1, 1 ) 21
+                |> buildrect ( x, y + 5 * i + 1 ) ( 1, 4 ) 2
         )
         ss
         (List.range 0 (n - 1))

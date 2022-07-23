@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Bird.Model exposing
+module Lib.CoreEngine.GameComponents.Monster.Model exposing
     ( initData
     , simplecheckBox
     , initModel
@@ -22,7 +22,7 @@ import Dict
 import Lib.Component.Base exposing (DefinedTypes(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
-import Lib.DefinedTypes.Parser exposing (dgetint)
+import Lib.DefinedTypes.Parser exposing (dgetString, dgetint)
 
 
 {-| initData
@@ -34,8 +34,8 @@ initData =
     , velocity = ( 0, 0 )
     , mass = 0
     , acceleration = ( 0, 0 )
-    , simplecheck = simplecheckBox
-    , collisionbox = [ simplecheckBox ]
+    , simplecheck = simplecheckBox ( 0, 0 )
+    , collisionbox = [ simplecheckBox ( 0, 0 ) ]
     , extra = Dict.empty
     , uid = 999
     }
@@ -43,13 +43,13 @@ initData =
 
 {-| simplecheckBox
 -}
-simplecheckBox : Box
-simplecheckBox =
+simplecheckBox : ( Int, Int ) -> Box
+simplecheckBox ( w, h ) =
     { name = "sp"
     , offsetX = 0
     , offsetY = 0
-    , width = 174
-    , height = 138
+    , width = w
+    , height = h
     }
 
 
@@ -58,17 +58,19 @@ simplecheckBox =
 initModel : Int -> GameComponentTMsg -> Data
 initModel _ gct =
     case gct of
-        GameBirdInit info ->
+        GameMonsterInit info ->
             { status = Alive
             , position = info.initPosition
             , velocity = ( 0, 0 )
             , mass = 0
             , acceleration = ( 0, 0 )
-            , simplecheck = simplecheckBox
-            , collisionbox = [ simplecheckBox ]
+            , simplecheck = simplecheckBox info.size
+            , collisionbox = [ simplecheckBox info.size ]
             , extra =
                 Dict.fromList
-                    [ ( "trigger", CDInt info.triggeruid ) ]
+                    [ ( "trigger", CDInt info.triggeruid )
+                    , ( "pic", CDString info.pic )
+                    ]
             , uid = info.uid
             }
 
@@ -80,6 +82,10 @@ initModel _ gct =
 -}
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
 updateModel _ gct ggd _ ( d, t ) =
+    let
+        picname =
+            dgetString d.extra "pic"
+    in
     case gct of
         GameInterCollisionMsg "player" _ _ ->
             case d.status of
@@ -93,7 +99,7 @@ updateModel _ gct ggd _ ( d, t ) =
                     in
                     ( { d | status = Dead t }
                     , [ GameActorUidMsg uid (GameStringMsg "start")
-                      , GameParentMsg (GameLStringMsg [ "collectmonster", "bird" ])
+                      , GameParentMsg (GameLStringMsg [ "collectmonster", picname ])
                       ]
                     , ggd
                     )

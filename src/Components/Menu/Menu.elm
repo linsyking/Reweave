@@ -284,8 +284,8 @@ viewMenu ( model, t ) globalData =
                   -- ],
                   renderSprite globalData [] ( 400, 300 ) ( 1120, 500 ) "scroll"
                 , renderSprite globalData [] ( 1150, 400 ) ( 200, 200 ) "p_profile"
-                , renderText globalData 30 ("Energy: " ++ String.fromInt (dgetint data "energy")) "sans-serif" ( 1120, 625 )
-                , renderText globalData 30 ("Map Name: " ++ dgetString data "currentScene") "sans-serif" ( 1120, 677 )
+                , renderText globalData 30 ("Energy: " ++ String.fromInt (dgetint data "energy") ++ "/2000") "sans-serif" ( 1160, 625 )
+                , renderText globalData 30 ("Map Name: " ++ dgetString data "currentScene") "sans-serif" ( 1160, 677 )
                 ]
                 (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
             )

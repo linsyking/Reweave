@@ -24,7 +24,6 @@ import Lib.Audio.Base exposing (AudioOption)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.FrontgroundLayer.Base exposing (CTInfo)
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent)
-import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInitPosition)
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth)
 import Lib.Scene.Base exposing (EngineT)
 

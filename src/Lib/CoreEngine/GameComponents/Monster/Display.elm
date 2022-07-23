@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Bird.Display exposing (view)
+module Lib.CoreEngine.GameComponents.Monster.Display exposing (view)
 
 {-| This is the doc for this module
 
@@ -12,6 +12,7 @@ import Canvas.Settings.Advanced exposing (alpha)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Data, LifeStatus(..))
+import Lib.DefinedTypes.Parser exposing (dgetString)
 import Lib.Render.Render exposing (renderSprite)
 
 
@@ -19,12 +20,16 @@ import Lib.Render.Render exposing (renderSprite)
 -}
 view : ( Data, Int ) -> GameGlobalData -> GlobalData -> List ( Renderable, Int )
 view ( d, t ) ggd gd =
+    let
+        pic =
+            dgetString d.extra "pic"
+    in
     [ ( group []
             [ renderSprite
                 gd
                 [ case d.status of
                     Dead ct ->
-                        if t - ct >= 100 || t < 0 then
+                        if t - ct >= 100 || t <= 0 then
                             alpha 0
 
                         else
@@ -35,7 +40,7 @@ view ( d, t ) ggd gd =
                 ]
                 (getPositionUnderCamera d.position ggd)
                 ( d.simplecheck.width, d.simplecheck.height )
-                "bird"
+                pic
             ]
       , 0
       )

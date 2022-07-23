@@ -101,12 +101,12 @@ dealComponentsMsg rmsg model gd ggd =
                 Nothing ->
                     ( ( model, ggd, [ ( LayerParentScene, LayerExitMsg model.exitinfo ggd.currentScene 0 ) ] ), gd )
 
-                Just p ->
+                Just ( p, e ) ->
                     let
                         oldex =
                             model.exitinfo
                     in
-                    ( ( model, ggd, [ ( LayerParentScene, LayerExitMsg { oldex | playerPosition = CustomPlayerPosition p } ggd.currentScene 0 ) ] ), gd )
+                    ( ( model, ggd, [ ( LayerParentScene, LayerExitMsg { oldex | playerPosition = CustomPlayerPosition p, energy = e } ggd.currentScene 0 ) ] ), gd )
 
         ComponentStringMsg "stopGameInput" ->
             ( ( model, ggd, [ ( LayerName "Game", LayerStringMsg "stopinput" ) ] ), gd )
@@ -187,7 +187,7 @@ updateModel msg gd lm ( model, t ) ggd =
             )
 
         LayerInfoPositionMsg "save" p ->
-            ( ( { model | savePoint = Just p }, ggd, [] ), gd )
+            ( ( { model | savePoint = Just ( p, ggd.energy ) }, ggd, [] ), gd )
 
         _ ->
             case msg of

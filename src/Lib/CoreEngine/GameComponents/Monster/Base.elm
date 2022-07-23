@@ -1,4 +1,4 @@
-module Lib.CoreEngine.GameComponents.Bird.Base exposing (BirdInit)
+module Lib.CoreEngine.GameComponents.Monster.Base exposing (MonsterInit)
 
 {-| This is the doc for this module
 
@@ -9,8 +9,10 @@ module Lib.CoreEngine.GameComponents.Bird.Base exposing (BirdInit)
 
 {-| BirdInit
 -}
-type alias BirdInit =
+type alias MonsterInit =
     { initPosition : ( Int, Int )
+    , size : ( Int, Int )
+    , pic : String
     , triggeruid : Int
     , uid : Int
     }

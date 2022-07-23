@@ -59,13 +59,13 @@ initFrontGroundComponents t sp =
             Array.fromList
                 [ Hints.initComponent t (ComponentLStringMsg [ "50", "750", "700", "30", "Use A,D to move to left and right, Use C or Space to jump", "Use Esc to call the menu" ])
                 , Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "Beiming  北溟" ])
-                , Hints.initComponent t (ComponentLStringMsg [ "40", "1560", "100", "35", "Near A Temple 寺庙旁" ])
+                , Hints.initComponent t (ComponentLStringMsg [ "40", "1570", "100", "35", "Near A Temple 寺庙旁" ])
                 ]
 
         _ ->
             Array.fromList
                 [ Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "Beiming  北溟" ])
-                , Hints.initComponent t (ComponentLStringMsg [ "40", "1560", "100", "35", "Near A Temple  寺庙旁" ])
+                , Hints.initComponent t (ComponentLStringMsg [ "40", "1570", "100", "35", "Near A Temple  寺庙旁" ])
                 ]
 
 
@@ -89,14 +89,14 @@ initActors t sp =
     case sp of
         0 ->
             Array.fromList
-                [ initGameComponent t (GameExitInit (ExitInit ( 3700, 1910 ) "Level1" DefaultPlayerPosition 0 2)) Exit.gameComponent
+                [ initGameComponent t (GameExitInit (ExitInit ( 3650, 1750 ) "Level1" DefaultPlayerPosition 0 2)) Exit.gameComponent
                 , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2220 ) HorUp 100 False 3)) Spike.gameComponent
                 , initGameComponent t (GameCutSceneInit (CutSceneInit ( 2440, 1820 ) ( 100, 100 ) 88 dialogues True)) CutScene.gameComponent
                 ]
 
         1 ->
             Array.fromList
-                [ initGameComponent t (GameExitInit (ExitInit ( 3700, 1910 ) "Level1" DefaultPlayerPosition 0 2)) Exit.gameComponent
+                [ initGameComponent t (GameExitInit (ExitInit ( 3650, 1750 ) "Level1" DefaultPlayerPosition 0 2)) Exit.gameComponent
                 , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2220 ) HorUp 100 False 3)) Spike.gameComponent
                 ]
 

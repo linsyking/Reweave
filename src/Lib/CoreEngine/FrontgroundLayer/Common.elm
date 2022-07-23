@@ -22,5 +22,5 @@ type alias Model =
     , fpsrepo : List Int
     , ispaused : Bool
     , exitinfo : EngineT
-    , savePoint : Maybe ( Int, Int )
+    , savePoint : Maybe ( ( Int, Int ), Float )
     }

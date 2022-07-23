@@ -108,7 +108,7 @@ charaSprites =
     , ( "p_m4", getResourcePath "img/p_m4.png" )
     , ( "p_m5", getResourcePath "img/p_m5.png" )
     , ( "p_m6", getResourcePath "img/p_m6.png" )
-    , ( "p_profile", getResourcePath "img/profile.png" )
+    , ( "p_profile", getResourcePath "img/p_stand.png" )
     , ( "master", getResourcePath "img/master.png" )
     ]
 

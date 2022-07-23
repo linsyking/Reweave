@@ -139,7 +139,7 @@ renderSingleBlock tp p ggd gd =
 
         21 ->
             -- pillar
-            renderSprite gd [ transform [ rotate (degrees 90) ] ] ( cpx, cpy - 10 ) ( brickSize * 6, 0 ) "zy/stick"
+            renderSprite gd [ transform [ rotate (degrees 90) ] ] ( cpx + 20, cpy - 10 ) ( brickSize * 6, 0 ) "zy/stick"
 
         _ ->
             group [] []

@@ -152,7 +152,7 @@ viewMap ( model, _ ) globalData =
                     -- mapHeight =
                     --     dgetfloat data "MapHeight"
                 in
-                [ renderSprite globalData [] ( 550, 480 ) ( 500, 250 ) map ]
+                [ renderSprite globalData [] ( 500, 540 ) ( 650, 180 ) map ]
                 -- , shapes [ fill Color.red ]
                 --     (case ( floor mapWidth, floor mapHeight ) of
                 --         ( 0, _ ) ->

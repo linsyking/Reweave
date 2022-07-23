@@ -22,7 +22,7 @@ import Dict
 import Lib.Component.Base exposing (DefinedTypes(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
-import Lib.DefinedTypes.Parser exposing (dgetbool, dsetbool)
+import Lib.DefinedTypes.Parser exposing (dsetbool)
 
 
 {-| initData
@@ -81,20 +81,12 @@ initModel _ gct =
 -}
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
 updateModel _ gct ggd _ ( d, t ) =
-    let
-        alive =
-            dgetbool d.extra "Alive"
-    in
     case gct of
         GameInterCollisionMsg "player" _ _ ->
-            if not alive then
-                ( d, [], ggd )
-
-            else
-                ( { d | extra = dsetbool "Alive" False d.extra }
-                , [ GameParentMsg (GameInfoPositionMsg "save" d.position) ]
-                , ggd
-                )
+            ( { d | extra = dsetbool "Alive" False d.extra }
+            , [ GameParentMsg (GameInfoPositionMsg "save" d.position) ]
+            , ggd
+            )
 
         _ ->
             ( d, [], ggd )
