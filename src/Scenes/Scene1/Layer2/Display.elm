@@ -1,4 +1,10 @@
-module Scenes.Scene1.Layer2.Display exposing (..)
+module Scenes.Scene1.Layer2.Display exposing (dview)
+
+{-| This is the doc for this module
+
+@docs dview
+
+-}
 
 import Array
 import Base exposing (..)
@@ -11,6 +17,8 @@ import Scenes.Scene1.Layer2.Common exposing (..)
 import Scenes.Scene1.LayerBase exposing (CommonData)
 
 
+{-| dview
+-}
 dview : SModel -> CommonData -> GlobalData -> Renderable
 dview ( model, t ) _ gd =
     genView gd t (Array.fromList model.components)

@@ -1,4 +1,21 @@
-module Lib.CoreEngine.Physics.CollisionShape exposing (..)
+module Lib.CoreEngine.Physics.CollisionShape exposing
+    ( CShape(..)
+    , judgeYSame
+    , judgeXSame
+    , judgeShape
+    )
+
+{-| This is the doc for this module
+
+@docs CShape
+
+@docs judgeYSame
+
+@docs judgeXSame
+
+@docs judgeShape
+
+-}
 
 import Lib.CoreEngine.Base exposing (brickSize)
 import Lib.CoreEngine.GameComponent.Base exposing (Data)
@@ -9,6 +26,8 @@ import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos)
 -- Judge the collision shape
 
 
+{-| CShape
+-}
 type CShape
     = CTOP
     | CBOTTOM
@@ -26,6 +45,8 @@ type CShape
     | CLCORNERBOOST
 
 
+{-| judgeYSame
+-}
 judgeYSame : List ( Int, Int ) -> Bool
 judgeYSame ls =
     let
@@ -35,6 +56,8 @@ judgeYSame ls =
     List.all (\( _, y ) -> y == h) ls
 
 
+{-| judgeXSame
+-}
 judgeXSame : List ( Int, Int ) -> Bool
 judgeXSame ls =
     let
@@ -44,6 +67,8 @@ judgeXSame ls =
     List.all (\( x, _ ) -> x == h) ls
 
 
+{-| judgeShape
+-}
 judgeShape : Data -> List ( Int, Int ) -> CShape
 judgeShape d ls =
     let
@@ -83,19 +108,19 @@ judgeShape d ls =
                     CLEFT
 
             else if y1 > bly2 then
-                if x1 >= blx2 - 12 then
+                if x1 >= blx2 - 5 then
                     CBOOSTTOPRIGHT
 
-                else if x2 <= blx1 + 12 then
+                else if x2 <= blx1 + 5 then
                     CBOOSTTOPLEFT
 
                 else
                     CTOP
 
-            else if x1 >= blx2 - 12 then
+            else if x1 >= blx2 - 5 then
                 CBOOSTBOTTOMRIGHT
 
-            else if x2 <= blx1 + 12 then
+            else if x2 <= blx1 + 5 then
                 CBOOSTBOTTOMLEFT
 
             else

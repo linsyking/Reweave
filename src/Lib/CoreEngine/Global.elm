@@ -1,4 +1,18 @@
-module Lib.CoreEngine.Global exposing (..)
+module Lib.CoreEngine.Global exposing
+    ( sdata
+    , dtToT
+    , toCT
+    )
+
+{-| This is the doc for this module
+
+@docs sdata
+
+@docs dtToT
+
+@docs toCT
+
+-}
 
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
@@ -7,11 +21,15 @@ import Lib.Scene.Base exposing (Scene, SceneMsg, SceneOutputMsg)
 import Scenes.SceneSettings exposing (SceneCT, SceneDataTypes(..))
 
 
+{-| sdata
+-}
 sdata : Data -> SceneDataTypes
 sdata d =
     CoreEngineDataT d
 
 
+{-| dtToT
+-}
 dtToT : SceneDataTypes -> Data
 dtToT dt =
     case dt of
@@ -26,6 +44,8 @@ dtToT dt =
 --- Only modify variables above
 
 
+{-| toCT
+-}
 toCT : Scene Data -> SceneCT
 toCT sd =
     let

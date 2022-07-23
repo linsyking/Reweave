@@ -1,4 +1,18 @@
-module Scenes.Scene1.Global exposing (..)
+module Scenes.Scene1.Global exposing
+    ( sdata
+    , dtToT
+    , toCT
+    )
+
+{-| This is the doc for this module
+
+@docs sdata
+
+@docs dtToT
+
+@docs toCT
+
+-}
 
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
@@ -12,11 +26,15 @@ import Scenes.SceneSettings exposing (..)
 --- In this file, we have to convert our own designed scene to SceneCT
 
 
+{-| sdata
+-}
 sdata : Data -> SceneDataTypes
 sdata d =
     S1DataT d
 
 
+{-| dtToT
+-}
 dtToT : SceneDataTypes -> Data
 dtToT dt =
     case dt of
@@ -31,6 +49,8 @@ dtToT dt =
 --- Only modify variables above
 
 
+{-| toCT
+-}
 toCT : Scene Data -> SceneCT
 toCT sd =
     let

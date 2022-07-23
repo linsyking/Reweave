@@ -1,4 +1,10 @@
-module Scenes.Level4.Background exposing (..)
+module Scenes.Level4.Background exposing (background)
+
+{-| This is the doc for this module
+
+@docs background
+
+-}
 
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable)
@@ -7,6 +13,8 @@ import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.Render.Render exposing (renderSprite)
 
 
+{-| background
+-}
 background : Int -> GameGlobalData -> GlobalData -> Renderable
 background _ _ gd =
     renderSprite gd [ alpha 0.3 ] ( 0, 0 ) ( 1920, 1080 ) "background"

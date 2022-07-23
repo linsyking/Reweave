@@ -1,4 +1,15 @@
-module Scenes.Scene1.Layer2.Models exposing (..)
+module Scenes.Scene1.Layer2.Models exposing
+    ( initModel
+    , updateModel
+    )
+
+{-| This is the doc for this module
+
+@docs initModel
+
+@docs updateModel
+
+-}
 
 --- Init a model, and update it
 
@@ -15,12 +26,16 @@ import Scenes.Scene1.Layer2.Common exposing (..)
 import Scenes.Scene1.LayerBase exposing (CommonData)
 
 
+{-| initModel
+-}
 initModel : Int -> LayerMsg -> CommonData -> ModelX
 initModel _ _ _ =
     { components = [ ComMenuE.initComponent 0 NullComponentMsg ]
     }
 
 
+{-| updateModel
+-}
 updateModel : Msg -> GlobalData -> LayerMsg -> SModel -> CommonData -> ( ( ModelX, CommonData, List ( LayerTarget, LayerMsg ) ), GlobalData )
 updateModel msg gd _ ( model, t ) cd =
     case msg of

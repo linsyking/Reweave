@@ -1,9 +1,22 @@
-module Components.Menu.Status.Export exposing (..)
+module Components.Menu.Status.Export exposing
+    ( component
+    , initComponent
+    )
+
+{-| This is the doc for this module
+
+@docs component
+
+@docs initComponent
+
+-}
 
 import Components.Menu.Status.Status exposing (initStatus, updateStatus, viewStatus)
 import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 
 
+{-| component
+-}
 component : Component
 component =
     { name = "Status"
@@ -15,6 +28,8 @@ component =
     }
 
 
+{-| initComponent
+-}
 initComponent : Int -> ComponentTMsg -> Component
 initComponent t ct =
     { component | data = component.init t ct }

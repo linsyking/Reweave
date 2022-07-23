@@ -1,11 +1,25 @@
-module Components.Menu.Settings.Settings exposing (..)
+module Components.Menu.Settings.Settings exposing
+    ( initSettings
+    , updateSettings
+    , viewSettings
+    )
+
+{-| This is the doc for this module
+
+@docs initSettings
+
+@docs updateSettings
+
+@docs viewSettings
+
+-}
 
 import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (..)
 import Canvas.Settings exposing (..)
 import Canvas.Settings.Advanced exposing (..)
-import Color
 import Components.Menu.Settings.Audio.Export as MenuSetAudioE
+import Components.Menu.Settings.Play.Export as MenuSetPlayE
 import Constants exposing (..)
 import Dict
 import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..))
@@ -14,22 +28,28 @@ import Lib.DefinedTypes.Parser exposing (dgetLComponent, dgetbool, dgetint, dset
 import Lib.Render.Render exposing (..)
 
 
+{-| initSettings
+-}
 initSettings : Int -> ComponentTMsg -> Data
 initSettings _ _ =
     Dict.fromList
-        [ ( "show", CDBool False )
-        , ( "posX", CDInt 500 )
-        , ( "posY", CDInt 400 )
-        , ( "radius", CDInt 30 )
+        [ ( "show", CDBool True )
+        , ( "posX", CDInt 580 )
+        , ( "posY", CDInt 380 )
+        , ( "radius", CDInt 60 )
         , ( "Child"
           , CDLComponent
                 [ ( "AudioDown", MenuSetAudioE.initComponent 0 (ComponentStringMsg "AudioDown") )
                 , ( "AudioUp", MenuSetAudioE.initComponent 0 (ComponentStringMsg "AudioUp") )
+                , ( "Continue", MenuSetPlayE.initComponent 0 (ComponentStringMsg "Continue") )
+                , ( "Restart", MenuSetPlayE.initComponent 0 (ComponentStringMsg "Restart") )
                 ]
           )
         ]
 
 
+{-| updateSettings
+-}
 updateSettings : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateSettings mainMsg comMsg globalData ( model, t ) =
     let
@@ -89,16 +109,30 @@ updateSettings mainMsg comMsg globalData ( model, t ) =
     in
     case mainMsg of
         MouseDown 0 ( x, y ) ->
-            if judgeMouse globalData ( x, y ) ( posX - radius, posY - radius ) ( 2 * radius, 2 * radius ) then
+            if judgeMouse globalData ( x, y ) ( posX, posY ) ( radius, radius ) then
+                let
+                    ( newChildComponentsList, _, _ ) =
+                        List.foldl
+                            (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
+                                let
+                                    ( tmpCom, tmpComMsg, gD ) =
+                                        comModel.update UnknownMsg (ComponentStringMsg "Display:SHOW") tmpGData ( comModel.data, t )
+                                in
+                                ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
+                            )
+                            ( [], [], globalData )
+                            tmpChildComponentsList
+                in
                 ( model
-                    |> dsetbool "show" reverseShowStatus
-                    |> dsetLComponent "Child" tmpChildComponentsList
-                , [ if reverseShowStatus == True then
+                    |> dsetbool "show" True
+                    |> dsetLComponent "Child" newChildComponentsList
+                , List.append [ newComMsg ]
+                    [ if reverseShowStatus == True then
                         ComponentLSStringMsg "OnShow" [ "Settings" ]
 
-                    else
+                      else
                         ComponentLSStringMsg "OnHide" [ "Settings" ]
-                  ]
+                    ]
                 , newGlobalData
                 )
 
@@ -128,10 +162,34 @@ updateSettings mainMsg comMsg globalData ( model, t ) =
                         _ ->
                             ( model |> dsetLComponent "Child" tmpChildComponentsList, [ newComMsg ], newGlobalData )
 
+                ComponentStringDictMsg _ _ ->
+                    let
+                        ( newChildComponentsList, _, _ ) =
+                            List.foldl
+                                (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
+                                    let
+                                        ( tmpCom, tmpComMsg, gD ) =
+                                            comModel.update UnknownMsg (ComponentStringMsg "Display:SHOW") tmpGData ( comModel.data, t )
+                                    in
+                                    ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
+                                )
+                                ( [], [], globalData )
+                                (dgetLComponent model "Child")
+                    in
+                    ( model
+                        |> dsetbool "show" True
+                        |> dsetLComponent "Child"
+                            newChildComponentsList
+                    , []
+                    , globalData
+                    )
+
                 _ ->
                     ( model |> dsetLComponent "Child" tmpChildComponentsList, [ newComMsg ], newGlobalData )
 
 
+{-| viewSettings
+-}
 viewSettings : ( Data, Int ) -> GlobalData -> Renderable
 viewSettings ( model, _ ) globalData =
     let
@@ -152,11 +210,19 @@ viewSettings ( model, _ ) globalData =
     in
     group []
         (List.append
-            [ shapes [ stroke Color.red ] [ circle (posToReal globalData ( posX, posY )) (widthToReal globalData radius) ]
-            , renderText globalData 50 "S" "sans-serif" ( posX - 20, posY - 30 )
+            [ renderSprite globalData
+                [ if showStatus then
+                    alpha 1
+
+                  else
+                    alpha 0.3
+                ]
+                ( posX, posY )
+                ( radius, radius )
+                "ot/setting"
             ]
             (if showStatus then
-                List.append [ renderText globalData 50 "Settings" "sans-serif" ( 500, 500 ) ]
+                List.append [ renderText globalData 30 ("Current Volume: " ++ (String.fromInt (floor (globalData.audioVolume * 100)) ++ "/100")) "sans-serif" ( 550, 677 ) ]
                     (List.map (\( _, comModel ) -> comModel.view ( comModel.data, 0 ) globalData) childComponentsList)
 
              else

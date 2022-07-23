@@ -1,9 +1,17 @@
-module Lib.CoreEngine.Physics.Velocity exposing (..)
+module Lib.CoreEngine.Physics.Velocity exposing (changeCVel)
+
+{-| This is the doc for this module
+
+@docs changeCVel
+
+-}
 
 import Lib.CoreEngine.GameComponent.Base exposing (Data)
 import Math.Vector2 exposing (vec2)
 
 
+{-| changeCVel
+-}
 changeCVel : Data -> ( Float, Float ) -> Float -> Data
 changeCVel c ( px, py ) k =
     let

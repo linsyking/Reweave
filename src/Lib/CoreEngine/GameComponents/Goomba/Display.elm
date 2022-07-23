@@ -1,4 +1,10 @@
-module Lib.CoreEngine.GameComponents.Goomba.Display exposing (..)
+module Lib.CoreEngine.GameComponents.Goomba.Display exposing (view)
+
+{-| This is the doc for this module
+
+@docs view
+
+-}
 
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable, group)
@@ -9,6 +15,8 @@ import Lib.CoreEngine.GameComponent.Base exposing (Data, LifeStatus(..))
 import Lib.Render.Render exposing (renderSpriteWithRev)
 
 
+{-| view
+-}
 view : ( Data, Int ) -> GameGlobalData -> GlobalData -> List ( Renderable, Int )
 view ( d, t ) ggd gd =
     let

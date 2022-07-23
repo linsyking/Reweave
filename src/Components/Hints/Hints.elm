@@ -1,4 +1,21 @@
-module Components.Hints.Hints exposing (..)
+module Components.Hints.Hints exposing
+    ( initHints
+    , updateHints
+    , viewHints
+    , genalpha
+    )
+
+{-| This is the doc for this module
+
+@docs initHints
+
+@docs updateHints
+
+@docs viewHints
+
+@docs genalpha
+
+-}
 
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable, group)
@@ -9,24 +26,34 @@ import Lib.DefinedTypes.Parser exposing (dgetLString, dgetint)
 import Lib.Render.Render exposing (renderText)
 
 
+{-| initHints
+-}
 initHints : Int -> ComponentTMsg -> Data
 initHints t ct =
     case ct of
-        ComponentLStringMsg xs ->
+        ComponentLStringMsg (start :: px :: py :: fsize :: xs) ->
             Dict.fromList
                 [ ( "hints", CDLString xs )
                 , ( "starttime", CDInt t )
+                , ( "posx", CDInt (Maybe.withDefault 0 (String.toInt px)) )
+                , ( "posy", CDInt (Maybe.withDefault 0 (String.toInt py)) )
+                , ( "size", CDInt (Maybe.withDefault 0 (String.toInt fsize)) )
+                , ( "st", CDInt (Maybe.withDefault 0 (String.toInt start)) )
                 ]
 
         _ ->
             Dict.empty
 
 
+{-| updateHints
+-}
 updateHints : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateHints _ _ gd ( d, _ ) =
     ( d, [], gd )
 
 
+{-| viewHints
+-}
 viewHints : ( Data, Int ) -> GlobalData -> Renderable
 viewHints ( d, t ) gd =
     let
@@ -36,8 +63,14 @@ viewHints ( d, t ) gd =
         st =
             dgetint d "starttime"
 
+        pp =
+            ( dgetint d "posx", dgetint d "posy" )
+
+        fs =
+            dgetint d "size"
+
         startshow =
-            150
+            dgetint d "st"
 
         elapsed =
             t - st
@@ -58,9 +91,11 @@ viewHints ( d, t ) gd =
         group [] []
 
     else
-        group [ alpha (genalpha stage) ] [ renderText gd 30 curh "Times New Roman" ( 750, 700 ) ]
+        group [ alpha (genalpha stage) ] [ renderText gd fs curh "Times New Roman" pp ]
 
 
+{-| genalpha
+-}
 genalpha : Int -> Float
 genalpha k =
     if k < 0 then

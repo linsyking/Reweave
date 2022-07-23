@@ -1,4 +1,18 @@
-module Components.Dialog.Text.Text exposing (..)
+module Components.Dialog.Text.Text exposing
+    ( initText
+    , updateText
+    , viewText
+    )
+
+{-| This is the doc for this module
+
+@docs initText
+
+@docs updateText
+
+@docs viewText
+
+-}
 
 import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (..)
@@ -18,6 +32,8 @@ import Lib.Render.Render exposing (renderSprite)
 -- OnShow : OnLoadChild -> (OnShowChild ->) OnDeChild (OnDeconstructChild)
 
 
+{-| initText
+-}
 initText : Int -> ComponentTMsg -> Data
 initText _ comMsg =
     case comMsg of
@@ -37,6 +53,8 @@ initText _ comMsg =
             Dict.empty
 
 
+{-| updateText
+-}
 updateText : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateText mainMsg comMsg globalData ( model, t ) =
     case mainMsg of
@@ -52,7 +70,7 @@ updateText mainMsg comMsg globalData ( model, t ) =
                     dgetint model "_wholeTextLength"
 
                 currentLength =
-                    dgetint model "_currentLength" + floor (heightToReal globalData 40)
+                    dgetint model "_currentLength" + 20
 
                 childComponentsList =
                     dgetLComponent model "_Child"
@@ -182,6 +200,8 @@ updateText mainMsg comMsg globalData ( model, t ) =
                     ( model, [ ComponentLSStringMsg "StatusReport" [ status ] ], globalData )
 
 
+{-| viewText
+-}
 viewText : ( Data, Int ) -> GlobalData -> Renderable
 viewText ( model, t ) globalData =
     let
@@ -194,6 +214,6 @@ viewText ( model, t ) globalData =
         -- dasads = Debug.log "Dsaad " dpd
     in
     group []
-        (List.append [ renderSprite globalData [] ( 250, 150 ) ( 130, 130 ) dpd ]
+        (List.append [ renderSprite globalData [] ( 260, 150 ) ( 130, 130 ) dpd ]
             (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
         )

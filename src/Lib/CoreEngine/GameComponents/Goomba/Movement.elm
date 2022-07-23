@@ -1,4 +1,15 @@
-module Lib.CoreEngine.GameComponents.Goomba.Movement exposing (..)
+module Lib.CoreEngine.GameComponents.Goomba.Movement exposing
+    ( checkCollision
+    , solidCollisionMove
+    )
+
+{-| This is the doc for this module
+
+@docs checkCollision
+
+@docs solidCollisionMove
+
+-}
 
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Data)
@@ -8,6 +19,8 @@ import Lib.CoreEngine.Physics.SolidCollision exposing (canMove, getNearBySolid, 
 import Math.Vector2 exposing (vec2)
 
 
+{-| checkCollision
+-}
 checkCollision : GameGlobalData -> Data -> Data
 checkCollision ggd d =
     let
@@ -35,6 +48,8 @@ checkCollision ggd d =
     { d | velocity = newnewv }
 
 
+{-| solidCollisionMove
+-}
 solidCollisionMove : List ( Int, Int ) -> GameGlobalData -> Data -> Data
 solidCollisionMove ls ggd d =
     let

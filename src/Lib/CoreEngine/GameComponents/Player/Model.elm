@@ -1,4 +1,27 @@
-module Lib.CoreEngine.GameComponents.Player.Model exposing (..)
+module Lib.CoreEngine.GameComponents.Player.Model exposing
+    ( initData
+    , initExtraData
+    , collisionBox
+    , initModel
+    , updateModel
+    , reboundPlayer
+    )
+
+{-| This is the doc for this module
+
+@docs initData
+
+@docs initExtraData
+
+@docs collisionBox
+
+@docs initModel
+
+@docs updateModel
+
+@docs reboundPlayer
+
+-}
 
 import Base exposing (GlobalData, Msg(..))
 import Dict exposing (Dict)
@@ -8,7 +31,7 @@ import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (isAlive)
-import Lib.CoreEngine.GameComponents.Player.Base exposing (changebk, changehistory, nullModel)
+import Lib.CoreEngine.GameComponents.Player.Base exposing (SpaceLog(..), changebk, changehistory, fixnotrightdir, nullModel)
 import Lib.CoreEngine.GameComponents.Player.InputFilter exposing (afterMove, preCheck)
 import Lib.CoreEngine.GameComponents.Player.InputHandler exposing (changePlayerVelocity)
 import Lib.CoreEngine.GameComponents.Player.Movement exposing (solidCollisionMove)
@@ -18,6 +41,8 @@ import Lib.CoreEngine.Physics.Velocity exposing (changeCVel)
 import Lib.DefinedTypes.Parser exposing (dgetPlayer, dsetPlayer)
 
 
+{-| initData
+-}
 initData : Data
 initData =
     { status = Alive
@@ -32,6 +57,8 @@ initData =
     }
 
 
+{-| initExtraData
+-}
 initExtraData : Dict String DefinedTypes
 initExtraData =
     Dict.fromList
@@ -39,16 +66,20 @@ initExtraData =
         ]
 
 
+{-| collisionBox
+-}
 collisionBox : Box
 collisionBox =
     { name = "col"
-    , offsetX = 0
-    , offsetY = 0
-    , width = 70
-    , height = 120
+    , offsetX = 5
+    , offsetY = 15
+    , width = 60
+    , height = 105
     }
 
 
+{-| initModel
+-}
 initModel : Int -> GameComponentTMsg -> Data
 initModel _ gcm =
     case gcm of
@@ -68,6 +99,8 @@ initModel _ gcm =
             initData
 
 
+{-| updateModel
+-}
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
 updateModel msg gct ggd gd ( d, t ) =
     let
@@ -120,10 +153,26 @@ updateModel msg gct ggd gd ( d, t ) =
                             aftermoveM =
                                 afterMove afterVelM
 
+                            modfycontrol =
+                                fixnotrightdir aftermoveM.islastright aftermoveM.originKeys
+
+                            afterFixCM =
+                                { aftermoveM | islastright = modfycontrol }
+
                             exportmodel =
-                                dsetPlayer "model" aftermoveM afterAccD.extra
+                                dsetPlayer "model" afterFixCM afterAccD.extra
+
+                            -- Check if is jump
+                            -- isnewjump =
+                            --     judgeFirstJump t afterStateM afterStateD
                         in
-                        ( { afterAccD | extra = exportmodel }, [], ggd )
+                        ( { afterAccD | extra = exportmodel }
+                        , -- , if isnewjump && gd.unlockMaster then
+                          --     [ GameParentMsg (GameStringIntMsg "addenergy" -150) ]
+                          --   else
+                          []
+                        , ggd
+                        )
 
                     else
                         let
@@ -134,8 +183,11 @@ updateModel msg gct ggd gd ( d, t ) =
 
         KeyDown x ->
             let
+                changebked =
+                    changebk x 1 model.originKeys
+
                 newmodel =
-                    { model | originKeys = changebk x 1 model.originKeys, islastright = changehistory model.islastright x }
+                    { model | originKeys = changebked, islastright = changehistory model.islastright x }
 
                 exportmodel =
                     dsetPlayer "model" newmodel d.extra
@@ -186,7 +238,7 @@ updateModel msg gct ggd gd ( d, t ) =
                                     ( _, pvy ) =
                                         d.velocity
                                 in
-                                if pvy < -200 || gbvy > 100 then
+                                if pvy < -150 || gbvy > 100 then
                                     -- Rebound!
                                     ( reboundPlayer gbvy d, [ GameActorUidMsg icd.uid (GameStringMsg "die") ], ggd )
 
@@ -217,6 +269,8 @@ updateModel msg gct ggd gd ( d, t ) =
                     ( d, [], ggd )
 
 
+{-| reboundPlayer
+-}
 reboundPlayer : Float -> Data -> Data
 reboundPlayer rbv d =
     let
@@ -228,10 +282,13 @@ reboundPlayer rbv d =
 
         nv =
             if pvy > -200 then
-                200
+                240
 
             else if pvy > -300 then
                 300
+
+            else if pvy > -360 then
+                -pvy * 1.1
 
             else
                 400

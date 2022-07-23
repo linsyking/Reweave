@@ -1,4 +1,24 @@
-module Lib.CoreEngine.GameComponents.Spike.Model exposing (..)
+module Lib.CoreEngine.GameComponents.Spike.Model exposing
+    ( initData
+    , simplecheckBox
+    , colBox
+    , initModel
+    , updateModel
+    )
+
+{-| This is the doc for this module
+
+@docs initData
+
+@docs simplecheckBox
+
+@docs colBox
+
+@docs initModel
+
+@docs updateModel
+
+-}
 
 import Base exposing (GlobalData, Msg)
 import Dict
@@ -8,6 +28,8 @@ import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgTy
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..))
 
 
+{-| initData
+-}
 initData : Data
 initData =
     { status = Alive
@@ -22,6 +44,8 @@ initData =
     }
 
 
+{-| simplecheckBox
+-}
 simplecheckBox : SpikeDirection -> Int -> Box
 simplecheckBox sd ss =
     case sd of
@@ -58,6 +82,8 @@ simplecheckBox sd ss =
             }
 
 
+{-| colBox
+-}
 colBox : SpikeDirection -> Int -> Box
 colBox sd ss =
     case sd of
@@ -94,6 +120,8 @@ colBox sd ss =
             }
 
 
+{-| initModel
+-}
 initModel : Int -> GameComponentTMsg -> Data
 initModel _ gct =
     case gct of
@@ -124,6 +152,7 @@ initModel _ gct =
                             )
                       )
                     , ( "number", CDInt info.spikesnum )
+                    , ( "visible", CDBool info.visible )
                     ]
             , uid = info.uid
             }
@@ -132,6 +161,8 @@ initModel _ gct =
             initData
 
 
+{-| updateModel
+-}
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
 updateModel _ gct ggd _ ( d, t ) =
     case gct of

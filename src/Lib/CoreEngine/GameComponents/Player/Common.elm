@@ -1,4 +1,15 @@
-module Lib.CoreEngine.GameComponents.Player.Common exposing (..)
+module Lib.CoreEngine.GameComponents.Player.Common exposing
+    ( ExtraData
+    , State
+    )
+
+{-| This is the doc for this module
+
+@docs ExtraData
+
+@docs State
+
+-}
 
 import Dict exposing (Dict)
 import Lib.Component.Base exposing (DefinedTypes)
@@ -7,10 +18,14 @@ import Lib.CoreEngine.GameComponent.Base exposing (Data)
 import Lib.CoreEngine.GameComponents.Player.Base exposing (Model)
 
 
+{-| ExtraData
+-}
 type alias ExtraData =
     Dict String DefinedTypes
 
 
+{-| State
+-}
 type alias State =
     { key : String
     , onEnter : Int -> Model -> Data -> GameGlobalData -> Data

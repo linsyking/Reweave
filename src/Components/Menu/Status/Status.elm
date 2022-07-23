@@ -1,29 +1,82 @@
-module Components.Menu.Status.Status exposing (..)
+module Components.Menu.Status.Status exposing
+    ( initStatus
+    , updateStatus
+    , viewStatus
+    )
+
+{-| This is the doc for this module
+
+@docs initStatus
+
+@docs updateStatus
+
+@docs viewStatus
+
+-}
 
 import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (..)
 import Canvas.Settings exposing (..)
 import Canvas.Settings.Advanced exposing (..)
 import Color
+import Components.Menu.Status.Collect.Export as StatusCollectE
 import Constants exposing (..)
 import Dict
 import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
-import Lib.DefinedTypes.Parser exposing (dgetDict, dgetbool, dgetfloat, dgetint, dsetDict, dsetbool)
+import Lib.DefinedTypes.Parser exposing (dgetLComponent, dgetLString, dgetbool, dgetint, dsetDict, dsetLComponent, dsetbool)
 import Lib.Render.Render exposing (..)
 
 
+{-| initStatus
+-}
 initStatus : Int -> ComponentTMsg -> Data
 initStatus _ _ =
     Dict.fromList
         [ ( "show", CDBool False )
-        , ( "posX", CDInt 700 )
-        , ( "posY", CDInt 400 )
-        , ( "radius", CDInt 30 )
+        , ( "posX", CDInt 750 )
+        , ( "posY", CDInt 380 )
+        , ( "radius", CDInt 60 )
         , ( "Data", CDDict Dict.empty )
+        , ( "Child"
+          , CDLComponent
+                [ ( "fish"
+                  , StatusCollectE.initComponent 0
+                        (ComponentStringDictMsg "fish"
+                            (Dict.fromList [ ( "posX", CDInt 740 ), ( "posY", CDInt 450 ) ])
+                        )
+                  )
+                , ( "turtle"
+                  , StatusCollectE.initComponent 0
+                        (ComponentStringDictMsg "turtle"
+                            (Dict.fromList [ ( "posX", CDInt 840 ), ( "posY", CDInt 550 ) ])
+                        )
+                  )
+                , ( "bird"
+                  , StatusCollectE.initComponent 0
+                        (ComponentStringDictMsg "bird"
+                            (Dict.fromList [ ( "posX", CDInt 640 ), ( "posY", CDInt 550 ) ])
+                        )
+                  )
+                , ( "fox"
+                  , StatusCollectE.initComponent 0
+                        (ComponentStringDictMsg "fox"
+                            (Dict.fromList [ ( "posX", CDInt 740 ), ( "posY", CDInt 550 ) ])
+                        )
+                  )
+                , ( "lion"
+                  , StatusCollectE.initComponent 0
+                        (ComponentStringDictMsg "lion"
+                            (Dict.fromList [ ( "posX", CDInt 740 ), ( "posY", CDInt 650 ) ])
+                        )
+                  )
+                ]
+          )
         ]
 
 
+{-| updateStatus
+-}
 updateStatus : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateStatus mainMsg comMsg globalData ( model, t ) =
     let
@@ -45,9 +98,9 @@ updateStatus mainMsg comMsg globalData ( model, t ) =
     in
     case mainMsg of
         MouseDown 0 ( x, y ) ->
-            if judgeMouse globalData ( x, y ) ( posX - radius, posY - radius ) ( 2 * radius, 2 * radius ) then
+            if judgeMouse globalData ( x, y ) ( posX, posY ) ( radius, radius ) then
                 ( model
-                    |> dsetbool "show" reverseShowStatus
+                    |> dsetbool "show" True
                 , [ if reverseShowStatus == True then
                         ComponentLSStringMsg "OnShow" [ "Status" ]
 
@@ -81,15 +134,48 @@ updateStatus mainMsg comMsg globalData ( model, t ) =
                         _ ->
                             ( model, [], globalData )
 
-                ComponentDictMsg dict ->
-                    ( model |> dsetDict "Data" dict, [], globalData )
+                ComponentStringDictMsg _ dict ->
+                    let
+                        collectList =
+                            dgetLString dict "collectedMonsters"
+
+                        childComponentsList =
+                            dgetLComponent model "Child"
+
+                        ( newChildComponentsList, _, _ ) =
+                            List.foldl
+                                (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
+                                    let
+                                        flag =
+                                            List.filter (\name -> name == comName) collectList
+
+                                        ( tmpCom, tmpComMsg, gD ) =
+                                            if List.isEmpty flag then
+                                                comModel.update mainMsg NullComponentMsg tmpGData ( comModel.data, t )
+
+                                            else
+                                                comModel.update mainMsg (ComponentStringMsg "Collected") tmpGData ( comModel.data, t )
+                                    in
+                                    ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
+                                )
+                                ( [], [], globalData )
+                                childComponentsList
+                    in
+                    ( model
+                        |> dsetDict "Data" dict
+                        |> dsetLComponent "Child" newChildComponentsList
+                    , []
+                    , globalData
+                    )
 
                 _ ->
                     ( model, [], globalData )
 
 
+{-| viewStatus
+-}
 viewStatus : ( Data, Int ) -> GlobalData -> Renderable
-viewStatus ( model, _ ) globalData =
+viewStatus ( model, t ) globalData =
     let
         showStatus =
             dgetbool model "show"
@@ -102,27 +188,26 @@ viewStatus ( model, _ ) globalData =
 
         radius =
             dgetint model "radius"
+
+        childComponentsList =
+            dgetLComponent model "Child"
     in
     group []
         (List.append
-            [ shapes [ stroke Color.grey ] [ circle (posToReal globalData ( posX, posY )) (widthToReal globalData radius) ]
-            , renderText globalData 50 "Status" "sans-serif" ( posX - 20, posY - 30 )
+            [ renderSprite globalData
+                [ if showStatus then
+                    alpha 1
+
+                  else
+                    alpha 0.3
+                ]
+                ( posX, posY )
+                ( radius, radius )
+                "ot/status"
             ]
             (if showStatus then
-                let
-                    data =
-                        dgetDict model "Data"
-
-                    charLife =
-                        dgetint data "CharLife"
-
-                    charEnergy =
-                        dgetfloat data "CharEnergy"
-                in
-                [ renderText globalData 30 "Status" "sans-serif" ( 500, 500 )
-                , renderText globalData 30 ("Life: " ++ String.fromInt charLife) "sans-serif" ( 500, 530 )
-                , renderText globalData 30 ("Energy: " ++ String.fromFloat charEnergy) "sans-serif" ( 500, 560 )
-                ]
+                List.append (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
+                    [ shapes [ stroke Color.black ] [ circle (posToReal globalData ( 780, 590 )) (widthToReal globalData 150) ] ]
 
              else
                 []

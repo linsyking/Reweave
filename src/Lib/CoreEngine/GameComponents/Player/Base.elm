@@ -1,26 +1,74 @@
-module Lib.CoreEngine.GameComponents.Player.Base exposing (..)
+module Lib.CoreEngine.GameComponents.Player.Base exposing
+    ( SpaceLog(..)
+    , PlayerState(..)
+    , PlayerInitPosition(..)
+    , PlayerInit
+    , StateData
+    , BoundKey
+    , Model
+    , nullModel
+    , changebk
+    , changehistory
+    , fixnotrightdir
+    )
+
+{-| This is the doc for this module
+
+@docs SpaceLog
+
+@docs PlayerState
+
+@docs PlayerInitPosition
+
+@docs PlayerInit
+
+@docs StateData
+
+@docs BoundKey
+
+@docs Model
+
+@docs nullModel
+
+@docs changebk
+
+@docs changehistory
+
+@docs fixnotrightdir
+
+-}
 
 
+{-| PlayerInit
+-}
 type alias PlayerInit =
     { initPosition : ( Int, Int )
     }
 
 
+{-| SpaceLog
+-}
 type SpaceLog
     = PressTime Int
     | Nope
 
 
+{-| StateData
+-}
 type alias StateData =
     { stype : String
     , starttime : Int
     }
 
 
+{-| PlayerState
+-}
 type PlayerState
     = PlayerStates (List StateData)
 
 
+{-| BoundKey
+-}
 type alias BoundKey =
     { left : Int
     , right : Int
@@ -30,6 +78,8 @@ type alias BoundKey =
     }
 
 
+{-| Model
+-}
 type alias Model =
     { currentKeys : BoundKey
     , originKeys : BoundKey
@@ -41,11 +91,13 @@ type alias Model =
     }
 
 
+{-| nullModel
+-}
 nullModel : Model
 nullModel =
     { currentKeys = BoundKey 0 0 0 0 0
     , keyPressed = Nope
-    , jStartTime = 0
+    , jStartTime = -100
     , originKeys = BoundKey 0 0 0 0 0
     , playerStates = PlayerStates []
     , lastOriginKeys = BoundKey 0 0 0 0 0
@@ -53,6 +105,8 @@ nullModel =
     }
 
 
+{-| changebk
+-}
 changebk : Int -> Int -> BoundKey -> BoundKey
 changebk key status bk =
     case key of
@@ -65,10 +119,15 @@ changebk key status bk =
         67 ->
             { bk | space = status }
 
+        32 ->
+            { bk | space = status }
+
         _ ->
             bk
 
 
+{-| changehistory
+-}
 changehistory : Bool -> Int -> Bool
 changehistory old key =
     case key of
@@ -80,3 +139,24 @@ changehistory old key =
 
         _ ->
             old
+
+
+{-| fixnotrightdir
+-}
+fixnotrightdir : Bool -> BoundKey -> Bool
+fixnotrightdir o bk =
+    if bk.right == 1 && bk.left == 0 then
+        True
+
+    else if bk.right == 0 && bk.left == 1 then
+        False
+
+    else
+        o
+
+
+{-| PlayerInitPosition
+-}
+type PlayerInitPosition
+    = DefaultPlayerPosition
+    | CustomPlayerPosition ( Int, Int )

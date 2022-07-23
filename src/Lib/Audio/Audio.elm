@@ -1,4 +1,18 @@
-module Lib.Audio.Audio exposing (..)
+module Lib.Audio.Audio exposing
+    ( loadAudio
+    , stopAudio
+    , getAudio
+    )
+
+{-| This is the doc for this module
+
+@docs loadAudio
+
+@docs stopAudio
+
+@docs getAudio
+
+-}
 
 import Audio exposing (AudioData)
 import Duration
@@ -6,6 +20,8 @@ import Lib.Audio.Base exposing (..)
 import Time
 
 
+{-| loadAudio
+-}
 loadAudio : AudioRepo -> String -> Audio.Source -> AudioOption -> Time.Posix -> AudioRepo
 loadAudio repo name source opt t =
     let
@@ -15,11 +31,15 @@ loadAudio repo name source opt t =
     filterrepo ++ [ ( name, source, ( opt, t ) ) ]
 
 
+{-| stopAudio
+-}
 stopAudio : AudioRepo -> String -> AudioRepo
 stopAudio repo s =
     List.filter (\( name, _, _ ) -> name /= s) repo
 
 
+{-| getAudio
+-}
 getAudio : AudioData -> AudioRepo -> List Audio.Audio
 getAudio ad repo =
     List.map

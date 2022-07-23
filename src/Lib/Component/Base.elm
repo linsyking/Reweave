@@ -1,4 +1,24 @@
-module Lib.Component.Base exposing (..)
+module Lib.Component.Base exposing
+    ( ComponentTMsg(..)
+    , DefinedTypes(..)
+    , Component
+    , Data
+    , nullComponent
+    )
+
+{-| This is the doc for this module
+
+@docs ComponentTMsg
+
+@docs DefinedTypes
+
+@docs Component
+
+@docs Data
+
+@docs nullComponent
+
+-}
 
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable, group)
@@ -10,6 +30,8 @@ import Lib.CoreEngine.GameComponents.Player.Base as PlayerBase
 --- Component Base
 
 
+{-| Component
+-}
 type alias Component =
     { name : String
     , data : Data
@@ -20,6 +42,8 @@ type alias Component =
     }
 
 
+{-| nullComponent
+-}
 nullComponent : Component
 nullComponent =
     { name = "NULL"
@@ -36,20 +60,26 @@ nullComponent =
     }
 
 
+{-| ComponentTMsg
+-}
 type ComponentTMsg
     = ComponentStringMsg String
     | ComponentIntMsg Int
     | ComponentLStringMsg (List String)
     | ComponentLSStringMsg String (List String)
-    | ComponentDictMsg (Dict String DefinedTypes)
+    | ComponentStringDictMsg String (Dict String DefinedTypes)
     | ComponentStringIntMsg String Int
     | NullComponentMsg
 
 
+{-| Data
+-}
 type alias Data =
     Dict String DefinedTypes
 
 
+{-| DefinedTypes
+-}
 type DefinedTypes
     = CDInt Int
     | CDBool Bool

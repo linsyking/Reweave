@@ -1,8 +1,21 @@
-module Lib.Map.Poly exposing (..)
+module Lib.Map.Poly exposing
+    ( buildrect
+    , buildPillar
+    )
+
+{-| This is the doc for this module
+
+@docs buildrect
+
+@docs buildPillar
+
+-}
 
 import Array2D
 
 
+{-| buildrect
+-}
 buildrect : ( Int, Int ) -> ( Int, Int ) -> Int -> Array2D.Array2D Int -> Array2D.Array2D Int
 buildrect ( x, y ) ( w, h ) v ss =
     let
@@ -25,23 +38,15 @@ buildrect ( x, y ) ( w, h ) v ss =
         xs
 
 
-buildrectT : ( Int, Int ) -> ( Int, Int ) -> Array2D.Array2D Int -> Array2D.Array2D Int
-buildrectT ( x, y ) ( w, h ) ss =
-    let
-        xs =
-            List.range x (x + w - 1)
-
-        ys =
-            List.range y (y + h - 1)
-    in
+{-| buildPillar
+-}
+buildPillar : ( Int, Int ) -> Int -> Array2D.Array2D Int -> Array2D.Array2D Int
+buildPillar ( x, y ) n ss =
     List.foldl
-        (\i arr ->
-            List.foldl
-                (\j arr2 ->
-                    Array2D.set i j (i + 11) arr2
-                )
-                arr
-                ys
+        (\i sc ->
+            sc
+                |> buildrect ( x, y + 5 * i ) ( 1, 1 ) 21
+                |> buildrect ( x, y + 5 * i + 1 ) ( 1, 4 ) 2
         )
         ss
-        xs
+        (List.range 0 (n - 1))

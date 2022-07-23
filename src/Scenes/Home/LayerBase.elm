@@ -1,6 +1,15 @@
-module Scenes.Home.LayerBase exposing (..)
+module Scenes.Home.LayerBase exposing (CommonData)
+
+{-| This is the doc for this module
+
+@docs CommonData
+
+-}
 
 
+{-| CommonData
+-}
 type alias CommonData =
-    { plt : Int
+    { started : Bool
+    , presstime : Int
     }

@@ -1,4 +1,10 @@
-module Lib.CoreEngine.GameComponents.Player.StatesControl exposing (..)
+module Lib.CoreEngine.GameComponents.Player.StatesControl exposing (stateControl)
+
+{-| This is the doc for this module
+
+@docs stateControl
+
+-}
 
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Data)
@@ -11,6 +17,8 @@ import Lib.CoreEngine.GameComponents.Player.FSM exposing (..)
 --- States Controller
 
 
+{-| stateControl
+-}
 stateControl : Int -> Model -> Data -> GameGlobalData -> ( Model, Data )
 stateControl t model gc ggd =
     let

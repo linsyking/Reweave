@@ -1,9 +1,22 @@
-module Components.Trans.Export exposing (..)
+module Components.Trans.Export exposing
+    ( component
+    , initComponent
+    )
+
+{-| This is the doc for this module
+
+@docs component
+
+@docs initComponent
+
+-}
 
 import Components.Trans.Trans exposing (initTrans, updateTrans, viewTrans)
 import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 
 
+{-| component
+-}
 component : Component
 component =
     { name = "Trans"
@@ -15,6 +28,8 @@ component =
     }
 
 
+{-| initComponent
+-}
 initComponent : Int -> ComponentTMsg -> Component
 initComponent t ct =
     { component | data = component.init t ct }

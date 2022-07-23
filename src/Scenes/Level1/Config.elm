@@ -1,4 +1,30 @@
-module Scenes.Level1.Config exposing (..)
+module Scenes.Level1.Config exposing
+    ( initFrontGroundComponents
+    , initPlayer
+    , initActors
+    , initCamera
+    , initGameGlobalData
+    , allChartlets
+    , makemanywaves
+    )
+
+{-| This is the doc for this module
+
+@docs initFrontGroundComponents
+
+@docs initPlayer
+
+@docs initActors
+
+@docs initCamera
+
+@docs initGameGlobalData
+
+@docs allChartlets
+
+@docs makemanywaves
+
+-}
 
 import Array exposing (Array)
 import Base exposing (GlobalData)
@@ -10,69 +36,98 @@ import Lib.CoreEngine.Camera.Base exposing (CameraData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentTMsg(..))
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (initGameComponent)
-import Lib.CoreEngine.GameComponents.Bullet.Base exposing (BulletInit)
-import Lib.CoreEngine.GameComponents.Bullet.Export as Bullet
 import Lib.CoreEngine.GameComponents.CutScene.Base exposing (CutSceneInit)
 import Lib.CoreEngine.GameComponents.CutScene.Export as CutScene
 import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
 import Lib.CoreEngine.GameComponents.Exit.Export as Exit
-import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
-import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
-import Lib.CoreEngine.GameComponents.GoombaEmitter.Base exposing (GoombaEmitterInit)
-import Lib.CoreEngine.GameComponents.GoombaEmitter.Export as GoombaEmitter
-import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit)
+import Lib.CoreEngine.GameComponents.Monster.Base exposing (MonsterInit)
+import Lib.CoreEngine.GameComponents.Monster.Export as Monster
+import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit, PlayerInitPosition(..))
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..), SpikeInit)
 import Lib.CoreEngine.GameComponents.Spike.Export as Spike
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
-import Lib.Render.Render exposing (renderSprite, renderText)
-import Lib.Scene.Base exposing (PlayerInitPosition(..))
+import Lib.Render.Render exposing (renderSprite)
+import Lib.Resources.Monster exposing (isInCollected)
 import Scenes.Level1.Map exposing (mymap)
 
 
+{-| initFrontGroundComponents
+-}
 initFrontGroundComponents : Int -> Array Component
 initFrontGroundComponents t =
     Array.fromList
-        [ Hints.initComponent t (ComponentLStringMsg [ "Use A,D to move, Use C to jump", "Use Esc to call the menu" ])
+        [ Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "Beiming  北溟" ])
+        , Hints.initComponent t (ComponentLStringMsg [ "40", "1590", "100", "35", "Near A River 小河边" ])
         ]
 
 
+{-| initPlayer
+-}
 initPlayer : Int -> PlayerInitPosition -> GameComponent
 initPlayer t pos =
     case pos of
         DefaultPlayerPosition ->
-            initGameComponent t (GamePlayerInit (PlayerInit ( 50, 2000 ))) Player.gameComponent
+            -- initGameComponent t (GamePlayerInit (PlayerInit ( 3197, 1480 ))) Player.gameComponent
+            -- initGameComponent t (GamePlayerInit (PlayerInit ( 3168, 1000 ))) Player.gameComponent
+            initGameComponent t (GamePlayerInit (PlayerInit ( 342, 1160 ))) Player.gameComponent
 
         CustomPlayerPosition x ->
             initGameComponent t (GamePlayerInit (PlayerInit x)) Player.gameComponent
 
 
-initActors : Int -> Array GameComponent
-initActors t =
+{-| initActors
+-}
+initActors : Int -> List String -> Array GameComponent
+initActors t cs =
     Array.fromList
-        [ initGameComponent t (GameGoombaInit (GoombaInit ( 1200, 1800 ) ( 0, 0 ) 4)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 1000, 1800 ) ( 0, 0 ) 5)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 2000, 800 ) ( 0, 0 ) 2)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 3500, 500 ) ( 0, 0 ) 3)) Goomba.gameComponent
-        , initGameComponent t (GameExitInit (ExitInit ( 3800, 1600 ) ( 10, 160 ) "Level4" 9)) Exit.gameComponent
-        , initGameComponent t (GameCutSceneInit (CutSceneInit ( 100, 1800 ) ( 100, 160 ) 88 [ ( "p_profile", "Dear master, I want learn something from you" ), ( "master", "Yes, please go ahead." ) ] True)) CutScene.gameComponent
-        , initGameComponent t (GameGoombaEmitterInit (GoombaEmitterInit ( 900, 1800 ) 200 ( -50, 0 ) 6)) GoombaEmitter.gameComponent
-        , initGameComponent t (GameSpikeInit (SpikeInit ( 704, 2028 ) HorUp 1 10)) Spike.gameComponent
-        , initGameComponent t (GameSpikeInit (SpikeInit ( 736, 2048 ) VerRight 3 11)) Spike.gameComponent
-        , initGameComponent t (GameSpikeInit (SpikeInit ( 864, 2016 ) HorDown 15 12)) Spike.gameComponent
-        , initGameComponent t (GameBulletInit (BulletInit ( 800, 1530 ) ( -50, 0 ) 14)) Bullet.gameComponent
+        ([ initGameComponent t (GameExitInit (ExitInit ( 10, 1100 ) "Level0" (CustomPlayerPosition ( 5900, 680 )) 1 6)) Exit.gameComponent
+         , initGameComponent t (GameCutSceneInit (CutSceneInit ( 475, 1680 ) ( 100, 100 ) 5 dialoguesMaster True)) CutScene.gameComponent
+         , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2200 ) HorUp 1000 False 3)) Spike.gameComponent
+         , initGameComponent t (GameSpikeInit (SpikeInit ( 1440, 1900 ) HorUp 1 True 4)) Spike.gameComponent
+         , initGameComponent t (GameExitInit (ExitInit ( 3600, 1300 ) "Level2" DefaultPlayerPosition 0 7)) Exit.gameComponent
 
-        --, initGameComponent t (GameMonsterInit (MonsterInit ( 1200, 30 ) ( 0, 0 ) "default" 10 100)) Monster.gameComponent
-        ]
+         -- , initGameComponent t (GameGoombaInit (GoombaInit ( 3425, 1928 ) ( 50, 0 ) 8)) Goomba.gameComponent
+         , initGameComponent t (GameCutSceneInit (CutSceneInit ( 3140, 1440 ) ( 100, 100 ) 10 dialoguesBird False)) CutScene.gameComponent
+         ]
+            ++ (if isInCollected "bird" cs then
+                    []
+
+                else
+                    [ initGameComponent t (GameMonsterInit (MonsterInit ( 3140, 1430 ) ( 174, 138 ) "bird" 10 9)) Monster.gameComponent ]
+               )
+        )
 
 
+dialoguesMaster : List ( String, String )
+dialoguesMaster =
+    [ ( "p_profile", "Hello, master." )
+    , ( "master", "I still worry about you." )
+    , ( "master", "There is a monster ahead of you." )
+    , ( "master", "You have to hit it by your body to reweave it." )
+    , ( "p_profile", "OK." )
+    ]
+
+
+dialoguesBird : List ( String, String )
+dialoguesBird =
+    [ ( "p_profile", "Wow, who are you?" )
+    , ( "bird", "Hi, I am the bird" )
+    , ( "p_profile", "Beautiful Bird." )
+    ]
+
+
+{-| initCamera
+-}
 initCamera : CameraData
 initCamera =
-    CameraData ( 0, 1120 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * 119 - 1, 70 * 32 - 1 ) ) ( ( 0.2, 0.3 ), ( 0.4, 0.4 ) )
+    CameraData ( 0, 700 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * 119 - 1, 70 * 32 - 1 ) ) ( ( 0.2, 0.2 ), ( 0.4, 0.1 ) )
 
 
-initGameGlobalData : Float -> GameGlobalData
-initGameGlobalData e =
+{-| initGameGlobalData
+-}
+initGameGlobalData : Float -> List String -> GameGlobalData
+initGameGlobalData e col =
     { camera = initCamera
     , solidmap = mymap
     , mapsize = ( 120, 70 )
@@ -80,17 +135,64 @@ initGameGlobalData e =
     , energy = e
     , ingamepause = False
     , currentScene = "Level1"
+    , collectedMonsters = col
+    , settingpause = False
+    , specialState = 0
     }
 
 
+{-| allChartlets
+-}
 allChartlets : List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
 allChartlets =
-    [ ( \gd ggd -> renderText gd 50 "Hit those goombas!" "Times New Roman" (getPositionUnderCamera ( 900, 2100 ) ggd), BehindActors )
-    , ( \gd ggd -> renderSprite gd [] (getPositionUnderCamera ( 0, 2176 ) ggd) ( 3840, 64 ) "background", FrontSolids )
-    , ( \gd ggd -> renderText gd 40 "Short Description (Will be deleted in the real game, this is only for the game testers)" "Times New Roman" (getPositionUnderCamera ( 200, 1400 ) ggd), BehindActors )
-    , ( \gd ggd -> renderText gd 30 "1. Use Mouse to left click on any object to select it" "Times New Roman" (getPositionUnderCamera ( 200, 1450 ) ggd), BehindActors )
-    , ( \gd ggd -> renderText gd 30 "2. Press 'W' key to grasp its kinetic energy(if its energy is too low, you cannot grasp it)" "Times New Roman" (getPositionUnderCamera ( 200, 1500 ) ggd), BehindActors )
-    , ( \gd ggd -> renderText gd 30 "3. Select any new object(Of course you can choose not to change)" "Times New Roman" (getPositionUnderCamera ( 200, 1550 ) ggd), BehindActors )
-    , ( \gd ggd -> renderText gd 30 "4. Right click on any position to use the kinetic energy on the chosen object" "Times New Roman" (getPositionUnderCamera ( 200, 1600 ) ggd), BehindActors )
-    , ( \gd ggd -> renderText gd 100 "Test Chamber" "Times New Roman" (getPositionUnderCamera ( 200, 1250 ) ggd), BehindActors )
+    [ ( \gd ggd ->
+            renderSprite gd [] (getPositionUnderCamera ( 32, 1250 ) ggd) ( 32 * 14, 0 ) "dh/bigrock"
+      , FrontSolids
+      )
+    , ( \gd ggd ->
+            renderSprite gd [] (getPositionUnderCamera ( 32, 1450 ) ggd) ( 32 * 14, 0 ) "dh/bigrock"
+      , FrontSolids
+      )
+    , ( \gd ggd ->
+            renderSprite gd [] (getPositionUnderCamera ( 32, 1650 ) ggd) ( 32 * 14, 0 ) "dh/bigrock"
+      , FrontSolids
+      )
+    , ( \gd ggd ->
+            renderSprite gd [] (getPositionUnderCamera ( 32, 1850 ) ggd) ( 32 * 14, 0 ) "dh/bigrock"
+      , FrontSolids
+      )
+    , ( \gd ggd ->
+            renderSprite gd [] (getPositionUnderCamera ( 475, 1680 ) ggd) ( 100, 0 ) "master"
+      , BehindActors
+      )
+    , ( \gd ggd ->
+            renderSprite gd [] (getPositionUnderCamera ( 3497, 1470 ) ggd) ( 32 * 10, 0 ) "dh/bigrock"
+      , FrontSolids
+      )
+    , ( \gd ggd ->
+            renderSprite gd [] (getPositionUnderCamera ( 3497, 1770 ) ggd) ( 32 * 10, 0 ) "dh/bigrock"
+      , FrontSolids
+      )
+    , ( \gd ggd ->
+            renderSprite gd [] (getPositionUnderCamera ( 3497, 2070 ) ggd) ( 32 * 10, 0 ) "dh/bigrock"
+      , FrontSolids
+      )
     ]
+        ++ makemanywaves 4
+
+
+{-| makemanywaves
+-}
+makemanywaves : Int -> List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
+makemanywaves n =
+    List.foldl
+        (\i al ->
+            al
+                ++ [ ( \gd ggd ->
+                        renderSprite gd [] (getPositionUnderCamera ( 450 + 770 * i, 2135 ) ggd) ( 800, 0 ) "bm/smallwave"
+                     , FrontSolids
+                     )
+                   ]
+        )
+        []
+        (List.range 0 (n - 1))

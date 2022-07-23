@@ -13,3 +13,5 @@ else
     echo -e "\033[31mFailed, please run \"make format\" before you commit!\033[0m"
     exit 255
 fi
+
+python tools/formatdoc.py ./src --validate

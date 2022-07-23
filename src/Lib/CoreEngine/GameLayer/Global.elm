@@ -1,4 +1,18 @@
-module Lib.CoreEngine.GameLayer.Global exposing (..)
+module Lib.CoreEngine.GameLayer.Global exposing
+    ( dToCT
+    , ctTod
+    , getLayerCT
+    )
+
+{-| This is the doc for this module
+
+@docs dToCT
+
+@docs ctTod
+
+@docs getLayerCT
+
+-}
 
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
@@ -8,11 +22,15 @@ import Lib.CoreEngine.LayerSettings exposing (LayerCT, LayerDataType(..))
 import Lib.Layer.Base exposing (..)
 
 
+{-| dToCT
+-}
 dToCT : Data -> LayerDataType
 dToCT data =
     GameData data
 
 
+{-| ctTod
+-}
 ctTod : LayerDataType -> Data
 ctTod ldt =
     case ldt of
@@ -23,6 +41,8 @@ ctTod ldt =
             nullData
 
 
+{-| getLayerCT
+-}
 getLayerCT : Layer GameGlobalData Data -> LayerCT
 getLayerCT layer =
     let

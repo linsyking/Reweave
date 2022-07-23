@@ -1,4 +1,10 @@
-module Scenes.Scene1.Layer1.Display exposing (..)
+module Scenes.Scene1.Layer1.Display exposing (dview)
+
+{-| This is the doc for this module
+
+@docs dview
+
+-}
 
 import Base exposing (..)
 import Canvas exposing (Renderable, group, rect, shapes)
@@ -13,6 +19,8 @@ import Scenes.Scene1.Layer1.Common exposing (..)
 import Scenes.Scene1.LayerBase exposing (CommonData)
 
 
+{-| dview
+-}
 dview : SModel -> CommonData -> GlobalData -> Renderable
 dview ( _, t ) _ gd =
     group []

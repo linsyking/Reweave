@@ -1,9 +1,22 @@
-module Lib.CoreEngine.Physics.InterCollision exposing (..)
+module Lib.CoreEngine.Physics.InterCollision exposing
+    ( gonnaInterColllide
+    , genInterFromOneSide
+    )
+
+{-| This is the doc for this module
+
+@docs gonnaInterColllide
+
+@docs genInterFromOneSide
+
+-}
 
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentTMsg(..))
 import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos, judgeCollision)
 
 
+{-| gonnaInterColllide
+-}
 gonnaInterColllide : GameComponent -> GameComponent -> ( GameComponentTMsg, GameComponentTMsg )
 gonnaInterColllide gc1 gc2 =
     let
@@ -30,6 +43,8 @@ gonnaInterColllide gc1 gc2 =
 -- Send information to gc1
 
 
+{-| genInterFromOneSide
+-}
 genInterFromOneSide : GameComponent -> GameComponent -> GameComponentTMsg
 genInterFromOneSide gc1 gc2 =
     let
@@ -44,13 +59,19 @@ genInterFromOneSide gc1 gc2 =
 
         target =
             gc2.data.collisionbox
+
+        result =
+            List.foldl
+                (\x o ->
+                    o ++ List.filter (\y -> judgeCollision (getBoxPos op x) (getBoxPos tp y)) target
+                )
+                []
+                origin
     in
-    GameInterCollisionMsg gc2.name
-        gc2.data
-        (List.foldl
-            (\x o ->
-                o ++ List.filter (\y -> judgeCollision (getBoxPos op x) (getBoxPos tp y)) target
-            )
-            []
-            origin
-        )
+    if result == [] then
+        NullGameComponentMsg
+
+    else
+        GameInterCollisionMsg gc2.name
+            gc2.data
+            result

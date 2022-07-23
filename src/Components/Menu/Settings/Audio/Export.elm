@@ -1,12 +1,25 @@
-module Components.Menu.Settings.Audio.Export exposing (..)
+module Components.Menu.Settings.Audio.Export exposing
+    ( component
+    , initComponent
+    )
+
+{-| This is the doc for this module
+
+@docs component
+
+@docs initComponent
+
+-}
 
 import Components.Menu.Settings.Audio.Audio exposing (initMap, updateMap, viewMap)
 import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 
 
+{-| component
+-}
 component : Component
 component =
-    { name = "Map"
+    { name = "Audio"
     , data = initMap 0 NullComponentMsg
     , init = initMap
     , update = updateMap
@@ -15,6 +28,8 @@ component =
     }
 
 
+{-| initComponent
+-}
 initComponent : Int -> ComponentTMsg -> Component
 initComponent t ct =
     { component | data = component.init t ct }

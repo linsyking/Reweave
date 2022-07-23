@@ -1,4 +1,24 @@
-module Lib.CoreEngine.GameComponents.GoombaEmitter.Model exposing (..)
+module Lib.CoreEngine.GameComponents.GoombaEmitter.Model exposing
+    ( initData
+    , simplecheckBox
+    , initModel
+    , updateModel
+    , queryModel
+    )
+
+{-| This is the doc for this module
+
+@docs initData
+
+@docs simplecheckBox
+
+@docs initModel
+
+@docs updateModel
+
+@docs queryModel
+
+-}
 
 import Base exposing (GlobalData, Msg)
 import Dict
@@ -8,6 +28,8 @@ import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgTy
 import Lib.DefinedTypes.Parser exposing (dgetfloat, dgetint)
 
 
+{-| initData
+-}
 initData : Data
 initData =
     { status = Alive
@@ -22,16 +44,20 @@ initData =
     }
 
 
+{-| simplecheckBox
+-}
 simplecheckBox : Box
 simplecheckBox =
     { name = "sp"
     , offsetX = 0
     , offsetY = 0
-    , width = 0
-    , height = 0
+    , width = 100
+    , height = 100
     }
 
 
+{-| initModel
+-}
 initModel : Int -> GameComponentTMsg -> Data
 initModel _ gcm =
     case gcm of
@@ -56,6 +82,8 @@ initModel _ gcm =
             initData
 
 
+{-| updateModel
+-}
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
 updateModel _ _ ggd _ ( d, t ) =
     let
@@ -83,6 +111,8 @@ updateModel _ _ ggd _ ( d, t ) =
         ( d, [], ggd )
 
 
+{-| queryModel
+-}
 queryModel : String -> ( Data, Int ) -> GameComponentTMsg
 queryModel _ _ =
     NullGameComponentMsg

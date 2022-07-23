@@ -1,4 +1,10 @@
-port module Main exposing (..)
+port module Main exposing (main)
+
+{-| This is the doc for this module
+
+@docs main
+
+-}
 
 import Audio exposing (AudioCmd, AudioData)
 import Base exposing (..)
@@ -29,6 +35,8 @@ port audioPortToJS : Encode.Value -> Cmd msg
 port audioPortFromJS : (Decode.Value -> msg) -> Sub msg
 
 
+{-| initModel
+-}
 initModel : Model
 initModel =
     { currentData = NullSceneData
@@ -39,6 +47,8 @@ initModel =
     }
 
 
+{-| main
+-}
 main : Program Flags (Audio.Model Msg Model) (Audio.Msg Msg)
 main =
     Audio.elementWithAudio
@@ -55,11 +65,13 @@ main =
 --INIT
 
 
+{-| init
+-}
 init : Flags -> ( Model, Cmd Msg, AudioCmd Msg )
 init flags =
     let
         ms =
-            loadSceneByName initModel "Level1" NullSceneMsg
+            loadSceneByName initModel "Home" NullSceneMsg
 
         oldgd =
             ms.currentGlobalData
@@ -80,6 +92,8 @@ init flags =
 --UPDATE
 
 
+{-| update
+-}
 update : AudioData -> Msg -> Model -> ( Model, Cmd Msg, AudioCmd Msg )
 update _ msg model =
     case msg of
@@ -154,7 +168,7 @@ update _ msg model =
                         cs.update msg model.currentGlobalData cm
 
                     ntmodel =
-                        { model | time = model.time + 1 }
+                        { model | time = model.time + 1, currentGlobalData = newgd }
 
                     tmodel =
                         case msg of
@@ -169,8 +183,15 @@ update _ msg model =
                 in
                 case som of
                     SOChangeScene ( tm, s ) ->
+                        -- let
+                        --     dsdd = Debug.log "changescene" (tmodel.currentGlobalData.scenesFinished)
+                        -- in
                         --- Load new scene
-                        ( loadSceneByName tmodel s tm, Cmd.none, Audio.cmdNone )
+                        ( loadSceneByName tmodel s tm
+                            |> resetSceneStartTime
+                        , Cmd.none
+                        , Audio.cmdNone
+                        )
 
                     SOPlayAudio name path opt ->
                         ( bnewmodel, Cmd.none, Audio.loadAudio (SoundLoaded name opt) path )
@@ -189,9 +210,11 @@ update _ msg model =
                         ( { bnewmodel | audiorepo = stopAudio bnewmodel.audiorepo name }, Cmd.none, Audio.cmdNone )
 
                     _ ->
-                        ( bnewmodel, Cmd.none, Audio.cmdNone )
+                        ( updateSceneStartTime bnewmodel, Cmd.none, Audio.cmdNone )
 
 
+{-| subscriptions
+-}
 subscriptions : AudioData -> Model -> Sub Msg
 subscriptions _ _ =
     Sub.batch
@@ -203,6 +226,8 @@ subscriptions _ _ =
         ]
 
 
+{-| view
+-}
 view : AudioData -> Model -> Html Msg
 view _ model =
     Canvas.toHtmlWith

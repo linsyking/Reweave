@@ -1,10 +1,23 @@
-module Components.Menu.Settings.Audio.Audio exposing (..)
+module Components.Menu.Settings.Audio.Audio exposing
+    ( initMap
+    , updateMap
+    , viewMap
+    )
+
+{-| This is the doc for this module
+
+@docs initMap
+
+@docs updateMap
+
+@docs viewMap
+
+-}
 
 import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (..)
 import Canvas.Settings exposing (..)
 import Canvas.Settings.Advanced exposing (..)
-import Color
 import Constants exposing (..)
 import Dict
 import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..))
@@ -13,6 +26,8 @@ import Lib.DefinedTypes.Parser exposing (dgetString, dgetint, dsetbool)
 import Lib.Render.Render exposing (..)
 
 
+{-| initMap
+-}
 initMap : Int -> ComponentTMsg -> Data
 initMap _ comMsg =
     case comMsg of
@@ -21,7 +36,7 @@ initMap _ comMsg =
                 "AudioDown" ->
                     Dict.fromList
                         [ ( "show", CDBool True )
-                        , ( "posX", CDInt 670 )
+                        , ( "posX", CDInt 910 )
                         , ( "posY", CDInt 680 )
                         , ( "Type", CDString "Down" )
                         , ( "radius", CDInt 30 )
@@ -30,7 +45,7 @@ initMap _ comMsg =
                 "AudioUp" ->
                     Dict.fromList
                         [ ( "show", CDBool True )
-                        , ( "posX", CDInt 750 )
+                        , ( "posX", CDInt 1000 )
                         , ( "posY", CDInt 680 )
                         , ( "Type", CDString "Up" )
                         , ( "radius", CDInt 30 )
@@ -55,6 +70,8 @@ initMap _ comMsg =
                 ]
 
 
+{-| updateMap
+-}
 updateMap : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateMap mainMsg comMsg globalData ( model, t ) =
     let
@@ -72,7 +89,7 @@ updateMap mainMsg comMsg globalData ( model, t ) =
     in
     case mainMsg of
         MouseDown 0 ( x, y ) ->
-            if judgeMouse globalData ( x, y ) ( posX - radius, posY - radius ) ( 2 * radius, 2 * radius ) then
+            if judgeMouse globalData ( x, y ) ( posX, posY ) ( radius, radius ) then
                 ( model
                 , []
                 , case comType of
@@ -128,6 +145,8 @@ updateMap mainMsg comMsg globalData ( model, t ) =
                     ( model, [], globalData )
 
 
+{-| viewMap
+-}
 viewMap : ( Data, Int ) -> GlobalData -> Renderable
 viewMap ( model, _ ) globalData =
     let
@@ -139,19 +158,13 @@ viewMap ( model, _ ) globalData =
 
         radius =
             dgetint model "radius"
-
-        comType =
-            case dgetString model "Type" of
-                "Down" ->
-                    "D"
-
-                "Up" ->
-                    "U"
-
-                _ ->
-                    ""
     in
-    group []
-        [ shapes [ stroke Color.red ] [ circle (posToReal globalData ( posX, posY )) (widthToReal globalData radius) ]
-        , renderText globalData 50 comType "sans-serif" ( posX - 20, posY - 25 )
-        ]
+    case dgetString model "Type" of
+        "Down" ->
+            renderSprite globalData [] ( posX, posY ) ( radius, radius ) "ot/vdown"
+
+        "Up" ->
+            renderSprite globalData [] ( posX, posY ) ( radius, radius ) "ot/vup"
+
+        _ ->
+            group [] []

@@ -1,4 +1,27 @@
-module Lib.CoreEngine.GameComponents.Goomba.Model exposing (..)
+module Lib.CoreEngine.GameComponents.Goomba.Model exposing
+    ( initData
+    , collisionBox
+    , reboundBox
+    , simplecheckBox
+    , initModel
+    , updateModel
+    )
+
+{-| This is the doc for this module
+
+@docs initData
+
+@docs collisionBox
+
+@docs reboundBox
+
+@docs simplecheckBox
+
+@docs initModel
+
+@docs updateModel
+
+-}
 
 import Base exposing (GlobalData, Msg(..))
 import Dict
@@ -12,6 +35,8 @@ import Lib.CoreEngine.Physics.Acceleration exposing (putAccOn)
 import Lib.CoreEngine.Physics.Velocity exposing (changeCVel)
 
 
+{-| initData
+-}
 initData : Data
 initData =
     { status = Alive
@@ -26,6 +51,8 @@ initData =
     }
 
 
+{-| collisionBox
+-}
 collisionBox : Box
 collisionBox =
     { name = "col"
@@ -36,6 +63,8 @@ collisionBox =
     }
 
 
+{-| reboundBox
+-}
 reboundBox : Box
 reboundBox =
     { name = "reb"
@@ -46,6 +75,8 @@ reboundBox =
     }
 
 
+{-| simplecheckBox
+-}
 simplecheckBox : Box
 simplecheckBox =
     { name = "sp"
@@ -56,6 +87,8 @@ simplecheckBox =
     }
 
 
+{-| initModel
+-}
 initModel : Int -> GameComponentTMsg -> Data
 initModel _ gcm =
     case gcm of
@@ -75,6 +108,8 @@ initModel _ gcm =
             initData
 
 
+{-| updateModel
+-}
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
 updateModel msg gct ggd gd ( d, t ) =
     case msg of

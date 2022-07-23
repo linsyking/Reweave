@@ -1,4 +1,15 @@
-module Scenes.Level2.Export exposing (..)
+module Scenes.Level2.Export exposing
+    ( game
+    , scene
+    )
+
+{-| This is the doc for this module
+
+@docs game
+
+@docs scene
+
+-}
 
 import Array
 import Canvas exposing (group)
@@ -8,6 +19,8 @@ import Scenes.Level2.Background exposing (background)
 import Scenes.Level2.Config exposing (allChartlets, initActors, initFrontGroundComponents, initGameGlobalData, initPlayer)
 
 
+{-| game
+-}
 game : Int -> SceneMsg -> Data
 game t sm =
     let
@@ -25,13 +38,15 @@ game t sm =
             , actors = initActors t
             , chartlets = allChartlets
             , globalData =
-                initGameGlobalData engineMsg.energy
+                initGameGlobalData engineMsg.energy engineMsg.collectedMonsters
             , background = ( Array.empty, background )
             , frontground = ( initFrontGroundComponents t, \_ _ _ -> group [] [] )
             }
         )
 
 
+{-| scene
+-}
 scene : Scene Data
 scene =
     genEngineScene game

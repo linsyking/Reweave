@@ -1,4 +1,10 @@
-module Lib.CoreEngine.BackgroundLayer.Display exposing (..)
+module Lib.CoreEngine.BackgroundLayer.Display exposing (view)
+
+{-| This is the doc for this module
+
+@docs view
+
+-}
 
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable, group)
@@ -6,6 +12,8 @@ import Lib.CoreEngine.BackgroundLayer.Common exposing (Model)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 
 
+{-| view
+-}
 view : ( Model, Int ) -> GameGlobalData -> GlobalData -> Renderable
 view ( model, t ) ggd gd =
     group []

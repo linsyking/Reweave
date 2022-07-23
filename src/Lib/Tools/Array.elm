@@ -1,8 +1,21 @@
-module Lib.Tools.Array exposing (..)
+module Lib.Tools.Array exposing
+    ( delSame
+    , locate
+    )
+
+{-| This is the doc for this module
+
+@docs delSame
+
+@docs locate
+
+-}
 
 import Array exposing (Array)
 
 
+{-| delSame
+-}
 delSame : List a -> List a -> List a
 delSame ls xs =
     case ls of
@@ -22,6 +35,8 @@ delSame ls xs =
             xs
 
 
+{-| locate
+-}
 locate : (a -> Bool) -> Array a -> List Int
 locate f xs =
     let

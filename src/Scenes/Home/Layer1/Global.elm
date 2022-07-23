@@ -1,4 +1,18 @@
-module Scenes.Home.Layer1.Global exposing (..)
+module Scenes.Home.Layer1.Global exposing
+    ( dToCT
+    , ctTod
+    , getLayerCT
+    )
+
+{-| This is the doc for this module
+
+@docs dToCT
+
+@docs ctTod
+
+@docs getLayerCT
+
+-}
 
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
@@ -8,11 +22,15 @@ import Scenes.Home.LayerBase exposing (CommonData)
 import Scenes.Home.LayerSettings exposing (..)
 
 
+{-| dToCT
+-}
 dToCT : Data -> LayerDataType
 dToCT data =
     Layer1Data data
 
 
+{-| ctTod
+-}
 ctTod : LayerDataType -> Data
 ctTod ldt =
     case ldt of
@@ -23,6 +41,8 @@ ctTod ldt =
             nullData
 
 
+{-| getLayerCT
+-}
 getLayerCT : Layer CommonData Data -> LayerCT
 getLayerCT layer =
     let

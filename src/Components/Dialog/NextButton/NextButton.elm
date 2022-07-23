@@ -1,4 +1,18 @@
-module Components.Dialog.NextButton.NextButton exposing (..)
+module Components.Dialog.NextButton.NextButton exposing
+    ( initButton
+    , updateButton
+    , viewButton
+    )
+
+{-| This is the doc for this module
+
+@docs initButton
+
+@docs updateButton
+
+@docs viewButton
+
+-}
 
 import Base exposing (GlobalData, Msg(..))
 import Canvas exposing (..)
@@ -17,6 +31,8 @@ import Lib.Render.Render exposing (renderSprite)
 -- OnShow : OnLoadChild -> (OnShowChild ->) OnDeChild (OnDeconstructChild) -> OnEnd
 
 
+{-| initButton
+-}
 initButton : Int -> ComponentTMsg -> Data
 initButton _ comMsg =
     case comMsg of
@@ -31,6 +47,8 @@ initButton _ comMsg =
             Dict.empty
 
 
+{-| updateButton
+-}
 updateButton : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateButton mainMsg _ globalData ( model, t ) =
     case mainMsg of
@@ -60,6 +78,8 @@ updateButton mainMsg _ globalData ( model, t ) =
             ( model, [ ComponentLSStringMsg "StatusReport" [ status ] ], globalData )
 
 
+{-| viewButton
+-}
 viewButton : ( Data, Int ) -> GlobalData -> Renderable
 viewButton ( model, t ) globalData =
     if dgetString model "_Status" == "OnShow" then

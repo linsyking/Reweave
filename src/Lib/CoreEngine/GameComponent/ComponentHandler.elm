@@ -1,4 +1,51 @@
-module Lib.CoreEngine.GameComponent.ComponentHandler exposing (..)
+module Lib.CoreEngine.GameComponent.ComponentHandler exposing
+    ( updateOneGameComponent
+    , updateSingleGameComponent
+    , updateSingleGameComponentByName
+    , getGameComponentFromName
+    , genView
+    , renderSingleObject
+    , getGameComponent
+    , simpleUpdateAllGameComponent
+    , isAlive
+    , sendManyMsgGameComponent
+    , sendManyGameComponentMsg
+    , splitPlayerObjs
+    , initGameComponent
+    , getGameComponentCenter
+    )
+
+{-| This is the doc for this module
+
+@docs updateOneGameComponent
+
+@docs updateSingleGameComponent
+
+@docs updateSingleGameComponentByName
+
+@docs getGameComponentFromName
+
+@docs genView
+
+@docs renderSingleObject
+
+@docs getGameComponent
+
+@docs simpleUpdateAllGameComponent
+
+@docs isAlive
+
+@docs sendManyMsgGameComponent
+
+@docs sendManyGameComponentMsg
+
+@docs splitPlayerObjs
+
+@docs initGameComponent
+
+@docs getGameComponentCenter
+
+-}
 
 import Array exposing (Array)
 import Array.Extra
@@ -10,6 +57,8 @@ import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos, judgeInCamera)
 import Lib.Tools.Array exposing (locate)
 
 
+{-| updateOneGameComponent
+-}
 updateOneGameComponent : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> Int -> GameComponent -> ( GameComponent, List GameComponentMsgType, GameGlobalData )
 updateOneGameComponent msg ct ggd gd t c =
     let
@@ -19,6 +68,8 @@ updateOneGameComponent msg ct ggd gd t c =
     ( { c | data = newx }, newmsg, newggd )
 
 
+{-| updateSingleGameComponent
+-}
 updateSingleGameComponent : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> Int -> Int -> Array GameComponent -> ( Array GameComponent, List GameComponentMsgType, GameGlobalData )
 updateSingleGameComponent msg ct ggd gd t n xs =
     case getGameComponent n xs of
@@ -33,29 +84,40 @@ updateSingleGameComponent msg ct ggd gd t n xs =
             ( xs, [], ggd )
 
 
+{-| updateSingleGameComponentByName
+-}
 updateSingleGameComponentByName : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> Int -> String -> Array GameComponent -> ( Array GameComponent, List GameComponentMsgType, GameGlobalData )
 updateSingleGameComponentByName msg ct ggd gd t s xs =
     let
-        n =
+        ns =
             getGameComponentFromName s xs
     in
-    case getGameComponent n xs of
-        Just k ->
-            let
-                ( newx, newmsg, newggd ) =
-                    k.update msg ct ggd gd ( k.data, t )
-            in
-            ( Array.set n { k | data = newx } xs, newmsg, newggd )
+    List.foldl
+        (\n ( x, m, g ) ->
+            case getGameComponent n x of
+                Just k ->
+                    let
+                        ( newx, newmsg, newggd ) =
+                            k.update msg ct g gd ( k.data, t )
+                    in
+                    ( Array.set n { k | data = newx } x, m ++ newmsg, newggd )
 
-        Nothing ->
-            ( xs, [], ggd )
+                Nothing ->
+                    ( xs, [], ggd )
+        )
+        ( xs, [], ggd )
+        ns
 
 
-getGameComponentFromName : String -> Array GameComponent -> Int
+{-| getGameComponentFromName
+-}
+getGameComponentFromName : String -> Array GameComponent -> List Int
 getGameComponentFromName s xs =
-    Maybe.withDefault -1 (List.head (locate (\x -> x.name == s) xs))
+    locate (\x -> x.name == s) xs
 
 
+{-| genView
+-}
 genView : GameGlobalData -> GlobalData -> Int -> Array GameComponent -> Renderable
 genView ggd gd t xs =
     let
@@ -78,6 +140,8 @@ genView ggd gd t xs =
     group [] (List.map (\( x, _ ) -> x) res)
 
 
+{-| renderSingleObject
+-}
 renderSingleObject : Int -> GameComponent -> GameGlobalData -> GlobalData -> Maybe (List ( Renderable, Int ))
 renderSingleObject t gc ggd gd =
     if judgeInCamera gc ggd then
@@ -88,11 +152,15 @@ renderSingleObject t gc ggd gd =
         Nothing
 
 
+{-| getGameComponent
+-}
 getGameComponent : Int -> Array GameComponent -> Maybe GameComponent
 getGameComponent n xs =
     Array.get n xs
 
 
+{-| simpleUpdateAllGameComponent
+-}
 simpleUpdateAllGameComponent : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> Int -> Array GameComponent -> ( Array GameComponent, List GameComponentMsgType, GameGlobalData )
 simpleUpdateAllGameComponent msg gct ggd gd t gcs =
     Array.foldl
@@ -107,6 +175,8 @@ simpleUpdateAllGameComponent msg gct ggd gd t gcs =
         gcs
 
 
+{-| isAlive
+-}
 isAlive : Data -> Bool
 isAlive d =
     case d.status of
@@ -117,6 +187,8 @@ isAlive d =
             False
 
 
+{-| sendManyMsgGameComponent
+-}
 sendManyMsgGameComponent : Msg -> List GameComponentTMsg -> GameGlobalData -> GlobalData -> Int -> Int -> Array GameComponent -> ( Array GameComponent, List GameComponentMsgType, GameGlobalData )
 sendManyMsgGameComponent msg gcts ggd gd n t gcs =
     List.foldl
@@ -140,6 +212,8 @@ sendManyMsgGameComponent msg gcts ggd gd n t gcs =
         gcts
 
 
+{-| sendManyGameComponentMsg
+-}
 sendManyGameComponentMsg : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> List Int -> Int -> Array GameComponent -> ( Array GameComponent, List GameComponentMsgType, GameGlobalData )
 sendManyGameComponentMsg msg gct ggd gd ns t gcs =
     List.foldl
@@ -163,6 +237,8 @@ sendManyGameComponentMsg msg gct ggd gd ns t gcs =
         ns
 
 
+{-| splitPlayerObjs
+-}
 splitPlayerObjs : Array GameComponent -> GameComponent -> ( GameComponent, Array GameComponent )
 splitPlayerObjs gcs defaultplayer =
     let
@@ -172,6 +248,8 @@ splitPlayerObjs gcs defaultplayer =
     ( newplayer, Array.Extra.pop gcs )
 
 
+{-| initGameComponent
+-}
 initGameComponent : Int -> GameComponentTMsg -> GameComponent -> GameComponent
 initGameComponent t gct gc =
     { gc | data = gc.init t gct }
@@ -181,6 +259,8 @@ initGameComponent t gct gc =
 -- TODO: Write recursive message transform system like layer
 
 
+{-| getGameComponentCenter
+-}
 getGameComponentCenter : GameComponent -> ( Int, Int )
 getGameComponentCenter gc =
     let

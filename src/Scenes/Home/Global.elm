@@ -1,4 +1,18 @@
-module Scenes.Home.Global exposing (..)
+module Scenes.Home.Global exposing
+    ( sdata
+    , dtToT
+    , toCT
+    )
+
+{-| This is the doc for this module
+
+@docs sdata
+
+@docs dtToT
+
+@docs toCT
+
+-}
 
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
@@ -7,11 +21,15 @@ import Scenes.Home.Export exposing (..)
 import Scenes.SceneSettings exposing (..)
 
 
+{-| sdata
+-}
 sdata : Data -> SceneDataTypes
 sdata d =
     HDataT d
 
 
+{-| dtToT
+-}
 dtToT : SceneDataTypes -> Data
 dtToT dt =
     case dt of
@@ -22,6 +40,8 @@ dtToT dt =
             nullData
 
 
+{-| toCT
+-}
 toCT : Scene Data -> SceneCT
 toCT sd =
     let

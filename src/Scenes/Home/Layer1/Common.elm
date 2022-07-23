@@ -1,8 +1,21 @@
-module Scenes.Home.Layer1.Common exposing (..)
+module Scenes.Home.Layer1.Common exposing
+    ( Button
+    , ModelX
+    )
+
+{-| This is the doc for this module
+
+@docs Button
+
+@docs ModelX
+
+-}
 
 import Base exposing (..)
 
 
+{-| Button
+-}
 type alias Button =
     { description : String
     , pos : ( Int, Int )
@@ -11,9 +24,8 @@ type alias Button =
     }
 
 
+{-| ModelX
+-}
 type alias ModelX =
-    { ico : Int
-    , start : Button
-    , help : Button
-    , map : Button
+    { start : Button
     }

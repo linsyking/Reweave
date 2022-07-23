@@ -1,4 +1,24 @@
-module Lib.CoreEngine.GameLayer.Common exposing (..)
+module Lib.CoreEngine.GameLayer.Common exposing
+    ( Model
+    , searchNameGC
+    , searchUIDGC
+    , kineticCalc
+    , addenergy
+    )
+
+{-| This is the doc for this module
+
+@docs Model
+
+@docs searchNameGC
+
+@docs searchUIDGC
+
+@docs kineticCalc
+
+@docs addenergy
+
+-}
 
 import Array exposing (Array)
 import Base exposing (GlobalData)
@@ -9,6 +29,8 @@ import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth)
 import Lib.Tools.Array exposing (locate)
 
 
+{-| Model
+-}
 type alias Model =
     { player : GameComponent
     , actors : Array GameComponent
@@ -18,11 +40,15 @@ type alias Model =
     }
 
 
+{-| searchNameGC
+-}
 searchNameGC : String -> Array.Array GameComponent -> List Int
 searchNameGC s gcs =
     locate (\x -> x.name == s) gcs
 
 
+{-| searchUIDGC
+-}
 searchUIDGC : Int -> Array.Array GameComponent -> Int
 searchUIDGC s gcs =
     let
@@ -37,6 +63,22 @@ searchUIDGC s gcs =
             -1
 
 
+{-| kineticCalc
+-}
 kineticCalc : Int -> ( Float, Float ) -> Float
 kineticCalc mass ( vx, vy ) =
     toFloat mass * (vx * vx + vy * vy) / 10000
+
+
+{-| addenergy
+-}
+addenergy : Float -> Float -> Float
+addenergy ori del =
+    if ori + del >= 2000 then
+        2000
+
+    else if ori + del <= 0 then
+        0
+
+    else
+        ori + del

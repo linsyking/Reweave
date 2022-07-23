@@ -1,4 +1,36 @@
-module Lib.Coordinate.Coordinates exposing (..)
+module Lib.Coordinate.Coordinates exposing
+    ( floatpairadd
+    , fixedPosToReal
+    , posToReal
+    , widthToReal
+    , heightToReal
+    , maxHandW
+    , getStartPoint
+    , judgeMouse
+    , fromMouseToReal
+    )
+
+{-| This is the doc for this module
+
+@docs floatpairadd
+
+@docs fixedPosToReal
+
+@docs posToReal
+
+@docs widthToReal
+
+@docs heightToReal
+
+@docs maxHandW
+
+@docs getStartPoint
+
+@docs judgeMouse
+
+@docs fromMouseToReal
+
+-}
 
 import Base exposing (GlobalData)
 import Constants exposing (plHeight, plWidth)
@@ -8,16 +40,22 @@ import Constants exposing (plHeight, plWidth)
 --- Transform Coordinates
 
 
+{-| floatpairadd
+-}
 floatpairadd : ( Float, Float ) -> ( Float, Float ) -> ( Float, Float )
 floatpairadd ( x, y ) ( z, w ) =
     ( x + z, y + w )
 
 
+{-| fixedPosToReal
+-}
 fixedPosToReal : GlobalData -> ( Int, Int ) -> ( Float, Float )
 fixedPosToReal gd ( x, y ) =
     floatpairadd (posToReal gd ( x, y )) ( gd.startLeft, gd.startTop )
 
 
+{-| posToReal
+-}
 posToReal : GlobalData -> ( Int, Int ) -> ( Float, Float )
 posToReal gd ( x, y ) =
     let
@@ -30,6 +68,8 @@ posToReal gd ( x, y ) =
     ( toFloat realWidth * (toFloat x / toFloat (plWidth - 1)), toFloat realHeight * (toFloat y / toFloat (plHeight - 1)) )
 
 
+{-| widthToReal
+-}
 widthToReal : GlobalData -> Int -> Float
 widthToReal gd x =
     let
@@ -39,6 +79,8 @@ widthToReal gd x =
     toFloat realWidth * (toFloat x / toFloat (plWidth - 1))
 
 
+{-| heightToReal
+-}
 heightToReal : GlobalData -> Int -> Float
 heightToReal gd x =
     let
@@ -48,6 +90,8 @@ heightToReal gd x =
     toFloat realHeight * (toFloat x / toFloat (plHeight - 1))
 
 
+{-| maxHandW
+-}
 maxHandW : ( Int, Int ) -> ( Int, Int )
 maxHandW ( w, h ) =
     if w * 9 > h * 16 then
@@ -57,6 +101,8 @@ maxHandW ( w, h ) =
         ( w, floor (toFloat (w * 9) / 16) )
 
 
+{-| getStartPoint
+-}
 getStartPoint : ( Int, Int ) -> ( Float, Float )
 getStartPoint ( w, h ) =
     let
@@ -73,6 +119,8 @@ getStartPoint ( w, h ) =
         ( 0, (toFloat h - fh) / 2 )
 
 
+{-| judgeMouse
+-}
 judgeMouse : GlobalData -> ( Float, Float ) -> ( Int, Int ) -> ( Int, Int ) -> Bool
 judgeMouse gd ( mx, my ) ( x, y ) ( w, h ) =
     let
@@ -98,6 +146,8 @@ judgeMouse gd ( mx, my ) ( x, y ) ( w, h ) =
         False
 
 
+{-| fromMouseToReal
+-}
 fromMouseToReal : GlobalData -> ( Float, Float ) -> ( Float, Float )
 fromMouseToReal gd ( px, py ) =
     ( px - gd.startLeft, py - gd.startTop )
