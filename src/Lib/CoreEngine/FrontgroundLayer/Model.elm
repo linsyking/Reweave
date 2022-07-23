@@ -211,8 +211,11 @@ updateModel msg gd lm ( model, t ) ggd =
                         let
                             ( newcs, newmsg, newgd ) =
                                 updateSingleComponentByName UnknownMsg (ComponentStringDictMsg "Close" Dict.empty) gd t "Menu" model.components
+
+                            ( ( nmodel, nggd, nmsg ), ngd ) =
+                                dealAllComponentMsg newmsg { model | components = newcs, ispaused = False } newgd { ggd | ingamepause = False, settingpause = False }
                         in
-                        dealAllComponentMsg newmsg { model | components = newcs, ispaused = False } newgd { ggd | ingamepause = False, settingpause = False }
+                        ( ( nmodel, nggd, nmsg ++ [ ( LayerName "Game", LayerStringMsg "clearPlayerInput" ) ] ), ngd )
 
                     else
                         let
