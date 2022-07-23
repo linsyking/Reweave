@@ -37,6 +37,7 @@ import Lib.CoreEngine.GameComponents.Player.InputHandler exposing (changePlayerV
 import Lib.CoreEngine.GameComponents.Player.Movement exposing (solidCollisionMove)
 import Lib.CoreEngine.GameComponents.Player.StatesControl exposing (stateControl)
 import Lib.CoreEngine.Physics.Acceleration exposing (putAccOn)
+import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos)
 import Lib.CoreEngine.Physics.Velocity exposing (changeCVel)
 import Lib.DefinedTypes.Parser exposing (dgetPlayer, dsetPlayer)
 
@@ -232,26 +233,43 @@ updateModel msg gct ggd gd ( d, t ) =
                             let
                                 ( _, gbvy ) =
                                     icd.velocity
+
+                                ( _, pvy ) =
+                                    d.velocity
                             in
                             if List.length bs >= 2 then
-                                let
-                                    ( _, pvy ) =
-                                        d.velocity
-                                in
-                                if pvy < -150 || gbvy > 100 then
+                                if pvy < -100 || gbvy > 100 then
                                     -- Rebound!
                                     ( reboundPlayer gbvy d, [ GameActorUidMsg icd.uid (GameStringMsg "die") ], ggd )
 
                                 else
-                                    -- Die
-                                    ( { d | status = Dead t }, [], ggd )
+                                    let
+                                        ( _, ( _, y1 ) ) =
+                                            getBoxPos d.position d.simplecheck
+
+                                        ( ( _, y2 ), _ ) =
+                                            getBoxPos icd.position icd.simplecheck
+                                    in
+                                    if y1 > y2 && y1 - y2 < 6 then
+                                        -- Rebound
+                                        ( reboundPlayer gbvy d, [ GameActorUidMsg icd.uid (GameStringMsg "die") ], ggd )
+
+                                    else
+                                        -- Die
+                                        ( { d | status = Dead t }, [], ggd )
 
                             else
                                 case bs of
                                     [ xx ] ->
                                         case xx.name of
                                             "col" ->
-                                                ( { d | status = Dead t }, [], ggd )
+                                                if pvy < -500 || gbvy > 100 then
+                                                    -- Rebound!
+                                                    ( reboundPlayer gbvy d, [ GameActorUidMsg icd.uid (GameStringMsg "die") ], ggd )
+
+                                                else
+                                                    -- Die
+                                                    ( { d | status = Dead t }, [], ggd )
 
                                             "reb" ->
                                                 ( reboundPlayer gbvy d, [ GameActorUidMsg icd.uid (GameStringMsg "die") ], ggd )
@@ -261,6 +279,23 @@ updateModel msg gct ggd gd ( d, t ) =
 
                                     _ ->
                                         ( d, [], ggd )
+
+                        "ball" ->
+                            let
+                                ( pvx, pvy ) =
+                                    icd.velocity
+
+                                ( vx, vy ) =
+                                    d.velocity
+
+                                ( rvx, rvy ) =
+                                    ( pvx - vx, pvy - vy )
+                            in
+                            if abs rvx > 100 || abs rvy > 100 then
+                                ( { d | velocity = ( rvx / 2, rvy / 2 ) }, [], ggd )
+
+                            else
+                                ( { d | velocity = ( rvx * 1.3, rvy * 1.5 ) }, [], ggd )
 
                         _ ->
                             ( d, [], ggd )

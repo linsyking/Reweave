@@ -36,10 +36,14 @@ checkCollision ggd d =
 
         newnewv =
             if isOnground d ggd then
-                ( 0, newvy )
+                if abs newvx < 30 then
+                    ( 0, newvy )
+
+                else
+                    ( newvx / 1.1, newvy )
 
             else
-                ( newvx / 1.0001, newvy )
+                ( newvx, newvy )
     in
     { d | velocity = newnewv }
 
