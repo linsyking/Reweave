@@ -23,7 +23,7 @@ import Lib.Component.Base exposing (DefinedTypes(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
 import Lib.CoreEngine.GameLayer.Common exposing (addenergy)
-import Lib.DefinedTypes.Parser exposing (dgetbool, dgetint)
+import Lib.DefinedTypes.Parser exposing (dgetbool, dgetint, dsetbool, dsetint)
 
 
 {-| initData
@@ -71,6 +71,8 @@ initModel _ gct =
                 Dict.fromList
                     [ ( "energy", CDInt info.energy )
                     , ( "recover", CDBool info.recoverable )
+                    , ( "isalive", CDBool True )
+                    , ( "deadtime", CDInt 0 )
                     ]
             , uid = info.uid
             }
@@ -86,50 +88,59 @@ updateModel mainMsg gct ggd _ ( d, t ) =
     let
         energy =
             dgetint d.extra "energy"
+
+        alive =
+            dgetbool d.extra "isalive"
+
+        deadtime =
+            dgetint d.extra "deadtime"
     in
     case gct of
         GameInterCollisionMsg "player" _ _ ->
-            case d.status of
-                Dead _ ->
-                    ( d, [], ggd )
+            if alive then
+                ( { d
+                    | extra =
+                        d.extra
+                            |> dsetbool "isalive" False
+                            |> dsetint "deadtime" t
+                  }
+                , []
+                , { ggd
+                    | energy =
+                        addenergy ggd.energy (toFloat energy)
+                  }
+                )
 
-                Alive ->
-                    ( { d | status = Dead t }
-                    , []
-                    , { ggd
-                        | energy =
-                            addenergy ggd.energy (toFloat energy)
-                      }
-                    )
+            else
+                ( d, [], ggd )
 
         _ ->
             case mainMsg of
                 Tick _ ->
-                    case d.status of
-                        Alive ->
-                            let
-                                ( px, py ) =
-                                    d.position
-                            in
-                            if modBy 70 t == 0 then
-                                ( { d | position = ( px, py + 2 ) }, [], ggd )
+                    if alive then
+                        let
+                            ( px, py ) =
+                                d.position
+                        in
+                        if modBy 70 t == 0 then
+                            ( { d | position = ( px, py + 2 ) }, [], ggd )
 
-                            else if modBy 70 t == 35 then
-                                ( { d | position = ( px, py - 2 ) }, [], ggd )
+                        else if modBy 70 t == 35 then
+                            ( { d | position = ( px, py - 2 ) }, [], ggd )
 
-                            else
-                                ( d, [], ggd )
+                        else
+                            ( d, [], ggd )
 
-                        Dead t0 ->
-                            let
-                                recover =
-                                    dgetbool d.extra "recover"
-                            in
-                            if recover && t - t0 >= 400 then
-                                ( { d | status = Alive }, [], ggd )
+                    else
+                        let
+                            recover =
+                                dgetbool d.extra "recover"
+                        in
+                        if recover && t - deadtime >= 400 then
+                            ( { d | extra = d.extra |> dsetbool "isalive" True }, [], ggd )
 
-                            else
-                                ( d, [], ggd )
+                        else
+                            ( d, [], ggd )
 
                 _ ->
                     ( d, [], ggd )

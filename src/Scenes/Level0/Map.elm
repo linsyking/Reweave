@@ -21,7 +21,7 @@ import Lib.Map.Zhongyuan exposing (buildplatforms, buildzystick)
 -}
 mapwidth : Int
 mapwidth =
-    200
+    280
 
 
 sds : Array2D.Array2D Int
@@ -63,5 +63,5 @@ mymap =
         |> buildlxrock ( 125, 59 )
         |> buildzystick ( 127, 53 )
         |> buildplatforms ( 133, 66 ) 8
-        |> buildplatforms ( 164, 25 ) 7
+        |> buildplatforms ( 164, 25 ) 29
         |> buildPillar ( 165, 25 ) 8

@@ -35,14 +35,11 @@ renderSolids ggd gd =
         ( cx2, cy2 ) =
             ( cx + 1920, cy + 1080 )
 
-        ( mw, mh ) =
-            ggd.mapsize
-
         ir =
-            List.range 0 mw
+            List.range (rfint cx - 10) (rfint cx2 + 10)
 
         jr =
-            List.range 0 mh
+            List.range (rfint cy - 10) (rfint cy2 + 10)
 
         sls =
             List.foldl

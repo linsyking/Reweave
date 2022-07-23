@@ -109,11 +109,11 @@ viewModel ( model, t ) gd =
         elapse =
             t - pt
     in
-    if model.commonData.started && elapse > 50 then
+    if model.commonData.started && elapse > 30 then
         viewLayer gd t model.commonData model.layers
 
     else if model.commonData.started then
-        group [ filter ("blur(" ++ String.fromInt (50 - elapse) ++ "px)") ]
+        group [ filter ("blur(" ++ String.fromInt (30 - elapse) ++ "px)") ]
             [ viewLayer gd t model.commonData model.layers
             ]
 

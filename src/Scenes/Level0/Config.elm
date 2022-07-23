@@ -81,9 +81,9 @@ initPlayer : Int -> PlayerInitPosition -> GameComponent
 initPlayer t pos =
     case pos of
         DefaultPlayerPosition ->
-            -- initGameComponent t (GamePlayerInit (PlayerInit ( 5590, 680 ))) Player.gameComponent
-            initGameComponent t (GamePlayerInit (PlayerInit ( 200, 2000 ))) Player.gameComponent
+            initGameComponent t (GamePlayerInit (PlayerInit ( 5400, 680 ))) Player.gameComponent
 
+        -- initGameComponent t (GamePlayerInit (PlayerInit ( 200, 2000 ))) Player.gameComponent
         CustomPlayerPosition x ->
             initGameComponent t (GamePlayerInit (PlayerInit x)) Player.gameComponent
 
@@ -95,7 +95,7 @@ initActors t sp =
     Array.append
         (Array.fromList
             [ initGameComponent t (GameExitInit (ExitInit ( 6170, 630 ) "Level1" DefaultPlayerPosition 0 2)) Exit.gameComponent
-            , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2220 ) HorUp 100 False 3)) Spike.gameComponent
+            , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2220 ) HorUp 200 False 3)) Spike.gameComponent
             , initGameComponent t (GameSavePointInit (SavePointInit ( 2903, 1800 ) 4)) Save.gameComponent
             , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 3153, 1850 ) 300 True 5)) Energy.gameComponent
             , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 3463, 1850 ) 500 False 6)) Energy.gameComponent
@@ -108,6 +108,11 @@ initActors t sp =
         )
         (case sp of
             0 ->
+                Array.fromList
+                    [ initGameComponent t (GameCutSceneInit (CutSceneInit ( 2440, 1820 ) ( 100, 100 ) 88 dialogues True)) CutScene.gameComponent
+                    ]
+
+            2 ->
                 Array.fromList
                     [ initGameComponent t (GameCutSceneInit (CutSceneInit ( 2440, 1820 ) ( 100, 100 ) 88 dialogues True)) CutScene.gameComponent
                     ]
@@ -148,14 +153,15 @@ dialogues =
     , ( "master", "The larger energy you will use on the object." )
     , ( "master", "You also have an energy ball at the left top corner." )
     , ( "p_profile", "When I use energy, it will decrease, I guess!" )
-    , ( "master", "Yes, but when you are in the air," )
-    , ( "master", "You cannot use energy on yourself." )
-    , ( "master", "However you can still use energy on other objects." )
+    , ( "master", "Yes, it shows your energy." )
+    , ( "master", "Another important rule is that, in the air," )
+    , ( "master", "You cannot use energy on yourself," )
+    , ( "master", "But you can still use energy on other objects." )
     , ( "p_profile", "Alright." )
-    , ( "master", "There are many danger in your journey," )
+    , ( "master", "There are many dangers in your journey," )
     , ( "master", "Please be cautious." )
-    , ( "master", "I have prepares several easy tasks for you," )
-    , ( "master", "You can have a warm up." )
+    , ( "master", "I have prepared several easy tasks for you," )
+    , ( "master", "You can have a warmup." )
     ]
 
 
@@ -200,8 +206,9 @@ allChartlets sp =
            , ( \gd ggd -> renderText gd 30 "Energy Crystal" "Times New Roman" (getPositionUnderCamera ( 3390, 1960 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "(Irrecoverable)" "Times New Roman" (getPositionUnderCamera ( 3390, 1760 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "Hit the goomba to get on the platform!" "Times New Roman" (getPositionUnderCamera ( 3690, 1960 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "Jump at the last monent" "Times New Roman" (getPositionUnderCamera ( 4290, 1360 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "Press W to save the energy from the player the moment before you hit the ground!" "Times New Roman" (getPositionUnderCamera ( 4290, 1460 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "Jump at the last monent" "Times New Roman" (getPositionUnderCamera ( 4200, 1360 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "Press W to save the energy from the player the moment before you hit the ground!" "Times New Roman" (getPositionUnderCamera ( 4200, 1430 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "Ritgh Click on the top of your screen" "Times New Roman" (getPositionUnderCamera ( 4690, 1760 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "And don't forget to move right!" "Times New Roman" (getPositionUnderCamera ( 4690, 1830 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 40 "You are ready to go!" "Times New Roman" (getPositionUnderCamera ( 5390, 500 ) ggd), BehindActors )
            ]
