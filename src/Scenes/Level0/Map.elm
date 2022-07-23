@@ -52,3 +52,4 @@ mymap =
         |> buildlxrock ( 43, 60 )
         |> buildlxrock ( 41, 62 )
         |> buildlxrock ( 42, 61 )
+        |> buildrect ( 119, 0 ) ( 1, 120 ) 2

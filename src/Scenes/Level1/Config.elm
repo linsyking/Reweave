@@ -143,7 +143,7 @@ allChartlets : List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth
 allChartlets =
     [ ( \gd ggd ->
             renderSprite gd [] (getPositionUnderCamera ( 32, 1250 ) ggd) ( 32 * 14, 0 ) "dh/bigrock"
-      , BehindActors
+      , FrontSolids
       )
     , ( \gd ggd ->
             renderSprite gd [] (getPositionUnderCamera ( 32, 1450 ) ggd) ( 32 * 14, 0 ) "dh/bigrock"
