@@ -61,9 +61,9 @@ initButton description ( x, y ) len wid =
 initModel : Int -> LayerMsg -> CommonData -> ModelX
 initModel _ _ _ =
     { ico = 1
-    , start = initButton "Start" ( 930, 500 ) length width
-    , help = initButton "Help" ( 930, 600 ) length width
-    , map = initButton "Map" ( 930, 700 ) length width
+    , start = initButton "Start" ( 730, 950 ) length width
+    , help = initButton "Help" ( 930, 950 ) length width
+    , map = initButton "Map" ( 1130, 950 ) length width
     }
 
 
