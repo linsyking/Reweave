@@ -48,6 +48,7 @@ import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..), Sp
 import Lib.CoreEngine.GameComponents.Spike.Export as Spike
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
 import Lib.Render.Render exposing (renderSprite)
+import Lib.Resources.Monster exposing (isInCollected)
 import Scenes.Level1.Map exposing (mymap)
 
 
@@ -77,19 +78,25 @@ initPlayer t pos =
 
 {-| initActors
 -}
-initActors : Int -> Array GameComponent
-initActors t =
+initActors : Int -> List String -> Array GameComponent
+initActors t cs =
     Array.fromList
-        [ initGameComponent t (GameExitInit (ExitInit ( 120, 1240 ) "Level0" (CustomPlayerPosition ( 3446, 1800 )) 1 6)) Exit.gameComponent
-        , initGameComponent t (GameCutSceneInit (CutSceneInit ( 475, 1340 ) ( 100, 100 ) 5 dialoguesMaster True)) CutScene.gameComponent
-        , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2200 ) HorUp 1000 False 3)) Spike.gameComponent
-        , initGameComponent t (GameSpikeInit (SpikeInit ( 1440, 1900 ) HorUp 1 True 4)) Spike.gameComponent
-        , initGameComponent t (GameExitInit (ExitInit ( 3700, 1450 ) "Level2" DefaultPlayerPosition 0 7)) Exit.gameComponent
+        ([ initGameComponent t (GameExitInit (ExitInit ( 120, 1240 ) "Level0" (CustomPlayerPosition ( 3446, 1800 )) 1 6)) Exit.gameComponent
+         , initGameComponent t (GameCutSceneInit (CutSceneInit ( 475, 1340 ) ( 100, 100 ) 5 dialoguesMaster True)) CutScene.gameComponent
+         , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2200 ) HorUp 1000 False 3)) Spike.gameComponent
+         , initGameComponent t (GameSpikeInit (SpikeInit ( 1440, 1900 ) HorUp 1 True 4)) Spike.gameComponent
+         , initGameComponent t (GameExitInit (ExitInit ( 3700, 1450 ) "Level2" DefaultPlayerPosition 0 7)) Exit.gameComponent
 
-        -- , initGameComponent t (GameGoombaInit (GoombaInit ( 3425, 1928 ) ( 50, 0 ) 8)) Goomba.gameComponent
-        , initGameComponent t (GameBirdInit (BirdInit ( 3140, 1430 ) 10 9)) Bird.gameComponent
-        , initGameComponent t (GameCutSceneInit (CutSceneInit ( 3140, 1440 ) ( 100, 100 ) 10 dialoguesBird True)) CutScene.gameComponent
-        ]
+         -- , initGameComponent t (GameGoombaInit (GoombaInit ( 3425, 1928 ) ( 50, 0 ) 8)) Goomba.gameComponent
+         , initGameComponent t (GameCutSceneInit (CutSceneInit ( 3140, 1440 ) ( 100, 100 ) 10 dialoguesBird False)) CutScene.gameComponent
+         ]
+            ++ (if isInCollected "bird" cs then
+                    []
+
+                else
+                    [ initGameComponent t (GameBirdInit (BirdInit ( 3140, 1430 ) 10 9)) Bird.gameComponent ]
+               )
+        )
 
 
 dialoguesMaster : List ( String, String )
@@ -136,7 +143,7 @@ allChartlets : List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth
 allChartlets =
     [ ( \gd ggd ->
             renderSprite gd [] (getPositionUnderCamera ( 32, 1250 ) ggd) ( 32 * 14, 0 ) "dh/bigrock"
-      , BehindActors
+      , FrontSolids
       )
     , ( \gd ggd ->
             renderSprite gd [] (getPositionUnderCamera ( 32, 1450 ) ggd) ( 32 * 14, 0 ) "dh/bigrock"

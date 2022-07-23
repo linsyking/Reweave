@@ -35,7 +35,7 @@ game t sm =
     initEngine t
         (SceneEngineMsg
             { player = initPlayer t engineMsg.playerPosition
-            , actors = initActors t
+            , actors = initActors t engineMsg.collectedMonsters
             , chartlets = allChartlets
             , globalData =
                 initGameGlobalData engineMsg.energy engineMsg.collectedMonsters
