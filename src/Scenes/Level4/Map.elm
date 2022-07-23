@@ -30,6 +30,7 @@ mymap =
         |> buildrect ( 0, 0 ) ( 1, 70 ) 1
         |> buildrect ( 0, 68 ) ( 200, 2 ) 1
         -- bridge
+        |> buildrect ( 16, 67 ) ( 4, 2 ) 1
         |> buildrect ( 20, 65 ) ( 3, 3 ) 1
         |> buildrect ( 23, 62 ) ( 3, 3 ) 1
         |> buildrect ( 26, 59 ) ( 1, 3 ) 1

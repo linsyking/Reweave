@@ -41,7 +41,7 @@ mymap =
         |> buildbmlotus ( 68, 65 )
         |> buildbmlotus ( 72, 65 )
         |> buildrect ( 80, 64 ) ( 1, 10 ) 1
-        |> buildrect ( 89, 60 ) ( 1, 10 ) 1
+        |> buildrect ( 88, 60 ) ( 1, 10 ) 1
         |> buildPillar ( 101, 50 ) 5
         |> buildrect ( 110, 47 ) ( 10, 30 ) 2
         |> buildbmlotus ( 101, 49 )

@@ -38,5 +38,4 @@ allScenes =
     , ( "Level1", CEG.toCT Level1.scene )
     , ( "Level3", CEG.toCT Level3.scene )
     , ( "Level4boss", CEG.toCT Level4boss.scene )
-
     ]

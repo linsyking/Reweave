@@ -136,7 +136,7 @@ dialogues =
     , ( "master", "You also have an energy ball at the left top corner." )
     , ( "p_profile", "When I use energy, it will decrease, I guess!" )
     , ( "master", "Yes, but when you are in the air," )
-    , ( "master", "You cannot you energy on yourself." )
+    , ( "master", "You cannot use energy on yourself." )
     , ( "master", "However you can still use energy on other objects." )
     , ( "p_profile", "Alright." )
     , ( "master", "There are many danger in your journey," )
