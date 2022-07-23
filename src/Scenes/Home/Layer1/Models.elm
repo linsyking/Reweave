@@ -46,7 +46,7 @@ length =
 -}
 width : number
 width =
-    40
+    80
 
 
 {-| initButton
@@ -60,10 +60,7 @@ initButton description ( x, y ) len wid =
 -}
 initModel : Int -> LayerMsg -> CommonData -> ModelX
 initModel _ _ _ =
-    { ico = 1
-    , start = initButton "Start" ( 930, 500 ) length width
-    , help = initButton "Help" ( 930, 600 ) length width
-    , map = initButton "Map" ( 930, 700 ) length width
+    { start = initButton "Start" ( 890, 920 ) length width
     }
 
 
@@ -71,19 +68,26 @@ initModel _ _ _ =
 -}
 updateModel : Msg -> GlobalData -> LayerMsg -> ( ModelX, Int ) -> CommonData -> ( ( ModelX, CommonData, List ( LayerTarget, LayerMsg ) ), GlobalData )
 updateModel msg gd _ ( model, t ) cd =
-    case msg of
-        MouseDown 0 ( x, y ) ->
-            if judgeMouse gd ( x, y ) ( Tuple.first model.start.pos, Tuple.second model.start.pos ) ( length * 2, width * 2 ) then
-                ( ( model, cd, [ ( LayerParentScene, LayerIntMsg 1 ) ] ), gd )
+    if cd.started then
+        case msg of
+            MouseDown 0 ( x, y ) ->
+                if judgeMouse gd ( x, y ) ( Tuple.first model.start.pos, Tuple.second model.start.pos ) ( length * 2, width ) then
+                    ( ( model, cd, [ ( LayerParentScene, LayerIntMsg 1 ) ] ), gd )
 
-            else if judgeMouse gd ( x, y ) ( Tuple.first model.help.pos, Tuple.second model.help.pos ) ( length * 2, width * 2 ) then
-                ( ( model, cd, [ ( LayerParentScene, LayerIntMsg 2 ) ] ), gd )
+                else
+                    ( ( model, cd, [ ( NullLayerTarget, NullLayerMsg ) ] ), gd )
 
-            else if judgeMouse gd ( x, y ) ( Tuple.first model.map.pos, Tuple.second model.map.pos ) ( length * 2, width * 2 ) then
-                ( ( model, cd, [ ( LayerParentScene, LayerIntMsg 3 ) ] ), gd )
-
-            else
+            _ ->
                 ( ( model, cd, [ ( NullLayerTarget, NullLayerMsg ) ] ), gd )
 
-        _ ->
-            ( ( model, cd, [ ( NullLayerTarget, NullLayerMsg ) ] ), gd )
+    else
+        case msg of
+            MouseDown 0 ( x, y ) ->
+                if judgeMouse gd ( x, y ) ( 0, 0 ) ( 1920, 1080 ) then
+                    ( ( model, { cd | started = True }, [ ( LayerParentScene, LayerIntMsg 2 ) ] ), gd )
+
+                else
+                    ( ( model, cd, [ ( NullLayerTarget, NullLayerMsg ) ] ), gd )
+
+            _ ->
+                ( ( model, cd, [ ( NullLayerTarget, NullLayerMsg ) ] ), gd )

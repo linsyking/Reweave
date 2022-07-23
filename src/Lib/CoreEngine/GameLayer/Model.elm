@@ -384,6 +384,33 @@ getDSEnergy p m gd ggd =
         ( gpc, { ggd | energy = curenergy - gpc } )
 
 
+clearPlayerStatus : GameComponent -> GameComponent
+clearPlayerStatus gc =
+    let
+        player =
+            gc.data.extra
+
+        playerextra =
+            dgetPlayer player "model"
+
+        nokey =
+            BoundKey 0 0 0 0 0
+
+        newp =
+            { playerextra | originKeys = nokey }
+
+        newplayer =
+            dsetPlayer "model" newp player
+
+        odata =
+            gc.data
+
+        newdata =
+            { odata | extra = newplayer }
+    in
+    { gc | data = newdata }
+
+
 {-| dealParentMsg
 -}
 dealParentMsg : GameComponentTMsg -> GlobalData -> ( Model, Int ) -> GameGlobalData -> ( ( Model, GameGlobalData, List ( LayerTarget, LayerMsg ) ), GlobalData )
@@ -397,6 +424,9 @@ dealParentMsg gct gd ( model, t ) ggd =
 
         GameLStringMsg ("collectmonster" :: pic :: _) ->
             ( ( model, { ggd | collectedMonsters = ggd.collectedMonsters ++ [ pic ] }, [] ), gd )
+
+        GameInfoPositionMsg "save" p ->
+            ( ( model, ggd, [ ( LayerName "Frontground", LayerInfoPositionMsg "save" p ) ] ), gd )
 
         GameStringMsg "ignoreinput" ->
             let
@@ -422,7 +452,11 @@ dealParentMsg gct gd ( model, t ) ggd =
                     odata.velocity
 
                 newdata =
-                    { odata | extra = newplayer, velocity = ( ovx / 5, ovy / 5 ) }
+                    if ovx + ovy > 400 then
+                        { odata | extra = newplayer, velocity = ( ovx / 2, ovy / 2 ) }
+
+                    else
+                        { odata | extra = newplayer }
 
                 opp =
                     model.player
@@ -513,6 +547,13 @@ updateModel msg gd lm ( model, t ) ggd =
 
         LayerStringMsg "startlayer" ->
             ( ( model, { ggd | ingamepause = False }, [] ), gd )
+
+        LayerStringMsg "clearPlayerInput" ->
+            let
+                player =
+                    model.player
+            in
+            ( ( { model | player = clearPlayerStatus player }, ggd, [] ), gd )
 
         _ ->
             if ggd.ingamepause then

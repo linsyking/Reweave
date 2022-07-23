@@ -32,6 +32,7 @@ import Lib.CoreEngine.FrontgroundLayer.Common exposing (Model)
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInitPosition(..))
 import Lib.CoreEngine.GameLayer.Common exposing (addenergy)
 import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget(..))
+import Lib.Resources.Background exposing (findBackgroundImage)
 import Lib.Scene.Base exposing (EngineT, nullEngineT)
 import Time exposing (posixToMillis)
 
@@ -56,6 +57,7 @@ initModel t lm _ =
             , fpsrepo = []
             , ispaused = False
             , exitinfo = nullEngineT
+            , savePoint = Nothing
             }
 
         _ ->
@@ -64,6 +66,7 @@ initModel t lm _ =
             , fpsrepo = []
             , ispaused = False
             , exitinfo = nullEngineT
+            , savePoint = Nothing
             }
 
 
@@ -93,19 +96,29 @@ dealComponentsMsg rmsg model gd ggd =
             ( ( model, ggd, [ ( LayerParentScene, newexitmsg ) ] ), { gd | scenesFinished = gd.scenesFinished ++ [ ggd.currentScene ] } )
 
         ComponentLStringMsg ("restart" :: _) ->
-            ( ( model, ggd, [ ( LayerParentScene, LayerExitMsg model.exitinfo ggd.currentScene 0 ) ] ), gd )
+            -- Final Restart
+            case model.savePoint of
+                Nothing ->
+                    ( ( model, ggd, [ ( LayerParentScene, LayerExitMsg model.exitinfo ggd.currentScene 0 ) ] ), gd )
+
+                Just ( p, e ) ->
+                    let
+                        oldex =
+                            model.exitinfo
+                    in
+                    ( ( model, ggd, [ ( LayerParentScene, LayerExitMsg { oldex | playerPosition = CustomPlayerPosition p, energy = e } ggd.currentScene 0 ) ] ), gd )
 
         ComponentStringMsg "stopGameInput" ->
             ( ( model, ggd, [ ( LayerName "Game", LayerStringMsg "stopinput" ) ] ), gd )
 
         ComponentStringMsg "restart" ->
-            ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerRestartMsg 10 ) ] ), gd )
+            ( ( model, { ggd | ingamepause = True, settingpause = False }, [ ( LayerName "Frontground", LayerRestartMsg 10 ) ] ), gd )
 
         ComponentStringMsg "OnClose" ->
             ( ( model, ggd, [] ), gd )
 
         ComponentStringMsg "continue" ->
-            ( ( { model | ispaused = False }, { ggd | ingamepause = False, settingpause = False }, [] ), gd )
+            ( ( { model | ispaused = False }, { ggd | ingamepause = False, settingpause = False }, [ ( LayerName "Game", LayerStringMsg "clearPlayerInput" ) ] ), gd )
 
         ComponentStringMsg "startGameInput" ->
             ( ( model, ggd, [ ( LayerName "Game", LayerStringMsg "startinput" ) ] ), gd )
@@ -157,8 +170,11 @@ updateModel msg gd lm ( model, t ) ggd =
                             (if ggd.energy >= 500 then
                                 500
 
+                             else if ggd.energy <= 300 then
+                                300
+
                              else
-                                addenergy ggd.energy -(ggd.energy / 1.5)
+                                ggd.energy
                             )
                             DefaultPlayerPosition
                             ggd.collectedMonsters
@@ -169,6 +185,9 @@ updateModel msg gd lm ( model, t ) ggd =
               )
             , newgd
             )
+
+        LayerInfoPositionMsg "save" p ->
+            ( ( { model | savePoint = Just ( p, ggd.energy ) }, ggd, [] ), gd )
 
         _ ->
             case msg of
@@ -197,18 +216,21 @@ updateModel msg gd lm ( model, t ) ggd =
 
                 MouseDown 0 _ ->
                     let
-                        ( newcs, _, newgd ) =
+                        ( newcs, newmsg, newgd ) =
                             updateSingleComponentByName msg NullComponentMsg gd t "Menu" model.components
                     in
-                    ( ( { model | components = newcs }, ggd, [] ), newgd )
+                    dealAllComponentMsg newmsg { model | components = newcs } newgd ggd
 
                 KeyDown 27 ->
                     if model.ispaused then
                         let
                             ( newcs, newmsg, newgd ) =
                                 updateSingleComponentByName UnknownMsg (ComponentStringDictMsg "Close" Dict.empty) gd t "Menu" model.components
+
+                            ( ( nmodel, nggd, nmsg ), ngd ) =
+                                dealAllComponentMsg newmsg { model | components = newcs, ispaused = False } newgd { ggd | ingamepause = False, settingpause = False }
                         in
-                        dealAllComponentMsg newmsg { model | components = newcs, ispaused = False } newgd { ggd | ingamepause = False, settingpause = False }
+                        ( ( nmodel, nggd, nmsg ++ [ ( LayerName "Game", LayerStringMsg "clearPlayerInput" ) ] ), ngd )
 
                     else
                         let
@@ -219,6 +241,7 @@ updateModel msg gd lm ( model, t ) ggd =
                                             [ ( "collectedMonsters", CDLString ggd.collectedMonsters )
                                             , ( "currentScene", CDString ggd.currentScene )
                                             , ( "energy", CDInt (floor ggd.energy) )
+                                            , ( "bgimg", CDString (findBackgroundImage ggd.currentScene) )
                                             ]
                                         )
                                     )

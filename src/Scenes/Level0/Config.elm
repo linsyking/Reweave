@@ -6,7 +6,6 @@ module Scenes.Level0.Config exposing
     , dialogues
     , initGameGlobalData
     , allChartlets
-    , makemanybamboos
     )
 
 {-| This is the doc for this module
@@ -24,8 +23,6 @@ module Scenes.Level0.Config exposing
 @docs initGameGlobalData
 
 @docs allChartlets
-
-@docs makemanybamboos
 
 -}
 
@@ -48,6 +45,7 @@ import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..), SpikeInit)
 import Lib.CoreEngine.GameComponents.Spike.Export as Spike
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
+import Lib.Map.Longxi exposing (makemanybamboos)
 import Lib.Render.Render exposing (renderSprite)
 import Scenes.Level0.Map exposing (mymap)
 
@@ -61,13 +59,13 @@ initFrontGroundComponents t sp =
             Array.fromList
                 [ Hints.initComponent t (ComponentLStringMsg [ "50", "750", "700", "30", "Use A,D to move to left and right, Use C or Space to jump", "Use Esc to call the menu" ])
                 , Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "Beiming  北溟" ])
-                , Hints.initComponent t (ComponentLStringMsg [ "40", "1560", "100", "35", "Near A Temple 寺庙旁" ])
+                , Hints.initComponent t (ComponentLStringMsg [ "40", "1570", "100", "35", "Near A Temple 寺庙旁" ])
                 ]
 
         _ ->
             Array.fromList
                 [ Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "Beiming  北溟" ])
-                , Hints.initComponent t (ComponentLStringMsg [ "40", "1560", "100", "35", "Near A Temple  寺庙旁" ])
+                , Hints.initComponent t (ComponentLStringMsg [ "40", "1570", "100", "35", "Near A Temple  寺庙旁" ])
                 ]
 
 
@@ -91,14 +89,14 @@ initActors t sp =
     case sp of
         0 ->
             Array.fromList
-                [ initGameComponent t (GameExitInit (ExitInit ( 3700, 1910 ) "Level1" DefaultPlayerPosition 0 2)) Exit.gameComponent
+                [ initGameComponent t (GameExitInit (ExitInit ( 3650, 1750 ) "Level1" DefaultPlayerPosition 0 2)) Exit.gameComponent
                 , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2220 ) HorUp 100 False 3)) Spike.gameComponent
                 , initGameComponent t (GameCutSceneInit (CutSceneInit ( 2440, 1820 ) ( 100, 100 ) 88 dialogues True)) CutScene.gameComponent
                 ]
 
         1 ->
             Array.fromList
-                [ initGameComponent t (GameExitInit (ExitInit ( 3700, 1910 ) "Level1" DefaultPlayerPosition 0 2)) Exit.gameComponent
+                [ initGameComponent t (GameExitInit (ExitInit ( 3650, 1750 ) "Level1" DefaultPlayerPosition 0 2)) Exit.gameComponent
                 , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2220 ) HorUp 100 False 3)) Spike.gameComponent
                 ]
 
@@ -143,7 +141,7 @@ initGameGlobalData e col spstate =
 -}
 allChartlets : Int -> List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
 allChartlets sp =
-    makemanybamboos 9
+    makemanybamboos ( 70, 2093 ) 9
         ++ [ ( \gd ggd ->
                 renderSprite gd [] (getPositionUnderCamera ( 2140, 1520 ) ggd) ( 700, 0 ) "zy/building"
              , BehindActors
@@ -158,20 +156,3 @@ allChartlets sp =
                 _ ->
                     ( \_ _ -> group [] [], BehindActors )
            ]
-
-
-{-| makemanybamboos
--}
-makemanybamboos : Int -> List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
-makemanybamboos n =
-    List.foldl
-        (\i al ->
-            al
-                ++ [ ( \gd ggd ->
-                        renderSprite gd [] (getPositionUnderCamera ( 70 + i * 100, 2093 ) ggd) ( 100, 0 ) "bamboo"
-                     , BehindActors
-                     )
-                   ]
-        )
-        []
-        (List.range 0 (n - 1))

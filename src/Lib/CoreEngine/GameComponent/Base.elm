@@ -38,7 +38,9 @@ import Lib.CoreEngine.GameComponents.Fireball.Base exposing (FireballInit)
 import Lib.CoreEngine.GameComponents.Fish.Base exposing (FishInit)
 import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
 import Lib.CoreEngine.GameComponents.GoombaEmitter.Base exposing (GoombaEmitterInit)
+import Lib.CoreEngine.GameComponents.Monster.Base exposing (MonsterInit)
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit, PlayerInitPosition)
+import Lib.CoreEngine.GameComponents.SavePoint.Base exposing (SavePointInit)
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeInit)
 import Lib.CoreEngine.GameComponents.Turtle.Base exposing (TurtleInit)
 
@@ -89,7 +91,10 @@ type GameComponentTMsg
     | GameBoneInit BoneInit
     | GameEnergyCrystalInit EnergyCrystalInit
     | GameBallInit BallInit
+    | GameMonsterInit MonsterInit
     | GameStringIntMsg String Int
+    | GameInfoPositionMsg String ( Int, Int )
+    | GameSavePointInit SavePointInit
     | NullGameComponentMsg
 
 

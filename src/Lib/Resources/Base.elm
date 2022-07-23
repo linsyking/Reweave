@@ -59,6 +59,7 @@ igetSprite name dst =
 allTexture : List ( String, String )
 allTexture =
     [ ( "background", getResourcePath "img/DongHai.jpg" )
+    , ( "homepage", getResourcePath "img/homepage.jpg" )
     , ( "lcloud", getResourcePath "img/cloud.png" )
     , ( "spikeL", getResourcePath "img/spikeL.png" )
     , ( "spikeR", getResourcePath "img/spikeR.png" )
@@ -86,6 +87,9 @@ monsterSprites : List ( String, String )
 monsterSprites =
     [ ( "fish", getResourcePath "img/fish.png" )
     , ( "turtle", getResourcePath "img/turtle.png" )
+    , ( "bird", getResourcePath "img/bird.png" )
+    , ( "fox", getResourcePath "img/fox.png" )
+    , ( "lion", getResourcePath "img/lion.png" )
     , ( "goomba", getResourcePath "img/small.png" )
     , ( "goombadie", getResourcePath "img/smalldie.png" )
     ]
@@ -104,7 +108,7 @@ charaSprites =
     , ( "p_m4", getResourcePath "img/p_m4.png" )
     , ( "p_m5", getResourcePath "img/p_m5.png" )
     , ( "p_m6", getResourcePath "img/p_m6.png" )
-    , ( "p_profile", getResourcePath "img/profile.png" )
+    , ( "p_profile", getResourcePath "img/p_stand.png" )
     , ( "master", getResourcePath "img/master.png" )
     ]
 
@@ -183,6 +187,14 @@ otherSprites =
     , ( "ot/crystal", getResourcePath "img/crystal.png" )
     , ( "ot/crystaldead", getResourcePath "img/crystaldead.png" )
     , ( "ot/ball", getResourcePath "img/ball.png" )
+    ]
+        ++ flagSprites
+
+
+flagSprites : List ( String, String )
+flagSprites =
+    [ ( "ot/unsave", getResourcePath "img/unsave.png" )
+    , ( "ot/save", getResourcePath "img/save.png" )
     ]
 
 

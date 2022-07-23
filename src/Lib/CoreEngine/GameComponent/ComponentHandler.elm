@@ -89,26 +89,31 @@ updateSingleGameComponent msg ct ggd gd t n xs =
 updateSingleGameComponentByName : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> Int -> String -> Array GameComponent -> ( Array GameComponent, List GameComponentMsgType, GameGlobalData )
 updateSingleGameComponentByName msg ct ggd gd t s xs =
     let
-        n =
+        ns =
             getGameComponentFromName s xs
     in
-    case getGameComponent n xs of
-        Just k ->
-            let
-                ( newx, newmsg, newggd ) =
-                    k.update msg ct ggd gd ( k.data, t )
-            in
-            ( Array.set n { k | data = newx } xs, newmsg, newggd )
+    List.foldl
+        (\n ( x, m, g ) ->
+            case getGameComponent n x of
+                Just k ->
+                    let
+                        ( newx, newmsg, newggd ) =
+                            k.update msg ct g gd ( k.data, t )
+                    in
+                    ( Array.set n { k | data = newx } x, m ++ newmsg, newggd )
 
-        Nothing ->
-            ( xs, [], ggd )
+                Nothing ->
+                    ( xs, [], ggd )
+        )
+        ( xs, [], ggd )
+        ns
 
 
 {-| getGameComponentFromName
 -}
-getGameComponentFromName : String -> Array GameComponent -> Int
+getGameComponentFromName : String -> Array GameComponent -> List Int
 getGameComponentFromName s xs =
-    Maybe.withDefault -1 (List.head (locate (\x -> x.name == s) xs))
+    locate (\x -> x.name == s) xs
 
 
 {-| genView

@@ -27,8 +27,5 @@ type alias Button =
 {-| ModelX
 -}
 type alias ModelX =
-    { ico : Int
-    , start : Button
-    , help : Button
-    , map : Button
+    { start : Button
     }

@@ -19,7 +19,7 @@ import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 -}
 component : Component
 component =
-    { name = "Map"
+    { name = "Audio"
     , data = initMap 0 NullComponentMsg
     , init = initMap
     , update = updateMap

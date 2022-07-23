@@ -17,7 +17,7 @@
             "elm-community/array-extra": "2.4.0",
             "elm-explorations/linear-algebra": "1.0.3",
             "ianmackenzie/elm-units": "2.9.0",
-            "joakin/elm-canvas": "5.0.0",
+            "linsyking/elm-canvas": "1.0.0",
             "tortus/elm-array-2d": "3.0.0"
         },
         "indirect": {

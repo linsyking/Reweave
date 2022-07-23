@@ -50,6 +50,7 @@ type LayerMsg
     | LayerCTMsg CTInfo
     | LayerExitMsg EngineT String Int
     | LayerRestartMsg Int
+    | LayerInfoPositionMsg String ( Int, Int )
     | NullLayerMsg
 
 

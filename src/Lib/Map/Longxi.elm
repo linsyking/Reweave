@@ -5,6 +5,7 @@ module Lib.Map.Longxi exposing
     , bulidlxgroundleft
     , buildlxgroundmiddle
     , buildlxlongground
+    , makemanybamboos
     )
 
 {-| This is the doc for this module
@@ -21,10 +22,18 @@ module Lib.Map.Longxi exposing
 
 @docs buildlxlongground
 
+@docs makemanybamboos
+
 -}
 
 import Array2D
+import Base exposing (GlobalData)
+import Canvas exposing (Renderable)
+import Lib.CoreEngine.Base exposing (GameGlobalData)
+import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
+import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
 import Lib.Map.Poly exposing (buildrect)
+import Lib.Render.Render exposing (renderSprite)
 import List exposing (foldl)
 
 
@@ -85,3 +94,20 @@ buildlxlongground ( x, y ) mn ss =
         |> bulidlxgroundleft ( x, y )
         |> bulidlxgroundright ( x + 8 + 2 * mn, y )
         |> buildlxgroundmiddle ( x + 8, y ) mn
+
+
+{-| makemanybamboos
+-}
+makemanybamboos : ( Int, Int ) -> Int -> List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
+makemanybamboos ( px, py ) n =
+    List.foldl
+        (\i al ->
+            al
+                ++ [ ( \gd ggd ->
+                        renderSprite gd [] (getPositionUnderCamera ( px + i * 100, py ) ggd) ( 100, 0 ) "bamboo"
+                     , BehindActors
+                     )
+                   ]
+        )
+        []
+        (List.range 0 (n - 1))

@@ -14,6 +14,7 @@ module Lib.Render.Solid exposing
 import Array2D
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable, group)
+import Canvas.Settings.Advanced exposing (rotate, transform)
 import Lib.CoreEngine.Base exposing (GameGlobalData, brickSize)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.Render.Render exposing (renderSprite, renderSpriteWithRev)
@@ -135,6 +136,10 @@ renderSingleBlock tp p ggd gd =
         19 ->
             -- zhongyuan stick
             renderSprite gd [] ( cpx - 10, cpy ) ( brickSize * 6, 0 ) "zy/stick"
+
+        21 ->
+            -- pillar
+            renderSprite gd [ transform [ rotate (degrees 90) ] ] ( cpx + 20, cpy - 10 ) ( brickSize * 6, 0 ) "zy/stick"
 
         _ ->
             group [] []
