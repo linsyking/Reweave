@@ -95,10 +95,6 @@ updateMap mainMsg comMsg globalData ( model, t ) =
         MouseDown 0 ( x, y ) ->
             if status then
                 if judgeMouse globalData ( x, y ) ( posX, posY ) ( width, height ) then
-                    let
-                        tmp =
-                            Debug.log "IN" 1
-                    in
                     ( model
                     , [ ComponentLStringMsg [ comType ] ]
                     , globalData

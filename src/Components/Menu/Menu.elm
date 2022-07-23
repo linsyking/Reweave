@@ -132,16 +132,20 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
         MouseDown _ _ ->
             let
                 ( tmpChildComponentsList, tmpChildComponentsMsg, tmpGlobalData ) =
-                    List.foldl
-                        (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
-                            let
-                                ( tmpCom, tmpComMsg, gD ) =
-                                    comModel.update mainMsg comMsg tmpGData ( comModel.data, t )
-                            in
-                            ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
-                        )
-                        ( [], [], globalData )
-                        childComponentsList
+                    if showStatus then
+                        List.foldl
+                            (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
+                                let
+                                    ( tmpCom, tmpComMsg, gD ) =
+                                        comModel.update mainMsg comMsg tmpGData ( comModel.data, t )
+                                in
+                                ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
+                            )
+                            ( [], [], globalData )
+                            childComponentsList
+
+                    else
+                        ( childComponentsList, [], globalData )
 
                 ( newChildComponentsList, tmpChildComponentsMsg1, newGlobalData ) =
                     componentInteract tmpChildComponentsList (List.concat tmpChildComponentsMsg) NullComponentMsg tmpGlobalData
