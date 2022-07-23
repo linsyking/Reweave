@@ -159,7 +159,17 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                             )
                             (List.concat tmpChildComponentsMsg)
                         )
-                        tmpChildComponentsMsg1
+                        (List.filter
+                            (\tmpMsg ->
+                                case tmpMsg of
+                                    NullComponentMsg ->
+                                        False
+
+                                    _ ->
+                                        True
+                            )
+                            tmpChildComponentsMsg1
+                        )
             in
             -- if judgeMouse globalData ( x, y ) ( 1100 - 30, 400 - 30 ) ( 2 * 30, 2 * 30 ) then
             --     ( model
