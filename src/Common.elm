@@ -83,7 +83,7 @@ initGlobalData =
     , scenesFinished = []
     , scenestarttime = 0
     , mousePos = ( 0, 0 )
-    , cursor = CursorNormal
+    , visualaid = True
     }
 
 

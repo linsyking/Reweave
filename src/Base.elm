@@ -60,7 +60,7 @@ type alias GlobalData =
     , scenesFinished : List String
     , scenestarttime : Int
     , mousePos : ( Float, Float )
-    , cursor : CursorType
+    , visualaid : Bool
     }
 
 

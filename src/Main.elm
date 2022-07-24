@@ -240,12 +240,17 @@ view : AudioData -> Model -> Html Msg
 view _ model =
     let
         cursor =
-            case model.currentGlobalData.cursor of
-                CursorNormal ->
-                    "crosshair"
+            if model.currentGlobalData.visualaid then
+                "crosshair"
 
-                CursorNone ->
-                    "none"
+            else
+                "auto"
+
+        -- case model.currentGlobalData.cursor of
+        --     CursorNormal ->
+        --         "crosshair"
+        --     CursorNone ->
+        --         "none"
     in
     Canvas.toHtmlWith
         { width = model.currentGlobalData.realWidth

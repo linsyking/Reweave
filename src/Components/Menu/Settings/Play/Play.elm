@@ -39,6 +39,7 @@ initMap _ comMsg =
                         , ( "posX", CDInt 560 )
                         , ( "posY", CDInt 500 )
                         , ( "Type", CDString "continue" )
+                        , ( "Text", CDString "Continue" )
                         , ( "Width", CDInt 160 )
                         , ( "Height", CDInt 50 )
                         ]
@@ -49,6 +50,7 @@ initMap _ comMsg =
                         , ( "posX", CDInt 560 )
                         , ( "posY", CDInt 550 )
                         , ( "Type", CDString "restart" )
+                        , ( "Text", CDString "Restart" )
                         , ( "Width", CDInt 140 )
                         , ( "Height", CDInt 50 )
                         ]
@@ -59,7 +61,18 @@ initMap _ comMsg =
                         , ( "posX", CDInt 560 )
                         , ( "posY", CDInt 600 )
                         , ( "Type", CDString "skipcutscene" )
+                        , ( "Text", CDString "Skip Cutscene" )
                         , ( "Width", CDInt 200 )
+                        , ( "Height", CDInt 50 )
+                        ]
+
+                "VisualAid" ->
+                    Dict.fromList
+                        [ ( "show", CDBool True )
+                        , ( "posX", CDInt 800 )
+                        , ( "posY", CDInt 500 )
+                        , ( "Type", CDString "visualaid" )
+                        , ( "Width", CDInt 350 )
                         , ( "Height", CDInt 50 )
                         ]
 
@@ -155,5 +168,20 @@ viewMap ( model, _ ) globalData =
 
         posY =
             dgetint model "posY"
+
+        ctype =
+            dgetString model "Type"
     in
-    renderText globalData 30 (dgetString model "Type") "Courier New" ( posX, posY )
+    if ctype == "visualaid" then
+        let
+            turnedon =
+                globalData.visualaid
+        in
+        if turnedon then
+            renderText globalData 30 "Turn off Visual Aid" "Courier New" ( posX, posY )
+
+        else
+            renderText globalData 30 "Turn on Visual Aid" "Courier New" ( posX, posY )
+
+    else
+        renderText globalData 30 (dgetString model "Text") "Courier New" ( posX, posY )

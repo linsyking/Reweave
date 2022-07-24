@@ -83,7 +83,11 @@ view ( model, ot ) ggd gd =
 
           else
             group [] []
-        , renderCursor t model ggd gd
+        , if gd.visualaid then
+            renderCursor t model ggd gd
+
+          else
+            group [] []
         ]
 
 
@@ -99,7 +103,7 @@ fromenergytoreal kk =
 getCursor : Int -> Model -> GameGlobalData -> GlobalData -> ( Int, String )
 getCursor t model ggd gd =
     if model.ignoreInput then
-        ( 40, "whiteshadow" )
+        ( 40, "" )
 
     else if t - model.lastuseEnergyTime < 15 then
         ( 40, "whiteshadow" )

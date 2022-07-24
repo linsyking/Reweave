@@ -204,6 +204,12 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                     , globalData
                     )
 
+                (ComponentLStringMsg ("visualaid" :: _)) :: _ ->
+                    ( model
+                    , [ ComponentStringMsg "visualaid" ]
+                    , globalData
+                    )
+
                 _ ->
                     if showStatus then
                         ( model
