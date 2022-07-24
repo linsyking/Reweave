@@ -338,7 +338,13 @@ updateDialog mainMsg comMsg globalData ( model, t ) =
             case comMsg of
                 ComponentStringMsg str ->
                     if str == "Close" then
-                        ( model |> dsetstring "_Status" "OnDeBuild", [], globalData )
+                        ( model
+                            |> dsetint "_Timer" 0
+                            |> dsetstring "_Status" "OnDeBuild"
+                            |> dsetLComponent "_Child" []
+                        , []
+                        , globalData
+                        )
 
                     else
                         ( model, [], globalData )
