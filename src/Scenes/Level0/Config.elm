@@ -82,9 +82,9 @@ initPlayer : Int -> PlayerInitPosition -> GameComponent
 initPlayer t pos =
     case pos of
         DefaultPlayerPosition ->
-            -- initGameComponent t (GamePlayerInit (PlayerInit ( 5373, 680 ))) Player.gameComponent
-            initGameComponent t (GamePlayerInit (PlayerInit ( 200, 2000 ))) Player.gameComponent
+            initGameComponent t (GamePlayerInit (PlayerInit ( 7054, 680 ))) Player.gameComponent
 
+        -- initGameComponent t (GamePlayerInit (PlayerInit ( 200, 2000 ))) Player.gameComponent
         CustomPlayerPosition x ->
             initGameComponent t (GamePlayerInit (PlayerInit x)) Player.gameComponent
 
@@ -128,6 +128,7 @@ initActors t sp =
             , initGameComponent t (GameSpikeInit (SpikeInit ( 7767 + 24 * 32, 1410 - 20 * 32 ) HorUp 1 True 27)) Spike.gameComponent
             , initGameComponent t (GameSpikeInit (SpikeInit ( 7767 + 24 * 32, 1140 - 20 * 32 ) HorDown 1 True 28)) Spike.gameComponent
             , initGameComponent t (GameSavePointInit (SavePointInit ( 8257, 1832 ) 29)) Save.gameComponent
+            , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 7000, 700 ) 400 True 35)) Energy.gameComponent
             ]
         )
         (case sp of
@@ -256,7 +257,9 @@ allChartlets sp =
            , ( \gd ggd -> renderText gd 30 "Right click at the top of the screen and over the character" "Times New Roman" (getPositionUnderCamera ( 4390, 1760 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "And don't forget to move right!" "Times New Roman" (getPositionUnderCamera ( 4690, 1830 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "Try to use energy on the goombas! (Move them away)" "Times New Roman" (getPositionUnderCamera ( 5390, 900 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "You can press E to select yourself quickly" "Times New Roman" (getPositionUnderCamera ( 6690, 900 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "Press E to select yourself quickly" "Times New Roman" (getPositionUnderCamera ( 6690, 900 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 50 "Challenge Exercises" "Times New Roman" (getPositionUnderCamera ( 7290, 1100 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 40 "(Optional)" "Times New Roman" (getPositionUnderCamera ( 7400, 1200 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "Right click to release the energy at the correct position" "Times New Roman" (getPositionUnderCamera ( 7500, 2030 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "Try to take advantage of the visual aid system" "Times New Roman" (getPositionUnderCamera ( 7500, 2070 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "(You can also turn it off in the menu)" "Times New Roman" (getPositionUnderCamera ( 7500, 2110 ) ggd), BehindActors )

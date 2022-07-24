@@ -75,10 +75,12 @@ mymap =
         |> buildlxrock ( 185, 24 )
         |> buildlxrock ( 203, 24 )
         |> buildplatforms ( 225, 61 ) 10
+        |> buildplatforms ( 230, 9 ) 10
+        |> buildlxrock ( 222, 24 )
         |> buildPillar ( 243, 45 ) 3
-        |> buildPillar ( 243, 0 ) 7
+        |> buildPillar ( 243, 10 ) 5
         |> buildPillar ( 255, 40 ) 4
-        |> buildPillar ( 255, 0 ) 6
+        |> buildPillar ( 255, 10 ) 4
         |> buildPillar ( 267, 25 ) 7
-        |> buildPillar ( 267, 0 ) 3
+        |> buildPillar ( 267, 10 ) 1
         |> buildplatforms ( 268, 25 ) 6
