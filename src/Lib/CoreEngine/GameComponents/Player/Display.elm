@@ -70,7 +70,7 @@ view ( d, t ) ggd gd =
             List.append
                 (Tuple.first
                     (List.foldl
-                        (\( posX, posY, ( stype, dtime ) ) ( list, index ) ->
+                        (\( posX, posY, ( _, dtime ) ) ( list, index ) ->
                             case name of
                                 "inair" ->
                                     ( ( group [ alpha (0.1 * index) ] [ renderCharacterInAir (vy >= 0) rev gd (getPositionUnderCamera ( posX, posY ) ggd) ], 0 ) :: list, index + 1 )
