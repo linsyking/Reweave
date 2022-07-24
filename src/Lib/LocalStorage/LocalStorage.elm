@@ -16,7 +16,7 @@ module Lib.LocalStorage.LocalStorage exposing
 
 import Base exposing (LSInfo)
 import Dict
-import Json.Decode as Decode
+import Json.Decode as Decode exposing (at, decodeString)
 import Json.Encode as Encode
 
 
@@ -25,25 +25,11 @@ import Json.Encode as Encode
 decodeLSInfo : String -> LSInfo
 decodeLSInfo info =
     let
-        decodeJSON =
-            Decode.decodeString (Decode.dict (Decode.list Decode.string)) info
-
-        resultJSOND =
-            case decodeJSON of
-                Ok res ->
-                    res
-
-                _ ->
-                    Dict.empty
-
         oldcol =
-            Maybe.withDefault [] (Dict.get "collected" resultJSOND)
-
-        oldlevels =
-            Maybe.withDefault [] (Dict.get "level" resultJSOND)
+            Result.withDefault [] (decodeString (at [ "collected" ] (Decode.list Decode.string)) info)
 
         oldlevel =
-            Maybe.withDefault "Level0" (List.head oldlevels)
+            Result.withDefault "Level0" (decodeString (at [ "level" ] Decode.string) info)
     in
     LSInfo oldcol oldlevel
 
@@ -53,13 +39,10 @@ decodeLSInfo info =
 encodeLSInfo : LSInfo -> String
 encodeLSInfo info =
     Encode.encode 0
-        (Encode.dict identity
-            (Encode.list Encode.string)
-            (Dict.fromList
-                [ ( "collected", info.collected )
-                , ( "level", [ info.level ] )
-                ]
-            )
+        (Encode.object
+            [ ( "collected", Encode.list Encode.string info.collected )
+            , ( "level", Encode.string info.level )
+            ]
         )
 
 
