@@ -19,6 +19,7 @@ import Constants exposing (..)
 import Lib.Component.Base exposing (ComponentTMsg(..))
 import Lib.Coordinate.Coordinates exposing (..)
 import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget(..))
+import Lib.LocalStorage.LocalStorage exposing (isFirstPlay)
 import Lib.Scene.Base exposing (..)
 import Scenes.Home.Layer1.Common exposing (..)
 import Scenes.Home.LayerBase exposing (CommonData)
@@ -48,7 +49,7 @@ updateModel msg gd _ ( model, t ) cd =
         case msg of
             MouseDown 0 ( x, y ) ->
                 if model.start.display && judgeMouse gd ( x, y ) ( Tuple.first model.start.pos, Tuple.second model.start.pos ) ( model.start.length, model.start.width ) then
-                    ( ( model, cd, [ ( LayerParentScene, LayerIntMsg 1 ) ] ), { gd | localstorage = LSInfo [] "Level0" } )
+                    ( ( model, cd, [ ( LayerParentScene, LayerIntMsg 1 ) ] ), { gd | localstorage = LSInfo [] "Level0" 300 ( -1, -1 ) } )
 
                 else if model.continue.display && judgeMouse gd ( x, y ) ( Tuple.first model.continue.pos, Tuple.second model.continue.pos ) ( model.continue.length, model.continue.width ) then
                     ( ( model, cd, [ ( LayerParentScene, LayerIntMsg 3 ) ] ), gd )
@@ -69,7 +70,7 @@ updateModel msg gd _ ( model, t ) cd =
                     ( ( model, cd, [ ( NullLayerTarget, NullLayerMsg ) ] ), gd )
 
             _ ->
-                if gd.localstorage.level == "Level0" && gd.localstorage.collected == [] then
+                if isFirstPlay gd.localstorage then
                     ( ( model, cd, [ ( NullLayerTarget, NullLayerMsg ) ] ), gd )
 
                 else

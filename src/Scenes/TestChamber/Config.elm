@@ -83,10 +83,10 @@ initPlayer t pos =
 initActors : Int -> Array GameComponent
 initActors t =
     Array.fromList
-        [ initGameComponent t (GameGoombaInit (GoombaInit ( 1200, 1800 ) ( 0, 0 ) 4)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 1000, 1800 ) ( 0, 0 ) 5)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 2000, 800 ) ( 0, 0 ) 2)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 3500, 500 ) ( 0, 0 ) 3)) Goomba.gameComponent
+        [ initGameComponent t (GameGoombaInit (GoombaInit ( 1200, 1800 ) ( 0, 0 ) 50 4)) Goomba.gameComponent
+        , initGameComponent t (GameGoombaInit (GoombaInit ( 1000, 1800 ) ( 0, 0 ) 50 5)) Goomba.gameComponent
+        , initGameComponent t (GameGoombaInit (GoombaInit ( 2000, 800 ) ( 0, 0 ) 50 2)) Goomba.gameComponent
+        , initGameComponent t (GameGoombaInit (GoombaInit ( 3500, 500 ) ( 0, 0 ) 50 3)) Goomba.gameComponent
         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 2200, 2000 ) 300 True 17)) EnergyCrystal.gameComponent
 
         -- , initGameComponent t (GameExitInit (ExitInit ( 3600, 1750 ) "Level4" 9)) Exit.gameComponent

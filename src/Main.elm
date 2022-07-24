@@ -221,7 +221,7 @@ update _ msg model =
                         ( { bnewmodel | audiorepo = stopAudio bnewmodel.audiorepo name }, Cmd.none, Audio.cmdNone )
 
                     _ ->
-                        ( updateSceneStartTime bnewmodel, Cmd.none, Audio.cmdNone )
+                        ( updateSceneStartTime bnewmodel, sendInfo (encodeLSInfo tmodel.currentGlobalData.localstorage), Audio.cmdNone )
 
 
 {-| subscriptions

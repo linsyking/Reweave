@@ -77,7 +77,11 @@ handleLayerMsg gd lmsg ( model, _ ) =
                 ( model, SOPlayAudio "bgm" "./assets/audio/music.mp3" ALoop )
 
             else if i == 3 then
-                ( model, SOChangeScene ( SceneEngineTMsg (EngineT 300 DefaultPlayerPosition gd.localstorage.collected 0), gd.localstorage.level ) )
+                if gd.localstorage.initPosition == ( -1, -1 ) then
+                    ( model, SOChangeScene ( SceneEngineTMsg (EngineT gd.localstorage.energy DefaultPlayerPosition gd.localstorage.collected 0), gd.localstorage.level ) )
+
+                else
+                    ( model, SOChangeScene ( SceneEngineTMsg (EngineT gd.localstorage.energy (CustomPlayerPosition gd.localstorage.initPosition) gd.localstorage.collected 0), gd.localstorage.level ) )
 
             else
                 ( model, NullSceneOutputMsg )

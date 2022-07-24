@@ -102,9 +102,9 @@ initActors t =
         , initGameComponent t (GameBoneInit (BoneInit ( 3550, 2000 ) 250 25)) Bone.gameComponent
         , initGameComponent t (GameBoneInit (BoneInit ( 3800, 2000 ) 250 26)) Bone.gameComponent
         , initGameComponent t (GameGoombaEmitterInit (GoombaEmitterInit ( 2700, 2120 ) 360 ( -50, 0 ) 27)) GoombaEmitter.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 1000, 2000 ) ( 50, 0 ) 28)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 1100, 2000 ) ( -50, 0 ) 29)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 1840, 1300 ) ( -50, 0 ) 30)) Goomba.gameComponent
+        , initGameComponent t (GameGoombaInit (GoombaInit ( 1000, 2000 ) ( 50, 0 ) 50 28)) Goomba.gameComponent
+        , initGameComponent t (GameGoombaInit (GoombaInit ( 1100, 2000 ) ( -50, 0 ) 50 29)) Goomba.gameComponent
+        , initGameComponent t (GameGoombaInit (GoombaInit ( 1840, 1300 ) ( -50, 0 ) 50 30)) Goomba.gameComponent
         , initGameComponent t (GameMonsterInit (MonsterInit ( 4100, 1410 ) ( 400, 300 ) "fox" 21 31)) Monster.gameComponent
         , initGameComponent t (GameExitInit (ExitInit ( 4500, 1500 ) "Level4" DefaultPlayerPosition 0 32)) Exit.gameComponent
         ]

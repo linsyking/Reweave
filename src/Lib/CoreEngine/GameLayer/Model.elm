@@ -336,7 +336,17 @@ dealParentMsg gct gd ( model, t ) ggd =
             ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerRestartMsg 10 ) ] ), gd )
 
         GameLStringMsg ("collectmonster" :: pic :: _) ->
-            ( ( model, { ggd | collectedMonsters = ggd.collectedMonsters ++ [ pic ] }, [] ), gd )
+            let
+                newggd =
+                    { ggd | collectedMonsters = ggd.collectedMonsters ++ [ pic ] }
+
+                oldls =
+                    gd.localstorage
+
+                newls =
+                    { oldls | collected = newggd.collectedMonsters }
+            in
+            ( ( model, newggd, [] ), { gd | localstorage = newls } )
 
         GameInfoPositionMsg "save" p ->
             ( ( model, ggd, [ ( LayerName "Frontground", LayerInfoPositionMsg "save" p ) ] ), gd )
