@@ -21,10 +21,11 @@ import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable, group)
 import Canvas.Settings.Advanced exposing (alpha, filter)
 import Lib.Audio.Base exposing (AudioOption(..))
+import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInitPosition(..))
 import Lib.Layer.Base exposing (LayerMsg(..))
 import Lib.Layer.LayerHandler exposing (updateLayer, viewLayer)
 import Lib.Render.Render exposing (renderText)
-import Lib.Scene.Base exposing (SceneMsg(..), SceneOutputMsg(..))
+import Lib.Scene.Base exposing (EngineT, SceneMsg(..), SceneOutputMsg(..))
 import Scenes.Home.Common exposing (XModel)
 import Scenes.Home.Layer0.Export as L0
 import Scenes.Home.Layer0.Global as L0G
@@ -64,8 +65,8 @@ initModel t _ =
 
 {-| handleLayerMsg
 -}
-handleLayerMsg : LayerMsg -> ( XModel, Int ) -> ( XModel, SceneOutputMsg )
-handleLayerMsg lmsg ( model, _ ) =
+handleLayerMsg : GlobalData -> LayerMsg -> ( XModel, Int ) -> ( XModel, SceneOutputMsg )
+handleLayerMsg gd lmsg ( model, _ ) =
     case lmsg of
         LayerIntMsg i ->
             if i == 1 then
@@ -73,6 +74,9 @@ handleLayerMsg lmsg ( model, _ ) =
 
             else if i == 2 then
                 ( model, SOPlayAudio "bgm" "./assets/audio/music.mp3" ALoop )
+
+            else if i == 3 then
+                ( model, SOChangeScene ( SceneEngineTMsg (EngineT 300 DefaultPlayerPosition gd.localstorage.collected 0), gd.localstorage.level ) )
 
             else
                 ( model, NullSceneOutputMsg )
@@ -93,7 +97,7 @@ updateModel msg gd ( model, t ) =
             { model | commonData = newcd, layers = newdata }
 
         ( newmodel, newso ) =
-            List.foldl (\x ( y, _ ) -> handleLayerMsg x ( y, t )) ( nmodel, NullSceneOutputMsg ) msgs
+            List.foldl (\x ( y, _ ) -> handleLayerMsg gd x ( y, t )) ( nmodel, NullSceneOutputMsg ) msgs
     in
     ( newmodel, newso, newgd )
 
@@ -128,4 +132,8 @@ viewModel ( model, t ) gd =
 
 starttext : Int -> GlobalData -> Renderable
 starttext t gd =
-    group [ alpha (0.7 + sin (toFloat t / 10) / 3) ] [ renderText gd 60 "Click anywhere to start" "Times New Roman" ( 650, 500 ) ]
+    group [ alpha (0.7 + sin (toFloat t / 10) / 3) ]
+        [ renderText gd 60 "Click anywhere to start" "Times New Roman" ( 650, 900 )
+        , renderText gd 60 "Tips: This game features auto-save system" "Times New Roman" ( 450, 400 )
+        , renderText gd 60 "You don't have to finish the game in one run" "Times New Roman" ( 430, 480 )
+        ]

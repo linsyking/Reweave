@@ -31,7 +31,8 @@ type alias Data =
 -}
 nullData : Data
 nullData =
-    { start = initButton "Start" ( 960, 40 ) 15 10
+    { start = initButton "Start" False ( 960, 40 ) 15 10
+    , continue = initButton "Start" False ( 960, 40 ) 15 10
     }
 
 

@@ -84,6 +84,7 @@ initGlobalData =
     , scenestarttime = 0
     , mousePos = ( 0, 0 )
     , visualaid = True
+    , localstorage = LSInfo [] "Home"
     }
 
 
