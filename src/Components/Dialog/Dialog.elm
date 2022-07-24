@@ -157,7 +157,7 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
 {-| updateDialog
 -}
 updateDialog : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
-updateDialog mainMsg _ globalData ( model, t ) =
+updateDialog mainMsg comMsg globalData ( model, t ) =
     case mainMsg of
         Tick _ ->
             let
@@ -327,7 +327,16 @@ updateDialog mainMsg _ globalData ( model, t ) =
                 ( model, [], globalData )
 
         _ ->
-            ( model, [], globalData )
+            case comMsg of
+                ComponentStringMsg str ->
+                    if str == "Close" then
+                        ( model |> dsetstring "_Status" "OnDeBuild", [], globalData )
+
+                    else
+                        ( model, [], globalData )
+
+                _ ->
+                    ( model, [], globalData )
 
 
 {-| viewDialog
