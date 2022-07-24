@@ -8,7 +8,7 @@ port module Main exposing (main)
 
 import Audio exposing (AudioCmd, AudioData)
 import Base exposing (..)
-import Browser.Events exposing (onKeyDown, onKeyUp, onMouseDown, onResize)
+import Browser.Events exposing (onKeyDown, onKeyUp, onMouseDown, onMouseMove, onResize)
 import Canvas
 import Canvas.Settings exposing (fill)
 import Color
@@ -19,7 +19,7 @@ import Html.Attributes exposing (style)
 import Json.Decode as Decode
 import Json.Encode as Encode
 import Lib.Audio.Audio exposing (loadAudio, stopAudio)
-import Lib.Coordinate.Coordinates exposing (getStartPoint, maxHandW)
+import Lib.Coordinate.Coordinates exposing (fromMouseToReal, getStartPoint, maxHandW)
 import Lib.Layer.Base exposing (LayerMsg(..))
 import Lib.Resources.Base exposing (getTexture, saveSprite)
 import Lib.Scene.Base exposing (..)
@@ -149,6 +149,16 @@ update _ msg model =
             in
             ( { model | currentGlobalData = newgd }, Cmd.none, Audio.cmdNone )
 
+        MouseMove ( px, py ) ->
+            let
+                curgd =
+                    model.currentGlobalData
+
+                mp =
+                    fromMouseToReal curgd ( toFloat px, toFloat py )
+            in
+            ( { model | currentGlobalData = { curgd | mousePos = mp } }, Cmd.none, Audio.cmdNone )
+
         _ ->
             if Dict.isEmpty model.currentGlobalData.sprites then
                 ( model, Cmd.none, Audio.cmdNone )
@@ -176,16 +186,13 @@ update _ msg model =
                                 ntmodel
 
                             _ ->
-                                model
+                                { model | currentGlobalData = newgd }
 
                     bnewmodel =
                         { tmodel | currentData = sdt, currentGlobalData = newgd }
                 in
                 case som of
                     SOChangeScene ( tm, s ) ->
-                        -- let
-                        --     dsdd = Debug.log "changescene" (tmodel.currentGlobalData.scenesFinished)
-                        -- in
                         --- Load new scene
                         ( loadSceneByName tmodel s tm
                             |> resetSceneStartTime
@@ -223,6 +230,7 @@ subscriptions _ _ =
         , onKeyUp (Decode.map (\x -> KeyUp x) (Decode.field "keyCode" Decode.int))
         , onResize (\w h -> NewWindowSize ( w, h ))
         , onMouseDown (Decode.map3 (\b x y -> MouseDown b ( x, y )) (Decode.field "button" Decode.int) (Decode.field "clientX" Decode.float) (Decode.field "clientY" Decode.float))
+        , onMouseMove (Decode.map2 (\x y -> MouseMove ( x, y )) (Decode.field "clientX" Decode.int) (Decode.field "clientY" Decode.int))
         ]
 
 
@@ -230,6 +238,20 @@ subscriptions _ _ =
 -}
 view : AudioData -> Model -> Html Msg
 view _ model =
+    let
+        cursor =
+            if model.currentGlobalData.visualaid then
+                "crosshair"
+
+            else
+                "auto"
+
+        -- case model.currentGlobalData.cursor of
+        --     CursorNormal ->
+        --         "crosshair"
+        --     CursorNone ->
+        --         "none"
+    in
     Canvas.toHtmlWith
         { width = model.currentGlobalData.realWidth
         , height = model.currentGlobalData.realHeight
@@ -238,6 +260,7 @@ view _ model =
         [ style "left" (String.fromFloat model.currentGlobalData.startLeft)
         , style "top" (String.fromFloat model.currentGlobalData.startTop)
         , style "position" "fixed"
+        , style "cursor" cursor
         ]
         [ Canvas.shapes [ fill Color.white ] [ Canvas.rect ( 0, 0 ) (toFloat model.currentGlobalData.realWidth) (toFloat model.currentGlobalData.realHeight) ]
         , (getCurrentScene model).view ( model.currentData, model.time ) model.currentGlobalData

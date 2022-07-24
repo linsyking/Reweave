@@ -31,14 +31,14 @@ import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (isAlive)
-import Lib.CoreEngine.GameComponents.Player.Base exposing (SpaceLog(..), changebk, changehistory, fixnotrightdir, nullModel)
+import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerState(..), SpaceLog(..), changebk, changehistory, fixnotrightdir, nullModel)
 import Lib.CoreEngine.GameComponents.Player.InputFilter exposing (afterMove, preCheck)
 import Lib.CoreEngine.GameComponents.Player.InputHandler exposing (changePlayerVelocity)
 import Lib.CoreEngine.GameComponents.Player.Movement exposing (solidCollisionMove)
 import Lib.CoreEngine.GameComponents.Player.StatesControl exposing (stateControl)
 import Lib.CoreEngine.Physics.Acceleration exposing (putAccOn)
 import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos)
-import Lib.CoreEngine.Physics.Velocity exposing (changeCVel)
+import Lib.CoreEngine.Physics.Velocity exposing (calcVel, changeCVel)
 import Lib.DefinedTypes.Parser exposing (dgetPlayer, dsetPlayer)
 
 
@@ -160,8 +160,34 @@ updateModel msg gct ggd gd ( d, t ) =
                             afterFixCM =
                                 { aftermoveM | islastright = modfycontrol }
 
+                            recordState =
+                                if afterFixCM.recordTimer == 1 then
+                                    let
+                                        tmpListPos =
+                                            afterFixCM.listPosition
+
+                                        ( name, time ) =
+                                            case afterFixCM.playerStates of
+                                                PlayerStates (x :: _) ->
+                                                    ( x.stype, x.starttime )
+
+                                                _ ->
+                                                    ( "", 0 )
+
+                                        newListPos =
+                                            if List.length tmpListPos == 3 then
+                                                List.append (List.drop 1 tmpListPos) [ ( Tuple.first d.position, Tuple.second d.position, ( name, t - time ) ) ]
+
+                                            else
+                                                List.append tmpListPos [ ( Tuple.first d.position, Tuple.second d.position, ( name, t - time ) ) ]
+                                    in
+                                    { afterFixCM | recordTimer = 0, listPosition = newListPos }
+
+                                else
+                                    { afterFixCM | recordTimer = afterFixCM.recordTimer + 1 }
+
                             exportmodel =
-                                dsetPlayer "model" afterFixCM afterAccD.extra
+                                dsetPlayer "model" recordState afterAccD.extra
 
                             -- Check if is jump
                             -- isnewjump =

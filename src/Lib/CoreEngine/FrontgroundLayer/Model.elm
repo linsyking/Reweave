@@ -117,6 +117,9 @@ dealComponentsMsg rmsg model gd ggd =
         ComponentStringMsg "OnClose" ->
             ( ( model, ggd, [] ), gd )
 
+        ComponentStringMsg "visualaid" ->
+            ( ( model, ggd, [] ), { gd | visualaid = not gd.visualaid } )
+
         ComponentStringMsg "continue" ->
             ( ( { model | ispaused = False }, { ggd | ingamepause = False, settingpause = False }, [ ( LayerName "Game", LayerStringMsg "clearPlayerInput" ) ] ), gd )
 

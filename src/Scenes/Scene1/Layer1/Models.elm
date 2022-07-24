@@ -45,11 +45,7 @@ updateModel msg gd _ ( model, t ) cd =
                 ( ( model, cd, [] ), gd )
 
         _ ->
-            if model.s == 0 then
-                Debug.log "Audio" ( ( { model | s = 1 }, cd, [ ( LayerParentScene, LayerSoundMsg "glados" "./assets/audio/complain.wav" AOnce ) ] ), gd )
-
-            else
-                ( ( model, cd, [] ), gd )
+            ( ( model, cd, [] ), gd )
 
 
 

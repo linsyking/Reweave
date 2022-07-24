@@ -2,6 +2,7 @@ module Base exposing
     ( Msg(..)
     , GlobalData
     , Flags
+    , CursorType(..)
     )
 
 {-| This is the doc for this module
@@ -11,6 +12,8 @@ module Base exposing
 @docs GlobalData
 
 @docs Flags
+
+@docs CursorType
 
 -}
 
@@ -40,6 +43,7 @@ type Msg
     | PlaySoundGotTime String AudioOption Audio.Source Time.Posix
     | TextureLoaded String (Maybe Texture)
     | MouseDown Int ( Float, Float )
+    | MouseMove ( Int, Int )
     | UnknownMsg
 
 
@@ -55,7 +59,16 @@ type alias GlobalData =
     , sprites : Dict String Texture
     , scenesFinished : List String
     , scenestarttime : Int
+    , mousePos : ( Float, Float )
+    , visualaid : Bool
     }
+
+
+{-| CursorType
+-}
+type CursorType
+    = CursorNormal
+    | CursorNone
 
 
 {-| Flags

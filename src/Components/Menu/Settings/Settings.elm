@@ -44,6 +44,7 @@ initSettings _ _ =
                 , ( "Continue", MenuSetPlayE.initComponent 0 (ComponentStringMsg "Continue") )
                 , ( "Restart", MenuSetPlayE.initComponent 0 (ComponentStringMsg "Restart") )
                 , ( "Skip Cutscene", MenuSetPlayE.initComponent 0 (ComponentStringMsg "Skip Cutscene") )
+                , ( "VisualAid", MenuSetPlayE.initComponent 0 (ComponentStringMsg "VisualAid") )
                 ]
           )
         ]
