@@ -51,7 +51,7 @@ mymap =
         |> buildlxplain ( 46, 50 )
         |> buildPillar ( 47, 29 ) 4
         |> buildlxplain ( 60, 45 )
-        |> buildlxplain ( 64, 45 )
+        |> buildlxplain ( 66, 45 )
         |> buildlxrock ( 75, 68 )
         -- |> buildrect ( 88, 45 ) ( 10, 45 ) 1
         |> buildrect ( 87, 55 ) ( 10, 45 ) 2

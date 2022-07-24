@@ -59,20 +59,19 @@ import Scenes.Level0.Map exposing (mapwidth, mymap)
 {-| initFrontGroundComponents
 -}
 initFrontGroundComponents : Int -> Int -> Array Component
-initFrontGroundComponents t sp =
-    case sp of
-        0 ->
-            Array.fromList
-                [ Hints.initComponent t (ComponentLStringMsg [ "50", "750", "700", "30", "Use A,D to move to left and right, Use C or Space to jump", "Use Esc to call the menu" ])
-                , Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "Beiming  北溟" ])
-                , Hints.initComponent t (ComponentLStringMsg [ "40", "1570", "100", "35", "Near A Temple 寺庙旁" ])
-                ]
-
-        _ ->
-            Array.fromList
-                [ Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "Beiming  北溟" ])
-                , Hints.initComponent t (ComponentLStringMsg [ "40", "1570", "100", "35", "Near A Temple  寺庙旁" ])
-                ]
+initFrontGroundComponents t _ =
+    -- case sp of
+    --     0 ->
+    --         Array.fromList
+    --             [ Hints.initComponent t (ComponentLStringMsg [ "50", "750", "700", "30", "Use A,D to move to left and right, Use C or Space to jump", "Use Esc to call the menu" ])
+    --             , Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "Beiming  北溟" ])
+    --             , Hints.initComponent t (ComponentLStringMsg [ "40", "1570", "100", "35", "Near A Temple 寺庙旁" ])
+    --             ]
+    --     _ ->
+    Array.fromList
+        [ Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "Beiming  北溟" ])
+        , Hints.initComponent t (ComponentLStringMsg [ "40", "1570", "100", "35", "Near A Temple  寺庙旁" ])
+        ]
 
 
 {-| initPlayer
@@ -145,7 +144,8 @@ initCamera =
 -}
 dialogues : List ( String, String )
 dialogues =
-    [ ( "p_profile", "Hello, master." )
+    [ ( "", "(Press Enter to continue the dialogue)" )
+    , ( "p_profile", "Hello, master." )
     , ( "master", "Hi, I heard that you wanted to reweave all the monsters." )
     , ( "p_profile", "Yes, they were so crazy after they escaped from the sroll." )
     , ( "master", "I will teach you some techniques to move and fight better." )
