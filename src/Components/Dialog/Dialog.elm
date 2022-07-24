@@ -258,6 +258,10 @@ updateDialog mainMsg _ globalData ( model, t ) =
                     ( model |> dsetint "_Timer" timer, [], globalData )
 
         MouseDown _ ( x, y ) ->
+            let
+                tmp =
+                    Debug.log (Debug.toString mainMsg) 1
+            in
             if judgeMouse globalData ( x, y ) ( 189, 50 ) ( 1500, 300 ) then
                 let
                     childComponetsList =
