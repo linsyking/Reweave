@@ -17,7 +17,7 @@
     flags: {
       windowWidth : window.innerWidth,
       windowHeight : window.innerHeight,
-      info : localStorage.getItem("info")
+      info : localStorage.getItem("info")?localStorage.getItem("info"):""
     }
   });
 

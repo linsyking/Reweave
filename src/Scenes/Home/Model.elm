@@ -134,6 +134,6 @@ starttext : Int -> GlobalData -> Renderable
 starttext t gd =
     group [ alpha (0.7 + sin (toFloat t / 10) / 3) ]
         [ renderText gd 60 "Click anywhere to start" "Times New Roman" ( 650, 900 )
-        , renderText gd 60 "Tips: This game has an auto-save system" "Times New Roman" ( 460, 400 )
+        , renderText gd 60 "Tips: This game features auto-save system" "Times New Roman" ( 450, 400 )
         , renderText gd 60 "You don't have to finish the game in one run" "Times New Roman" ( 430, 480 )
         ]
