@@ -38,8 +38,6 @@ module Lib.CoreEngine.GameComponents.Player.Base exposing
 
 -}
 
-import Json.Encode exposing (int)
-
 
 {-| PlayerInit
 -}
