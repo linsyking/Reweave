@@ -3,6 +3,7 @@ module Base exposing
     , GlobalData
     , Flags
     , CursorType(..)
+    , LSInfo
     )
 
 {-| This is the doc for this module
@@ -14,6 +15,8 @@ module Base exposing
 @docs Flags
 
 @docs CursorType
+
+@docs LSInfo
 
 -}
 
@@ -61,6 +64,15 @@ type alias GlobalData =
     , scenestarttime : Int
     , mousePos : ( Float, Float )
     , visualaid : Bool
+    , localstorage : LSInfo
+    }
+
+
+{-| LSInfo
+-}
+type alias LSInfo =
+    { collected : List String
+    , level : String
     }
 
 
@@ -76,6 +88,7 @@ type CursorType
 type alias Flags =
     { windowWidth : Int
     , windowHeight : Int
+    , info : String
     }
 
 

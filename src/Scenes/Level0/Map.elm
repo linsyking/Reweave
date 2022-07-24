@@ -64,17 +64,18 @@ mymap =
         |> buildzystick ( 127, 53 )
         |> buildplatforms ( 133, 66 ) 8
         |> buildplatforms ( 164, 25 ) 15
-        |> buildPillar ( 165, 25 ) 8
+        |> buildPillar ( 163, 25 ) 8
         |> buildPillar ( 225, 26 ) 7
         |> buildzystick ( 179, 18 )
         |> buildzystick ( 185, 18 )
         |> buildzystick ( 191, 18 )
         |> buildlxrock ( 179, 24 )
         |> buildlxrock ( 203, 24 )
-        |> buildplatforms ( 225, 61 ) 17
+        |> buildplatforms ( 225, 61 ) 10
         |> buildPillar ( 243, 45 ) 3
         |> buildPillar ( 243, 0 ) 7
         |> buildPillar ( 255, 40 ) 4
         |> buildPillar ( 255, 0 ) 6
         |> buildPillar ( 267, 25 ) 7
         |> buildPillar ( 267, 0 ) 3
+        |> buildplatforms ( 268, 25 ) 6

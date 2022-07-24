@@ -21,6 +21,7 @@ import Json.Encode as Encode
 import Lib.Audio.Audio exposing (loadAudio, stopAudio)
 import Lib.Coordinate.Coordinates exposing (fromMouseToReal, getStartPoint, maxHandW)
 import Lib.Layer.Base exposing (LayerMsg(..))
+import Lib.LocalStorage.LocalStorage exposing (decodeLSInfo, encodeLSInfo)
 import Lib.Resources.Base exposing (getTexture, saveSprite)
 import Lib.Scene.Base exposing (..)
 import Lib.Scene.SceneLoader exposing (getCurrentScene, loadSceneByName)
@@ -30,6 +31,9 @@ import Time
 
 
 port audioPortToJS : Encode.Value -> Cmd msg
+
+
+port sendInfo : String -> Cmd msg
 
 
 port audioPortFromJS : (Decode.Value -> msg) -> Sub msg
@@ -83,7 +87,7 @@ init flags =
             getStartPoint ( flags.windowWidth, flags.windowHeight )
 
         newgd =
-            { oldgd | browserViewPort = ( flags.windowWidth, flags.windowHeight ), realWidth = gw, realHeight = gh, startLeft = fl, startTop = ft }
+            { oldgd | localstorage = decodeLSInfo flags.info, browserViewPort = ( flags.windowWidth, flags.windowHeight ), realWidth = gw, realHeight = gh, startLeft = fl, startTop = ft }
     in
     ( { ms | currentGlobalData = newgd }, Cmd.none, Audio.cmdNone )
 
@@ -196,7 +200,7 @@ update _ msg model =
                         --- Load new scene
                         ( loadSceneByName tmodel s tm
                             |> resetSceneStartTime
-                        , Cmd.none
+                        , sendInfo (encodeLSInfo tmodel.currentGlobalData.localstorage)
                         , Audio.cmdNone
                         )
 

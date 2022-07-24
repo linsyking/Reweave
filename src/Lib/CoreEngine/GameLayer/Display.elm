@@ -53,7 +53,7 @@ view ( model, ot ) ggd gd =
             model.player.data.position
     in
     group []
-        [ renderText gd 30 ("x:" ++ String.fromInt px ++ ", y:" ++ String.fromInt py) "Times New Roman" ( 200, 0 )
+        [ group [ alpha 0.2 ] [ renderText gd 15 ("(" ++ String.fromInt px ++ ", " ++ String.fromInt py ++ ")") "Times New Roman" ( 0, 0 ) ]
         , renderChartletsBehindActor model ggd gd
         , genView ggd gd t normal
         , if selected > 0 then
