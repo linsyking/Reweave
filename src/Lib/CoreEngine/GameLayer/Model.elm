@@ -335,6 +335,9 @@ dealParentMsg gct gd ( model, t ) ggd =
         GameStringMsg "restart" ->
             ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerRestartMsg 10 ) ] ), gd )
 
+        GameStringMsg "skipcutscene" ->
+            ( ( model, ggd, [ ( LayerName "Game", LayerStringMsg "skipcutscene" ) ] ), gd )
+
         GameLStringMsg ("collectmonster" :: pic :: _) ->
             ( ( model, { ggd | collectedMonsters = ggd.collectedMonsters ++ [ pic ] }, [] ), gd )
 

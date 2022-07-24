@@ -187,6 +187,7 @@ otherSprites =
     , ( "ot/crystal", getResourcePath "img/crystal.png" )
     , ( "ot/crystaldead", getResourcePath "img/crystaldead.png" )
     , ( "ot/ball", getResourcePath "img/ball.png" )
+    , ( "ot/close", getResourcePath "img/close.png" )
     ]
         ++ flagSprites
 
