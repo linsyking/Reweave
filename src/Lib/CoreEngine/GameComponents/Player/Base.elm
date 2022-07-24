@@ -38,6 +38,8 @@ module Lib.CoreEngine.GameComponents.Player.Base exposing
 
 -}
 
+import Json.Encode exposing (int)
+
 
 {-| PlayerInit
 -}
@@ -88,6 +90,8 @@ type alias Model =
     , playerStates : PlayerState
     , lastOriginKeys : BoundKey
     , islastright : Bool
+    , listPosition : List ( Int, Int, ( String, Int ) )
+    , recordTimer : Int
     }
 
 
@@ -102,6 +106,8 @@ nullModel =
     , playerStates = PlayerStates []
     , lastOriginKeys = BoundKey 0 0 0 0 0
     , islastright = True
+    , listPosition = []
+    , recordTimer = 0
     }
 
 

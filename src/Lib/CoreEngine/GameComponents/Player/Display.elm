@@ -55,6 +55,9 @@ view ( d, t ) ggd gd =
 
         okeys =
             model.originKeys
+
+        listPos =
+            model.listPosition
     in
     case d.status of
         Dead _ ->
@@ -64,25 +67,58 @@ view ( d, t ) ggd gd =
             ]
 
         _ ->
-            case name of
-                "inair" ->
-                    [ ( renderCharacterInAir (vy >= 0) rev gd (getPositionUnderCamera d.position ggd), 0 ) ]
+            List.append
+                (Tuple.first
+                    (List.foldl
+                        (\( posX, posY, ( stype, dtime ) ) ( list, index ) ->
+                            case name of
+                                "inair" ->
+                                    ( ( group [ alpha (0.1 * index) ] [ renderCharacterInAir (vy >= 0) rev gd (getPositionUnderCamera ( posX, posY ) ggd) ], 0 ) :: list, index + 1 )
 
-                "onground" ->
-                    if okeys.left == 0 && okeys.right == 0 then
-                        [ ( renderCharacterMove rev -1 gd (getPositionUnderCamera d.position ggd)
-                          , 0
-                          )
-                        ]
+                                "onground" ->
+                                    if okeys.left == 0 && okeys.right == 0 then
+                                        ( ( group [ alpha (0.1 * index) ] [ renderCharacterMove rev -1 gd (getPositionUnderCamera ( posX, posY ) ggd) ]
+                                          , 0
+                                          )
+                                            :: list
+                                        , index + 1
+                                        )
 
-                    else
-                        [ ( renderCharacterMove rev (getStateFromTime deltatime) gd (getPositionUnderCamera d.position ggd)
-                          , 0
-                          )
-                        ]
+                                    else
+                                        ( ( group [ alpha (0.1 * index) ] [ renderCharacterMove rev (getStateFromTime dtime) gd (getPositionUnderCamera ( posX, posY ) ggd) ]
+                                          , 0
+                                          )
+                                            :: list
+                                        , index + 1
+                                        )
 
-                _ ->
-                    []
+                                _ ->
+                                    ( ( group [] [], 0 ) :: list, index + 1 )
+                        )
+                        ( [], 0 )
+                        listPos
+                    )
+                )
+                (case name of
+                    "inair" ->
+                        [ ( renderCharacterInAir (vy >= 0) rev gd (getPositionUnderCamera d.position ggd), 0 ) ]
+
+                    "onground" ->
+                        if okeys.left == 0 && okeys.right == 0 then
+                            [ ( renderCharacterMove rev -1 gd (getPositionUnderCamera d.position ggd)
+                              , 0
+                              )
+                            ]
+
+                        else
+                            [ ( renderCharacterMove rev (getStateFromTime deltatime) gd (getPositionUnderCamera d.position ggd)
+                              , 0
+                              )
+                            ]
+
+                    _ ->
+                        []
+                )
 
 
 {-| getStateFromTime
