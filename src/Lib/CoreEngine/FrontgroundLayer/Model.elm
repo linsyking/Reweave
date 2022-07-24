@@ -93,7 +93,7 @@ dealComponentsMsg rmsg model gd ggd =
                 newexitmsg =
                     LayerExitMsg { originet | energy = newenergy, collectedMonsters = ggd.collectedMonsters } s 0
             in
-            ( ( model, ggd, [ ( LayerParentScene, newexitmsg ) ] ), { gd | scenesFinished = gd.scenesFinished ++ [ ggd.currentScene ], localstorage = LSInfo ggd.collectedMonsters s } )
+            ( ( model, ggd, [ ( LayerParentScene, newexitmsg ) ] ), { gd | scenesFinished = gd.scenesFinished ++ [ ggd.currentScene ], localstorage = LSInfo ggd.collectedMonsters s newenergy ( -1, -1 ) } )
 
         ComponentLStringMsg ("restart" :: _) ->
             -- Final Restart
@@ -193,7 +193,14 @@ updateModel msg gd lm ( model, t ) ggd =
             )
 
         LayerInfoPositionMsg "save" p ->
-            ( ( { model | savePoint = Just ( p, ggd.energy ) }, ggd, [] ), gd )
+            let
+                oldl =
+                    gd.localstorage
+
+                newl =
+                    { oldl | energy = ggd.energy, initPosition = p }
+            in
+            ( ( { model | savePoint = Just ( p, ggd.energy ) }, ggd, [] ), { gd | localstorage = newl } )
 
         _ ->
             case msg of

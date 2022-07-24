@@ -86,9 +86,9 @@ initPlayer t pos =
 initActors : Int -> Array GameComponent
 initActors t =
     Array.fromList
-        [ initGameComponent t (GameGoombaInit (GoombaInit ( 800, 2100 ) ( 0, 0 ) 3)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 1500, 1750 ) ( 50, 0 ) 4)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 1550, 1750 ) ( -50, 0 ) 5)) Goomba.gameComponent
+        [ initGameComponent t (GameGoombaInit (GoombaInit ( 800, 2100 ) ( 0, 0 ) 50 3)) Goomba.gameComponent
+        , initGameComponent t (GameGoombaInit (GoombaInit ( 1500, 1750 ) ( 50, 0 ) 50 4)) Goomba.gameComponent
+        , initGameComponent t (GameGoombaInit (GoombaInit ( 1550, 1750 ) ( -50, 0 ) 50 5)) Goomba.gameComponent
         , initGameComponent t (GameExitInit (ExitInit ( 3820, 140 ) "Level3" DefaultPlayerPosition 0 6)) Exit.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 590, 2183 ) HorUp 3 True 7)) Spike.gameComponent
         , initGameComponent t (GameBoneInit (BoneInit ( 1330, 2150 ) 150 8)) Bone.gameComponent
@@ -107,7 +107,7 @@ initActors t =
         , initGameComponent t (GameSavePointInit (SavePointInit ( 4291, 296 ) 19)) Save.gameComponent
         , initGameComponent t (GameMonsterInit (MonsterInit ( 3220, 1920 ) ( 400, 300 ) "lion" 21 20)) Monster.gameComponent
         , initGameComponent t (GameCutSceneInit (CutSceneInit ( 3220, 1920 ) ( 400, 300 ) 21 liontalkings False)) CutScene.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 94 * 32, 35 * 32 ) ( 0, 0 ) 22)) Goomba.gameComponent
+        , initGameComponent t (GameGoombaInit (GoombaInit ( 94 * 32, 35 * 32 ) ( 0, 0 ) 50 22)) Goomba.gameComponent
         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 36 * 32 + 20, 62 * 32 - 60 ) 300 True 23)) Energy.gameComponent
 
         -- , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 2670, 1060 ) 1000 True 24)) Energy.gameComponent

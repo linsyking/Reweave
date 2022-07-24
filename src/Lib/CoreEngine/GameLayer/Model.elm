@@ -336,7 +336,17 @@ dealParentMsg gct gd ( model, t ) ggd =
             ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerRestartMsg 10 ) ] ), gd )
 
         GameLStringMsg ("collectmonster" :: pic :: _) ->
-            ( ( model, { ggd | collectedMonsters = ggd.collectedMonsters ++ [ pic ] }, [] ), gd )
+            let
+                newggd =
+                    { ggd | collectedMonsters = ggd.collectedMonsters ++ [ pic ] }
+
+                oldls =
+                    gd.localstorage
+
+                newls =
+                    { oldls | collected = newggd.collectedMonsters }
+            in
+            ( ( model, newggd, [] ), { gd | localstorage = newls } )
 
         GameInfoPositionMsg "save" p ->
             ( ( model, ggd, [ ( LayerName "Frontground", LayerInfoPositionMsg "save" p ) ] ), gd )
@@ -692,7 +702,11 @@ updateModel msg gd lm ( model, t ) ggd =
 
                     MouseDown 2 mp ->
                         if model.ignoreInput then
-                            ( ( model, ggd, [] ), gd )
+                            let
+                                ( newactors, _, newggd ) =
+                                    updateSingleGameComponentByName msg NullGameComponentMsg ggd gd t "CutScene" model.actors
+                            in
+                            ( ( { model | actors = newactors }, newggd, [] ), gd )
 
                         else if t - model.lastuseEnergyTime < 15 then
                             ( ( model, ggd, [] ), gd )
@@ -791,7 +805,11 @@ updateModel msg gd lm ( model, t ) ggd =
 
                     MouseDown 0 _ ->
                         if model.ignoreInput then
-                            ( ( model, ggd, [] ), gd )
+                            let
+                                ( newactors, _, newggd ) =
+                                    updateSingleGameComponentByName msg NullGameComponentMsg ggd gd t "CutScene" model.actors
+                            in
+                            ( ( { model | actors = newactors }, newggd, [] ), gd )
 
                         else
                             let
