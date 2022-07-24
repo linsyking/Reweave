@@ -76,7 +76,7 @@ initPlayer t pos =
         DefaultPlayerPosition ->
             initGameComponent t (GamePlayerInit (PlayerInit ( 128, 1864 ))) Player.gameComponent
 
-        -- initGameComponent t (GamePlayerInit (PlayerInit ( 2065, 1320 ))) Player.gameComponent
+        -- initGameComponent t (GamePlayerInit (PlayerInit ( 3300, 30 ))) Player.gameComponent
         CustomPlayerPosition x ->
             initGameComponent t (GamePlayerInit (PlayerInit x)) Player.gameComponent
 
@@ -90,7 +90,7 @@ initActors t =
         , initGameComponent t (GameGoombaInit (GoombaInit ( 1500, 1750 ) ( 50, 0 ) 4)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 1550, 1750 ) ( -50, 0 ) 5)) Goomba.gameComponent
         , initGameComponent t (GameExitInit (ExitInit ( 3820, 140 ) "Level3" DefaultPlayerPosition 0 6)) Exit.gameComponent
-        , initGameComponent t (GameSpikeInit (SpikeInit ( 590, 2200 ) HorUp 3 True 7)) Spike.gameComponent
+        , initGameComponent t (GameSpikeInit (SpikeInit ( 590, 2183 ) HorUp 3 True 7)) Spike.gameComponent
         , initGameComponent t (GameBoneInit (BoneInit ( 1330, 2150 ) 150 8)) Bone.gameComponent
         , initGameComponent t (GameBoneInit (BoneInit ( 1460, 2150 ) 150 9)) Bone.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 46 * 32, 50 * 32 + 20 ) HorDown 2 True 10)) Spike.gameComponent
@@ -109,7 +109,8 @@ initActors t =
         , initGameComponent t (GameCutSceneInit (CutSceneInit ( 3220, 1920 ) ( 400, 300 ) 21 liontalkings False)) CutScene.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 94 * 32, 35 * 32 ) ( 0, 0 ) 22)) Goomba.gameComponent
         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 36 * 32 + 20, 62 * 32 - 60 ) 300 True 23)) Energy.gameComponent
-        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 2670, 1060 ) 1000 True 24)) Energy.gameComponent
+
+        -- , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 2670, 1060 ) 1000 True 24)) Energy.gameComponent
         ]
 
 

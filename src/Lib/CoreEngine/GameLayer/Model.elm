@@ -27,7 +27,7 @@ import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
 import Lib.CoreEngine.GameComponents.Player.Base exposing (BoundKey, PlayerInitPosition(..))
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameComponents.Player.FSM exposing (queryIsState)
-import Lib.CoreEngine.GameLayer.Common exposing (Model, addenergy, kineticCalc, searchNameGC, searchUIDGC)
+import Lib.CoreEngine.GameLayer.Common exposing (Model, addenergy, getDSEnergy, kineticCalc, searchNameGC, searchUIDGC)
 import Lib.CoreEngine.Physics.InterCollision exposing (gonnaInterColllide)
 import Lib.CoreEngine.Physics.NaiveCollision exposing (judgeInCamera)
 import Lib.CoreEngine.Physics.SolidCollision exposing (canMove, gonnaSolidCollide, movePointPlain)
@@ -297,93 +297,6 @@ interCollision _ t ggd gd gcs =
     ( appliedgc, appliedmsg, appliedggc )
 
 
-{-| calcDRate
--}
-calcDRate : ( Float, Float ) -> ( Float, Float ) -> ( Float, Float ) -> Float
-calcDRate p1 p2 ( w, h ) =
-    let
-        ( p1X, p1Y ) =
-            p1
-
-        ( p2X, p2Y ) =
-            p2
-
-        k =
-            (p2X - p1X) / (p2Y - p1Y)
-
-        k1 =
-            p1X / (p1Y - h)
-
-        k2 =
-            (w - p1X) / (h - p1Y)
-
-        k3 =
-            p1X / p1Y
-
-        k4 =
-            (p1X - w) / p1Y
-    in
-    if p2Y > p1Y && k >= k1 && k <= k2 then
-        1 - (h - p2Y) / (h - p1Y)
-
-    else if p2Y < p1Y && k >= k4 && k <= k3 then
-        1 - p2Y / p1Y
-
-    else if p2X < p1X && (k < k1 || k > k3) then
-        1 - p2X / p1X
-
-    else if p2X > p1X && (k < k4 || k > k2) then
-        1 - (w - p2X) / (w - p1X)
-
-    else if p1Y == p2Y && p2X > p1X then
-        (p2X - p1X) / (w - p1X)
-
-    else if p1Y == p2Y && p2X < p1X then
-        (p1X - p2X) / p1X
-
-    else
-        0
-
-
-{-| calcRPer
--}
-calcRPer : ( Float, Float ) -> ( Float, Float ) -> GlobalData -> Float
-calcRPer ( px, py ) ( mx, my ) gd =
-    let
-        ds =
-            calcDRate ( px, py ) ( mx, my ) ( toFloat gd.realWidth, toFloat gd.realHeight )
-    in
-    if ds > 0.9 then
-        1
-
-    else
-        ds
-
-
-{-| getDSEnergy
--}
-getDSEnergy : ( Float, Float ) -> ( Float, Float ) -> GlobalData -> GameGlobalData -> ( Float, GameGlobalData )
-getDSEnergy p m gd ggd =
-    let
-        curenergy =
-            ggd.energy
-
-        pc =
-            calcRPer p m gd
-
-        gpc =
-            curenergy * pc
-    in
-    if pc < 0.2 then
-        ( 0, ggd )
-
-    else if pc >= 1 then
-        ( curenergy, { ggd | energy = 0 } )
-
-    else
-        ( gpc, { ggd | energy = curenergy - gpc } )
-
-
 clearPlayerStatus : GameComponent -> GameComponent
 clearPlayerStatus gc =
     let
@@ -547,6 +460,16 @@ updateModel msg gd lm ( model, t ) ggd =
 
         LayerStringMsg "startlayer" ->
             ( ( model, { ggd | ingamepause = False }, [] ), gd )
+
+        LayerStringMsg "skipcutscene" ->
+            let
+                alc =
+                    model.actors
+
+                ( newactors, _, newggd ) =
+                    updateSingleGameComponentByName UnknownMsg (GameStringMsg "skip") ggd gd t "CutScene" alc
+            in
+            ( ( { model | actors = newactors, ignoreInput = False }, newggd, [] ), gd )
 
         LayerStringMsg "clearPlayerInput" ->
             let

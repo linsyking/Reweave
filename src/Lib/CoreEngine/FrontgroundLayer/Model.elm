@@ -18,7 +18,7 @@ module Lib.CoreEngine.FrontgroundLayer.Model exposing
 -}
 
 import Array
-import Base exposing (GlobalData, Msg(..))
+import Base exposing (GlobalData, LSInfo, Msg(..))
 import Canvas exposing (group)
 import Components.Bar.Export as Bar
 import Components.Console.Export as Console
@@ -93,7 +93,7 @@ dealComponentsMsg rmsg model gd ggd =
                 newexitmsg =
                     LayerExitMsg { originet | energy = newenergy, collectedMonsters = ggd.collectedMonsters } s 0
             in
-            ( ( model, ggd, [ ( LayerParentScene, newexitmsg ) ] ), { gd | scenesFinished = gd.scenesFinished ++ [ ggd.currentScene ] } )
+            ( ( model, ggd, [ ( LayerParentScene, newexitmsg ) ] ), { gd | scenesFinished = gd.scenesFinished ++ [ ggd.currentScene ], localstorage = LSInfo ggd.collectedMonsters s } )
 
         ComponentLStringMsg ("restart" :: _) ->
             -- Final Restart
@@ -117,8 +117,14 @@ dealComponentsMsg rmsg model gd ggd =
         ComponentStringMsg "OnClose" ->
             ( ( model, ggd, [] ), gd )
 
+        ComponentStringMsg "visualaid" ->
+            ( ( model, ggd, [] ), { gd | visualaid = not gd.visualaid } )
+
         ComponentStringMsg "continue" ->
             ( ( { model | ispaused = False }, { ggd | ingamepause = False, settingpause = False }, [ ( LayerName "Game", LayerStringMsg "clearPlayerInput" ) ] ), gd )
+
+        ComponentStringMsg "skipcutscene" ->
+            ( ( { model | ispaused = False }, { ggd | ingamepause = False, settingpause = False }, [ ( LayerName "Game", LayerStringMsg "skipcutscene" ) ] ), gd )
 
         ComponentStringMsg "startGameInput" ->
             ( ( model, ggd, [ ( LayerName "Game", LayerStringMsg "startinput" ) ] ), gd )

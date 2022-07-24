@@ -197,6 +197,19 @@ updateMenu mainMsg comMsg globalData ( model, t ) =
                     , globalData
                     )
 
+                (ComponentLStringMsg ("skipcutscene" :: _)) :: _ ->
+                    ( model
+                        |> dsetbool "Show" False
+                    , [ ComponentStringMsg "skipcutscene" ]
+                    , globalData
+                    )
+
+                (ComponentLStringMsg ("visualaid" :: _)) :: _ ->
+                    ( model
+                    , [ ComponentStringMsg "visualaid" ]
+                    , globalData
+                    )
+
                 _ ->
                     if showStatus then
                         ( model

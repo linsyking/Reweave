@@ -147,6 +147,23 @@ updateModel msg gct ggd gd ( d, t ) =
                     in
                     ( ndd, [], ggd )
 
+                GameInterCollisionMsg "player" pd _ ->
+                    let
+                        ( pvx, pvy ) =
+                            pd.velocity
+
+                        ( vx, vy ) =
+                            d.velocity
+
+                        ( rvx, rvy ) =
+                            ( pvx - vx, pvy - vy )
+                    in
+                    if abs rvx > 200 || abs rvy > 200 then
+                        ( { d | velocity = ( rvx / 2, rvy / 2 ) }, [], ggd )
+
+                    else
+                        ( { d | velocity = ( rvx, rvy ) }, [], ggd )
+
                 GameInterCollisionMsg _ pd _ ->
                     ( d, [ GameActorUidMsg pd.uid (GameStringMsg "die") ], ggd )
 

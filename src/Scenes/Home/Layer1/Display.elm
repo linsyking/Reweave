@@ -23,5 +23,15 @@ import Scenes.Home.LayerBase exposing (CommonData)
 dview : ( ModelX, Int ) -> CommonData -> GlobalData -> Renderable
 dview ( m, _ ) _ gd =
     group [ shadow (Shadow 4 Color.red ( 5, 5 )) ]
-        [ renderTextWithColor gd 80 m.start.description "Times New Roman" Color.black m.start.pos
+        [ renderButton m.start gd
+        , renderButton m.continue gd
         ]
+
+
+renderButton : Button -> GlobalData -> Renderable
+renderButton b gd =
+    if b.display then
+        renderTextWithColor gd 80 b.description "Times New Roman" Color.black b.pos
+
+    else
+        group [] []

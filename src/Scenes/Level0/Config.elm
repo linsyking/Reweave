@@ -59,20 +59,19 @@ import Scenes.Level0.Map exposing (mapwidth, mymap)
 {-| initFrontGroundComponents
 -}
 initFrontGroundComponents : Int -> Int -> Array Component
-initFrontGroundComponents t sp =
-    case sp of
-        0 ->
-            Array.fromList
-                [ Hints.initComponent t (ComponentLStringMsg [ "50", "750", "700", "30", "Use A,D to move to left and right, Use C or Space to jump", "Use Esc to call the menu" ])
-                , Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "Beiming  北溟" ])
-                , Hints.initComponent t (ComponentLStringMsg [ "40", "1570", "100", "35", "Near A Temple 寺庙旁" ])
-                ]
-
-        _ ->
-            Array.fromList
-                [ Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "Beiming  北溟" ])
-                , Hints.initComponent t (ComponentLStringMsg [ "40", "1570", "100", "35", "Near A Temple  寺庙旁" ])
-                ]
+initFrontGroundComponents t _ =
+    -- case sp of
+    --     0 ->
+    --         Array.fromList
+    --             [ Hints.initComponent t (ComponentLStringMsg [ "50", "750", "700", "30", "Use A,D to move to left and right, Use C or Space to jump", "Use Esc to call the menu" ])
+    --             , Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "Beiming  北溟" ])
+    --             , Hints.initComponent t (ComponentLStringMsg [ "40", "1570", "100", "35", "Near A Temple 寺庙旁" ])
+    --             ]
+    --     _ ->
+    Array.fromList
+        [ Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "Beiming  北溟" ])
+        , Hints.initComponent t (ComponentLStringMsg [ "40", "1570", "100", "35", "Near A Temple  寺庙旁" ])
+        ]
 
 
 {-| initPlayer
@@ -81,7 +80,7 @@ initPlayer : Int -> PlayerInitPosition -> GameComponent
 initPlayer t pos =
     case pos of
         DefaultPlayerPosition ->
-            -- initGameComponent t (GamePlayerInit (PlayerInit ( 5590, 680 ))) Player.gameComponent
+            -- initGameComponent t (GamePlayerInit (PlayerInit ( 3930, 1800 ))) Player.gameComponent
             initGameComponent t (GamePlayerInit (PlayerInit ( 200, 2000 ))) Player.gameComponent
 
         CustomPlayerPosition x ->
@@ -94,8 +93,8 @@ initActors : Int -> Int -> Array GameComponent
 initActors t sp =
     Array.append
         (Array.fromList
-            [ initGameComponent t (GameExitInit (ExitInit ( 6170, 630 ) "Level1" DefaultPlayerPosition 0 2)) Exit.gameComponent
-            , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2220 ) HorUp 100 False 3)) Spike.gameComponent
+            [ initGameComponent t (GameExitInit (ExitInit ( 9380, 630 ) "Level1" DefaultPlayerPosition 0 2)) Exit.gameComponent
+            , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2220 ) HorUp 200 False 3)) Spike.gameComponent
             , initGameComponent t (GameSavePointInit (SavePointInit ( 2903, 1800 ) 4)) Save.gameComponent
             , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 3153, 1850 ) 300 True 5)) Energy.gameComponent
             , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 3463, 1850 ) 500 False 6)) Energy.gameComponent
@@ -104,12 +103,32 @@ initActors t sp =
             , initGameComponent t (GameSpikeInit (SpikeInit ( 4270, 2086 ) HorUp 13 True 9)) Spike.gameComponent
             , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 4900, 2016 ) 2000 True 10)) Energy.gameComponent
             , initGameComponent t (GameSavePointInit (SavePointInit ( 4772, 1992 ) 11)) Save.gameComponent
+
+            -- , initGameComponent t (GameSavePointInit (SavePointInit ( 5400, 680 ) 12)) Save.gameComponent
+            , initGameComponent t (GameSpikeInit (SpikeInit ( 5735, 600 ) HorDown 17 True 13)) Spike.gameComponent
+            , initGameComponent t (GameSpikeInit (SpikeInit ( 5735, 559 ) HorUp 17 True 14)) Spike.gameComponent
+            , initGameComponent t (GameGoombaInit (GoombaInit ( 5900, 680 ) ( -50, 0 ) 15)) Goomba.gameComponent
+            , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 5600, 730 ) 300 False 16)) Energy.gameComponent
+            , initGameComponent t (GameSavePointInit (SavePointInit ( 7317, 1832 ) 17)) Save.gameComponent
+            , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 7500, 1870 ) 1000 True 18)) Energy.gameComponent
+            , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 7600, 1870 ) 1000 True 19)) Energy.gameComponent
+            , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 7700, 1870 ) 1000 True 20)) Energy.gameComponent
+            , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 7950, 1870 ) 2000 True 21)) Energy.gameComponent
+            , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 8350, 1870 ) 2000 True 22)) Energy.gameComponent
+            , initGameComponent t (GameSpikeInit (SpikeInit ( 7767, 1410 ) HorUp 1 True 23)) Spike.gameComponent
+            , initGameComponent t (GameSpikeInit (SpikeInit ( 7767, 1140 ) HorDown 1 True 24)) Spike.gameComponent
+            , initGameComponent t (GameSpikeInit (SpikeInit ( 7767 + 12 * 32, 1410 - 5 * 32 ) HorUp 1 True 25)) Spike.gameComponent
+            , initGameComponent t (GameSpikeInit (SpikeInit ( 7767 + 12 * 32, 1140 - 5 * 32 ) HorDown 1 True 26)) Spike.gameComponent
+            , initGameComponent t (GameSpikeInit (SpikeInit ( 7767 + 24 * 32, 1410 - 20 * 32 ) HorUp 1 True 27)) Spike.gameComponent
+            , initGameComponent t (GameSpikeInit (SpikeInit ( 7767 + 24 * 32, 1140 - 20 * 32 ) HorDown 1 True 28)) Spike.gameComponent
+            , initGameComponent t (GameSavePointInit (SavePointInit ( 8257, 1832 ) 29)) Save.gameComponent
             ]
         )
         (case sp of
             0 ->
                 Array.fromList
                     [ initGameComponent t (GameCutSceneInit (CutSceneInit ( 2440, 1820 ) ( 100, 100 ) 88 dialogues True)) CutScene.gameComponent
+                    , initGameComponent t (GameCutSceneInit (CutSceneInit ( 4050, 1820 ) ( 100, 100 ) 89 dialogues2 True)) CutScene.gameComponent
                     ]
 
             _ ->
@@ -121,19 +140,32 @@ initActors t sp =
 -}
 initCamera : CameraData
 initCamera =
-    CameraData ( 0, 1120 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * (mapwidth - 1) - 1, 69 * 32 - 1 ) ) ( ( 0.2, 0.3 ), ( 0.4, 0.4 ) )
+    CameraData ( 0, 1120 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * (mapwidth - 1) - 1, 69 * 32 - 1 ) ) ( ( 0.2, 0.8 ), ( 0.4, 0.2 ) )
 
 
 {-| dialogues
 -}
 dialogues : List ( String, String )
 dialogues =
-    [ ( "p_profile", "Hello, master." )
+    [ ( "", "(Press Enter to continue the dialogue)" )
+    , ( "", "(Press Esc -> Click 'Skip Cutscene' to skip the dialogues)" )
+    , ( "p_profile", "Hello, master." )
     , ( "master", "Hi, I heard that you wanted to reweave all the monsters." )
     , ( "p_profile", "Yes, they were so crazy after they escaped from the sroll." )
     , ( "master", "I will teach you some techniques to move and fight better." )
     , ( "p_profile", "Thank you." )
-    , ( "master", "Did you see a white point shining on your body?" )
+    , ( "master", "Can you see an energy ball at the left top corner?" )
+    , ( "p_profile", "Yes, what is that?" )
+    , ( "master", "It shows your energy." )
+    , ( "master", "If you have much energy, you can use it to help you reweave!" )
+    , ( "master", "First, try to eat some energy crystal ahead of you." )
+    , ( "master", "See what will happen on your energy ball." )
+    ]
+
+
+dialogues2 : List ( String, String )
+dialogues2 =
+    [ ( "master", "Did you see a white point shining on your body?" )
     , ( "p_profile", "Yes, what is that?" )
     , ( "master", "It is a sign that you selected yourself." )
     , ( "p_profile", "...Selected?" )
@@ -141,21 +173,23 @@ dialogues =
     , ( "master", "Almost all the movable objects can be selected." )
     , ( "p_profile", "And how can I use those selected objects?" )
     , ( "master", "When an object has much energy, the point will become blue." )
-    , ( "master", "And then, you can press key W to grasp them." )
-    , ( "master", "And if you want to release energy on the selected objects," )
+    , ( "master", "And then, you can press key W to grasp their energy." )
+    , ( "master", "If you want to release energy on the selected objects," )
     , ( "master", "Right click at where you want it to go on the screen!" )
     , ( "master", "The larger the distance between your mouse and the object," )
     , ( "master", "The larger energy you will use on the object." )
-    , ( "master", "You also have an energy ball at the left top corner." )
-    , ( "p_profile", "When I use energy, it will decrease, I guess!" )
-    , ( "master", "Yes, but when you are in the air," )
-    , ( "master", "You cannot use energy on yourself." )
-    , ( "master", "However you can still use energy on other objects." )
+    , ( "master", "And the larger the blue point is around your mouse," )
+    , ( "master", "which is called the Visual Aid System." )
+    , ( "master", "Also notice that," )
+    , ( "master", "If the selected objects have low energy," )
+    , ( "master", "You cannot grasp energy from them;" )
+    , ( "master", "Similarly, you can't use low energy on objects." )
+    , ( "master", "Another important rule is that, in the air," )
+    , ( "master", "You cannot use energy on yourself," )
+    , ( "master", "But you can still use energy on other objects." )
     , ( "p_profile", "Alright." )
-    , ( "master", "There are many danger in your journey," )
+    , ( "master", "There are many dangers in your journey," )
     , ( "master", "Please be cautious." )
-    , ( "master", "I have prepares several easy tasks for you," )
-    , ( "master", "You can have a warm up." )
     ]
 
 
@@ -180,28 +214,46 @@ initGameGlobalData e col spstate =
 -}
 allChartlets : Int -> List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
 allChartlets sp =
-    makemanybamboos ( 70, 2093 ) 9
-        ++ [ ( \gd ggd ->
+    List.append
+        [ ( \gd ggd ->
                 renderSprite gd [] (getPositionUnderCamera ( 2140, 1520 ) ggd) ( 700, 0 ) "zy/building"
-             , BehindActors
-             )
-           , case sp of
-                0 ->
-                    ( \gd ggd ->
+          , BehindActors
+          )
+        ]
+        (case sp of
+            0 ->
+                [ ( \gd ggd ->
                         renderSprite gd [] (getPositionUnderCamera ( 2440, 1820 ) ggd) ( 100, 0 ) "master"
-                    , BehindActors
-                    )
+                  , BehindActors
+                  )
+                , ( \gd ggd ->
+                        renderSprite gd [] (getPositionUnderCamera ( 4050, 1830 ) ggd) ( 100, 0 ) "master"
+                  , BehindActors
+                  )
+                ]
 
-                _ ->
-                    ( \_ _ -> group [] [], BehindActors )
-           , ( \gd ggd -> renderText gd 30 "SavePoint" "Times New Roman" (getPositionUnderCamera ( 2880, 1960 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "Energy Crystal " "Times New Roman" (getPositionUnderCamera ( 3080, 1960 ) ggd), BehindActors )
+            _ ->
+                [ ( \_ _ -> group [] [], BehindActors ) ]
+        )
+        ++ [ ( \gd ggd -> renderText gd 30 "Use A,D to move to left and right, Use C or Space to jump" "Times New Roman" (getPositionUnderCamera ( 200, 1560 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "Use Esc to call the menu" "Times New Roman" (getPositionUnderCamera ( 200, 1630 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "Save Point" "Times New Roman" (getPositionUnderCamera ( 2880, 1960 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "(Also Save Energy)" "Times New Roman" (getPositionUnderCamera ( 2820, 2000 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "You can restart to go to the last savepoint" "Times New Roman" (getPositionUnderCamera ( 2820, 2060 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "Energy Crystal" "Times New Roman" (getPositionUnderCamera ( 3080, 1960 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "(Recoverable)" "Times New Roman" (getPositionUnderCamera ( 3080, 1760 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "Energy Crystal" "Times New Roman" (getPositionUnderCamera ( 3390, 1960 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "(Irrecoverable)" "Times New Roman" (getPositionUnderCamera ( 3390, 1760 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "Hit the goomba to get on the platform!" "Times New Roman" (getPositionUnderCamera ( 3690, 1960 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "Jump at the last monent" "Times New Roman" (getPositionUnderCamera ( 4290, 1360 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "Press W to save the energy from the player the moment before you hit the ground!" "Times New Roman" (getPositionUnderCamera ( 4290, 1460 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "Ritgh Click on the top of your screen" "Times New Roman" (getPositionUnderCamera ( 4690, 1760 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 40 "You are ready to go!" "Times New Roman" (getPositionUnderCamera ( 5390, 500 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "Jump at the last monent" "Times New Roman" (getPositionUnderCamera ( 4200, 1360 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "Press W to save the energy from the player the moment before you hit the ground!" "Times New Roman" (getPositionUnderCamera ( 4200, 1430 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "Right click at the top of your screen" "Times New Roman" (getPositionUnderCamera ( 4690, 1760 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "And don't forget to move right!" "Times New Roman" (getPositionUnderCamera ( 4690, 1830 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "Try to use energy on the goombas!" "Times New Roman" (getPositionUnderCamera ( 5390, 900 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "You can press E to select yourself quickly" "Times New Roman" (getPositionUnderCamera ( 6690, 900 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "Right click to release the energy at the correct position" "Times New Roman" (getPositionUnderCamera ( 7500, 2030 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "Try to take advantage of the visual aid system" "Times New Roman" (getPositionUnderCamera ( 7500, 2070 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "(You can also turn it off in the menu)" "Times New Roman" (getPositionUnderCamera ( 7500, 2110 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 40 "You are ready to go!" "Times New Roman" (getPositionUnderCamera ( 8900, 700 ) ggd), BehindActors )
            ]
+        ++ makemanybamboos ( 70, 2093 ) 9

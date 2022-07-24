@@ -44,6 +44,8 @@ import Lib.CoreEngine.GameComponents.Monster.Base exposing (MonsterInit)
 import Lib.CoreEngine.GameComponents.Monster.Export as Monster
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit, PlayerInitPosition(..))
 import Lib.CoreEngine.GameComponents.Player.Export as Player
+import Lib.CoreEngine.GameComponents.SavePoint.Base exposing (SavePointInit)
+import Lib.CoreEngine.GameComponents.SavePoint.Export as Save
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..), SpikeInit)
 import Lib.CoreEngine.GameComponents.Spike.Export as Spike
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
@@ -81,7 +83,7 @@ initPlayer t pos =
 initActors : Int -> List String -> Array GameComponent
 initActors t cs =
     Array.fromList
-        ([ initGameComponent t (GameExitInit (ExitInit ( 10, 1100 ) "Level0" (CustomPlayerPosition ( 5900, 680 )) 1 6)) Exit.gameComponent
+        ([ initGameComponent t (GameExitInit (ExitInit ( 10, 1100 ) "Level0" (CustomPlayerPosition ( 8731, 1832 )) 1 6)) Exit.gameComponent
          , initGameComponent t (GameCutSceneInit (CutSceneInit ( 475, 1680 ) ( 100, 100 ) 5 dialoguesMaster True)) CutScene.gameComponent
          , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2200 ) HorUp 1000 False 3)) Spike.gameComponent
          , initGameComponent t (GameSpikeInit (SpikeInit ( 1440, 1900 ) HorUp 1 True 4)) Spike.gameComponent
@@ -89,6 +91,7 @@ initActors t cs =
 
          -- , initGameComponent t (GameGoombaInit (GoombaInit ( 3425, 1928 ) ( 50, 0 ) 8)) Goomba.gameComponent
          , initGameComponent t (GameCutSceneInit (CutSceneInit ( 3140, 1440 ) ( 100, 100 ) 10 dialoguesBird False)) CutScene.gameComponent
+         , initGameComponent t (GameSavePointInit (SavePointInit ( 3085, 1416 ) 11)) Save.gameComponent
          ]
             ++ (if isInCollected "bird" cs then
                     []
