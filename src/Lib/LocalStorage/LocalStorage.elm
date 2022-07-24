@@ -1,6 +1,7 @@
 module Lib.LocalStorage.LocalStorage exposing
     ( decodeLSInfo
     , encodeLSInfo
+    , isFirstPlay
     )
 
 {-| This is the doc for this module
@@ -8,6 +9,8 @@ module Lib.LocalStorage.LocalStorage exposing
 @docs decodeLSInfo
 
 @docs encodeLSInfo
+
+@docs isFirstPlay
 
 -}
 
@@ -58,3 +61,10 @@ encodeLSInfo info =
                 ]
             )
         )
+
+
+{-| isFirstPlay
+-}
+isFirstPlay : LSInfo -> Bool
+isFirstPlay ls =
+    ls.level == "Level0" && ls.collected == []
