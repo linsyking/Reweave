@@ -237,7 +237,7 @@ updateDialog mainMsg _ globalData ( model, t ) =
                     ( model
                         |> dsetint "_Timer" timer
                         |> dsetstring "_Status" "OnEnd"
-                    , []
+                    , [ ComponentStringMsg "skip" ]
                     , globalData
                     )
 
@@ -317,7 +317,7 @@ updateDialog mainMsg _ globalData ( model, t ) =
                         ( model |> dsetLComponent "_Child" newChildComponentsList, [], globalData )
 
             else if judgeMouse globalData ( x, y ) ( 1689, 50 ) ( 40, 30 ) then
-                ( model, [ ComponentStringMsg "skip" ], globalData )
+                ( model |> dsetstring "_Status" "OnDeBuild", [], globalData )
 
             else
                 ( model, [], globalData )
