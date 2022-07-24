@@ -108,12 +108,12 @@ initActors t sp =
             , initGameComponent t (GameSpikeInit (SpikeInit ( 4270, 2086 ) HorUp 13 True 9)) Spike.gameComponent
             , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 4900, 2016 ) 2000 True 10)) Energy.gameComponent
             , initGameComponent t (GameSavePointInit (SavePointInit ( 4772, 1992 ) 11)) Save.gameComponent
-
-            -- , initGameComponent t (GameSavePointInit (SavePointInit ( 5400, 680 ) 12)) Save.gameComponent
-            , initGameComponent t (GameSpikeInit (SpikeInit ( 5925, 600 ) HorDown 11 True 13)) Spike.gameComponent
-            , initGameComponent t (GameSpikeInit (SpikeInit ( 5925, 559 ) HorUp 11 True 14)) Spike.gameComponent
-            , initGameComponent t (GameGoombaInit (GoombaInit ( 5900, 680 ) ( -50, 0 ) 30 15)) Goomba.gameComponent
+            , initGameComponent t (GameSavePointInit (SavePointInit ( 5400, 680 ) 12)) Save.gameComponent
+            , initGameComponent t (GameSpikeInit (SpikeInit ( 5925, 530 ) HorDown 11 True 13)) Spike.gameComponent
+            , initGameComponent t (GameSpikeInit (SpikeInit ( 5925, 500 ) HorUp 11 True 14)) Spike.gameComponent
+            , initGameComponent t (GameGoombaInit (GoombaInit ( 6200, 680 ) ( -50, 0 ) 30 15)) Goomba.gameComponent
             , initGameComponent t (GameGoombaInit (GoombaInit ( 5950, 680 ) ( 50, 0 ) 30 31)) Goomba.gameComponent
+            , initGameComponent t (GameGoombaInit (GoombaInit ( 6100, 680 ) ( 50, 0 ) 30 32)) Goomba.gameComponent
             , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 5600, 730 ) 700 False 16)) Energy.gameComponent
             , initGameComponent t (GameSavePointInit (SavePointInit ( 7227, 1832 ) 17)) Save.gameComponent
             , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 7500, 1870 ) 1000 True 18)) Energy.gameComponent
@@ -255,7 +255,7 @@ allChartlets sp =
            , ( \gd ggd -> renderText gd 30 "Press W to save the energy from the player the moment before you hit the ground!" "Times New Roman" (getPositionUnderCamera ( 4200, 1430 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "Right click at the top of the screen and over the character" "Times New Roman" (getPositionUnderCamera ( 4390, 1760 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "And don't forget to move right!" "Times New Roman" (getPositionUnderCamera ( 4690, 1830 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "Try to use energy on the goombas! (Move them to the spikes to kill them)" "Times New Roman" (getPositionUnderCamera ( 5390, 900 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "Try to use energy on the goombas! (Move them away)" "Times New Roman" (getPositionUnderCamera ( 5390, 900 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "You can press E to select yourself quickly" "Times New Roman" (getPositionUnderCamera ( 6690, 900 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "Right click to release the energy at the correct position" "Times New Roman" (getPositionUnderCamera ( 7500, 2030 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "Try to take advantage of the visual aid system" "Times New Roman" (getPositionUnderCamera ( 7500, 2070 ) ggd), BehindActors )
