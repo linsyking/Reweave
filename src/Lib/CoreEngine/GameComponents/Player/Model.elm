@@ -160,11 +160,6 @@ updateModel msg gct ggd gd ( d, t ) =
                             afterFixCM =
                                 { aftermoveM | islastright = modfycontrol }
 
-                            -- recordfp =
-                            --     if calcVel d.velocity > 200 then
-                            --         2
-                            --     else
-                            --         2
                             recordState =
                                 if afterFixCM.recordTimer == 1 then
                                     let
