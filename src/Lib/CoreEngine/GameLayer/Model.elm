@@ -692,7 +692,11 @@ updateModel msg gd lm ( model, t ) ggd =
 
                     MouseDown 2 mp ->
                         if model.ignoreInput then
-                            ( ( model, ggd, [] ), gd )
+                            let
+                                ( newactors, _, newggd ) =
+                                    updateSingleGameComponentByName msg NullGameComponentMsg ggd gd t "CutScene" model.actors
+                            in
+                            ( ( { model | actors = newactors }, newggd, [] ), gd )
 
                         else if t - model.lastuseEnergyTime < 15 then
                             ( ( model, ggd, [] ), gd )

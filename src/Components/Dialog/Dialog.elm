@@ -257,8 +257,17 @@ updateDialog mainMsg comMsg globalData ( model, t ) =
                 ( _, _ ) ->
                     ( model |> dsetint "_Timer" timer, [], globalData )
 
-        MouseDown _ ( x, y ) ->
-            if judgeMouse globalData ( x, y ) ( 1689, 50 ) ( 40, 30 ) then
+        MouseDown 2 _ ->
+            ( model
+                |> dsetint "_Timer" 0
+                |> dsetstring "_Status" "OnDeBuild"
+                |> dsetLComponent "_Child" []
+            , []
+            , globalData
+            )
+
+        MouseDown 0 ( x, y ) ->
+            if judgeMouse globalData ( x, y ) ( 1600, 120 ) ( 40, 40 ) then
                 ( model
                     |> dsetint "_Timer" 0
                     |> dsetstring "_Status" "OnDeBuild"
@@ -381,7 +390,7 @@ viewDialog ( model, t ) globalData =
             group []
                 (List.append
                     [ renderSprite globalData [] ( 189, 50 ) ( 1540, 300 ) "dialogue"
-                    , renderSprite globalData [] ( 1689, 50 ) ( 40, 30 ) "ot/close"
+                    , renderSprite globalData [] ( 1600, 120 ) ( 40, 40 ) "ot/close"
                     ]
                     (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
                 )
