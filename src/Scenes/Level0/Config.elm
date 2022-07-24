@@ -80,7 +80,7 @@ initPlayer : Int -> PlayerInitPosition -> GameComponent
 initPlayer t pos =
     case pos of
         DefaultPlayerPosition ->
-            -- initGameComponent t (GamePlayerInit (PlayerInit ( 8731, 1832 ))) Player.gameComponent
+            -- initGameComponent t (GamePlayerInit (PlayerInit ( 7500, 1800 ))) Player.gameComponent
             initGameComponent t (GamePlayerInit (PlayerInit ( 200, 2000 ))) Player.gameComponent
 
         CustomPlayerPosition x ->
@@ -103,7 +103,8 @@ initActors t sp =
             , initGameComponent t (GameSpikeInit (SpikeInit ( 4270, 2086 ) HorUp 13 True 9)) Spike.gameComponent
             , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 4900, 2016 ) 2000 True 10)) Energy.gameComponent
             , initGameComponent t (GameSavePointInit (SavePointInit ( 4772, 1992 ) 11)) Save.gameComponent
-            , initGameComponent t (GameSavePointInit (SavePointInit ( 5400, 680 ) 12)) Save.gameComponent
+
+            -- , initGameComponent t (GameSavePointInit (SavePointInit ( 5400, 680 ) 12)) Save.gameComponent
             , initGameComponent t (GameSpikeInit (SpikeInit ( 5735, 600 ) HorDown 17 True 13)) Spike.gameComponent
             , initGameComponent t (GameSpikeInit (SpikeInit ( 5735, 559 ) HorUp 17 True 14)) Spike.gameComponent
             , initGameComponent t (GameGoombaInit (GoombaInit ( 5900, 680 ) ( -50, 0 ) 15)) Goomba.gameComponent
@@ -163,6 +164,12 @@ dialogues =
     , ( "master", "Right click at where you want it to go on the screen!" )
     , ( "master", "The larger the distance between your mouse and the object," )
     , ( "master", "The larger energy you will use on the object." )
+    , ( "master", "And the larger the blue point is around your mouse," )
+    , ( "master", "which is called the Visual Aid System." )
+    , ( "master", "Also notice that," )
+    , ( "master", "If the selected objects have low energy," )
+    , ( "master", "You cannot grasp energy from them;" )
+    , ( "master", "Similarly, you can't use low energy on objects." )
     , ( "master", "You also have an energy ball at the left top corner." )
     , ( "p_profile", "When I use energy, it will decrease, I guess!" )
     , ( "master", "Yes, it shows your energy." )
@@ -212,9 +219,12 @@ allChartlets sp =
 
                 _ ->
                     ( \_ _ -> group [] [], BehindActors )
-           , ( \gd ggd -> renderText gd 30 "SavePoint" "Times New Roman" (getPositionUnderCamera ( 2880, 1960 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 20 "(Also Save Energy)" "Times New Roman" (getPositionUnderCamera ( 2880, 2000 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "Energy Crystal " "Times New Roman" (getPositionUnderCamera ( 3080, 1960 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "Use A,D to move to left and right, Use C or Space to jump" "Times New Roman" (getPositionUnderCamera ( 200, 1560 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "Use Esc to call the menu" "Times New Roman" (getPositionUnderCamera ( 200, 1630 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "Save Point" "Times New Roman" (getPositionUnderCamera ( 2880, 1960 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "(Also Save Energy)" "Times New Roman" (getPositionUnderCamera ( 2820, 2000 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "You can restart to go to the last savepoint" "Times New Roman" (getPositionUnderCamera ( 2820, 2060 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "Energy Crystal" "Times New Roman" (getPositionUnderCamera ( 3080, 1960 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "(Recoverable)" "Times New Roman" (getPositionUnderCamera ( 3080, 1760 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "Energy Crystal" "Times New Roman" (getPositionUnderCamera ( 3390, 1960 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "(Irrecoverable)" "Times New Roman" (getPositionUnderCamera ( 3390, 1760 ) ggd), BehindActors )
@@ -225,6 +235,8 @@ allChartlets sp =
            , ( \gd ggd -> renderText gd 30 "And don't forget to move right!" "Times New Roman" (getPositionUnderCamera ( 4690, 1830 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "Try to use energy on the goombas!" "Times New Roman" (getPositionUnderCamera ( 5390, 900 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "You can press E to select yourself quickly" "Times New Roman" (getPositionUnderCamera ( 6690, 900 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "Right click to release the energy at correct time" "Times New Roman" (getPositionUnderCamera ( 7500, 2030 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "Right click to release the energy at the correct position" "Times New Roman" (getPositionUnderCamera ( 7500, 2030 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "Try to take advantage of the visual aid system" "Times New Roman" (getPositionUnderCamera ( 7500, 2070 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "(You can also turn it off in the menu)" "Times New Roman" (getPositionUnderCamera ( 7500, 2110 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 40 "You are ready to go!" "Times New Roman" (getPositionUnderCamera ( 8900, 1850 ) ggd), BehindActors )
            ]
