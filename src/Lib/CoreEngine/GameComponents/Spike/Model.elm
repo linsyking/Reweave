@@ -26,6 +26,7 @@ import Lib.Component.Base exposing (DefinedTypes(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..))
+import Lib.DefinedTypes.Parser exposing (dgetint)
 
 
 {-| initData
@@ -167,7 +168,44 @@ updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data
 updateModel _ gct ggd _ ( d, t ) =
     case gct of
         GameInterCollisionMsg _ pd _ ->
-            ( d, [ GameActorUidMsg pd.uid (GameStringMsg "die") ], ggd )
+            let
+                ( pvx, pvy ) =
+                    pd.velocity
+
+                dir =
+                    dgetint d.extra "direction"
+            in
+            case dir of
+                0 ->
+                    if pvy > 0 then
+                        ( d, [], ggd )
+
+                    else
+                        ( d, [ GameActorUidMsg pd.uid (GameStringMsg "die") ], ggd )
+
+                1 ->
+                    if pvy < 0 then
+                        ( d, [], ggd )
+
+                    else
+                        ( d, [ GameActorUidMsg pd.uid (GameStringMsg "die") ], ggd )
+
+                2 ->
+                    if pvx > 0 then
+                        ( d, [], ggd )
+
+                    else
+                        ( d, [ GameActorUidMsg pd.uid (GameStringMsg "die") ], ggd )
+
+                3 ->
+                    if pvx < 0 then
+                        ( d, [], ggd )
+
+                    else
+                        ( d, [ GameActorUidMsg pd.uid (GameStringMsg "die") ], ggd )
+
+                _ ->
+                    ( d, [ GameActorUidMsg pd.uid (GameStringMsg "die") ], ggd )
 
         _ ->
             ( d, [], ggd )

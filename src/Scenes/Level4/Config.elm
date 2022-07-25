@@ -82,7 +82,7 @@ initActors t =
         , initGameComponent t (GameGoombaInit (GoombaInit ( 2240, 1800 ) ( 0, 0 ) 50 9)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 3840, 2080 ) ( 0, 0 ) 50 15)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 4160, 2080 ) ( 0, 0 ) 50 16)) Goomba.gameComponent
-        , initGameComponent t (GameExitInit (ExitInit ( 5690, 1920 ) "Home" DefaultPlayerPosition 0 99)) Exit.gameComponent
+        , initGameComponent t (GameExitInit (ExitInit ( 5690, 1920 ) "Level4boss" DefaultPlayerPosition 0 99)) Exit.gameComponent
 
         --, initGameComponent t (GameCutSceneInit (CutSceneInit ( 100, 1800 ) ( 100, 160 ) 88 [ ( "1", "Dear master, I want learn something from you", True ), ( "1", "Yes, please go ahead.", False ) ])) CutScene.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 672, 2060 ) HorUp 2 True 12)) Spike.gameComponent
