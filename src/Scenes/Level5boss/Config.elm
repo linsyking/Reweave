@@ -1,4 +1,4 @@
-module Scenes.Level4boss.Config exposing
+module Scenes.Level5boss.Config exposing
     ( initFrontGroundComponents
     , initPlayer
     , initActors
@@ -46,16 +46,16 @@ import Lib.CoreEngine.GameComponents.CutScene.Base exposing (CutSceneInit)
 import Lib.CoreEngine.GameComponents.CutScene.Export as CutScene
 import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
 import Lib.CoreEngine.GameComponents.Exit.Export as Exit
-import Lib.CoreEngine.GameComponents.Fish.Base exposing (FishInit)
-import Lib.CoreEngine.GameComponents.Fish.Export as Fish
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit, PlayerInitPosition(..))
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..), SpikeInit)
 import Lib.CoreEngine.GameComponents.Spike.Export as Spike
+import Lib.CoreEngine.GameComponents.Turtle.Base exposing (TurtleInit)
+import Lib.CoreEngine.GameComponents.Turtle.Export as Turtle
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
 import Lib.Render.Render exposing (renderSprite)
 import Lib.Resources.Monster exposing (isInCollected)
-import Scenes.Level4boss.Map exposing (mymap)
+import Scenes.Level5boss.Map exposing (mymap)
 
 
 {-| initFrontGroundComponents
@@ -92,7 +92,7 @@ initActors t cs =
           -- , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2200 ) HorUp 1000 False 3)) Spike.gameComponent
           -- , initGameComponent t (GameSpikeInit (SpikeInit ( 1440, 1900 ) HorUp 1 True 4)) Spike.gameComponent
           -- , initGameComponent t (GameExitInit (ExitInit ( 3700, 1450 ) "Level2" DefaultPlayerPosition 0 7)) Exit.gameComponent
-          initGameComponent t (GameFishInit (FishInit ( 1000, 1200 ) 100 8)) Fish.gameComponent
+          initGameComponent t (GameTurtleInit (TurtleInit ( 1000, 1200 ) 100 8)) Turtle.gameComponent
 
         -- , initGameComponent t (GameCutSceneInit (CutSceneInit ( 3140, 1440 ) ( 100, 100 ) 10 dialoguesBird False)) CutScene.gameComponent
         ]
