@@ -1,4 +1,4 @@
-module Scenes.Level4boss.Map exposing (mymap)
+module Scenes.Level5boss.Map exposing (mymap)
 
 {-| This is the doc for this module
 
