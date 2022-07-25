@@ -89,17 +89,26 @@ updateModel _ _ ggd _ ( d, t ) =
     let
         interval =
             dgetint d.extra "interval"
+
+        ( x, y ) =
+            d.position
     in
     if modBy interval t == 0 then
         let
-            v =
+            ( vx, vy ) =
                 ( dgetfloat d.extra "goombaVelocityX", dgetfloat d.extra "goombaVelocityY" )
         in
         ( d
         , [ GameParentMsg
                 (GameGoombaInit
-                    { initPosition = d.position
-                    , initVelocity = v
+                    { initPosition =
+                        if vx < 0 then
+                            ( x, y - 30 )
+
+                        else
+                            ( x + 100, y - 30 )
+                    , initVelocity = ( vx, vy )
+                    , constVelocity = 50
                     , uid = 0
                     }
                 )

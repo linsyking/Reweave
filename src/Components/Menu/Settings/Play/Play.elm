@@ -69,8 +69,8 @@ initMap _ comMsg =
                 "VisualAid" ->
                     Dict.fromList
                         [ ( "show", CDBool True )
-                        , ( "posX", CDInt 800 )
-                        , ( "posY", CDInt 500 )
+                        , ( "posX", CDInt 560 )
+                        , ( "posY", CDInt 600 )
                         , ( "Type", CDString "visualaid" )
                         , ( "Width", CDInt 350 )
                         , ( "Height", CDInt 50 )

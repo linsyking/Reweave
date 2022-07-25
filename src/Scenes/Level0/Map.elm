@@ -46,7 +46,8 @@ mymap =
         |> buildrect ( 69, 53 ) ( 4, 2 ) 2
         |> buildrect ( 83, 53 ) ( 4, 2 ) 2
         |> buildrect ( 116, 60 ) ( 3, 1 ) 2
-        |> buildplatforms ( 85, 60 ) 11
+        |> buildplatforms ( 85, 60 ) 12
+        -- 2nd Master
         |> buildPillar ( 70, 61 ) 2
         |> buildPillar ( 87, 61 ) 2
         |> buildlxrock ( 20, 67 )
@@ -59,14 +60,16 @@ mymap =
         |> buildlxrock ( 42, 61 )
         |> buildrect ( mapwidth - 1, 0 ) ( 1, 70 ) 2
         -- Tutorial
-        |> buildlxrock ( 117, 59 )
+        -- |> buildlxrock ( 113, 59 )
         |> buildlxrock ( 125, 59 )
+        |> buildrect ( 112, 58 ) ( 2, 1 ) 2
         |> buildzystick ( 127, 53 )
         |> buildplatforms ( 133, 66 ) 8
         |> buildplatforms ( 164, 25 ) 15
         |> buildPillar ( 163, 25 ) 8
         |> buildPillar ( 225, 26 ) 7
-        |> buildzystick ( 179, 18 )
+        |> buildPillar ( 191, 0 ) 3
+        -- |> buildzystick ( 179, 18 )
         |> buildzystick ( 185, 18 )
         |> buildzystick ( 191, 18 )
         |> buildlxrock ( 179, 24 )

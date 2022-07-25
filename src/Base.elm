@@ -73,6 +73,8 @@ type alias GlobalData =
 type alias LSInfo =
     { collected : List String
     , level : String
+    , energy : Float
+    , initPosition : ( Int, Int )
     }
 
 

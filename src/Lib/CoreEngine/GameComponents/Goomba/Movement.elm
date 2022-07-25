@@ -16,6 +16,7 @@ import Lib.CoreEngine.GameComponent.Base exposing (Data)
 import Lib.CoreEngine.Physics.CollisionShape exposing (CShape(..), judgeShape)
 import Lib.CoreEngine.Physics.Ground exposing (isOnground)
 import Lib.CoreEngine.Physics.SolidCollision exposing (canMove, getNearBySolid, moveTilCollide)
+import Lib.DefinedTypes.Parser exposing (dgetfloat)
 import Math.Vector2 exposing (vec2)
 
 
@@ -34,13 +35,16 @@ checkCollision ggd d =
             else
                 ( vx, vy )
 
+        cv =
+            dgetfloat d.extra "constv"
+
         newnewv =
             if isOnground d ggd then
                 if newvx >= 0 then
-                    ( 50, newvy )
+                    ( cv, newvy )
 
                 else
-                    ( -50, newvy )
+                    ( -cv, newvy )
 
             else
                 ( newvx / 1.001, newvy )
@@ -53,6 +57,9 @@ checkCollision ggd d =
 solidCollisionMove : List ( Int, Int ) -> GameGlobalData -> Data -> Data
 solidCollisionMove ls ggd d =
     let
+        cv =
+            dgetfloat d.extra "constv"
+
         ( pvx, pvy ) =
             d.velocity
 
@@ -68,10 +75,10 @@ solidCollisionMove ls ggd d =
                     ( pvx, 0 )
 
                 CRIGHT ->
-                    ( -50, pvy )
+                    ( -cv, pvy )
 
                 CLEFT ->
-                    ( 50, pvy )
+                    ( cv, pvy )
 
                 CBOTTOMLEFT ->
                     ( 0, 0 )

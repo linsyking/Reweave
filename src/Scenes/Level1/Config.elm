@@ -91,7 +91,7 @@ initActors t cs =
 
          -- , initGameComponent t (GameGoombaInit (GoombaInit ( 3425, 1928 ) ( 50, 0 ) 8)) Goomba.gameComponent
          , initGameComponent t (GameCutSceneInit (CutSceneInit ( 3140, 1440 ) ( 100, 100 ) 10 dialoguesBird False)) CutScene.gameComponent
-         , initGameComponent t (GameSavePointInit (SavePointInit ( 3085, 1416 ) 11)) Save.gameComponent
+         , initGameComponent t (GameSavePointInit (SavePointInit ( 3280, 1416 ) 11)) Save.gameComponent
          ]
             ++ (if isInCollected "bird" cs then
                     []

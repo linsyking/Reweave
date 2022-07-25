@@ -72,16 +72,16 @@ initPlayer t pos =
 initActors : Int -> Array GameComponent
 initActors t =
     Array.fromList
-        [ initGameComponent t (GameGoombaInit (GoombaInit ( 3360, 1696 ) ( 0, 0 ) 2)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 4416, 1696 ) ( 0, 0 ) 3)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 4416, 1800 ) ( 0, 0 ) 4)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 5300, 1800 ) ( 0, 0 ) 5)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 832, 1600 ) ( 0, 0 ) 6)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 1280, 1696 ) ( 0, 0 ) 7)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 1760, 1800 ) ( 0, 0 ) 8)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 2240, 1800 ) ( 0, 0 ) 9)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 3840, 2080 ) ( 0, 0 ) 15)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 4160, 2080 ) ( 0, 0 ) 16)) Goomba.gameComponent
+        [ initGameComponent t (GameGoombaInit (GoombaInit ( 3360, 1696 ) ( 0, 0 ) 50 2)) Goomba.gameComponent
+        , initGameComponent t (GameGoombaInit (GoombaInit ( 4416, 1696 ) ( 0, 0 ) 50 3)) Goomba.gameComponent
+        , initGameComponent t (GameGoombaInit (GoombaInit ( 4416, 1800 ) ( 0, 0 ) 50 4)) Goomba.gameComponent
+        , initGameComponent t (GameGoombaInit (GoombaInit ( 5300, 1800 ) ( 0, 0 ) 50 5)) Goomba.gameComponent
+        , initGameComponent t (GameGoombaInit (GoombaInit ( 832, 1600 ) ( 0, 0 ) 50 6)) Goomba.gameComponent
+        , initGameComponent t (GameGoombaInit (GoombaInit ( 1280, 1696 ) ( 0, 0 ) 50 7)) Goomba.gameComponent
+        , initGameComponent t (GameGoombaInit (GoombaInit ( 1760, 1800 ) ( 0, 0 ) 50 8)) Goomba.gameComponent
+        , initGameComponent t (GameGoombaInit (GoombaInit ( 2240, 1800 ) ( 0, 0 ) 50 9)) Goomba.gameComponent
+        , initGameComponent t (GameGoombaInit (GoombaInit ( 3840, 2080 ) ( 0, 0 ) 50 15)) Goomba.gameComponent
+        , initGameComponent t (GameGoombaInit (GoombaInit ( 4160, 2080 ) ( 0, 0 ) 50 16)) Goomba.gameComponent
         , initGameComponent t (GameExitInit (ExitInit ( 5690, 1920 ) "Home" DefaultPlayerPosition 0 99)) Exit.gameComponent
 
         --, initGameComponent t (GameCutSceneInit (CutSceneInit ( 100, 1800 ) ( 100, 160 ) 88 [ ( "1", "Dear master, I want learn something from you", True ), ( "1", "Yes, please go ahead.", False ) ])) CutScene.gameComponent
