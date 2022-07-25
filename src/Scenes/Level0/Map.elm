@@ -46,7 +46,7 @@ mymap =
         |> buildrect ( 69, 53 ) ( 4, 2 ) 2
         |> buildrect ( 83, 53 ) ( 4, 2 ) 2
         |> buildrect ( 116, 60 ) ( 3, 1 ) 2
-        |> buildplatforms ( 85, 60 ) 12
+        |> buildplatforms ( 85, 60 ) 10
         -- 2nd Master
         |> buildPillar ( 70, 61 ) 2
         |> buildPillar ( 87, 61 ) 2
@@ -63,7 +63,9 @@ mymap =
         -- |> buildlxrock ( 113, 59 )
         |> buildlxrock ( 125, 59 )
         |> buildrect ( 112, 58 ) ( 2, 1 ) 2
+        -- Saveopt2
         |> buildzystick ( 127, 53 )
+        |> buildzystick ( 133, 53 )
         |> buildplatforms ( 133, 66 ) 8
         |> buildplatforms ( 164, 25 ) 15
         |> buildPillar ( 163, 25 ) 8
@@ -83,4 +85,4 @@ mymap =
         |> buildPillar ( 255, 10 ) 4
         |> buildPillar ( 267, 25 ) 7
         |> buildPillar ( 267, 10 ) 1
-        |> buildplatforms ( 268, 25 ) 6
+        |> buildplatforms ( 268, 25 ) 7

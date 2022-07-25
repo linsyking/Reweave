@@ -173,15 +173,13 @@ updateModel msg gd lm ( model, t ) ggd =
                     | components = newcs
                     , exitinfo =
                         EngineT
-                            (if ggd.energy >= 500 then
-                                500
-
-                             else if ggd.energy <= 300 then
-                                300
-
-                             else
-                                ggd.energy
-                            )
+                            -- (if ggd.energy >= 500 then
+                            500
+                            --  else if ggd.energy <= 300 then
+                            --     300
+                            --  else
+                            --     ggd.energy
+                            -- )
                             DefaultPlayerPosition
                             ggd.collectedMonsters
                             ggd.specialState

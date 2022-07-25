@@ -56,7 +56,7 @@ import Lib.CoreEngine.GameComponents.Spike.Export as Spike
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
 import Lib.Map.Longxi exposing (makemanybamboos)
 import Lib.Render.Render exposing (renderSprite)
-import Scenes.Level2.Map exposing (mymap)
+import Scenes.Level2.Map exposing (mapwidth, mymap)
 
 
 {-| initFrontGroundComponents
@@ -76,7 +76,7 @@ initPlayer t pos =
         DefaultPlayerPosition ->
             initGameComponent t (GamePlayerInit (PlayerInit ( 128, 1864 ))) Player.gameComponent
 
-        -- initGameComponent t (GamePlayerInit (PlayerInit ( 3300, 30 ))) Player.gameComponent
+        -- initGameComponent t (GamePlayerInit (PlayerInit ( 3814, 552 ))) Player.gameComponent
         CustomPlayerPosition x ->
             initGameComponent t (GamePlayerInit (PlayerInit x)) Player.gameComponent
 
@@ -89,7 +89,7 @@ initActors t =
         [ initGameComponent t (GameGoombaInit (GoombaInit ( 800, 2100 ) ( 0, 0 ) 50 3)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 1500, 1750 ) ( 50, 0 ) 50 4)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 1550, 1750 ) ( -50, 0 ) 50 5)) Goomba.gameComponent
-        , initGameComponent t (GameExitInit (ExitInit ( 3820, 140 ) "Level3" DefaultPlayerPosition 0 6)) Exit.gameComponent
+        , initGameComponent t (GameExitInit (ExitInit ( 4820, 880 ) "Level3" DefaultPlayerPosition 0 6)) Exit.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 590, 2183 ) HorUp 3 True 7)) Spike.gameComponent
         , initGameComponent t (GameBoneInit (BoneInit ( 1330, 2150 ) 150 8)) Bone.gameComponent
         , initGameComponent t (GameBoneInit (BoneInit ( 1460, 2150 ) 150 9)) Bone.gameComponent
@@ -104,8 +104,8 @@ initActors t =
         , initGameComponent t (GameSpikeInit (SpikeInit ( 32 * 5 + 5, 2000 ) VerRight 2 True 17)) Spike.gameComponent
 
         -- , initGameComponent t (GameGoombaInit (GoombaInit ( 130 * 32, 22 * 32 ) ( -50, 0 ) 18)) Goomba.gameComponent
-        , initGameComponent t (GameSavePointInit (SavePointInit ( 4291, 296 ) 19)) Save.gameComponent
-        , initGameComponent t (GameMonsterInit (MonsterInit ( 3220, 1920 ) ( 400, 300 ) "lion" 21 20)) Monster.gameComponent
+        , initGameComponent t (GameSavePointInit (SavePointInit ( 3880, 360 ) 19)) Save.gameComponent
+        , initGameComponent t (GameMonsterInit (MonsterInit ( 4420, 120 ) ( 400, 300 ) "lion" 21 20)) Monster.gameComponent
         , initGameComponent t (GameCutSceneInit (CutSceneInit ( 3220, 1920 ) ( 400, 300 ) 21 liontalkings False)) CutScene.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 94 * 32, 35 * 32 ) ( 0, 0 ) 50 22)) Goomba.gameComponent
         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 36 * 32 + 20, 62 * 32 - 60 ) 300 True 23)) Energy.gameComponent
@@ -125,7 +125,7 @@ liontalkings =
 -}
 initCamera : CameraData
 initCamera =
-    CameraData ( 0, 1120 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * 139 - 1, 70 * 32 - 1 ) ) ( ( 0.2, 0.3 ), ( 0.4, 0.4 ) )
+    CameraData ( 0, 1120 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * (mapwidth - 1) - 1, 70 * 32 - 1 ) ) ( ( 0.2, 0.3 ), ( 0.4, 0.4 ) )
 
 
 {-| initGameGlobalData
@@ -134,7 +134,7 @@ initGameGlobalData : Float -> List String -> GameGlobalData
 initGameGlobalData e col =
     { camera = initCamera
     , solidmap = mymap
-    , mapsize = ( 140, 70 )
+    , mapsize = ( mapwidth, 70 )
     , selectobj = 1
     , energy = e
     , ingamepause = False
@@ -157,3 +157,4 @@ allChartlets =
         ]
         (makemanybamboos ( 272, 2130 ) 3)
         ++ makemanybamboos ( 872, 2130 ) 3
+        ++ makemanybamboos ( 3100, 2130 ) 30

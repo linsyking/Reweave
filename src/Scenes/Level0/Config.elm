@@ -82,7 +82,7 @@ initPlayer : Int -> PlayerInitPosition -> GameComponent
 initPlayer t pos =
     case pos of
         DefaultPlayerPosition ->
-            -- initGameComponent t (GamePlayerInit (PlayerInit ( 7054, 680 ))) Player.gameComponent
+            -- initGameComponent t (GamePlayerInit (PlayerInit ( 9132, 680 ))) Player.gameComponent
             initGameComponent t (GamePlayerInit (PlayerInit ( 200, 2000 ))) Player.gameComponent
 
         CustomPlayerPosition x ->
@@ -104,17 +104,17 @@ initActors t sp =
             -- , initGameComponent t (GameGoombaInit (GoombaInit ( 3863, 1850 ) ( -50, 0 ) 50 7)) Goomba.gameComponent
             , initGameComponent t (GameGoombaEmitterInit (GoombaEmitterInit ( 3560, 1890 ) 100 ( 50, 0 ) 7)) GoombaEmitter.gameComponent
             , initGameComponent t (GameSpikeInit (SpikeInit ( 3970, 1894 ) VerLeft 1 True 30)) Spike.gameComponent
-            , initGameComponent t (GameSavePointInit (SavePointInit ( 4121, 1576 ) 8)) Save.gameComponent
-            , initGameComponent t (GameSpikeInit (SpikeInit ( 4270, 2086 ) HorUp 13 True 9)) Spike.gameComponent
+            , initGameComponent t (GameSavePointInit (SavePointInit ( 4327, 1576 ) 8)) Save.gameComponent
+            , initGameComponent t (GameSpikeInit (SpikeInit ( 4270, 2086 ) HorUp 17 True 9)) Spike.gameComponent
             , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 4900, 2016 ) 2000 True 10)) Energy.gameComponent
-            , initGameComponent t (GameSavePointInit (SavePointInit ( 4772, 1992 ) 11)) Save.gameComponent
+            , initGameComponent t (GameSavePointInit (SavePointInit ( 4972, 1992 ) 11)) Save.gameComponent
             , initGameComponent t (GameSavePointInit (SavePointInit ( 5400, 680 ) 12)) Save.gameComponent
             , initGameComponent t (GameSpikeInit (SpikeInit ( 5925, 530 ) HorDown 11 True 13)) Spike.gameComponent
             , initGameComponent t (GameSpikeInit (SpikeInit ( 5925, 500 ) HorUp 11 True 14)) Spike.gameComponent
             , initGameComponent t (GameGoombaInit (GoombaInit ( 6200, 680 ) ( -50, 0 ) 30 15)) Goomba.gameComponent
             , initGameComponent t (GameGoombaInit (GoombaInit ( 5950, 680 ) ( 50, 0 ) 30 31)) Goomba.gameComponent
             , initGameComponent t (GameGoombaInit (GoombaInit ( 6100, 680 ) ( 50, 0 ) 30 32)) Goomba.gameComponent
-            , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 5600, 730 ) 700 False 16)) Energy.gameComponent
+            , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 5500, 730 ) 700 False 16)) Energy.gameComponent
             , initGameComponent t (GameSavePointInit (SavePointInit ( 7227, 1832 ) 17)) Save.gameComponent
             , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 7500, 1870 ) 1000 True 18)) Energy.gameComponent
             , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 7600, 1870 ) 1000 True 19)) Energy.gameComponent
@@ -135,7 +135,7 @@ initActors t sp =
             0 ->
                 Array.fromList
                     [ initGameComponent t (GameCutSceneInit (CutSceneInit ( 2440, 1820 ) ( 100, 100 ) 88 dialogues True)) CutScene.gameComponent
-                    , initGameComponent t (GameCutSceneInit (CutSceneInit ( 4250, 1820 ) ( 60, 100 ) 89 dialogues2 True)) CutScene.gameComponent
+                    , initGameComponent t (GameCutSceneInit (CutSceneInit ( 4120, 1620 ) ( 80, 80 ) 89 dialogues2 True)) CutScene.gameComponent
                     ]
 
             _ ->
@@ -234,7 +234,7 @@ allChartlets sp =
                   , BehindActors
                   )
                 , ( \gd ggd ->
-                        renderSprite gd [] (getPositionUnderCamera ( 4200, 1830 ) ggd) ( 100, 0 ) "master"
+                        renderSprite gd [] (getPositionUnderCamera ( 4100, 1620 ) ggd) ( 100, 0 ) "master"
                   , BehindActors
                   )
                 ]
@@ -244,21 +244,20 @@ allChartlets sp =
         )
         ++ [ ( \gd ggd -> renderText gd 30 "Use A,D to move to left and right, Use C or Space to jump" "Times New Roman" (getPositionUnderCamera ( 200, 1560 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "Use Esc to call the menu" "Times New Roman" (getPositionUnderCamera ( 200, 1630 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "Save Point" "Times New Roman" (getPositionUnderCamera ( 2880, 1960 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "Checkpoint" "Times New Roman" (getPositionUnderCamera ( 2880, 1960 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "(Also Save Energy)" "Times New Roman" (getPositionUnderCamera ( 2820, 2000 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "You can restart to go to the last savepoint" "Times New Roman" (getPositionUnderCamera ( 2820, 2060 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "You can restart to go to the last checkpoint" "Times New Roman" (getPositionUnderCamera ( 2820, 2060 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "Energy Crystal" "Times New Roman" (getPositionUnderCamera ( 3080, 1960 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "(Recoverable)" "Times New Roman" (getPositionUnderCamera ( 3080, 1760 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "Energy Crystal" "Times New Roman" (getPositionUnderCamera ( 3390, 1960 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "(Irrecoverable)" "Times New Roman" (getPositionUnderCamera ( 3390, 1760 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "Hit the goomba to get on the platform!" "Times New Roman" (getPositionUnderCamera ( 3690, 1960 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "Jump at the last monent" "Times New Roman" (getPositionUnderCamera ( 4200, 1360 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "Press W to save the energy from the player the moment before you hit the ground!" "Times New Roman" (getPositionUnderCamera ( 4200, 1430 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "Right click at the top of the screen and over the character" "Times New Roman" (getPositionUnderCamera ( 4390, 1760 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "And don't forget to move right!" "Times New Roman" (getPositionUnderCamera ( 4690, 1830 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "Jump at the last moment" "Times New Roman" (getPositionUnderCamera ( 4200, 1360 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "Press W to save the energy from the player before you hit the ground" "Times New Roman" (getPositionUnderCamera ( 4200, 1430 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 30 "Right click over the character, and also at the top of your screen" "Times New Roman" (getPositionUnderCamera ( 5290, 2000 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "Try to use energy on the goombas! (Move them away)" "Times New Roman" (getPositionUnderCamera ( 5390, 900 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "Press E to select yourself quickly" "Times New Roman" (getPositionUnderCamera ( 6690, 900 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 50 "Challenge Exercises" "Times New Roman" (getPositionUnderCamera ( 7290, 1100 ) ggd), BehindActors )
+           , ( \gd ggd -> renderText gd 50 "Challenging Exercises" "Times New Roman" (getPositionUnderCamera ( 7280, 1100 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 40 "(Optional)" "Times New Roman" (getPositionUnderCamera ( 7400, 1200 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "Right click to release the energy at the correct position" "Times New Roman" (getPositionUnderCamera ( 7500, 2030 ) ggd), BehindActors )
            , ( \gd ggd -> renderText gd 30 "Try to take advantage of the visual aid system" "Times New Roman" (getPositionUnderCamera ( 7500, 2070 ) ggd), BehindActors )
