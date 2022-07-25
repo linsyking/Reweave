@@ -62,7 +62,7 @@ view ( d, t ) ggd gd =
                 (\( ( p1x, p1y ), ( p2x, p2y ) ) ->
                     renderSprite
                         gd
-                        [ alpha 0.0
+                        [ alpha 0.6
                         ]
                         (getPositionUnderCamera ( p1x, p1y ) ggd)
                         ( p2x - p1x, p2y - p1y )
