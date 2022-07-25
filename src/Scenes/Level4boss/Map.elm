@@ -8,6 +8,7 @@ module Scenes.Level4boss.Map exposing (mymap)
 
 import Array2D
 import Lib.Map.Beimin exposing (buildbmleaf, buildbmlotus)
+import Lib.Map.Donghai exposing (builddhrock, builddhsmallrock)
 import Lib.Map.Poly exposing (buildPillar, buildrect)
 import Lib.Map.Zhongyuan exposing (buildzystick)
 
@@ -23,11 +24,20 @@ mymap : Array2D.Array2D Int
 mymap =
     sds
         |> buildrect ( 0, 0 ) ( 1, 70 ) 2
-        |> buildrect ( 0, 69 ) ( 120, 1 ) 2
-        |> buildrect ( 0, 40 ) ( 14, 35 ) 2
+        |> buildrect ( 0, 69 ) ( 120, 1 ) 1
+        -- |> buildrect ( 0, 40 ) ( 14, 35 ) 1
+        |> builddhrock ( 10, 60 )
+        |> builddhrock ( 18, 56 )
+        |> builddhrock ( 30, 64 )
+        |> builddhrock ( 33, 64 )
+        |> builddhrock ( 36, 64 )
+        |> builddhrock ( 39, 64 )
+        |> builddhrock ( 42, 64 )
+        |> builddhrock ( 53, 60 )
 
 
 
+-- |> builddhsmallrock (20, 40)
 -- |> buildzystick ( 13, 45 )
 -- |> buildbmleaf ( 30, 65 )
 -- |> buildbmleaf ( 55, 42 )

@@ -103,6 +103,11 @@ playerMove player =
         pv =
             player.velocity
 
+        -- dddd =
+        --     if player.uid == 15 then
+        --         Just (Debug.log "hh" ( player.velocity, newpos ))
+        --     else
+        --         Nothing
         ( npx, npy ) =
             pv
 
@@ -147,6 +152,11 @@ clearWrongVelocity ggd gcs =
                 player =
                     gc.data
 
+                -- dddd =
+                --     if gc.data.uid == 15 then
+                --         Just (Debug.log "hh" (gc.data.velocity, fv))
+                --     else
+                --         Nothing
                 ( npvx, npvy ) =
                     if pvy < 0 && not (canMove player ggd (vec2 0 -1)) then
                         ( pvx, 0 )
@@ -669,14 +679,6 @@ updateModel msg gd lm ( model, t ) ggd =
 
                         else
                             ( ( model, ggd, [] ), gd )
-
-                    KeyDown 13 ->
-                        -- For cutscene
-                        let
-                            ( newactors, _, newggd ) =
-                                updateSingleGameComponentByName msg NullGameComponentMsg ggd gd t "CutScene" model.actors
-                        in
-                        ( ( { model | actors = newactors }, newggd, [] ), gd )
 
                     KeyDown _ ->
                         if model.ignoreInput then

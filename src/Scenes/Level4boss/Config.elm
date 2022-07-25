@@ -63,8 +63,8 @@ import Scenes.Level4boss.Map exposing (mymap)
 initFrontGroundComponents : Int -> Array Component
 initFrontGroundComponents t =
     Array.fromList
-        [ Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "Beiming  北溟" ])
-        , Hints.initComponent t (ComponentLStringMsg [ "40", "1580", "100", "35", "Near The River 小河边" ])
+        [--     Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "Beiming  北溟" ])
+         -- , Hints.initComponent t (ComponentLStringMsg [ "40", "1580", "100", "35", "Near The River 小河边" ])
         ]
 
 
@@ -76,7 +76,7 @@ initPlayer t pos =
         DefaultPlayerPosition ->
             -- initGameComponent t (GamePlayerInit (PlayerInit ( 3197, 1480 ))) Player.gameComponent
             -- initGameComponent t (GamePlayerInit (PlayerInit ( 3168, 1000 ))) Player.gameComponent
-            initGameComponent t (GamePlayerInit (PlayerInit ( 342, 1160 ))) Player.gameComponent
+            initGameComponent t (GamePlayerInit (PlayerInit ( 342, 1800 ))) Player.gameComponent
 
         CustomPlayerPosition x ->
             initGameComponent t (GamePlayerInit (PlayerInit x)) Player.gameComponent
@@ -90,9 +90,10 @@ initActors t cs =
         [ -- initGameComponent t (GameExitInit (ExitInit ( 120, 1240 ) "Level0" (CustomPlayerPosition ( 3446, 1800 )) 1 6)) Exit.gameComponent
           -- , initGameComponent t (GameCutSceneInit (CutSceneInit ( 475, 1340 ) ( 100, 100 ) 5 dialoguesMaster True)) CutScene.gameComponent
           -- , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2200 ) HorUp 1000 False 3)) Spike.gameComponent
-          -- , initGameComponent t (GameSpikeInit (SpikeInit ( 1440, 1900 ) HorUp 1 True 4)) Spike.gameComponent
-          -- , initGameComponent t (GameExitInit (ExitInit ( 3700, 1450 ) "Level2" DefaultPlayerPosition 0 7)) Exit.gameComponent
-          initGameComponent t (GameFishInit (FishInit ( 1000, 1200 ) 100 8)) Fish.gameComponent
+          initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2190 ) HorUp 200 False 4)) Spike.gameComponent
+
+        -- , initGameComponent t (GameExitInit (ExitInit ( 3700, 1450 ) "Level2" DefaultPlayerPosition 0 7)) Exit.gameComponent
+        , initGameComponent t (GameFishInit (FishInit ( 1200, 800 ) 100 8)) Fish.gameComponent
 
         -- , initGameComponent t (GameCutSceneInit (CutSceneInit ( 3140, 1440 ) ( 100, 100 ) 10 dialoguesBird False)) CutScene.gameComponent
         ]
@@ -120,7 +121,7 @@ dialoguesBird =
 -}
 initCamera : CameraData
 initCamera =
-    CameraData ( 0, 700 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * 119 - 1, 70 * 32 - 1 ) ) ( ( 0.2, 0.2 ), ( 0.4, 0.1 ) )
+    CameraData ( 0, 700 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * 119 - 1, 69 * 32 - 1 ) ) ( ( 0.2, 0.2 ), ( 0.4, 0.1 ) )
 
 
 {-| initGameGlobalData
@@ -144,23 +145,7 @@ initGameGlobalData e col =
 -}
 allChartlets : List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
 allChartlets =
-    [ ( \gd ggd ->
-            renderSprite gd [] (getPositionUnderCamera ( 32, 1250 ) ggd) ( 32 * 14, 0 ) "dh/bigrock"
-      , FrontSolids
-      )
-    , ( \gd ggd ->
-            renderSprite gd [] (getPositionUnderCamera ( 32, 1450 ) ggd) ( 32 * 14, 0 ) "dh/bigrock"
-      , FrontSolids
-      )
-    , ( \gd ggd ->
-            renderSprite gd [] (getPositionUnderCamera ( 32, 1650 ) ggd) ( 32 * 14, 0 ) "dh/bigrock"
-      , FrontSolids
-      )
-    , ( \gd ggd ->
-            renderSprite gd [] (getPositionUnderCamera ( 32, 1850 ) ggd) ( 32 * 14, 0 ) "dh/bigrock"
-      , FrontSolids
-      )
-    ]
+    []
 
 
 

@@ -25,8 +25,19 @@ import Math.Vector2 exposing (vec2)
 checkCollision : GameGlobalData -> Data -> Data
 checkCollision ggd d =
     let
-        ( vx, vy ) =
+        ( rvx, vy ) =
             d.velocity
+
+        vx =
+            if abs rvx <= 10 then
+                if rvx >= 0 then
+                    20
+
+                else
+                    -20
+
+            else
+                rvx
 
         ( newvx, newvy ) =
             if (vx < 0 && not (canMove d ggd (vec2 -1 0))) || (vx > 0 && not (canMove d ggd (vec2 1 0))) then
