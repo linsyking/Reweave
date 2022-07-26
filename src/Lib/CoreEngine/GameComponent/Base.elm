@@ -42,6 +42,7 @@ import Lib.CoreEngine.GameComponents.Monster.Base exposing (MonsterInit)
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit, PlayerInitPosition)
 import Lib.CoreEngine.GameComponents.SavePoint.Base exposing (SavePointInit)
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeInit)
+import Lib.CoreEngine.GameComponents.Trigger.Base exposing (TriggerInit)
 import Lib.CoreEngine.GameComponents.Turtle.Base exposing (TurtleInit)
 
 
@@ -95,6 +96,7 @@ type GameComponentTMsg
     | GameStringIntMsg String Int
     | GameInfoPositionMsg String ( Int, Int )
     | GameSavePointInit SavePointInit
+    | GameTriggerInit TriggerInit
     | NullGameComponentMsg
 
 
