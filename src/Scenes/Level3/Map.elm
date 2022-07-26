@@ -12,8 +12,8 @@ module Scenes.Level3.Map exposing
 -}
 
 import Array2D
-import Lib.Map.Longxi exposing (buildlxlongground, buildlxplain, buildlxrock)
-import Lib.Map.Poly exposing (buildPillar, buildrect)
+import Lib.Map.Longxi exposing (buildlxrock)
+import Lib.Map.Poly exposing (buildrect)
 import Lib.Map.Zhongyuan exposing (buildplatforms, buildzystick)
 
 
@@ -21,7 +21,7 @@ import Lib.Map.Zhongyuan exposing (buildplatforms, buildzystick)
 -}
 sds : Array2D.Array2D Int
 sds =
-    Array2D.repeat 200 70 0
+    Array2D.repeat 160 70 0
 
 
 {-| mymap
@@ -30,6 +30,7 @@ mymap : Array2D.Array2D Int
 mymap =
     sds
         |> buildrect ( 0, 0 ) ( 1, 70 ) 2
+        |> buildrect ( 159, 0 ) ( 1, 70 ) 2
         |> buildplatforms ( 1, 68 ) 30
         |> buildlxrock ( 38, 67 )
         |> buildzystick ( 44, 58 )
@@ -41,7 +42,8 @@ mymap =
         |> buildzystick ( 67, 53 )
         |> buildlxrock ( 25, 67 )
         |> buildlxrock ( 25, 66 )
-        |> buildrect ( 50, 67 ) ( 1, 1 ) 2
+        -- |> buildrect ( 48, 67 ) ( 1, 1 ) 1
+        |> buildlxrock ( 50, 67 )
         |> buildrect ( 89, 46 ) ( 14, 22 ) 2
         |> buildlxrock ( 110, 60 )
         |> buildlxrock ( 115, 55 )

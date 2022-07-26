@@ -131,6 +131,7 @@ donghaiSprites =
     [ ( "dh/smallrock", getResourcePath "img/dhsmallrock.png" )
     , ( "dh/rock", getResourcePath "img/dhrock.png" )
     , ( "dh/bigrock", getResourcePath "img/dhbigrock.png" )
+    , ( "dh/wave", getResourcePath "img/dhwave.png" )
     ]
 
 

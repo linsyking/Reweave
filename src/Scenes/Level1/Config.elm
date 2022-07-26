@@ -97,7 +97,7 @@ initActors t cs =
                     []
 
                 else
-                    [ initGameComponent t (GameMonsterInit (MonsterInit ( 3140, 1430 ) ( 174, 138 ) "bird" 10 9)) Monster.gameComponent ]
+                    [ initGameComponent t (GameMonsterInit (MonsterInit ( 3140, 1430 ) ( 174, 138 ) False "bird" 10 9)) Monster.gameComponent ]
                )
         )
 

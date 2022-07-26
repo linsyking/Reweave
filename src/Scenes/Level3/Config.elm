@@ -48,8 +48,8 @@ import Lib.CoreEngine.GameComponents.Monster.Base exposing (MonsterInit)
 import Lib.CoreEngine.GameComponents.Monster.Export as Monster
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit, PlayerInitPosition(..))
 import Lib.CoreEngine.GameComponents.Player.Export as Player
-import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..), SpikeInit)
-import Lib.CoreEngine.GameComponents.Spike.Export as Spike
+import Lib.CoreEngine.GameComponents.SavePoint.Base exposing (SavePointInit)
+import Lib.CoreEngine.GameComponents.SavePoint.Export as Save
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
 import Lib.Render.Render exposing (renderSprite)
 import Scenes.Level3.Map exposing (mymap)
@@ -70,7 +70,7 @@ initPlayer t pos =
         DefaultPlayerPosition ->
             initGameComponent t (GamePlayerInit (PlayerInit ( 400, 2000 ))) Player.gameComponent
 
-        -- initGameComponent t (GamePlayerInit (PlayerInit ( 2131, 1576 ))) Player.gameComponent
+        -- initGameComponent t (GamePlayerInit (PlayerInit ( 3831, 1600 ))) Player.gameComponent
         CustomPlayerPosition x ->
             initGameComponent t (GamePlayerInit (PlayerInit x)) Player.gameComponent
 
@@ -80,7 +80,7 @@ initPlayer t pos =
 initActors : Int -> Array GameComponent
 initActors t =
     Array.fromList
-        [ initGameComponent t (GameExitInit (ExitInit ( 10, 2010 ) "Level2" (CustomPlayerPosition ( 3536, 1384 )) 0 6)) Exit.gameComponent
+        [ initGameComponent t (GameExitInit (ExitInit ( 10, 2010 ) "Level2" (CustomPlayerPosition ( 4649, 936 )) 0 6)) Exit.gameComponent
         , initGameComponent t (GameBoneInit (BoneInit ( 620, 2100 ) 150 7)) Bone.gameComponent
         , initGameComponent t (GameBoneInit (BoneInit ( 1285, 2100 ) 150 8)) Bone.gameComponent
         , initGameComponent t (GameBoneInit (BoneInit ( 1417, 2100 ) 150 9)) Bone.gameComponent
@@ -88,7 +88,7 @@ initActors t =
         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 1240, 1700 ) 200 False 11)) EnergyCrystal.gameComponent
         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 1240, 1500 ) 200 False 12)) EnergyCrystal.gameComponent
         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 1824, 1200 ) 200 False 13)) EnergyCrystal.gameComponent
-        , initGameComponent t (GameGoombaEmitterInit (GoombaEmitterInit ( 1700, 2120 ) 360 ( 50, 0 ) 14)) GoombaEmitter.gameComponent
+        , initGameComponent t (GameGoombaEmitterInit (GoombaEmitterInit ( 1700, 2140 ) 360 ( 50, 0 ) 14)) GoombaEmitter.gameComponent
         , initGameComponent t (GameBallInit (BallInit ( 2000, 1000 ) 100 15)) Ball.gameComponent
         , initGameComponent t (GameBallInit (BallInit ( 2230, 1000 ) 100 16)) Ball.gameComponent
         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 1900, 2100 ) 200 False 17)) EnergyCrystal.gameComponent
@@ -105,8 +105,9 @@ initActors t =
         , initGameComponent t (GameGoombaInit (GoombaInit ( 1000, 2000 ) ( 50, 0 ) 50 28)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 1100, 2000 ) ( -50, 0 ) 50 29)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 1840, 1300 ) ( -50, 0 ) 50 30)) Goomba.gameComponent
-        , initGameComponent t (GameMonsterInit (MonsterInit ( 4100, 1410 ) ( 400, 300 ) "fox" 21 31)) Monster.gameComponent
-        , initGameComponent t (GameExitInit (ExitInit ( 4500, 1500 ) "Level4" DefaultPlayerPosition 0 32)) Exit.gameComponent
+        , initGameComponent t (GameMonsterInit (MonsterInit ( 4100, 1310 ) ( 400, 400 ) True "fox" 21 31)) Monster.gameComponent
+        , initGameComponent t (GameExitInit (ExitInit ( 4700, 1550 ) "Level4" DefaultPlayerPosition 0 32)) Exit.gameComponent
+        , initGameComponent t (GameSavePointInit (SavePointInit ( 2883, 1352 ) 33)) Save.gameComponent
         ]
 
 
@@ -114,7 +115,7 @@ initActors t =
 -}
 initCamera : CameraData
 initCamera =
-    CameraData ( 0, 1120 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * 199 - 1, 70 * 32 - 1 ) ) ( ( 0.2, 0.3 ), ( 0.4, 0.4 ) )
+    CameraData ( 0, 1120 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * 159 - 1, 70 * 32 - 1 ) ) ( ( 0.2, 0.3 ), ( 0.4, 0.4 ) )
 
 
 {-| initGameGlobalData
@@ -123,7 +124,7 @@ initGameGlobalData : Float -> List String -> GameGlobalData
 initGameGlobalData e col =
     { camera = initCamera
     , solidmap = mymap
-    , mapsize = ( 200, 70 )
+    , mapsize = ( 160, 70 )
     , selectobj = 1
     , energy = e
     , ingamepause = False
@@ -139,7 +140,7 @@ initGameGlobalData e col =
 allChartlets : List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
 allChartlets =
     [ ( \gd ggd ->
-            renderSprite gd [] (getPositionUnderCamera ( 300, 1760 ) ggd) ( 700, 0 ) "zy/building"
+            renderSprite gd [] (getPositionUnderCamera ( 10, 1760 ) ggd) ( 700, 0 ) "zy/building"
       , BehindActors
       )
     , ( \gd ggd ->

@@ -32,6 +32,8 @@ import Lib.CoreEngine.Camera.Base exposing (CameraData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentTMsg(..))
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (initGameComponent)
+import Lib.CoreEngine.GameComponents.CutScene.Base exposing (CutSceneInit)
+import Lib.CoreEngine.GameComponents.CutScene.Export as CutScene
 import Lib.CoreEngine.GameComponents.EnergyCrystal.Base exposing (EnergyCrystalInit)
 import Lib.CoreEngine.GameComponents.EnergyCrystal.Export as EnergyCrystal
 import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
@@ -40,6 +42,8 @@ import Lib.CoreEngine.GameComponents.Goomba.Base exposing (GoombaInit)
 import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit, PlayerInitPosition(..))
 import Lib.CoreEngine.GameComponents.Player.Export as Player
+import Lib.CoreEngine.GameComponents.SavePoint.Base exposing (SavePointInit)
+import Lib.CoreEngine.GameComponents.SavePoint.Export as Save
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..), SpikeInit)
 import Lib.CoreEngine.GameComponents.Spike.Export as Spike
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
@@ -62,7 +66,7 @@ initPlayer t pos =
         DefaultPlayerPosition ->
             initGameComponent t (GamePlayerInit (PlayerInit ( 50, 2000 ))) Player.gameComponent
 
-        -- initGameComponent t (GamePlayerInit (PlayerInit ( 3744, 2000 ))) Player.gameComponent
+        -- initGameComponent t (GamePlayerInit (PlayerInit ( 6014, 2056 ))) Player.gameComponent
         CustomPlayerPosition x ->
             initGameComponent t (GamePlayerInit (PlayerInit x)) Player.gameComponent
 
@@ -87,12 +91,27 @@ initActors t =
         --, initGameComponent t (GameCutSceneInit (CutSceneInit ( 100, 1800 ) ( 100, 160 ) 88 [ ( "1", "Dear master, I want learn something from you", True ), ( "1", "Yes, please go ahead.", False ) ])) CutScene.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 672, 2060 ) HorUp 2 True 12)) Spike.gameComponent
         , initGameComponent t (GameSpikeInit (SpikeInit ( 1568, 2060 ) HorUp 3 True 13)) Spike.gameComponent
-        , initGameComponent t (GameSpikeInit (SpikeInit ( 3360, 1408 ) HorDown 9 True 10)) Spike.gameComponent
-        , initGameComponent t (GameSpikeInit (SpikeInit ( 3232, 2130 ) HorUp 15 True 11)) Spike.gameComponent
+        , initGameComponent t (GameSpikeInit (SpikeInit ( 3360, 1408 ) HorDown 11 True 10)) Spike.gameComponent
+        , initGameComponent t (GameSpikeInit (SpikeInit ( 3232, 2120 ) HorUp 15 True 11)) Spike.gameComponent
         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 3900, 1880 ) 200 False 17)) EnergyCrystal.gameComponent
+        , initGameComponent t (GameCutSceneInit (CutSceneInit ( 5420, 2130 ) ( 100, 32 ) 18 fishtalk True)) CutScene.gameComponent
+        , initGameComponent t (GameSavePointInit (SavePointInit ( 2927, 1320 ) 19)) Save.gameComponent
+        , initGameComponent t (GameSavePointInit (SavePointInit ( 5258, 2056 ) 20)) Save.gameComponent
 
         -- , initGameComponent t (GameFishInit (FishInit ( 5632, 100 ) ( 0, 0 ) "default" 100 12)) Monster.gameComponent
         ]
+
+
+fishtalk : List ( String, String )
+fishtalk =
+    [ ( "p_profile", "What are those scales?" )
+    , ( "p_profile", "Is there a big fish?" )
+    , ( "bird", "I know this! It's Luoyu!" )
+    , ( "p_profile", "Wow! Who is Luoyu?" )
+    , ( "bird", "It is a large fish that can emit scales." )
+    , ( "bird", "It has killed millions of creatures." )
+    , ( "p_profile", "I should be more careful." )
+    ]
 
 
 {-| initCamera
@@ -139,17 +158,33 @@ allChartlets =
             renderSprite gd [] (getPositionUnderCamera ( 2900, 1420 ) ggd) ( 32 * 11, 0 ) "dh/rock"
       , FrontSolids
       )
+    , ( \gd ggd ->
+            renderSprite gd [] (getPositionUnderCamera ( 5464, 2130 ) ggd) ( 32, 0 ) "ot/scale"
+      , BehindActors
+      )
+    , ( \gd ggd ->
+            renderSprite gd [] (getPositionUnderCamera ( 5420, 2140 ) ggd) ( 32, 0 ) "ot/scale"
+      , BehindActors
+      )
+    , ( \gd ggd ->
+            renderSprite gd [] (getPositionUnderCamera ( 5440, 2130 ) ggd) ( 32, 0 ) "ot/scale"
+      , BehindActors
+      )
+    , ( \gd ggd ->
+            renderSprite gd [] (getPositionUnderCamera ( 5480, 2140 ) ggd) ( 32, 0 ) "ot/scale"
+      , BehindActors
+      )
     ]
-        ++ makemanywaves 8
+        ++ makemanywaves ( 0, 2150 ) 8
 
 
-makemanywaves : Int -> List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
-makemanywaves n =
+makemanywaves : ( Int, Int ) -> Int -> List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
+makemanywaves ( sx, sy ) n =
     List.foldl
         (\i al ->
             al
                 ++ [ ( \gd ggd ->
-                        renderSprite gd [] (getPositionUnderCamera ( 450 + 770 * i, 2135 ) ggd) ( 800, 0 ) "bm/smallwave"
+                        renderSprite gd [] (getPositionUnderCamera ( sx + 760 * i, sy ) ggd) ( 1200, 0 ) "dh/wave"
                      , FrontSolids
                      )
                    ]

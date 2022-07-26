@@ -30,7 +30,7 @@ view ( d, t ) ggd gd =
     in
     [ ( group []
             [ renderSprite gd
-                [ alpha 0 ]
+                [ alpha 0.5 ]
                 (getPositionUnderCamera d.position ggd)
                 ( d.simplecheck.width, d.simplecheck.height )
                 "background"
