@@ -36,7 +36,7 @@ import Dict
 import Lib.Component.Base exposing (DefinedTypes(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
-import Lib.DefinedTypes.Parser exposing (dgetString, dgetint, dsetint, dsetstring)
+import Lib.DefinedTypes.Parser exposing (dgetString, dgetbool, dgetint, dsetbool, dsetint, dsetstring)
 import Random
 
 
@@ -86,6 +86,7 @@ initModel _ comMsg =
                     [ ( "TriggerUID", CDInt info.triggeruid )
                     , ( "Timer", CDInt 0 )
                     , ( "Status", CDString "Away" )
+                    , ( "Awake", CDBool False )
                     ]
             , uid = info.uid
             }
@@ -272,21 +273,34 @@ updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data
 updateModel mainMsg comMsg gameGlobalData _ ( model, t ) =
     case mainMsg of
         Tick _ ->
-            let
-                requestMsg =
-                    getInitBulletsMsg t model
+            if dgetbool model.extra "Awake" then
+                let
+                    requestMsg =
+                        getInitBulletsMsg t model
 
-                newModel =
-                    case model.status of
-                        Dead _ ->
-                            { model | velocity = ( Tuple.first model.velocity, Tuple.second model.velocity - 10 ) }
+                    newModel =
+                        case model.status of
+                            Dead _ ->
+                                { model | velocity = ( Tuple.first model.velocity, Tuple.second model.velocity - 10 ) }
 
-                        _ ->
-                            model
-                                |> changeStatus
-                                |> changeVelocity
-            in
-            ( newModel, requestMsg, gameGlobalData )
+                            _ ->
+                                model
+                                    |> changeStatus
+                                    |> changeVelocity
+                in
+                ( newModel, requestMsg, gameGlobalData )
+
+            else
+                let
+                    newModel =
+                        case model.status of
+                            Dead _ ->
+                                { model | velocity = ( Tuple.first model.velocity, Tuple.second model.velocity - 10 ) }
+
+                            _ ->
+                                model
+                in
+                ( newModel, [], gameGlobalData )
 
         _ ->
             case comMsg of
@@ -301,6 +315,9 @@ updateModel mainMsg comMsg gameGlobalData _ ( model, t ) =
                       ]
                     , gameGlobalData
                     )
+
+                GameStringMsg "awake" ->
+                    ( { model | extra = model.extra |> dsetbool "Awake" True }, [], gameGlobalData )
 
                 _ ->
                     ( model, [], gameGlobalData )

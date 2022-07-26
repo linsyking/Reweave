@@ -36,6 +36,14 @@ view ( d, t ) ggd gd =
         hp =
             dgetint d.extra "Life"
 
+        isalive =
+            case d.status of
+                Dead _ ->
+                    False
+
+                _ ->
+                    True
+
         cboxs =
             List.map (\x -> getBoxPos d.position x) d.collisionbox
     in
@@ -50,6 +58,13 @@ view ( d, t ) ggd gd =
                         _ ->
                             []
                     )
+                , alpha
+                    (if isalive then
+                        1
+
+                     else
+                        0.6
+                    )
                 ]
                 (getPositionUnderCamera d.position ggd)
                 ( d.simplecheck.width, d.simplecheck.height )
@@ -62,7 +77,7 @@ view ( d, t ) ggd gd =
                 (\( ( p1x, p1y ), ( p2x, p2y ) ) ->
                     renderSprite
                         gd
-                        [ alpha 0.6
+                        [ alpha 0
                         ]
                         (getPositionUnderCamera ( p1x, p1y ) ggd)
                         ( p2x - p1x, p2y - p1y )
