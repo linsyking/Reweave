@@ -109,7 +109,7 @@ changeStatus model =
             dgetint data "Timer"
     in
     case ( status, timer ) of
-        ( "Away", 1200 ) ->
+        ( "Away", 500 ) ->
             { model
                 | extra =
                     data
