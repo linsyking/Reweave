@@ -402,15 +402,29 @@ updateModel mainMsg comMsg gameGlobalData _ ( model, t ) =
                         uid =
                             dgetint model.extra "TriggerUID"
 
+                        curhp =
+                            dgetint model.extra "Life"
+
                         newmodelextra =
-                            dsetint "Life" 0 model.extra
+                            dsetint "Life"
+                                (if curhp - 50 <= 0 then
+                                    0
+
+                                 else
+                                    curhp - 50
+                                )
+                                model.extra
                     in
-                    ( { model | status = Dead t, extra = newmodelextra }
-                    , [ GameActorUidMsg uid (GameStringMsg "start")
-                      , GameParentMsg (GameLStringMsg [ "collectmonster", "turtle" ])
-                      ]
-                    , gameGlobalData
-                    )
+                    if curhp - 50 <= 0 then
+                        ( { model | status = Dead t, extra = newmodelextra }
+                        , [ GameActorUidMsg uid (GameStringMsg "start")
+                          , GameParentMsg (GameLStringMsg [ "collectmonster", "turtle" ])
+                          ]
+                        , gameGlobalData
+                        )
+
+                    else
+                        ( { model | extra = newmodelextra }, [], gameGlobalData )
 
                 _ ->
                     ( model, [], gameGlobalData )

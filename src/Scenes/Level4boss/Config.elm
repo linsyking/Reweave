@@ -44,6 +44,8 @@ import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentT
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (initGameComponent)
 import Lib.CoreEngine.GameComponents.CutScene.Base exposing (CutSceneInit)
 import Lib.CoreEngine.GameComponents.CutScene.Export as CutScene
+import Lib.CoreEngine.GameComponents.EnergyCrystal.Base exposing (EnergyCrystalInit)
+import Lib.CoreEngine.GameComponents.EnergyCrystal.Export as EnergyCrystal
 import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
 import Lib.CoreEngine.GameComponents.Exit.Export as Exit
 import Lib.CoreEngine.GameComponents.Fish.Base exposing (FishInit)
@@ -94,6 +96,10 @@ initActors t cs =
 
         -- , initGameComponent t (GameExitInit (ExitInit ( 3700, 1450 ) "Level2" DefaultPlayerPosition 0 7)) Exit.gameComponent
         , initGameComponent t (GameFishInit (FishInit ( 1200, 800 ) 100 8)) Fish.gameComponent
+        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 1200, 2000 ) 400 True 9)) EnergyCrystal.gameComponent
+        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 600, 1700 ) 400 True 10)) EnergyCrystal.gameComponent
+        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 1000, 2000 ) 400 True 11)) EnergyCrystal.gameComponent
+        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 1400, 2000 ) 400 True 12)) EnergyCrystal.gameComponent
 
         -- , initGameComponent t (GameCutSceneInit (CutSceneInit ( 3140, 1440 ) ( 100, 100 ) 10 dialoguesBird False)) CutScene.gameComponent
         ]
