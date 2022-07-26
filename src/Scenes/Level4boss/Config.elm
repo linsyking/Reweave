@@ -2,8 +2,6 @@ module Scenes.Level4boss.Config exposing
     ( initFrontGroundComponents
     , initPlayer
     , initActors
-    , dialoguesMaster
-    , dialoguesBird
     , initCamera
     , initGameGlobalData
     , allChartlets
@@ -18,10 +16,6 @@ module Scenes.Level4boss.Config exposing
 
 @docs initActors
 
-@docs dialoguesMaster
-
-@docs dialoguesBird
-
 @docs initCamera
 
 @docs initGameGlobalData
@@ -35,7 +29,6 @@ module Scenes.Level4boss.Config exposing
 import Array exposing (Array)
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable)
-import Components.Hints.Export as Hints
 import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Base exposing (CameraData)
@@ -54,6 +47,8 @@ import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit, PlayerIni
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..), SpikeInit)
 import Lib.CoreEngine.GameComponents.Spike.Export as Spike
+import Lib.CoreEngine.GameComponents.Trigger.Base exposing (TriggerInit)
+import Lib.CoreEngine.GameComponents.Trigger.Export as Trigger
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
 import Lib.Render.Render exposing (renderSprite)
 import Lib.Resources.Monster exposing (isInCollected)
@@ -77,8 +72,8 @@ initPlayer t pos =
     case pos of
         DefaultPlayerPosition ->
             -- initGameComponent t (GamePlayerInit (PlayerInit ( 3197, 1480 ))) Player.gameComponent
-            -- initGameComponent t (GamePlayerInit (PlayerInit ( 3168, 1000 ))) Player.gameComponent
-            initGameComponent t (GamePlayerInit (PlayerInit ( 342, 1800 ))) Player.gameComponent
+            -- initGameComponent t (GamePlayerInit (PlayerInit ( 1965, 1640 ))) Player.gameComponent
+            initGameComponent t (GamePlayerInit (PlayerInit ( 300, 1800 ))) Player.gameComponent
 
         CustomPlayerPosition x ->
             initGameComponent t (GamePlayerInit (PlayerInit x)) Player.gameComponent
@@ -89,37 +84,40 @@ initPlayer t pos =
 initActors : Int -> List String -> Array GameComponent
 initActors t cs =
     Array.fromList
-        [ -- initGameComponent t (GameExitInit (ExitInit ( 120, 1240 ) "Level0" (CustomPlayerPosition ( 3446, 1800 )) 1 6)) Exit.gameComponent
-          -- , initGameComponent t (GameCutSceneInit (CutSceneInit ( 475, 1340 ) ( 100, 100 ) 5 dialoguesMaster True)) CutScene.gameComponent
-          -- , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2200 ) HorUp 1000 False 3)) Spike.gameComponent
-          initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2190 ) HorUp 200 False 4)) Spike.gameComponent
+        ([ initGameComponent t (GameExitInit (ExitInit ( 40, 1740 ) "Level4" (CustomPlayerPosition ( 5940, 2056 )) 1 2)) Exit.gameComponent
 
-        -- , initGameComponent t (GameExitInit (ExitInit ( 3700, 1450 ) "Level2" DefaultPlayerPosition 0 7)) Exit.gameComponent
-        , initGameComponent t (GameFishInit (FishInit ( 1200, 800 ) 100 8)) Fish.gameComponent
-        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 1200, 2000 ) 400 True 9)) EnergyCrystal.gameComponent
-        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 600, 1700 ) 400 True 10)) EnergyCrystal.gameComponent
-        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 1000, 2000 ) 400 True 11)) EnergyCrystal.gameComponent
-        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 1400, 2000 ) 400 True 12)) EnergyCrystal.gameComponent
+         -- , initGameComponent t (GameCutSceneInit (CutSceneInit ( 475, 1340 ) ( 100, 100 ) 5 dialoguesMaster True)) CutScene.gameComponent
+         -- , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2200 ) HorUp 1000 False 3)) Spike.gameComponent
+         , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2190 ) HorUp 200 False 4)) Spike.gameComponent
 
-        -- , initGameComponent t (GameCutSceneInit (CutSceneInit ( 3140, 1440 ) ( 100, 100 ) 10 dialoguesBird False)) CutScene.gameComponent
-        ]
+         -- , initGameComponent t (GameExitInit (ExitInit ( 3700, 1450 ) "Level2" DefaultPlayerPosition 0 7)) Exit.gameComponent
+         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 25 * 32 + 1200, 2000 ) 400 True 9)) EnergyCrystal.gameComponent
+         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 25 * 32 + 600, 1700 ) 400 True 10)) EnergyCrystal.gameComponent
+         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 25 * 32 + 1000, 2000 ) 400 True 11)) EnergyCrystal.gameComponent
+         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 25 * 32 + 1400, 2000 ) 400 True 12)) EnergyCrystal.gameComponent
+         , initGameComponent t (GameTriggerInit (TriggerInit ( 19 * 32, 1800 ) ( 30, 100 ) 8 "awake" 13)) Trigger.gameComponent
+         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 36 * 32, 1840 ) 100 True 14)) EnergyCrystal.gameComponent
+         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 79 * 32, 32 * 58 ) 200 True 16)) EnergyCrystal.gameComponent
+         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 79 * 32, 32 * 58 ) 200 True 17)) EnergyCrystal.gameComponent
+         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 83 * 32, 32 * 48 ) 400 True 18)) EnergyCrystal.gameComponent
+         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 96 * 32, 32 * 43 ) 2000 True 19)) EnergyCrystal.gameComponent
+         , initGameComponent t (GameCutSceneInit (CutSceneInit ( 16 * 32, 1800 ) ( 32 * 3, 100 ) 15 dialoguesFishB True)) CutScene.gameComponent
+         ]
+            ++ (if isInCollected "fish" cs then
+                    []
+
+                else
+                    [ initGameComponent t (GameFishInit (FishInit ( 1600, 800 ) 100 8)) Fish.gameComponent
+                    ]
+               )
+        )
 
 
-{-| dialoguesMaster
--}
-dialoguesMaster : List ( String, String )
-dialoguesMaster =
-    [ ( "p_profile", "Hello, master." )
-    , ( "master", "Hi" )
-    ]
-
-
-{-| dialoguesBird
--}
-dialoguesBird : List ( String, String )
-dialoguesBird =
-    [ ( "p_profile", "Hello, master." )
-    , ( "bird", "Hi" )
+dialoguesFishB : List ( String, String )
+dialoguesFishB =
+    [ ( "fish", "Who are you?" )
+    , ( "p_profile", "I'm here to reweave you into the scroll!" )
+    , ( "fish", "Hmmm, you can't!" )
     ]
 
 
@@ -127,7 +125,7 @@ dialoguesBird =
 -}
 initCamera : CameraData
 initCamera =
-    CameraData ( 0, 700 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * 119 - 1, 69 * 32 - 1 ) ) ( ( 0.2, 0.2 ), ( 0.4, 0.1 ) )
+    CameraData ( 0, 500 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * 119 - 1, 69 * 32 - 1 ) ) ( ( 0.2, 0.9 ), ( 0.4, 0.1 ) )
 
 
 {-| initGameGlobalData
@@ -151,39 +149,18 @@ initGameGlobalData e col =
 -}
 allChartlets : List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
 allChartlets =
-    []
-
-
-
--- , ( \gd ggd ->
---         renderSprite gd [] (getPositionUnderCamera ( 475, 1350 ) ggd) ( 100, 0 ) "master"
---   , BehindActors
---   )
--- , ( \gd ggd ->
---         renderSprite gd [] (getPositionUnderCamera ( 3497, 1470 ) ggd) ( 32 * 10, 0 ) "dh/bigrock"
---   , FrontSolids
---   )
--- , ( \gd ggd ->
---         renderSprite gd [] (getPositionUnderCamera ( 3497, 1770 ) ggd) ( 32 * 10, 0 ) "dh/bigrock"
---   , FrontSolids
---   )
--- , ( \gd ggd ->
---         renderSprite gd [] (getPositionUnderCamera ( 3497, 2070 ) ggd) ( 32 * 10, 0 ) "dh/bigrock"
---   , FrontSolids
---   )
--- []
--- ++ makemanywaves 4
+    [] ++ makemanywaves ( 0, 2150 ) 8
 
 
 {-| makemanywaves
 -}
-makemanywaves : Int -> List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
-makemanywaves n =
+makemanywaves : ( Int, Int ) -> Int -> List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
+makemanywaves ( sx, sy ) n =
     List.foldl
         (\i al ->
             al
                 ++ [ ( \gd ggd ->
-                        renderSprite gd [] (getPositionUnderCamera ( 450 + 770 * i, 2135 ) ggd) ( 800, 0 ) "bm/smallwave"
+                        renderSprite gd [] (getPositionUnderCamera ( sx + 760 * i, sy ) ggd) ( 1200, 0 ) "dh/wave"
                      , FrontSolids
                      )
                    ]
