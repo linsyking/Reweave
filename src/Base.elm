@@ -75,6 +75,7 @@ type alias LSInfo =
     , level : String
     , energy : Float
     , initPosition : ( Int, Int )
+    , volume : Float
     }
 
 

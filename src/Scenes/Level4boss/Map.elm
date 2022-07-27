@@ -7,8 +7,7 @@ module Scenes.Level4boss.Map exposing (mymap)
 -}
 
 import Array2D
-import Lib.Map.Beimin exposing (buildbmleaf, buildbmlotus)
-import Lib.Map.Donghai exposing (builddhrock, builddhsmallrock)
+import Lib.Map.Donghai exposing (builddhrock)
 import Lib.Map.Poly exposing (buildPillar, buildrect)
 import Lib.Map.Zhongyuan exposing (buildzystick)
 
@@ -26,14 +25,34 @@ mymap =
         |> buildrect ( 0, 0 ) ( 1, 70 ) 2
         |> buildrect ( 0, 69 ) ( 120, 1 ) 1
         -- |> buildrect ( 0, 40 ) ( 14, 35 ) 1
-        |> builddhrock ( 10, 60 )
-        |> builddhrock ( 18, 56 )
-        |> builddhrock ( 30, 64 )
-        |> builddhrock ( 33, 64 )
-        |> builddhrock ( 36, 64 )
-        |> builddhrock ( 39, 64 )
-        |> builddhrock ( 42, 64 )
-        |> builddhrock ( 53, 60 )
+        |> builddhrock ( 10 + 25, 60 )
+        |> builddhrock ( 18 + 25, 56 )
+        |> builddhrock ( 30 + 25, 64 )
+        |> builddhrock ( 33 + 25, 64 )
+        |> builddhrock ( 36 + 25, 64 )
+        |> builddhrock ( 39 + 25, 64 )
+        |> builddhrock ( 42 + 25, 64 )
+        |> builddhrock ( 53 + 25, 60 )
+        |> buildzystick ( 25, 60 )
+        |> buildzystick ( 19, 60 )
+        |> buildzystick ( 13, 60 )
+        |> buildzystick ( 7, 60 )
+        |> buildzystick ( 1, 60 )
+        |> buildPillar ( 19, 0 ) 11
+        -- |> builddhrock ( 62, 55 )
+        |> builddhrock ( 82, 40 )
+        |> builddhrock ( 90, 30 )
+        |> builddhrock ( 70, 55 )
+        |> builddhrock ( 82, 60 )
+        |> builddhrock ( 86, 60 )
+        |> builddhrock ( 58, 55 )
+        |> builddhrock ( 52, 45 )
+        |> builddhrock ( 82, 50 )
+        |> builddhrock ( 95, 45 )
+        |> builddhrock ( 79, 40 )
+        |> builddhrock ( 98, 30 )
+        |> builddhrock ( 90, 10 )
+        |> builddhrock ( 86, 10 )
 
 
 

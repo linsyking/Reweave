@@ -59,7 +59,7 @@ import Scenes.Level1.Map exposing (mymap)
 initFrontGroundComponents : Int -> Array Component
 initFrontGroundComponents t =
     Array.fromList
-        [ Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "Beiming  北溟" ])
+        [ Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "BeiMing  北溟" ])
         , Hints.initComponent t (ComponentLStringMsg [ "40", "1590", "100", "35", "Near A River 小河边" ])
         ]
 
@@ -97,7 +97,7 @@ initActors t cs =
                     []
 
                 else
-                    [ initGameComponent t (GameMonsterInit (MonsterInit ( 3140, 1430 ) ( 174, 138 ) "bird" 10 9)) Monster.gameComponent ]
+                    [ initGameComponent t (GameMonsterInit (MonsterInit ( 3140, 1430 ) ( 174, 138 ) False "bird" 10 9)) Monster.gameComponent ]
                )
         )
 
@@ -107,7 +107,7 @@ dialoguesMaster =
     [ ( "p_profile", "Hello, master." )
     , ( "master", "I still worry about you." )
     , ( "master", "There is a monster ahead of you." )
-    , ( "master", "You have to hit it by your body to reweave it." )
+    , ( "master", "You have to hit it with your body to reweave it." )
     , ( "p_profile", "OK." )
     ]
 
@@ -115,8 +115,11 @@ dialoguesMaster =
 dialoguesBird : List ( String, String )
 dialoguesBird =
     [ ( "p_profile", "Wow, who are you?" )
-    , ( "bird", "Hi, I am the bird" )
+    , ( "bird", "Hi, I am LuanNiao." )
     , ( "p_profile", "Beautiful Bird." )
+    , ( "bird", "I am willing to help you in your journey, don't be afriad." )
+    , ( "p_profile", "Thank you." )
+    , ( "", "(You can go to menu to check the monsters you have collected)" )
     ]
 
 

@@ -38,8 +38,11 @@ decodeLSInfo info =
 
         oldposy =
             Result.withDefault -1 (decodeString (at [ "posy" ] Decode.int) info)
+
+        oldvol =
+            Result.withDefault 50 (decodeString (at [ "volume" ] Decode.float) info)
     in
-    LSInfo oldcol oldlevel oldenergy ( oldposx, oldposy )
+    LSInfo oldcol oldlevel oldenergy ( oldposx, oldposy ) oldvol
 
 
 {-| encodeLSInfo
@@ -57,6 +60,7 @@ encodeLSInfo info =
             , ( "energy", Encode.float info.energy )
             , ( "posx", Encode.int x )
             , ( "posy", Encode.int y )
+            , ( "volume", Encode.float info.volume )
             ]
         )
 
@@ -65,7 +69,7 @@ encodeLSInfo info =
 -}
 isFirstPlay : LSInfo -> Bool
 isFirstPlay ls =
-    ls.level == "" && ls.collected == []
+    (ls.level == "" && ls.collected == []) || ls.level == "Home"
 
 
 

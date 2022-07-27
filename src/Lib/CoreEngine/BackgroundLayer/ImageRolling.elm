@@ -19,8 +19,8 @@ This function generates the bakcground rolling effects according to the camera a
 The rate variable is how much the background moves right if the camera moves 1 unit
 
 -}
-genBackground : Float -> String -> GameGlobalData -> GlobalData -> Renderable
-genBackground rate pic ggd gd =
+genBackground : Float -> Float -> String -> GameGlobalData -> GlobalData -> Renderable
+genBackground rate al pic ggd gd =
     let
         ( cpx, _ ) =
             ggd.camera.position
@@ -28,4 +28,4 @@ genBackground rate pic ggd gd =
         offsetx =
             toFloat cpx * rate
     in
-    renderSprite gd [ alpha 0.7 ] ( floor -offsetx, 0 ) ( 0, 1080 ) pic
+    renderSprite gd [ alpha al ] ( floor -offsetx, 0 ) ( 0, 1080 ) pic

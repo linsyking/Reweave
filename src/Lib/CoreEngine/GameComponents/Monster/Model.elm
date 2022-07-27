@@ -70,6 +70,7 @@ initModel _ gct =
                 Dict.fromList
                     [ ( "trigger", CDInt info.triggeruid )
                     , ( "pic", CDString info.pic )
+                    , ( "rev", CDBool info.rev )
                     ]
             , uid = info.uid
             }

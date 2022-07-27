@@ -71,7 +71,7 @@ initFrontGroundComponents t _ =
     --             ]
     --     _ ->
     Array.fromList
-        [ Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "Beiming  北溟" ])
+        [ Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "BeiMing  北溟" ])
         , Hints.initComponent t (ComponentLStringMsg [ "40", "1570", "100", "35", "Near A Temple  寺庙旁" ])
         ]
 
@@ -157,7 +157,7 @@ dialogues =
     [ ( "", "(Left click to continue the dialogue)" )
     , ( "p_profile", "Hello, master." )
     , ( "master", "Hi, I heard that you wanted to reweave all the monsters." )
-    , ( "p_profile", "Yes, they were so crazy after they escaped from the sroll." )
+    , ( "p_profile", "Yes, they were crazy after they escaped from the sroll." )
     , ( "master", "I will teach you some techniques to move and fight better." )
     , ( "p_profile", "Thank you." )
     , ( "master", "Can you see an energy ball at the left top corner?" )
@@ -172,16 +172,16 @@ dialogues =
 
 dialogues2 : List ( String, String )
 dialogues2 =
-    [ ( "master", "Did you see a white point shining on your body?" )
+    [ ( "master", "Can you see a white dot twinkling on you?" )
     , ( "p_profile", "Yes, what is that?" )
-    , ( "master", "It is a sign that you selected yourself." )
+    , ( "master", "It is a sign that you've selected yourself." )
     , ( "p_profile", "...Selected?" )
-    , ( "master", "You can change the selected objects by click on them." )
+    , ( "master", "You can change the selected objects by clicking on them." )
     , ( "master", "Almost all the movable objects can be selected." )
     , ( "p_profile", "And how can I use those selected objects?" )
     , ( "master", "When an object has much energy, the point will become blue." )
-    , ( "master", "And then, you can press key W to grasp their energy." )
-    , ( "master", "If you want to release energy on the selected objects," )
+    , ( "master", "And then, you can press key W to grasp the energy." )
+    , ( "master", "If you want to release energy on a selected object," )
     , ( "master", "Right click at where you want it to go on the screen!" )
     , ( "master", "The larger the distance between your mouse and the object," )
     , ( "master", "The larger energy you will use on the object." )
@@ -193,7 +193,7 @@ dialogues2 =
     , ( "master", "Similarly, you can't use low energy on objects." )
     , ( "master", "Another important rule is that, in the air," )
     , ( "master", "You cannot use energy on yourself," )
-    , ( "master", "But you can still use energy on other objects." )
+    , ( "master", "However, you can still use energy on other objects." )
     , ( "p_profile", "Alright." )
     , ( "master", "There are many dangers in your journey," )
     , ( "master", "Please be cautious." )

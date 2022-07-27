@@ -12,10 +12,9 @@ module Scenes.Level4.Map exposing
 -}
 
 import Array2D
-import Lib.Map.Donghai exposing (builddhrock, builddhsmallrock)
-import Lib.Map.Longxi exposing (buildlxgroundmiddle, buildlxplain, buildlxrock, bulidlxgroundleft)
-import Lib.Map.Poly exposing (buildPillar, buildrect)
-import Lib.Map.Zhongyuan exposing (buildzystick)
+import Lib.Map.Donghai exposing (builddhbigrock, builddhrock, builddhsmallrock)
+import Lib.Map.Longxi exposing (buildlxgroundmiddle, bulidlxgroundleft)
+import Lib.Map.Poly exposing (buildrect)
 
 
 {-| sds
@@ -32,6 +31,7 @@ mymap =
     sds
         |> buildrect ( 0, 0 ) ( 1, 70 ) 1
         |> buildrect ( 0, 68 ) ( 200, 2 ) 2
+        |> buildrect ( 199, 0 ) ( 1, 70 ) 2
         -- bridge
         |> buildrect ( 16, 67 ) ( 4, 2 ) 1
         |> buildrect ( 20, 65 ) ( 3, 3 ) 1
@@ -68,4 +68,7 @@ mymap =
         |> buildrect ( 127, 58 ) ( 10, 1 ) 1
         -- final platform
         --|> buildrect ( 159, 50 ) ( 8, 1 ) 1
-        |> buildrect ( 175, 65 ) ( 8, 3 ) 1
+        -- |> buildrect ( 175, 65 ) ( 8, 3 ) 1
+        |> buildrect ( 104, 44 ) ( 1, 1 ) 1
+        |> buildrect ( 116, 44 ) ( 1, 1 ) 1
+        |> builddhbigrock ( 179, 65 )

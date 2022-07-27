@@ -38,7 +38,7 @@ import Lib.CoreEngine.GameComponents.Player.Movement exposing (solidCollisionMov
 import Lib.CoreEngine.GameComponents.Player.StatesControl exposing (stateControl)
 import Lib.CoreEngine.Physics.Acceleration exposing (putAccOn)
 import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos)
-import Lib.CoreEngine.Physics.Velocity exposing (calcVel, changeCVel)
+import Lib.CoreEngine.Physics.Velocity exposing (changeCVel)
 import Lib.DefinedTypes.Parser exposing (dgetPlayer, dsetPlayer)
 
 

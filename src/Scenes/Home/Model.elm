@@ -66,28 +66,35 @@ initModel t _ =
 
 {-| handleLayerMsg
 -}
-handleLayerMsg : GlobalData -> LayerMsg -> ( XModel, Int ) -> ( XModel, SceneOutputMsg )
+handleLayerMsg : GlobalData -> LayerMsg -> ( XModel, Int ) -> ( XModel, SceneOutputMsg, GlobalData )
 handleLayerMsg gd lmsg ( model, _ ) =
     case lmsg of
         LayerIntMsg i ->
             if i == 1 then
-                ( model, SOChangeScene ( NullSceneMsg, "Level0" ) )
+                ( model, SOChangeScene ( NullSceneMsg, "Level0" ), gd )
 
             else if i == 2 then
-                ( model, SOPlayAudio "bgm" "./assets/audio/music.mp3" ALoop )
+                let
+                    glvol =
+                        gd.localstorage.volume
+
+                    newgd =
+                        { gd | audioVolume = glvol / 100 }
+                in
+                ( model, SOPlayAudio "bgm" "./assets/audio/music.mp3" ALoop, newgd )
 
             else if i == 3 then
                 if gd.localstorage.initPosition == ( -1, -1 ) then
-                    ( model, SOChangeScene ( SceneEngineTMsg (EngineT gd.localstorage.energy DefaultPlayerPosition gd.localstorage.collected 0), gd.localstorage.level ) )
+                    ( model, SOChangeScene ( SceneEngineTMsg (EngineT gd.localstorage.energy DefaultPlayerPosition gd.localstorage.collected 0), gd.localstorage.level ), gd )
 
                 else
-                    ( model, SOChangeScene ( SceneEngineTMsg (EngineT gd.localstorage.energy (CustomPlayerPosition gd.localstorage.initPosition) gd.localstorage.collected 0), gd.localstorage.level ) )
+                    ( model, SOChangeScene ( SceneEngineTMsg (EngineT gd.localstorage.energy (CustomPlayerPosition gd.localstorage.initPosition) gd.localstorage.collected 0), gd.localstorage.level ), gd )
 
             else
-                ( model, NullSceneOutputMsg )
+                ( model, NullSceneOutputMsg, gd )
 
         _ ->
-            ( model, NullSceneOutputMsg )
+            ( model, NullSceneOutputMsg, gd )
 
 
 {-| updateModel
@@ -101,10 +108,10 @@ updateModel msg gd ( model, t ) =
         nmodel =
             { model | commonData = newcd, layers = newdata }
 
-        ( newmodel, newso ) =
-            List.foldl (\x ( y, _ ) -> handleLayerMsg gd x ( y, t )) ( nmodel, NullSceneOutputMsg ) msgs
+        ( newmodel, newso, newwgd ) =
+            List.foldl (\x ( y, _, cgd ) -> handleLayerMsg cgd x ( y, t )) ( nmodel, NullSceneOutputMsg, newgd ) msgs
     in
-    ( newmodel, newso, newgd )
+    ( newmodel, newso, newwgd )
 
 
 {-| viewModel

@@ -36,7 +36,7 @@ import Dict
 import Lib.Component.Base exposing (DefinedTypes(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
-import Lib.DefinedTypes.Parser exposing (dgetString, dgetint, dsetint, dsetstring)
+import Lib.DefinedTypes.Parser exposing (dgetString, dgetbool, dgetint, dsetbool, dsetint, dsetstring)
 import Random
 
 
@@ -68,6 +68,16 @@ simplecheckBox =
     }
 
 
+colBox : Box
+colBox =
+    { name = "col"
+    , offsetX = 0
+    , offsetY = 200
+    , width = 600
+    , height = 300
+    }
+
+
 {-| initModel
 -}
 initModel : Int -> GameComponentTMsg -> Data
@@ -80,12 +90,13 @@ initModel _ comMsg =
             , mass = 70
             , acceleration = ( 0, 0 )
             , simplecheck = simplecheckBox
-            , collisionbox = [ simplecheckBox ]
+            , collisionbox = [ colBox ]
             , extra =
                 Dict.fromList
                     [ ( "TriggerUID", CDInt info.triggeruid )
                     , ( "Timer", CDInt 0 )
                     , ( "Status", CDString "Away" )
+                    , ( "Awake", CDBool False )
                     ]
             , uid = info.uid
             }
@@ -109,7 +120,7 @@ changeStatus model =
             dgetint data "Timer"
     in
     case ( status, timer ) of
-        ( "Away", 500 ) ->
+        ( "Away", 200 ) ->
             { model
                 | extra =
                     data
@@ -174,17 +185,17 @@ changeVelocity model =
     case status of
         "FlyHigh" ->
             if timer < 40 then
-                { model | velocity = ( -45, 2 ) }
+                { model | velocity = ( -45, 75 ) }
 
             else
-                { model | velocity = ( 60, 2 ) }
+                { model | velocity = ( 60, 75 ) }
 
         "FlyBack" ->
             if timer < 60 then
-                { model | velocity = ( -60, -5 ) }
+                { model | velocity = ( -60, -75 ) }
 
             else
-                { model | velocity = ( 45, -5 ) }
+                { model | velocity = ( 45, -75 ) }
 
         _ ->
             { model | velocity = ( 0, 0 ) }
@@ -272,21 +283,34 @@ updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data
 updateModel mainMsg comMsg gameGlobalData _ ( model, t ) =
     case mainMsg of
         Tick _ ->
-            let
-                requestMsg =
-                    getInitBulletsMsg t model
+            if dgetbool model.extra "Awake" then
+                let
+                    requestMsg =
+                        getInitBulletsMsg t model
 
-                newModel =
-                    case model.status of
-                        Dead _ ->
-                            { model | velocity = ( Tuple.first model.velocity, Tuple.second model.velocity - 10 ) }
+                    newModel =
+                        case model.status of
+                            Dead _ ->
+                                { model | velocity = ( Tuple.first model.velocity, Tuple.second model.velocity - 10 ) }
 
-                        _ ->
-                            model
-                                |> changeStatus
-                                |> changeVelocity
-            in
-            ( newModel, requestMsg, gameGlobalData )
+                            _ ->
+                                model
+                                    |> changeStatus
+                                    |> changeVelocity
+                in
+                ( newModel, requestMsg, gameGlobalData )
+
+            else
+                let
+                    newModel =
+                        case model.status of
+                            Dead _ ->
+                                { model | velocity = ( Tuple.first model.velocity, Tuple.second model.velocity - 10 ) }
+
+                            _ ->
+                                model
+                in
+                ( newModel, [], gameGlobalData )
 
         _ ->
             case comMsg of
@@ -295,12 +319,16 @@ updateModel mainMsg comMsg gameGlobalData _ ( model, t ) =
                         uid =
                             dgetint model.extra "TriggerUID"
                     in
-                    ( { model | status = Dead t }
+                    ( { model | status = Dead t, extra = model.extra |> dsetstring "Status" "" }
                     , [ GameActorUidMsg uid (GameStringMsg "start")
-                      , GameParentMsg (GameLStringMsg [ "collectmonster", "turtle" ])
+                      , GameParentMsg (GameLStringMsg [ "collectmonster", "fish" ])
+                      , GameActorNameMsg "bullet" (GameStringMsg "die")
                       ]
                     , gameGlobalData
                     )
+
+                GameStringMsg "awake" ->
+                    ( { model | extra = model.extra |> dsetbool "Awake" True }, [], gameGlobalData )
 
                 _ ->
                     ( model, [], gameGlobalData )
