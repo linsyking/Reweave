@@ -24,7 +24,7 @@ import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos)
 import Lib.DefinedTypes.Parser exposing (dgetPlayer)
 import Lib.Render.Chartlet exposing (renderChartletsBehindActor, renderChartletsBehindSolids, renderChartletsFront)
 import Lib.Render.Energy exposing (renderEnergyPoint)
-import Lib.Render.Render exposing (renderSpriteRawPos, renderText)
+import Lib.Render.Render exposing (renderSpriteRawPos)
 import Lib.Render.Solid exposing (renderSolids)
 
 
@@ -49,12 +49,12 @@ view ( model, ot ) ggd gd =
         selected =
             ggd.selectobj
 
-        ( px, py ) =
-            model.player.data.position
+        -- ( px, py ) =
+        --     model.player.data.position
     in
     group []
-        [ group [ alpha 0.2 ] [ renderText gd 15 ("(" ++ String.fromInt px ++ ", " ++ String.fromInt py ++ ")") "Times New Roman" ( 0, 0 ) ]
-        , renderChartletsBehindActor model ggd gd
+        [ --  group [ alpha 0.2 ] [ renderText gd 15 ("(" ++ String.fromInt px ++ ", " ++ String.fromInt py ++ ")") "Times New Roman" ( 0, 0 ) ]
+          renderChartletsBehindActor model ggd gd
         , genView ggd gd t normal
         , if selected > 0 then
             let
