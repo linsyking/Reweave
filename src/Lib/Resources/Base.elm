@@ -143,6 +143,7 @@ jiangnanSprites =
     , ( "jn/PieceOfRoof", getResourcePath "img/jnPieceOfRoof.png" )
     , ( "jn/leaf", getResourcePath "img/jnleaf.png" )
     , ( "jn/building", getResourcePath "img/jnbuilding.png" )
+    , ( "jn/willow", getResourcePath "img/jnwillow.png" )
     ]
 
 

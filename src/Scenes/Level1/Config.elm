@@ -59,7 +59,7 @@ import Scenes.Level1.Map exposing (mymap)
 initFrontGroundComponents : Int -> Array Component
 initFrontGroundComponents t =
     Array.fromList
-        [ Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "Beiming  北溟" ])
+        [ Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "BeiMing  北溟" ])
         , Hints.initComponent t (ComponentLStringMsg [ "40", "1590", "100", "35", "Near A River 小河边" ])
         ]
 

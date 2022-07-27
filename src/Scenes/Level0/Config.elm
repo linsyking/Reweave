@@ -71,7 +71,7 @@ initFrontGroundComponents t _ =
     --             ]
     --     _ ->
     Array.fromList
-        [ Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "Beiming  北溟" ])
+        [ Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "BeiMing  北溟" ])
         , Hints.initComponent t (ComponentLStringMsg [ "40", "1570", "100", "35", "Near A Temple  寺庙旁" ])
         ]
 
