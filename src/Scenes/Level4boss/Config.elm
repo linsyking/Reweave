@@ -123,15 +123,15 @@ dialoguesFishB : List ( String, String )
 dialoguesFishB =
     [ ( "fish", "Who are you?" )
     , ( "p_profile", "I'm here to reweave you into the scroll!" )
-    , ( "fish", "Hmmm, you can't!" )
+    , ( "fish", "Hmm, you can't!" )
     ]
 
 
 dialoguesFishA : List ( String, String )
 dialoguesFishA =
-    [ ( "fish", "Who are you?" )
-    , ( "p_profile", "I'm here to reweave you into the scroll!" )
-    , ( "fish", "Hmmm, you can't!" )
+    [ ( "p_profile", "You are strong. Are you Luoyu?" )
+    , ( "fish", "Yes. Please let me escape from the scroll!" )
+    , ( "p_profile", "I won't let you harm humans!" )
     ]
 
 

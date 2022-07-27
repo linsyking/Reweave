@@ -48,6 +48,7 @@ initFrontGroundComponents : Int -> Array Component
 initFrontGroundComponents t =
     Array.fromList
         [ Hints.initComponent t (ComponentLStringMsg [ "40", "600", "500", "90", "Thanks for playing" ])
+        , Hints.initComponent t (ComponentLStringMsg [ "40", "680", "620", "50", "You have saved the human" ])
         , Hints.initComponent t (ComponentLStringMsg [ "200", "1600", "100", "60", "Director" ])
         , Hints.initComponent t (ComponentLStringMsg [ "200", "1600", "170", "40", "Xiang Yiming" ])
         , Hints.initComponent t (ComponentLStringMsg [ "500", "1400", "600", "60", "Art & Music Design" ])

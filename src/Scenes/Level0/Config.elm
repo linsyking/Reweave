@@ -157,7 +157,7 @@ dialogues =
     [ ( "", "(Left click to continue the dialogue)" )
     , ( "p_profile", "Hello, master." )
     , ( "master", "Hi, I heard that you wanted to reweave all the monsters." )
-    , ( "p_profile", "Yes, they were so crazy after they escaped from the sroll." )
+    , ( "p_profile", "Yes, they were crazy after they escaped from the sroll." )
     , ( "master", "I will teach you some techniques to move and fight better." )
     , ( "p_profile", "Thank you." )
     , ( "master", "Can you see an energy ball at the left top corner?" )
@@ -172,11 +172,11 @@ dialogues =
 
 dialogues2 : List ( String, String )
 dialogues2 =
-    [ ( "master", "Did you see a white point shining on your body?" )
+    [ ( "master", "Can you see a white dot twinkling on you?" )
     , ( "p_profile", "Yes, what is that?" )
     , ( "master", "It is a sign that you selected yourself." )
     , ( "p_profile", "...Selected?" )
-    , ( "master", "You can change the selected objects by click on them." )
+    , ( "master", "You can change the selected objects by clicking on them." )
     , ( "master", "Almost all the movable objects can be selected." )
     , ( "p_profile", "And how can I use those selected objects?" )
     , ( "master", "When an object has much energy, the point will become blue." )

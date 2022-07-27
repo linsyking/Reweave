@@ -107,7 +107,7 @@ dialoguesMaster =
     [ ( "p_profile", "Hello, master." )
     , ( "master", "I still worry about you." )
     , ( "master", "There is a monster ahead of you." )
-    , ( "master", "You have to hit it by your body to reweave it." )
+    , ( "master", "You have to hit it with your body to reweave it." )
     , ( "p_profile", "OK." )
     ]
 
@@ -115,8 +115,11 @@ dialoguesMaster =
 dialoguesBird : List ( String, String )
 dialoguesBird =
     [ ( "p_profile", "Wow, who are you?" )
-    , ( "bird", "Hi, I am the bird" )
+    , ( "bird", "Hi, I am LuanNiao." )
     , ( "p_profile", "Beautiful Bird." )
+    , ( "bird", "I am willing to help you in your journey, don't be afriad." )
+    , ( "p_profile", "Thank you." )
+    , ( "", "(You can go to menu to check the monsters you have collected)" )
     ]
 
 

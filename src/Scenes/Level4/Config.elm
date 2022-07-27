@@ -109,10 +109,10 @@ fishtalk : List ( String, String )
 fishtalk =
     [ ( "p_profile", "What are those scales?" )
     , ( "p_profile", "Is there a big fish?" )
-    , ( "lion", "I know this! It's Luoyu!" )
+    , ( "fox", "I know this! It's Luoyu!" )
     , ( "p_profile", "Wow! Who is Luoyu?" )
-    , ( "lion", "It is a large fish that can emit scales." )
-    , ( "lion", "It has killed millions of creatures." )
+    , ( "fox", "It is a large fish that can emit scales." )
+    , ( "fox", "It has killed millions of creatures." )
     , ( "p_profile", "I should be more careful." )
     ]
 

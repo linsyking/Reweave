@@ -112,20 +112,21 @@ initActors t cs =
 
 dialoguesStart : List ( String, String )
 dialoguesStart =
-    [ ( "lion", "The turtle is very powerful." )
-    , ( "lion", "It can emit fireballs." )
-    , ( "lion", "There are two ways you can kill it." )
-    , ( "lion", "The first way is to use your body to hit it." )
-    , ( "lion", "The second way is to use big fireballs to hit it back." )
-    , ( "lion", "Good luck." )
+    [ ( "fox", "This monster is very powerful." )
+    , ( "fox", "It can emit fireballs." )
+    , ( "fox", "There are two ways you can kill it." )
+    , ( "fox", "The first way is to use your body to hit it." )
+    , ( "fox", "The second way is to use big fireballs to hit it back." )
+    , ( "fox", "Good luck." )
     , ( "p_profile", "Thank you." )
     ]
 
 
 dialoguesTurtle : List ( String, String )
 dialoguesTurtle =
-    [ ( "p_profile", "Hello, master." )
-    , ( "bird", "Hi" )
+    [ ( "p_profile", "You are very strong, what's your name?" )
+    , ( "turtle", "XuanGui. I live in water, but I can also fly." )
+    , ( "p_profile", "You can no longer harm humans!" )
     ]
 
 
