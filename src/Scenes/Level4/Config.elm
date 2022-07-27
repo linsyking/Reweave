@@ -67,7 +67,7 @@ initPlayer : Int -> PlayerInitPosition -> GameComponent
 initPlayer t pos =
     case pos of
         DefaultPlayerPosition ->
-            initGameComponent t (GamePlayerInit (PlayerInit ( 50, 2000 ))) Player.gameComponent
+            initGameComponent t (GamePlayerInit (PlayerInit ( 326, 2056 ))) Player.gameComponent
 
         -- initGameComponent t (GamePlayerInit (PlayerInit ( 6014, 2056 ))) Player.gameComponent
         CustomPlayerPosition x ->
@@ -89,6 +89,7 @@ initActors t =
         , initGameComponent t (GameGoombaInit (GoombaInit ( 2240, 1800 ) ( 0, 0 ) 50 9)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 3840, 2080 ) ( 0, 0 ) 50 15)) Goomba.gameComponent
         , initGameComponent t (GameGoombaInit (GoombaInit ( 4160, 2080 ) ( 0, 0 ) 50 16)) Goomba.gameComponent
+        , initGameComponent t (GameExitInit (ExitInit ( 30, 2000 ) "Level3" (CustomPlayerPosition ( 4413, 1608 )) 0 98)) Exit.gameComponent
         , initGameComponent t (GameExitInit (ExitInit ( 5690, 1920 ) "Level4boss" DefaultPlayerPosition 0 99)) Exit.gameComponent
 
         --, initGameComponent t (GameCutSceneInit (CutSceneInit ( 100, 1800 ) ( 100, 160 ) 88 [ ( "1", "Dear master, I want learn something from you", True ), ( "1", "Yes, please go ahead.", False ) ])) CutScene.gameComponent

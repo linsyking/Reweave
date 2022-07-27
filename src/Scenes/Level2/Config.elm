@@ -106,7 +106,6 @@ initActors t cs =
 
          -- , initGameComponent t (GameGoombaInit (GoombaInit ( 130 * 32, 22 * 32 ) ( -50, 0 ) 18)) Goomba.gameComponent
          , initGameComponent t (GameSavePointInit (SavePointInit ( 3880, 360 ) 19)) Save.gameComponent
-         , initGameComponent t (GameCutSceneInit (CutSceneInit ( 3220, 1920 ) ( 400, 300 ) 21 liontalkings False)) CutScene.gameComponent
          , initGameComponent t (GameGoombaInit (GoombaInit ( 94 * 32, 35 * 32 ) ( 0, 0 ) 50 22)) Goomba.gameComponent
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 36 * 32 + 20, 62 * 32 - 60 ) 300 True 23)) Energy.gameComponent
 
@@ -117,6 +116,7 @@ initActors t cs =
 
                 else
                     [ initGameComponent t (GameMonsterInit (MonsterInit ( 4420, 120 ) ( 400, 300 ) False "lion" 21 20)) Monster.gameComponent
+                    , initGameComponent t (GameCutSceneInit (CutSceneInit ( 4420, 120 ) ( 400, 300 ) 21 liontalkings False)) CutScene.gameComponent
                     ]
                )
         )
