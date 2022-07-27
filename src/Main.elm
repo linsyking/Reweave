@@ -75,7 +75,7 @@ init : Flags -> ( Model, Cmd Msg, AudioCmd Msg )
 init flags =
     let
         ms =
-            loadSceneByName initModel "Level4boss" NullSceneMsg
+            loadSceneByName initModel "Path" NullSceneMsg
 
         oldgd =
             ms.currentGlobalData

@@ -97,7 +97,7 @@ initActors t cs =
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 81 * 32, 2050 ) 200 True 17)) EnergyCrystal.gameComponent
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 84 * 32, 2050 ) 200 True 18)) EnergyCrystal.gameComponent
          , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2190 ) HorUp 100 False 19)) Spike.gameComponent
-         , initGameComponent t (GameExitInit (ExitInit ( 1900, 630 ) "Thanks" DefaultPlayerPosition 0 20)) Exit.gameComponent
+         , initGameComponent t (GameExitInit (ExitInit ( 1900, 630 ) "Path" DefaultPlayerPosition 0 20)) Exit.gameComponent
          ]
             ++ (if isInCollected "turtle" cs then
                     []
