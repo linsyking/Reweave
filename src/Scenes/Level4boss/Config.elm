@@ -35,6 +35,8 @@ import Lib.CoreEngine.Camera.Base exposing (CameraData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentTMsg(..))
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (initGameComponent)
+import Lib.CoreEngine.GameComponents.Bullet.Base exposing (BulletInit)
+import Lib.CoreEngine.GameComponents.Bullet.Export as Bullet
 import Lib.CoreEngine.GameComponents.CutScene.Base exposing (CutSceneInit)
 import Lib.CoreEngine.GameComponents.CutScene.Export as CutScene
 import Lib.CoreEngine.GameComponents.EnergyCrystal.Base exposing (EnergyCrystalInit)
@@ -58,7 +60,7 @@ import Scenes.Level4boss.Map exposing (mymap)
 {-| initFrontGroundComponents
 -}
 initFrontGroundComponents : Int -> Array Component
-initFrontGroundComponents t =
+initFrontGroundComponents _ =
     Array.fromList
         [--     Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "Beiming  北溟" ])
          -- , Hints.initComponent t (ComponentLStringMsg [ "40", "1580", "100", "35", "Near The River 小河边" ])
@@ -72,7 +74,7 @@ initPlayer t pos =
     case pos of
         DefaultPlayerPosition ->
             -- initGameComponent t (GamePlayerInit (PlayerInit ( 3197, 1480 ))) Player.gameComponent
-            -- initGameComponent t (GamePlayerInit (PlayerInit ( 1965, 1640 ))) Player.gameComponent
+            -- initGameComponent t (GamePlayerInit (PlayerInit ( 1965, 1928 ))) Player.gameComponent
             initGameComponent t (GamePlayerInit (PlayerInit ( 300, 1800 ))) Player.gameComponent
 
         CustomPlayerPosition x ->
@@ -95,20 +97,23 @@ initActors t cs =
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 25 * 32 + 600, 1700 ) 400 True 10)) EnergyCrystal.gameComponent
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 25 * 32 + 1000, 2000 ) 400 True 11)) EnergyCrystal.gameComponent
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 25 * 32 + 1400, 2000 ) 400 True 12)) EnergyCrystal.gameComponent
-         , initGameComponent t (GameTriggerInit (TriggerInit ( 19 * 32, 1800 ) ( 30, 100 ) 8 "awake" 13)) Trigger.gameComponent
+         , initGameComponent t (GameTriggerInit (TriggerInit ( 20 * 32, 1800 ) ( 30, 100 ) 8 "awake" 13)) Trigger.gameComponent
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 36 * 32, 1840 ) 100 True 14)) EnergyCrystal.gameComponent
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 79 * 32, 32 * 58 ) 200 True 16)) EnergyCrystal.gameComponent
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 79 * 32, 32 * 58 ) 200 True 17)) EnergyCrystal.gameComponent
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 83 * 32, 32 * 48 ) 400 True 18)) EnergyCrystal.gameComponent
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 96 * 32, 32 * 43 ) 2000 True 19)) EnergyCrystal.gameComponent
          , initGameComponent t (GameCutSceneInit (CutSceneInit ( 16 * 32, 1800 ) ( 32 * 3, 100 ) 15 dialoguesFishB True)) CutScene.gameComponent
+         , initGameComponent t (GameExitInit (ExitInit ( 1920, 1500 ) "Level5boss" DefaultPlayerPosition 0 60)) Exit.gameComponent
          ]
             ++ (if isInCollected "fish" cs then
                     []
 
                 else
-                    [ initGameComponent t (GameFishInit (FishInit ( 1600, 800 ) 100 8)) Fish.gameComponent
-                    ]
+                    List.append
+                        [ initGameComponent t (GameFishInit (FishInit ( 1600, 800 ) 100 8)) Fish.gameComponent
+                        ]
+                        (makecircleScales t ( 2010, 1600 ) 120 15 20 ++ makecircleScales t ( 2010, 1600 ) 150 10 40)
                )
         )
 
@@ -167,3 +172,19 @@ makemanywaves ( sx, sy ) n =
         )
         []
         (List.range 0 (n - 1))
+
+
+makecircleScales : Int -> ( Float, Float ) -> Float -> Int -> Int -> List GameComponent
+makecircleScales t ( x, y ) r step startuid =
+    List.map
+        (\i ->
+            let
+                ang =
+                    toFloat i / toFloat step * 2 * pi
+
+                ( rpx, rpy ) =
+                    ( x + r * cos ang, y + r * sin ang )
+            in
+            initGameComponent t (GameBulletInit (BulletInit ( floor rpx, floor rpy ) ( 0, 0 ) "ot/scale" (startuid + i))) Bullet.gameComponent
+        )
+        (List.range 0 (step - 1))
