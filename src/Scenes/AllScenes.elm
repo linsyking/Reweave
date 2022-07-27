@@ -8,6 +8,7 @@ module Scenes.AllScenes exposing (allScenes)
 
 import Lib.CoreEngine.Export as CE
 import Lib.CoreEngine.Global as CEG
+import Scenes.End.Export as End
 import Scenes.Home.Export as H
 import Scenes.Home.Global as HG
 import Scenes.Level0.Export as Level0
@@ -44,4 +45,5 @@ allScenes =
     , ( "Level5boss", CEG.toCT Level5boss.scene )
     , ( "Level5", CEG.toCT Level5.scene )
     , ( "Path", CEG.toCT Path.scene )
+    , ( "End", CEG.toCT End.scene )
     ]

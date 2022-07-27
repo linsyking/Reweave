@@ -16,4 +16,4 @@ import Lib.CoreEngine.Base exposing (GameGlobalData)
 -}
 background : Int -> GameGlobalData -> GlobalData -> Renderable
 background _ ggd gd =
-    genBackground 0.11 "bg/jn" ggd gd
+    genBackground 0.11 0.7 "bg/jn" ggd gd

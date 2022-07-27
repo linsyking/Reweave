@@ -93,7 +93,7 @@ dealComponentsMsg rmsg model gd ggd =
                 newexitmsg =
                     LayerExitMsg { originet | energy = newenergy, collectedMonsters = ggd.collectedMonsters } s 0
             in
-            ( ( model, ggd, [ ( LayerParentScene, newexitmsg ) ] ), { gd | scenesFinished = gd.scenesFinished ++ [ ggd.currentScene ], localstorage = LSInfo ggd.collectedMonsters s newenergy ( -1, -1 ) } )
+            ( ( model, ggd, [ ( LayerParentScene, newexitmsg ) ] ), { gd | scenesFinished = gd.scenesFinished ++ [ ggd.currentScene ], localstorage = LSInfo ggd.collectedMonsters s newenergy ( -1, -1 ) gd.localstorage.volume } )
 
         ComponentLStringMsg ("restart" :: _) ->
             -- Final Restart
