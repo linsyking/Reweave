@@ -82,7 +82,6 @@ initActors t cs =
     Array.fromList
         ([ initGameComponent t (GameExitInit (ExitInit ( 40, 1740 ) "Level5" (CustomPlayerPosition ( 14400, 1544 )) 1 2)) Exit.gameComponent
          , initGameComponent t (GameTriggerInit (TriggerInit ( 26 * 32, 1800 ) ( 30, 100 ) 8 "awake" 3)) Trigger.gameComponent
-         , initGameComponent t (GameCutSceneInit (CutSceneInit ( 21 * 32, 1800 ) ( 32 * 3, 100 ) 4 dialoguesStart True)) CutScene.gameComponent
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 48 * 32, 2050 ) 200 True 5)) EnergyCrystal.gameComponent
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 51 * 32, 2050 ) 200 True 6)) EnergyCrystal.gameComponent
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 54 * 32, 2050 ) 200 True 7)) EnergyCrystal.gameComponent
@@ -104,6 +103,7 @@ initActors t cs =
 
                 else
                     [ initGameComponent t (GameTurtleInit (TurtleInit ( 1900, 850 ) 100 8)) Turtle.gameComponent
+                    , initGameComponent t (GameCutSceneInit (CutSceneInit ( 21 * 32, 1800 ) ( 32 * 3, 100 ) 4 dialoguesStart True)) CutScene.gameComponent
                     , initGameComponent t (GameCutSceneInit (CutSceneInit ( 1900, 900 ) ( 2000, 1000 ) 100 dialoguesTurtle False)) CutScene.gameComponent
                     ]
                )
@@ -114,9 +114,8 @@ dialoguesStart : List ( String, String )
 dialoguesStart =
     [ ( "fox", "This monster is very powerful." )
     , ( "fox", "It can emit fireballs." )
-    , ( "fox", "There are two ways you can kill it." )
-    , ( "fox", "The first way is to use your body to hit it." )
-    , ( "fox", "The second way is to use big fireballs to hit it back." )
+    , ( "fox", "And it has a high health value." )
+    , ( "fox", "Hit it to decrease its health bar." )
     , ( "fox", "Good luck." )
     , ( "p_profile", "Thank you." )
     ]

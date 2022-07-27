@@ -74,7 +74,7 @@ initPlayer t pos =
     case pos of
         DefaultPlayerPosition ->
             -- initGameComponent t (GamePlayerInit (PlayerInit ( 3197, 1480 ))) Player.gameComponent
-            -- initGameComponent t (GamePlayerInit (PlayerInit ( 1965, 1928 ))) Player.gameComponent
+            -- initGameComponent t (GamePlayerInit (PlayerInit ( 1600, 300 ))) Player.gameComponent
             initGameComponent t (GamePlayerInit (PlayerInit ( 300, 1800 ))) Player.gameComponent
 
         CustomPlayerPosition x ->
@@ -103,8 +103,7 @@ initActors t cs =
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 79 * 32, 32 * 58 ) 200 True 17)) EnergyCrystal.gameComponent
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 83 * 32, 32 * 48 ) 400 True 18)) EnergyCrystal.gameComponent
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 96 * 32, 32 * 43 ) 2000 True 19)) EnergyCrystal.gameComponent
-         , initGameComponent t (GameCutSceneInit (CutSceneInit ( 16 * 32, 1800 ) ( 32 * 3, 100 ) 15 dialoguesFishB True)) CutScene.gameComponent
-         , initGameComponent t (GameExitInit (ExitInit ( 1920, 1500 ) "Level5boss" DefaultPlayerPosition 0 60)) Exit.gameComponent
+         , initGameComponent t (GameExitInit (ExitInit ( 1920, 1500 ) "Level5" DefaultPlayerPosition 0 60)) Exit.gameComponent
          ]
             ++ (if isInCollected "fish" cs then
                     []
@@ -112,6 +111,7 @@ initActors t cs =
                 else
                     List.append
                         [ initGameComponent t (GameFishInit (FishInit ( 1600, 800 ) 100 8)) Fish.gameComponent
+                        , initGameComponent t (GameCutSceneInit (CutSceneInit ( 16 * 32, 1800 ) ( 32 * 3, 100 ) 15 dialoguesFishB True)) CutScene.gameComponent
                         , initGameComponent t (GameCutSceneInit (CutSceneInit ( 1600, 900 ) ( 2000, 1000 ) 100 dialoguesFishA False)) CutScene.gameComponent
                         ]
                         (makecircleScales t ( 2010, 1600 ) 120 15 20 ++ makecircleScales t ( 2010, 1600 ) 150 10 40)
