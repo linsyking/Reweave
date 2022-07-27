@@ -87,7 +87,11 @@ view ( d, t ) ggd gd =
             )
       , 0
       )
-    , viewbar hp d ggd gd
+    , if isalive then
+        viewbar hp d ggd gd
+
+      else
+        ( group [] [], 0 )
     ]
 
 

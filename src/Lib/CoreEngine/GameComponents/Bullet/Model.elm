@@ -139,6 +139,9 @@ updateModel msg gct ggd gd ( d, t ) =
                 GameInterCollisionMsg "fish" _ _ ->
                     ( d, [], ggd )
 
+                GameInterCollisionMsg "CutScene" _ _ ->
+                    ( d, [], ggd )
+
                 GameStringMsg "die" ->
                     ( { d | status = Dead t }, [], ggd )
 

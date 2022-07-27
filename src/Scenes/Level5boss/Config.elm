@@ -2,8 +2,6 @@ module Scenes.Level5boss.Config exposing
     ( initFrontGroundComponents
     , initPlayer
     , initActors
-    , dialoguesMaster
-    , dialoguesBird
     , initCamera
     , initGameGlobalData
     , allChartlets
@@ -18,10 +16,6 @@ module Scenes.Level5boss.Config exposing
 
 @docs initActors
 
-@docs dialoguesMaster
-
-@docs dialoguesBird
-
 @docs initCamera
 
 @docs initGameGlobalData
@@ -35,7 +29,6 @@ module Scenes.Level5boss.Config exposing
 import Array exposing (Array)
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable)
-import Components.Hints.Export as Hints
 import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Base exposing (CameraData)
@@ -44,12 +37,16 @@ import Lib.CoreEngine.GameComponent.Base exposing (GameComponent, GameComponentT
 import Lib.CoreEngine.GameComponent.ComponentHandler exposing (initGameComponent)
 import Lib.CoreEngine.GameComponents.CutScene.Base exposing (CutSceneInit)
 import Lib.CoreEngine.GameComponents.CutScene.Export as CutScene
+import Lib.CoreEngine.GameComponents.EnergyCrystal.Base exposing (EnergyCrystalInit)
+import Lib.CoreEngine.GameComponents.EnergyCrystal.Export as EnergyCrystal
 import Lib.CoreEngine.GameComponents.Exit.Base exposing (ExitInit)
 import Lib.CoreEngine.GameComponents.Exit.Export as Exit
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit, PlayerInitPosition(..))
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..), SpikeInit)
 import Lib.CoreEngine.GameComponents.Spike.Export as Spike
+import Lib.CoreEngine.GameComponents.Trigger.Base exposing (TriggerInit)
+import Lib.CoreEngine.GameComponents.Trigger.Export as Trigger
 import Lib.CoreEngine.GameComponents.Turtle.Base exposing (TurtleInit)
 import Lib.CoreEngine.GameComponents.Turtle.Export as Turtle
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
@@ -61,11 +58,8 @@ import Scenes.Level5boss.Map exposing (mymap)
 {-| initFrontGroundComponents
 -}
 initFrontGroundComponents : Int -> Array Component
-initFrontGroundComponents t =
-    Array.fromList
-        [ Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "Beiming  北溟" ])
-        , Hints.initComponent t (ComponentLStringMsg [ "40", "1580", "100", "35", "Near The River 小河边" ])
-        ]
+initFrontGroundComponents _ =
+    Array.empty
 
 
 {-| initPlayer
@@ -74,9 +68,8 @@ initPlayer : Int -> PlayerInitPosition -> GameComponent
 initPlayer t pos =
     case pos of
         DefaultPlayerPosition ->
-            -- initGameComponent t (GamePlayerInit (PlayerInit ( 3197, 1480 ))) Player.gameComponent
-            -- initGameComponent t (GamePlayerInit (PlayerInit ( 3168, 1000 ))) Player.gameComponent
-            initGameComponent t (GamePlayerInit (PlayerInit ( 342, 1160 ))) Player.gameComponent
+            -- initGameComponent t (GamePlayerInit (PlayerInit ( 2000, 0 ))) Player.gameComponent
+            initGameComponent t (GamePlayerInit (PlayerInit ( 400, 1800 ))) Player.gameComponent
 
         CustomPlayerPosition x ->
             initGameComponent t (GamePlayerInit (PlayerInit x)) Player.gameComponent
@@ -87,30 +80,50 @@ initPlayer t pos =
 initActors : Int -> List String -> Array GameComponent
 initActors t cs =
     Array.fromList
-        [ -- initGameComponent t (GameExitInit (ExitInit ( 120, 1240 ) "Level0" (CustomPlayerPosition ( 3446, 1800 )) 1 6)) Exit.gameComponent
-          -- , initGameComponent t (GameCutSceneInit (CutSceneInit ( 475, 1340 ) ( 100, 100 ) 5 dialoguesMaster True)) CutScene.gameComponent
-          -- , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2200 ) HorUp 1000 False 3)) Spike.gameComponent
-          -- , initGameComponent t (GameSpikeInit (SpikeInit ( 1440, 1900 ) HorUp 1 True 4)) Spike.gameComponent
-          -- , initGameComponent t (GameExitInit (ExitInit ( 3700, 1450 ) "Level2" DefaultPlayerPosition 0 7)) Exit.gameComponent
-          initGameComponent t (GameTurtleInit (TurtleInit ( 1400, 1200 ) 100 8)) Turtle.gameComponent
+        ([ initGameComponent t (GameExitInit (ExitInit ( 40, 1740 ) "Level5" (CustomPlayerPosition ( 14400, 1544 )) 1 2)) Exit.gameComponent
+         , initGameComponent t (GameTriggerInit (TriggerInit ( 26 * 32, 1800 ) ( 30, 100 ) 8 "awake" 3)) Trigger.gameComponent
+         , initGameComponent t (GameCutSceneInit (CutSceneInit ( 21 * 32, 1800 ) ( 32 * 3, 100 ) 4 dialoguesStart True)) CutScene.gameComponent
+         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 48 * 32, 2050 ) 200 True 5)) EnergyCrystal.gameComponent
+         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 51 * 32, 2050 ) 200 True 6)) EnergyCrystal.gameComponent
+         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 54 * 32, 2050 ) 200 True 7)) EnergyCrystal.gameComponent
+         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 57 * 32, 2050 ) 200 True 9)) EnergyCrystal.gameComponent
+         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 60 * 32, 2050 ) 200 True 10)) EnergyCrystal.gameComponent
+         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 63 * 32, 2050 ) 200 True 11)) EnergyCrystal.gameComponent
+         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 66 * 32, 2050 ) 200 True 12)) EnergyCrystal.gameComponent
+         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 69 * 32, 2050 ) 200 True 13)) EnergyCrystal.gameComponent
+         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 72 * 32, 2050 ) 200 True 14)) EnergyCrystal.gameComponent
+         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 75 * 32, 2050 ) 200 True 15)) EnergyCrystal.gameComponent
+         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 78 * 32, 2050 ) 200 True 16)) EnergyCrystal.gameComponent
+         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 81 * 32, 2050 ) 200 True 17)) EnergyCrystal.gameComponent
+         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 84 * 32, 2050 ) 200 True 18)) EnergyCrystal.gameComponent
+         , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2190 ) HorUp 100 False 19)) Spike.gameComponent
+         , initGameComponent t (GameExitInit (ExitInit ( 1900, 630 ) "Thanks" DefaultPlayerPosition 0 20)) Exit.gameComponent
+         ]
+            ++ (if isInCollected "turtle" cs then
+                    []
 
-        -- , initGameComponent t (GameCutSceneInit (CutSceneInit ( 3140, 1440 ) ( 100, 100 ) 10 dialoguesBird False)) CutScene.gameComponent
-        ]
+                else
+                    [ initGameComponent t (GameTurtleInit (TurtleInit ( 1900, 850 ) 100 8)) Turtle.gameComponent
+                    , initGameComponent t (GameCutSceneInit (CutSceneInit ( 1900, 900 ) ( 2000, 1000 ) 100 dialoguesTurtle False)) CutScene.gameComponent
+                    ]
+               )
+        )
 
 
-{-| dialoguesMaster
--}
-dialoguesMaster : List ( String, String )
-dialoguesMaster =
-    [ ( "p_profile", "Hello, master." )
-    , ( "master", "Hi" )
+dialoguesStart : List ( String, String )
+dialoguesStart =
+    [ ( "lion", "The turtle is very powerful." )
+    , ( "lion", "It can emit fireballs." )
+    , ( "lion", "There are two ways you can kill it." )
+    , ( "lion", "The first way is to use your body to hit it." )
+    , ( "lion", "The second way is to use big fireballs to hit it back." )
+    , ( "lion", "Good luck." )
+    , ( "p_profile", "Thank you." )
     ]
 
 
-{-| dialoguesBird
--}
-dialoguesBird : List ( String, String )
-dialoguesBird =
+dialoguesTurtle : List ( String, String )
+dialoguesTurtle =
     [ ( "p_profile", "Hello, master." )
     , ( "bird", "Hi" )
     ]
@@ -120,7 +133,7 @@ dialoguesBird =
 -}
 initCamera : CameraData
 initCamera =
-    CameraData ( 0, 700 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * 119 - 1, 70 * 32 - 1 ) ) ( ( 0.2, 0.2 ), ( 0.4, 0.1 ) )
+    CameraData ( 0, 700 ) ( 0, 0 ) ( ( 32, 0 ), ( 32 * 99 - 1, 69 * 32 - 1 ) ) ( ( 0.2, 0.2 ), ( 0.4, 0.1 ) )
 
 
 {-| initGameGlobalData
@@ -129,7 +142,7 @@ initGameGlobalData : Float -> List String -> GameGlobalData
 initGameGlobalData e col =
     { camera = initCamera
     , solidmap = mymap
-    , mapsize = ( 120, 70 )
+    , mapsize = ( 100, 70 )
     , selectobj = 1
     , energy = e
     , ingamepause = False
@@ -144,23 +157,7 @@ initGameGlobalData e col =
 -}
 allChartlets : List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
 allChartlets =
-    [ ( \gd ggd ->
-            renderSprite gd [] (getPositionUnderCamera ( 32, 1250 ) ggd) ( 32 * 14, 0 ) "dh/bigrock"
-      , FrontSolids
-      )
-    , ( \gd ggd ->
-            renderSprite gd [] (getPositionUnderCamera ( 32, 1450 ) ggd) ( 32 * 14, 0 ) "dh/bigrock"
-      , FrontSolids
-      )
-    , ( \gd ggd ->
-            renderSprite gd [] (getPositionUnderCamera ( 32, 1650 ) ggd) ( 32 * 14, 0 ) "dh/bigrock"
-      , FrontSolids
-      )
-    , ( \gd ggd ->
-            renderSprite gd [] (getPositionUnderCamera ( 32, 1850 ) ggd) ( 32 * 14, 0 ) "dh/bigrock"
-      , FrontSolids
-      )
-    ]
+    []
 
 
 

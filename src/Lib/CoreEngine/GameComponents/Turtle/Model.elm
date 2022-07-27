@@ -42,7 +42,7 @@ import Dict
 import Lib.Component.Base exposing (DefinedTypes(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
-import Lib.DefinedTypes.Parser exposing (dgetString, dgetint, dsetint, dsetstring)
+import Lib.DefinedTypes.Parser exposing (dgetString, dgetbool, dgetint, dsetbool, dsetint, dsetstring)
 import Random
 
 
@@ -117,6 +117,7 @@ initModel _ comMsg =
                     , ( "Timer", CDInt 0 )
                     , ( "Life", CDInt 2000 )
                     , ( "Status", CDString "Away" )
+                    , ( "Awake", CDBool False )
                     ]
             , uid = info.uid
             }
@@ -350,21 +351,34 @@ updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data
 updateModel mainMsg comMsg gameGlobalData _ ( model, t ) =
     case mainMsg of
         Tick _ ->
-            let
-                requestMsg =
-                    getInitBulletsMsg t model
+            if dgetbool model.extra "Awake" then
+                let
+                    requestMsg =
+                        getInitBulletsMsg t model
 
-                newModel =
-                    case model.status of
-                        Dead _ ->
-                            { model | velocity = ( Tuple.first model.velocity, Tuple.second model.velocity - 10 ) }
+                    newModel =
+                        case model.status of
+                            Dead _ ->
+                                { model | velocity = ( Tuple.first model.velocity, Tuple.second model.velocity - 10 ) }
 
-                        _ ->
-                            model
-                                |> changeStatus
-                                |> changeVelocity
-            in
-            ( newModel, requestMsg, gameGlobalData )
+                            _ ->
+                                model
+                                    |> changeStatus
+                                    |> changeVelocity
+                in
+                ( newModel, requestMsg, gameGlobalData )
+
+            else
+                let
+                    newModel =
+                        case model.status of
+                            Dead _ ->
+                                { model | velocity = ( Tuple.first model.velocity, Tuple.second model.velocity - 10 ) }
+
+                            _ ->
+                                model
+                in
+                ( newModel, [], gameGlobalData )
 
         _ ->
             case comMsg of
@@ -390,12 +404,16 @@ updateModel mainMsg comMsg gameGlobalData _ ( model, t ) =
                         ( { model | status = Dead t, extra = newmodelextra }
                         , [ GameActorUidMsg uid (GameStringMsg "start")
                           , GameParentMsg (GameLStringMsg [ "collectmonster", "turtle" ])
+                          , GameActorNameMsg "fireball" (GameStringMsg "die")
                           ]
                         , gameGlobalData
                         )
 
                     else
                         ( { model | extra = newmodelextra }, [], gameGlobalData )
+
+                GameStringMsg "awake" ->
+                    ( { model | extra = model.extra |> dsetbool "Awake" True }, [], gameGlobalData )
 
                 GameInterCollisionMsg "player" _ _ ->
                     let
@@ -407,18 +425,19 @@ updateModel mainMsg comMsg gameGlobalData _ ( model, t ) =
 
                         newmodelextra =
                             dsetint "Life"
-                                (if curhp - 50 <= 0 then
+                                (if curhp - 10 <= 0 then
                                     0
 
                                  else
-                                    curhp - 50
+                                    curhp - 10
                                 )
                                 model.extra
                     in
-                    if curhp - 50 <= 0 then
+                    if curhp - 10 <= 0 then
                         ( { model | status = Dead t, extra = newmodelextra }
                         , [ GameActorUidMsg uid (GameStringMsg "start")
                           , GameParentMsg (GameLStringMsg [ "collectmonster", "turtle" ])
+                          , GameActorNameMsg "fireball" (GameStringMsg "die")
                           ]
                         , gameGlobalData
                         )

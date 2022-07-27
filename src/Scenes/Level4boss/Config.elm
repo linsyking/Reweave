@@ -112,6 +112,7 @@ initActors t cs =
                 else
                     List.append
                         [ initGameComponent t (GameFishInit (FishInit ( 1600, 800 ) 100 8)) Fish.gameComponent
+                        , initGameComponent t (GameCutSceneInit (CutSceneInit ( 1600, 900 ) ( 2000, 1000 ) 100 dialoguesFishA False)) CutScene.gameComponent
                         ]
                         (makecircleScales t ( 2010, 1600 ) 120 15 20 ++ makecircleScales t ( 2010, 1600 ) 150 10 40)
                )
@@ -120,6 +121,14 @@ initActors t cs =
 
 dialoguesFishB : List ( String, String )
 dialoguesFishB =
+    [ ( "fish", "Who are you?" )
+    , ( "p_profile", "I'm here to reweave you into the scroll!" )
+    , ( "fish", "Hmmm, you can't!" )
+    ]
+
+
+dialoguesFishA : List ( String, String )
+dialoguesFishA =
     [ ( "fish", "Who are you?" )
     , ( "p_profile", "I'm here to reweave you into the scroll!" )
     , ( "fish", "Hmmm, you can't!" )

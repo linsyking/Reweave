@@ -138,8 +138,17 @@ updateModel msg gct ggd gd ( d, t ) =
                     else
                         ( d, [], ggd )
 
+                GameInterCollisionMsg "energyCrystal" _ _ ->
+                    ( d, [], ggd )
+
                 GameInterCollisionMsg "fireball" _ _ ->
                     ( d, [], ggd )
+
+                GameInterCollisionMsg "CutScene" _ _ ->
+                    ( d, [], ggd )
+
+                GameStringMsg "die" ->
+                    ( { d | status = Dead t }, [], ggd )
 
                 GameInterCollisionMsg _ pd _ ->
                     ( { d | status = Dead t }, [ GameActorUidMsg pd.uid (GameStringMsg "die") ], ggd )

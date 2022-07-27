@@ -65,9 +65,9 @@ initPlayer : Int -> PlayerInitPosition -> GameComponent
 initPlayer t pos =
     case pos of
         DefaultPlayerPosition ->
-            initGameComponent t (GamePlayerInit (PlayerInit ( 1000, 1640 ))) Player.gameComponent
+            -- initGameComponent t (GamePlayerInit (PlayerInit ( 1000, 1640 ))) Player.gameComponent
+            initGameComponent t (GamePlayerInit (PlayerInit ( 568, 1768 ))) Player.gameComponent
 
-        -- initGameComponent t (GamePlayerInit (PlayerInit ( 568, 1768 ))) Player.gameComponent
         CustomPlayerPosition x ->
             initGameComponent t (GamePlayerInit (PlayerInit x)) Player.gameComponent
 
