@@ -191,14 +191,14 @@ updateModel _ gct ggd _ ( d, t ) =
                         ( d, [ GameActorUidMsg pd.uid (GameStringMsg "die") ], ggd )
 
                 2 ->
-                    if pvx > 0 then
+                    if pvx < 0 then
                         ( d, [], ggd )
 
                     else
                         ( d, [ GameActorUidMsg pd.uid (GameStringMsg "die") ], ggd )
 
                 3 ->
-                    if pvx < 0 then
+                    if pvx > 0 then
                         ( d, [], ggd )
 
                     else

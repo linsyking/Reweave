@@ -238,11 +238,11 @@ getInitBulletsMsg t model =
                                         }
                                     )
                                 ]
-                            , index + 18
+                            , index + 20
                             )
                         )
                         ( [], 0 )
-                        (List.repeat 20 ( Tuple.first model.position + 300, Tuple.second model.position + 300 ))
+                        (List.repeat 35 ( Tuple.first model.position + 300, Tuple.second model.position + 300 ))
                     )
 
             else
@@ -256,7 +256,7 @@ getInitBulletsMsg t model =
                             ( List.append bulletList
                                 [ GameParentMsg
                                     (GameBulletInit
-                                        { initPosition = ( posX + randomPos seed -1000 1000, posY + randomPos seed 100 400 )
+                                        { initPosition = ( posX + randomPos seed -1500 1500, posY + randomPos seed 100 400 )
                                         , initVelocity = ( toFloat (randomPos seed -20 20), toFloat (randomPos seed -250 -50) )
                                         , picture = "ot/scale"
                                         , uid = 0

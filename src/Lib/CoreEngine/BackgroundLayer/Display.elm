@@ -8,6 +8,7 @@ module Lib.CoreEngine.BackgroundLayer.Display exposing (view)
 
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable, group)
+import Canvas.Settings.Advanced exposing (filter)
 import Lib.CoreEngine.BackgroundLayer.Common exposing (Model)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 
@@ -16,7 +17,13 @@ import Lib.CoreEngine.Base exposing (GameGlobalData)
 -}
 view : ( Model, Int ) -> GameGlobalData -> GlobalData -> Renderable
 view ( model, t ) ggd gd =
-    group []
+    group
+        (if ggd.ingamepause && ggd.settingpause then
+            [ filter "blur(10px)" ]
+
+         else
+            []
+        )
         [ model.render t ggd gd
         ]
 

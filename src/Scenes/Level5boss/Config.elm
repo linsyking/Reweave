@@ -81,7 +81,6 @@ initActors : Int -> List String -> Array GameComponent
 initActors t cs =
     Array.fromList
         ([ initGameComponent t (GameExitInit (ExitInit ( 40, 1740 ) "Level5" (CustomPlayerPosition ( 14400, 1544 )) 1 2)) Exit.gameComponent
-         , initGameComponent t (GameTriggerInit (TriggerInit ( 26 * 32, 1800 ) ( 30, 100 ) 8 "awake" 3)) Trigger.gameComponent
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 48 * 32, 2050 ) 200 True 5)) EnergyCrystal.gameComponent
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 51 * 32, 2050 ) 200 True 6)) EnergyCrystal.gameComponent
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 54 * 32, 2050 ) 200 True 7)) EnergyCrystal.gameComponent
@@ -105,8 +104,11 @@ initActors t cs =
                     [ initGameComponent t (GameTurtleInit (TurtleInit ( 1900, 850 ) 100 8)) Turtle.gameComponent
                     , initGameComponent t (GameCutSceneInit (CutSceneInit ( 21 * 32, 1800 ) ( 32 * 3, 100 ) 4 dialoguesStart True)) CutScene.gameComponent
                     , initGameComponent t (GameCutSceneInit (CutSceneInit ( 1900, 900 ) ( 2000, 1000 ) 100 dialoguesTurtle False)) CutScene.gameComponent
+                    , initGameComponent t (GameSpikeInit (SpikeInit ( 25 * 32, 1770 ) VerRight 5 True 21)) Spike.gameComponent
+                    , initGameComponent t (GameTriggerInit (TriggerInit ( 26 * 32, 1800 ) ( 30, 100 ) 8 "awake" 3)) Trigger.gameComponent
                     ]
                )
+            ++ makeqe t ( 1040, 1370 ) 1880 800 30 200
         )
 
 
@@ -179,6 +181,22 @@ allChartlets =
 --   )
 -- []
 -- ++ makemanywaves 4
+
+
+makeqe : Int -> ( Float, Float ) -> Float -> Float -> Int -> Int -> List GameComponent
+makeqe t ( x, y ) length height step startuid =
+    List.map
+        (\i ->
+            let
+                ang =
+                    toFloat i / toFloat step
+
+                ( rpx, rpy ) =
+                    ( x + ang * length, y - 4 * height * ang + 4 * height * ang * ang )
+            in
+            initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( floor rpx, floor rpy ) 100 True (startuid + i))) EnergyCrystal.gameComponent
+        )
+        (List.range 0 (step - 1))
 
 
 {-| makemanywaves

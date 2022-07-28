@@ -283,11 +283,11 @@ getInitBulletsMsg t model =
                                         }
                                     )
                                 ]
-                            , index + 18
+                            , index + 15
                             )
                         )
                         ( [], 0 )
-                        (List.repeat 20 ( Tuple.first model.position + 250, Tuple.second model.position + 300 ))
+                        (List.repeat 30 ( Tuple.first model.position + 250, Tuple.second model.position + 300 ))
                     )
 
             else
@@ -323,7 +323,7 @@ getInitBulletsMsg t model =
                 [ GameParentMsg
                     (GameFireballInit
                         { initPosition = ( Tuple.first model.position, Tuple.second model.position + 500 )
-                        , initVelocity = ( -100, 0 )
+                        , initVelocity = ( -100, -50 )
                         , size = 100
                         , uid = 0
                         }
@@ -331,7 +331,7 @@ getInitBulletsMsg t model =
                 , GameParentMsg
                     (GameFireballInit
                         { initPosition = ( Tuple.first model.position + 600, Tuple.second model.position + 500 )
-                        , initVelocity = ( 100, 0 )
+                        , initVelocity = ( 100, -50 )
                         , size = 100
                         , uid = 0
                         }

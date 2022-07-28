@@ -38,7 +38,7 @@ import Lib.CoreEngine.GameComponents.Exit.Export as Exit
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit, PlayerInitPosition(..))
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
-import Lib.Render.Render exposing (renderSprite)
+import Lib.Render.Render exposing (renderSprite, renderSpriteWithRev)
 import Scenes.End.Map exposing (mapwidth, mymap)
 
 
@@ -51,11 +51,11 @@ initFrontGroundComponents t =
         , Hints.initComponent t (ComponentLStringMsg [ "40", "680", "620", "50", "You have saved the human" ])
         , Hints.initComponent t (ComponentLStringMsg [ "200", "1600", "100", "60", "Director" ])
         , Hints.initComponent t (ComponentLStringMsg [ "200", "1600", "170", "40", "Xiang Yiming" ])
-        , Hints.initComponent t (ComponentLStringMsg [ "500", "1400", "600", "60", "Art & Music Design" ])
+        , Hints.initComponent t (ComponentLStringMsg [ "500", "1400", "600", "60", "Artist & Composer" ])
         , Hints.initComponent t (ComponentLStringMsg [ "500", "1400", "670", "40", "Wang Dayong" ])
-        , Hints.initComponent t (ComponentLStringMsg [ "800", "300", "600", "60", "Level Design" ])
+        , Hints.initComponent t (ComponentLStringMsg [ "800", "300", "600", "60", "Level Designers" ])
         , Hints.initComponent t (ComponentLStringMsg [ "800", "300", "670", "40", "Xiang Yiming, Zhang Jingjing" ])
-        , Hints.initComponent t (ComponentLStringMsg [ "1100", "300", "100", "60", "Game Engine" ])
+        , Hints.initComponent t (ComponentLStringMsg [ "1100", "300", "100", "60", "Game Engine Designers" ])
         , Hints.initComponent t (ComponentLStringMsg [ "1100", "300", "170", "40", "Xiang Yiming, Duan Lingbo" ])
         , Hints.initComponent t (ComponentLStringMsg [ "1500", "600", "400", "90", "Technical Support" ])
         , Hints.initComponent t (ComponentLStringMsg [ "1500", "750", "550", "60", "SFOCS Staffs" ])
@@ -125,7 +125,7 @@ allChartlets =
       , BehindActors
       )
     , ( \gd ggd ->
-            renderSprite gd [] (getPositionUnderCamera ( 2400, 1840 ) ggd) ( 32 * 10, 0 ) "fox"
+            renderSpriteWithRev True gd [] (getPositionUnderCamera ( 2400, 1840 ) ggd) ( 32 * 10, 0 ) "fox"
       , BehindActors
       )
     , ( \gd ggd ->
