@@ -97,7 +97,6 @@ initActors t cs =
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 25 * 32 + 600, 1700 ) 400 True 10)) EnergyCrystal.gameComponent
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 25 * 32 + 1000, 2000 ) 400 True 11)) EnergyCrystal.gameComponent
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 25 * 32 + 1400, 2000 ) 400 True 12)) EnergyCrystal.gameComponent
-         , initGameComponent t (GameTriggerInit (TriggerInit ( 20 * 32, 1800 ) ( 30, 100 ) 8 "awake" 13)) Trigger.gameComponent
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 36 * 32, 1840 ) 100 True 14)) EnergyCrystal.gameComponent
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 79 * 32, 32 * 58 ) 200 True 16)) EnergyCrystal.gameComponent
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 79 * 32, 32 * 58 ) 200 True 17)) EnergyCrystal.gameComponent
@@ -112,6 +111,8 @@ initActors t cs =
                     List.append
                         [ initGameComponent t (GameFishInit (FishInit ( 1600, 800 ) 100 8)) Fish.gameComponent
                         , initGameComponent t (GameCutSceneInit (CutSceneInit ( 16 * 32, 1800 ) ( 32 * 3, 100 ) 15 dialoguesFishB True)) CutScene.gameComponent
+                        , initGameComponent t (GameTriggerInit (TriggerInit ( 20 * 32, 1800 ) ( 30, 100 ) 8 "awake" 13)) Trigger.gameComponent
+                        , initGameComponent t (GameSpikeInit (SpikeInit ( 19 * 32, 1770 ) VerRight 5 True 300)) Spike.gameComponent
                         , initGameComponent t (GameCutSceneInit (CutSceneInit ( 1600, 900 ) ( 2000, 1000 ) 100 dialoguesFishA False)) CutScene.gameComponent
                         ]
                         (makecircleScales t ( 2010, 1600 ) 120 15 20 ++ makecircleScales t ( 2010, 1600 ) 150 10 40)

@@ -40,7 +40,7 @@ mymap =
         |> buildzystick ( 1, 60 )
         |> buildPillar ( 19, 0 ) 11
         -- |> builddhrock ( 62, 55 )
-        |> builddhrock ( 82, 40 )
+        -- |> builddhrock ( 82, 40 )
         |> builddhrock ( 90, 30 )
         |> builddhrock ( 70, 55 )
         |> builddhrock ( 82, 60 )
@@ -49,7 +49,7 @@ mymap =
         |> builddhrock ( 52, 45 )
         |> builddhrock ( 82, 50 )
         |> builddhrock ( 95, 45 )
-        |> builddhrock ( 79, 40 )
+        -- |> builddhrock ( 79, 40 )
         |> builddhrock ( 98, 30 )
         |> builddhrock ( 90, 10 )
         |> builddhrock ( 86, 10 )

@@ -18,7 +18,7 @@ background : Int -> GameGlobalData -> GlobalData -> Renderable
 background _ ggd gd =
     let
         t =
-            modBy 2000 gd.scenestarttime
+            modBy 2200 gd.scenestarttime
 
         allre =
             List.filter
@@ -53,6 +53,16 @@ background _ ggd gd =
                     genBackground 0.06 0.7 mapname ggd gd
             )
             allre
+            ++ (if t >= 2000 then
+                    let
+                        progress =
+                            toFloat (t - 2000) / 200 * 0.7
+                    in
+                    [ genBackground 0.06 progress "bg/jn" ggd gd ]
+
+                else
+                    []
+               )
         )
 
 
