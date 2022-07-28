@@ -10,7 +10,7 @@ import Array
 import Base exposing (GlobalData)
 import Canvas exposing (Renderable, group, rect, shapes)
 import Canvas.Settings exposing (fill)
-import Canvas.Settings.Advanced exposing (alpha)
+import Canvas.Settings.Advanced exposing (alpha, filter)
 import Color exposing (black)
 import Lib.Coordinate.Coordinates exposing (heightToReal, posToReal, widthToReal)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
@@ -52,7 +52,13 @@ view ( model, ot ) ggd gd =
         -- ( px, py ) =
         --     model.player.data.position
     in
-    group []
+    group
+        (if ggd.ingamepause && ggd.settingpause then
+            [ filter "blur(10px)" ]
+
+         else
+            []
+        )
         [ --  group [ alpha 0.2 ] [ renderText gd 15 ("(" ++ String.fromInt px ++ ", " ++ String.fromInt py ++ ")") "Times New Roman" ( 0, 0 ) ]
           renderChartletsBehindActor model ggd gd
         , genView ggd gd t normal
