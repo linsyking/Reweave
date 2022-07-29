@@ -118,7 +118,11 @@ updateModel msg gct ggd gd ( d, t ) =
                         ( d, [], ggd )
 
         MouseDown 0 mp ->
-            if judgeMouse gd mp (getPositionUnderCamera d.position ggd) ( d.simplecheck.width, d.simplecheck.height ) then
+            let
+                ( vx, vy ) =
+                    d.velocity
+            in
+            if (vx /= 0 || vy /= 0) && judgeMouse gd mp (getPositionUnderCamera d.position ggd) ( d.simplecheck.width, d.simplecheck.height ) then
                 ( d, [], { ggd | selectobj = d.uid } )
 
             else

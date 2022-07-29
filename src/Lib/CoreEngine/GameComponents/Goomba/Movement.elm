@@ -40,7 +40,7 @@ checkCollision ggd d =
                 rvx
 
         ( newvx, newvy ) =
-            if (vx < 0 && not (canMove d ggd (vec2 -1 0))) || (vx > 0 && not (canMove d ggd (vec2 1 0))) then
+            if ((vx < 0 && not (canMove d ggd (vec2 -1 0))) || (vx > 0 && not (canMove d ggd (vec2 1 0)))) && isOnground d ggd then
                 ( -vx, vy )
 
             else
@@ -86,7 +86,7 @@ solidCollisionMove ls ggd d =
                     ( pvx, 0 )
 
                 CRIGHT ->
-                    ( -cv, pvy )
+                    ( cv, pvy )
 
                 CLEFT ->
                     ( cv, pvy )

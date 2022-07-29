@@ -57,8 +57,10 @@ initFrontGroundComponents t =
         , Hints.initComponent t (ComponentLStringMsg [ "800", "300", "670", "40", "Xiang Yiming, Zhang Jingjing" ])
         , Hints.initComponent t (ComponentLStringMsg [ "1100", "300", "100", "60", "Game Engine Designers" ])
         , Hints.initComponent t (ComponentLStringMsg [ "1100", "300", "170", "40", "Xiang Yiming, Duan Lingbo" ])
-        , Hints.initComponent t (ComponentLStringMsg [ "1500", "600", "400", "90", "Technical Support" ])
-        , Hints.initComponent t (ComponentLStringMsg [ "1500", "750", "550", "60", "SFOCS Staffs" ])
+        , Hints.initComponent t (ComponentLStringMsg [ "1400", "300", "600", "60", "Story Designer" ])
+        , Hints.initComponent t (ComponentLStringMsg [ "1400", "300", "670", "40", "Zhang Jingjing" ])
+        , Hints.initComponent t (ComponentLStringMsg [ "1800", "600", "400", "90", "Technical Support" ])
+        , Hints.initComponent t (ComponentLStringMsg [ "1800", "750", "550", "60", "SFOCS Staffs" ])
         ]
 
 
