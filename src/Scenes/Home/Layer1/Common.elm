@@ -18,6 +18,7 @@ import Base exposing (..)
 -}
 type alias Button =
     { description : String
+    , display : Bool
     , pos : ( Int, Int )
     , length : Int
     , width : Int
@@ -28,4 +29,5 @@ type alias Button =
 -}
 type alias ModelX =
     { start : Button
+    , continue : Button
     }

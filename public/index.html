@@ -16,8 +16,13 @@
     node: document.getElementById('myapp'),
     flags: {
       windowWidth : window.innerWidth,
-      windowHeight : window.innerHeight
+      windowHeight : window.innerHeight,
+      info : localStorage.getItem("info")?localStorage.getItem("info"):""
     }
+  });
+
+  app.ports.sendInfo.subscribe(function(m){
+    localStorage.setItem("info", m);
   });
 
   startAudio(app);

@@ -44,6 +44,8 @@ import Lib.CoreEngine.GameComponents.Monster.Base exposing (MonsterInit)
 import Lib.CoreEngine.GameComponents.Monster.Export as Monster
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit, PlayerInitPosition(..))
 import Lib.CoreEngine.GameComponents.Player.Export as Player
+import Lib.CoreEngine.GameComponents.SavePoint.Base exposing (SavePointInit)
+import Lib.CoreEngine.GameComponents.SavePoint.Export as Save
 import Lib.CoreEngine.GameComponents.Spike.Base exposing (SpikeDirection(..), SpikeInit)
 import Lib.CoreEngine.GameComponents.Spike.Export as Spike
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
@@ -57,7 +59,7 @@ import Scenes.Level1.Map exposing (mymap)
 initFrontGroundComponents : Int -> Array Component
 initFrontGroundComponents t =
     Array.fromList
-        [ Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "Beiming  北溟" ])
+        [ Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "BeiMing  北溟" ])
         , Hints.initComponent t (ComponentLStringMsg [ "40", "1590", "100", "35", "Near A River 小河边" ])
         ]
 
@@ -81,7 +83,7 @@ initPlayer t pos =
 initActors : Int -> List String -> Array GameComponent
 initActors t cs =
     Array.fromList
-        ([ initGameComponent t (GameExitInit (ExitInit ( 10, 1100 ) "Level0" (CustomPlayerPosition ( 5900, 680 )) 1 6)) Exit.gameComponent
+        ([ initGameComponent t (GameExitInit (ExitInit ( 10, 1100 ) "Level0" (CustomPlayerPosition ( 9110, 680 )) 1 6)) Exit.gameComponent
          , initGameComponent t (GameCutSceneInit (CutSceneInit ( 475, 1680 ) ( 100, 100 ) 5 dialoguesMaster True)) CutScene.gameComponent
          , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2200 ) HorUp 1000 False 3)) Spike.gameComponent
          , initGameComponent t (GameSpikeInit (SpikeInit ( 1440, 1900 ) HorUp 1 True 4)) Spike.gameComponent
@@ -89,12 +91,13 @@ initActors t cs =
 
          -- , initGameComponent t (GameGoombaInit (GoombaInit ( 3425, 1928 ) ( 50, 0 ) 8)) Goomba.gameComponent
          , initGameComponent t (GameCutSceneInit (CutSceneInit ( 3140, 1440 ) ( 100, 100 ) 10 dialoguesBird False)) CutScene.gameComponent
+         , initGameComponent t (GameSavePointInit (SavePointInit ( 3280, 1416 ) 11)) Save.gameComponent
          ]
             ++ (if isInCollected "bird" cs then
                     []
 
                 else
-                    [ initGameComponent t (GameMonsterInit (MonsterInit ( 3140, 1430 ) ( 174, 138 ) "bird" 10 9)) Monster.gameComponent ]
+                    [ initGameComponent t (GameMonsterInit (MonsterInit ( 3140, 1430 ) ( 174, 138 ) False "bird" 10 9)) Monster.gameComponent ]
                )
         )
 
@@ -104,7 +107,7 @@ dialoguesMaster =
     [ ( "p_profile", "Hello, master." )
     , ( "master", "I still worry about you." )
     , ( "master", "There is a monster ahead of you." )
-    , ( "master", "You have to hit it by your body to reweave it." )
+    , ( "master", "You have to hit it with your body to reweave it." )
     , ( "p_profile", "OK." )
     ]
 
@@ -112,8 +115,11 @@ dialoguesMaster =
 dialoguesBird : List ( String, String )
 dialoguesBird =
     [ ( "p_profile", "Wow, who are you?" )
-    , ( "bird", "Hi, I am the bird" )
+    , ( "bird", "Hi, I am LuanNiao." )
     , ( "p_profile", "Beautiful Bird." )
+    , ( "bird", "I am willing to help you in your journey, don't be afriad." )
+    , ( "p_profile", "Thank you." )
+    , ( "", "(You can go to menu to check the monsters you have collected)" )
     ]
 
 

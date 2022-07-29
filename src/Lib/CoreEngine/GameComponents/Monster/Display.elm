@@ -12,8 +12,8 @@ import Canvas.Settings.Advanced exposing (alpha)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
 import Lib.CoreEngine.GameComponent.Base exposing (Data, LifeStatus(..))
-import Lib.DefinedTypes.Parser exposing (dgetString)
-import Lib.Render.Render exposing (renderSprite)
+import Lib.DefinedTypes.Parser exposing (dgetString, dgetbool)
+import Lib.Render.Render exposing (renderSpriteWithRev)
 
 
 {-| view
@@ -25,7 +25,8 @@ view ( d, t ) ggd gd =
             dgetString d.extra "pic"
     in
     [ ( group []
-            [ renderSprite
+            [ renderSpriteWithRev
+                (dgetbool d.extra "rev")
                 gd
                 [ case d.status of
                     Dead ct ->

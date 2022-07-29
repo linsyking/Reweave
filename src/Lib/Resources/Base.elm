@@ -131,6 +131,7 @@ donghaiSprites =
     [ ( "dh/smallrock", getResourcePath "img/dhsmallrock.png" )
     , ( "dh/rock", getResourcePath "img/dhrock.png" )
     , ( "dh/bigrock", getResourcePath "img/dhbigrock.png" )
+    , ( "dh/wave", getResourcePath "img/dhwave.png" )
     ]
 
 
@@ -142,6 +143,7 @@ jiangnanSprites =
     , ( "jn/PieceOfRoof", getResourcePath "img/jnPieceOfRoof.png" )
     , ( "jn/leaf", getResourcePath "img/jnleaf.png" )
     , ( "jn/building", getResourcePath "img/jnbuilding.png" )
+    , ( "jn/willow", getResourcePath "img/jnwillow.png" )
     ]
 
 
@@ -187,6 +189,7 @@ otherSprites =
     , ( "ot/crystal", getResourcePath "img/crystal.png" )
     , ( "ot/crystaldead", getResourcePath "img/crystaldead.png" )
     , ( "ot/ball", getResourcePath "img/ball.png" )
+    , ( "ot/close", getResourcePath "img/close.png" )
     ]
         ++ flagSprites
 

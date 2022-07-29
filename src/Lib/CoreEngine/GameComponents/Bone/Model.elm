@@ -52,6 +52,16 @@ simplecheckBox w =
     }
 
 
+colBox : Int -> Box
+colBox w =
+    { name = "col"
+    , offsetX = 10
+    , offsetY = 20
+    , width = w - 20
+    , height = floor (toFloat w / 3 * 2) - 40
+    }
+
+
 {-| initModel
 -}
 initModel : Int -> GameComponentTMsg -> Data
@@ -64,7 +74,7 @@ initModel _ gct =
             , mass = 0
             , acceleration = ( 0, 0 )
             , simplecheck = simplecheckBox info.initSize
-            , collisionbox = [ simplecheckBox info.initSize ]
+            , collisionbox = [ colBox info.initSize ]
             , extra = Dict.empty
             , uid = info.uid
             }

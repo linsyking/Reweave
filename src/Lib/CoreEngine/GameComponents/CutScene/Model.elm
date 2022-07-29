@@ -130,16 +130,36 @@ handlestart d ggd =
 -}
 updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data, Int ) -> ( Data, List GameComponentMsgType, GameGlobalData )
 updateModel msg gct ggd globalData ( d, t ) =
+    let
+        isdead =
+            case d.status of
+                Alive ->
+                    False
+
+                _ ->
+                    True
+    in
     case gct of
         GameInterCollisionMsg "player" _ _ ->
-            if not (dgetbool d.extra "iscol") then
+            if not (dgetbool d.extra "iscol") || isdead then
                 ( d, [], ggd )
 
             else
                 handlestart d ggd
 
         GameStringMsg "start" ->
-            handlestart d ggd
+            if isdead then
+                ( d, [], ggd )
+
+            else
+                handlestart d ggd
+
+        GameStringMsg "skip" ->
+            if dgetLComponent d.extra "_Child" == [] then
+                ( d, [], ggd )
+
+            else
+                ( { d | extra = Dict.empty }, [], ggd )
 
         _ ->
             let
@@ -163,7 +183,7 @@ updateModel msg gct ggd globalData ( d, t ) =
             in
             case tmpChildComponentsMsg of
                 [ [ ComponentStringMsg "OnEnd" ] ] ->
-                    ( d
+                    ( { d | extra = d.extra |> dsetLComponent "_Child" [], status = Dead t }
                     , [ GameParentMsg (GameStringMsg "reactinput") ]
                     , ggd
                     )

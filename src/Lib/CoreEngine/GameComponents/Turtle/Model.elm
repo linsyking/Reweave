@@ -42,7 +42,7 @@ import Dict
 import Lib.Component.Base exposing (DefinedTypes(..))
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, Data, GameComponentMsgType(..), GameComponentTMsg(..), LifeStatus(..))
-import Lib.DefinedTypes.Parser exposing (dgetString, dgetint, dsetint, dsetstring)
+import Lib.DefinedTypes.Parser exposing (dgetString, dgetbool, dgetint, dsetbool, dsetint, dsetstring)
 import Random
 
 
@@ -117,6 +117,7 @@ initModel _ comMsg =
                     , ( "Timer", CDInt 0 )
                     , ( "Life", CDInt 2000 )
                     , ( "Status", CDString "Away" )
+                    , ( "Awake", CDBool False )
                     ]
             , uid = info.uid
             }
@@ -282,11 +283,11 @@ getInitBulletsMsg t model =
                                         }
                                     )
                                 ]
-                            , index + 18
+                            , index + 15
                             )
                         )
                         ( [], 0 )
-                        (List.repeat 20 ( Tuple.first model.position + 250, Tuple.second model.position + 300 ))
+                        (List.repeat 30 ( Tuple.first model.position + 250, Tuple.second model.position + 300 ))
                     )
 
             else
@@ -322,7 +323,7 @@ getInitBulletsMsg t model =
                 [ GameParentMsg
                     (GameFireballInit
                         { initPosition = ( Tuple.first model.position, Tuple.second model.position + 500 )
-                        , initVelocity = ( -100, 0 )
+                        , initVelocity = ( -100, -50 )
                         , size = 100
                         , uid = 0
                         }
@@ -330,7 +331,7 @@ getInitBulletsMsg t model =
                 , GameParentMsg
                     (GameFireballInit
                         { initPosition = ( Tuple.first model.position + 600, Tuple.second model.position + 500 )
-                        , initVelocity = ( 100, 0 )
+                        , initVelocity = ( 100, -50 )
                         , size = 100
                         , uid = 0
                         }
@@ -350,21 +351,34 @@ updateModel : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> ( Data
 updateModel mainMsg comMsg gameGlobalData _ ( model, t ) =
     case mainMsg of
         Tick _ ->
-            let
-                requestMsg =
-                    getInitBulletsMsg t model
+            if dgetbool model.extra "Awake" then
+                let
+                    requestMsg =
+                        getInitBulletsMsg t model
 
-                newModel =
-                    case model.status of
-                        Dead _ ->
-                            { model | velocity = ( Tuple.first model.velocity, Tuple.second model.velocity - 10 ) }
+                    newModel =
+                        case model.status of
+                            Dead _ ->
+                                { model | velocity = ( Tuple.first model.velocity, Tuple.second model.velocity - 10 ) }
 
-                        _ ->
-                            model
-                                |> changeStatus
-                                |> changeVelocity
-            in
-            ( newModel, requestMsg, gameGlobalData )
+                            _ ->
+                                model
+                                    |> changeStatus
+                                    |> changeVelocity
+                in
+                ( newModel, requestMsg, gameGlobalData )
+
+            else
+                let
+                    newModel =
+                        case model.status of
+                            Dead _ ->
+                                { model | velocity = ( Tuple.first model.velocity, Tuple.second model.velocity - 10 ) }
+
+                            _ ->
+                                model
+                in
+                ( newModel, [], gameGlobalData )
 
         _ ->
             case comMsg of
@@ -390,6 +404,7 @@ updateModel mainMsg comMsg gameGlobalData _ ( model, t ) =
                         ( { model | status = Dead t, extra = newmodelextra }
                         , [ GameActorUidMsg uid (GameStringMsg "start")
                           , GameParentMsg (GameLStringMsg [ "collectmonster", "turtle" ])
+                          , GameActorNameMsg "fireball" (GameStringMsg "die")
                           ]
                         , gameGlobalData
                         )
@@ -397,20 +412,38 @@ updateModel mainMsg comMsg gameGlobalData _ ( model, t ) =
                     else
                         ( { model | extra = newmodelextra }, [], gameGlobalData )
 
+                GameStringMsg "awake" ->
+                    ( { model | extra = model.extra |> dsetbool "Awake" True }, [], gameGlobalData )
+
                 GameInterCollisionMsg "player" _ _ ->
                     let
                         uid =
                             dgetint model.extra "TriggerUID"
 
+                        curhp =
+                            dgetint model.extra "Life"
+
                         newmodelextra =
-                            dsetint "Life" 0 model.extra
+                            dsetint "Life"
+                                (if curhp - 10 <= 0 then
+                                    0
+
+                                 else
+                                    curhp - 10
+                                )
+                                model.extra
                     in
-                    ( { model | status = Dead t, extra = newmodelextra }
-                    , [ GameActorUidMsg uid (GameStringMsg "start")
-                      , GameParentMsg (GameLStringMsg [ "collectmonster", "turtle" ])
-                      ]
-                    , gameGlobalData
-                    )
+                    if curhp - 10 <= 0 then
+                        ( { model | status = Dead t, extra = newmodelextra }
+                        , [ GameActorUidMsg uid (GameStringMsg "start")
+                          , GameParentMsg (GameLStringMsg [ "collectmonster", "turtle" ])
+                          , GameActorNameMsg "fireball" (GameStringMsg "die")
+                          ]
+                        , gameGlobalData
+                        )
+
+                    else
+                        ( { model | extra = newmodelextra }, [], gameGlobalData )
 
                 _ ->
                     ( model, [], gameGlobalData )

@@ -12,6 +12,7 @@ module Lib.CoreEngine.GameComponents.Monster.Base exposing (MonsterInit)
 type alias MonsterInit =
     { initPosition : ( Int, Int )
     , size : ( Int, Int )
+    , rev : Bool
     , pic : String
     , triggeruid : Int
     , uid : Int

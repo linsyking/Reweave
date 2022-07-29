@@ -127,19 +127,27 @@ updateModel msg gct ggd gd ( d, t ) =
                     in
                     ( ndd, [], ggd )
 
-                GameInterCollisionMsg "turtle" pd _ ->
-                    let
-                        mass =
-                            d.mass
-                    in
-                    if mass >= 400 then
-                        ( { d | status = Dead t }, [ GameActorUidMsg pd.uid (GameStringMsg "decreaseHP") ], ggd )
+                GameInterCollisionMsg "turtle" _ _ ->
+                    -- let
+                    --     mass =
+                    --         d.mass
+                    -- in
+                    -- if mass >= 400 then
+                    --     ( { d | status = Dead t }, [ GameActorUidMsg pd.uid (GameStringMsg "decreaseHP") ], ggd )
+                    -- else
+                    ( d, [], ggd )
 
-                    else
-                        ( d, [], ggd )
+                GameInterCollisionMsg "energyCrystal" _ _ ->
+                    ( d, [], ggd )
 
                 GameInterCollisionMsg "fireball" _ _ ->
                     ( d, [], ggd )
+
+                GameInterCollisionMsg "CutScene" _ _ ->
+                    ( d, [], ggd )
+
+                GameStringMsg "die" ->
+                    ( { d | status = Dead t }, [], ggd )
 
                 GameInterCollisionMsg _ pd _ ->
                     ( { d | status = Dead t }, [ GameActorUidMsg pd.uid (GameStringMsg "die") ], ggd )

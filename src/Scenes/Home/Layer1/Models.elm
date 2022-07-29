@@ -1,16 +1,10 @@
 module Scenes.Home.Layer1.Models exposing
-    ( length
-    , width
-    , initButton
+    ( initButton
     , initModel
     , updateModel
     )
 
 {-| This is the doc for this module
-
-@docs length
-
-@docs width
 
 @docs initButton
 
@@ -25,42 +19,25 @@ import Constants exposing (..)
 import Lib.Component.Base exposing (ComponentTMsg(..))
 import Lib.Coordinate.Coordinates exposing (..)
 import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget(..))
+import Lib.LocalStorage.LocalStorage exposing (isFirstPlay)
 import Lib.Scene.Base exposing (..)
 import Scenes.Home.Layer1.Common exposing (..)
 import Scenes.Home.LayerBase exposing (CommonData)
 
 
-
--- The length of the button is length * 2
--- The width of the button is width * 2
-
-
-{-| length
--}
-length : number
-length =
-    60
-
-
-{-| width
--}
-width : number
-width =
-    80
-
-
 {-| initButton
 -}
-initButton : String -> ( Int, Int ) -> Int -> Int -> Button
-initButton description ( x, y ) len wid =
-    Button description ( x, y ) len wid
+initButton : String -> Bool -> ( Int, Int ) -> Int -> Int -> Button
+initButton description s ( x, y ) len wid =
+    Button description s ( x, y ) len wid
 
 
 {-| initModel
 -}
 initModel : Int -> LayerMsg -> CommonData -> ModelX
 initModel _ _ _ =
-    { start = initButton "Start" ( 890, 920 ) length width
+    { start = initButton "Start" True ( 890, 920 ) 160 80
+    , continue = initButton "Start" False ( 11890, 920 ) 160 80
     }
 
 
@@ -71,8 +48,11 @@ updateModel msg gd _ ( model, t ) cd =
     if cd.started then
         case msg of
             MouseDown 0 ( x, y ) ->
-                if judgeMouse gd ( x, y ) ( Tuple.first model.start.pos, Tuple.second model.start.pos ) ( length * 2, width ) then
-                    ( ( model, cd, [ ( LayerParentScene, LayerIntMsg 1 ) ] ), gd )
+                if model.start.display && judgeMouse gd ( x, y ) ( Tuple.first model.start.pos, Tuple.second model.start.pos ) ( model.start.length, model.start.width ) then
+                    ( ( model, cd, [ ( LayerParentScene, LayerIntMsg 1 ) ] ), { gd | localstorage = LSInfo [] "Level0" 300 ( -1, -1 ) gd.localstorage.volume } )
+
+                else if model.continue.display && judgeMouse gd ( x, y ) ( Tuple.first model.continue.pos, Tuple.second model.continue.pos ) ( model.continue.length, model.continue.width ) then
+                    ( ( model, cd, [ ( LayerParentScene, LayerIntMsg 3 ) ] ), gd )
 
                 else
                     ( ( model, cd, [ ( NullLayerTarget, NullLayerMsg ) ] ), gd )
@@ -84,10 +64,22 @@ updateModel msg gd _ ( model, t ) cd =
         case msg of
             MouseDown 0 ( x, y ) ->
                 if judgeMouse gd ( x, y ) ( 0, 0 ) ( 1920, 1080 ) then
-                    ( ( model, { cd | started = True }, [ ( LayerParentScene, LayerIntMsg 2 ) ] ), gd )
+                    ( ( model, { cd | started = True, presstime = t }, [ ( LayerParentScene, LayerIntMsg 2 ) ] ), gd )
 
                 else
                     ( ( model, cd, [ ( NullLayerTarget, NullLayerMsg ) ] ), gd )
 
             _ ->
-                ( ( model, cd, [ ( NullLayerTarget, NullLayerMsg ) ] ), gd )
+                if isFirstPlay gd.localstorage then
+                    ( ( model, cd, [ ( NullLayerTarget, NullLayerMsg ) ] ), gd )
+
+                else
+                    let
+                        newstartbutton =
+                            initButton "New Game" True ( 500, 920 ) 450 80
+
+                        -- newcontinuebutton = initButton "Continue" True ( 1100, 920 ) 100 width
+                        newcontinuebutton =
+                            initButton "Continue" True ( 1100, 920 ) 350 80
+                    in
+                    ( ( { model | start = newstartbutton, continue = newcontinuebutton }, cd, [ ( NullLayerTarget, NullLayerMsg ) ] ), gd )

@@ -27,7 +27,7 @@ import Lib.CoreEngine.GameComponents.Goomba.Export as Goomba
 import Lib.CoreEngine.GameComponents.Player.Base exposing (BoundKey, PlayerInitPosition(..))
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameComponents.Player.FSM exposing (queryIsState)
-import Lib.CoreEngine.GameLayer.Common exposing (Model, addenergy, kineticCalc, searchNameGC, searchUIDGC)
+import Lib.CoreEngine.GameLayer.Common exposing (Model, addenergy, getDSEnergy, kineticCalc, searchNameGC, searchUIDGC)
 import Lib.CoreEngine.Physics.InterCollision exposing (gonnaInterColllide)
 import Lib.CoreEngine.Physics.NaiveCollision exposing (judgeInCamera)
 import Lib.CoreEngine.Physics.SolidCollision exposing (canMove, gonnaSolidCollide, movePointPlain)
@@ -103,6 +103,11 @@ playerMove player =
         pv =
             player.velocity
 
+        -- dddd =
+        --     if player.uid == 15 then
+        --         Just (Debug.log "hh" ( player.velocity, newpos ))
+        --     else
+        --         Nothing
         ( npx, npy ) =
             pv
 
@@ -147,6 +152,11 @@ clearWrongVelocity ggd gcs =
                 player =
                     gc.data
 
+                -- dddd =
+                --     if gc.data.uid == 15 then
+                --         Just (Debug.log "hh" (gc.data.velocity, fv))
+                --     else
+                --         Nothing
                 ( npvx, npvy ) =
                     if pvy < 0 && not (canMove player ggd (vec2 0 -1)) then
                         ( pvx, 0 )
@@ -297,93 +307,6 @@ interCollision _ t ggd gd gcs =
     ( appliedgc, appliedmsg, appliedggc )
 
 
-{-| calcDRate
--}
-calcDRate : ( Float, Float ) -> ( Float, Float ) -> ( Float, Float ) -> Float
-calcDRate p1 p2 ( w, h ) =
-    let
-        ( p1X, p1Y ) =
-            p1
-
-        ( p2X, p2Y ) =
-            p2
-
-        k =
-            (p2X - p1X) / (p2Y - p1Y)
-
-        k1 =
-            p1X / (p1Y - h)
-
-        k2 =
-            (w - p1X) / (h - p1Y)
-
-        k3 =
-            p1X / p1Y
-
-        k4 =
-            (p1X - w) / p1Y
-    in
-    if p2Y > p1Y && k >= k1 && k <= k2 then
-        1 - (h - p2Y) / (h - p1Y)
-
-    else if p2Y < p1Y && k >= k4 && k <= k3 then
-        1 - p2Y / p1Y
-
-    else if p2X < p1X && (k < k1 || k > k3) then
-        1 - p2X / p1X
-
-    else if p2X > p1X && (k < k4 || k > k2) then
-        1 - (w - p2X) / (w - p1X)
-
-    else if p1Y == p2Y && p2X > p1X then
-        (p2X - p1X) / (w - p1X)
-
-    else if p1Y == p2Y && p2X < p1X then
-        (p1X - p2X) / p1X
-
-    else
-        0
-
-
-{-| calcRPer
--}
-calcRPer : ( Float, Float ) -> ( Float, Float ) -> GlobalData -> Float
-calcRPer ( px, py ) ( mx, my ) gd =
-    let
-        ds =
-            calcDRate ( px, py ) ( mx, my ) ( toFloat gd.realWidth, toFloat gd.realHeight )
-    in
-    if ds > 0.9 then
-        1
-
-    else
-        ds
-
-
-{-| getDSEnergy
--}
-getDSEnergy : ( Float, Float ) -> ( Float, Float ) -> GlobalData -> GameGlobalData -> ( Float, GameGlobalData )
-getDSEnergy p m gd ggd =
-    let
-        curenergy =
-            ggd.energy
-
-        pc =
-            calcRPer p m gd
-
-        gpc =
-            curenergy * pc
-    in
-    if pc < 0.2 then
-        ( 0, ggd )
-
-    else if pc >= 1 then
-        ( curenergy, { ggd | energy = 0 } )
-
-    else
-        ( gpc, { ggd | energy = curenergy - gpc } )
-
-
 clearPlayerStatus : GameComponent -> GameComponent
 clearPlayerStatus gc =
     let
@@ -423,7 +346,17 @@ dealParentMsg gct gd ( model, t ) ggd =
             ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerRestartMsg 10 ) ] ), gd )
 
         GameLStringMsg ("collectmonster" :: pic :: _) ->
-            ( ( model, { ggd | collectedMonsters = ggd.collectedMonsters ++ [ pic ] }, [] ), gd )
+            let
+                newggd =
+                    { ggd | collectedMonsters = ggd.collectedMonsters ++ [ pic ] }
+
+                oldls =
+                    gd.localstorage
+
+                newls =
+                    { oldls | collected = newggd.collectedMonsters }
+            in
+            ( ( model, newggd, [] ), { gd | localstorage = newls } )
 
         GameInfoPositionMsg "save" p ->
             ( ( model, ggd, [ ( LayerName "Frontground", LayerInfoPositionMsg "save" p ) ] ), gd )
@@ -547,6 +480,16 @@ updateModel msg gd lm ( model, t ) ggd =
 
         LayerStringMsg "startlayer" ->
             ( ( model, { ggd | ingamepause = False }, [] ), gd )
+
+        LayerStringMsg "skipcutscene" ->
+            let
+                alc =
+                    model.actors
+
+                ( newactors, _, newggd ) =
+                    updateSingleGameComponentByName UnknownMsg (GameStringMsg "skip") ggd gd t "CutScene" alc
+            in
+            ( ( { model | actors = newactors, ignoreInput = False }, newggd, [] ), gd )
 
         LayerStringMsg "clearPlayerInput" ->
             let
@@ -737,14 +680,6 @@ updateModel msg gd lm ( model, t ) ggd =
                         else
                             ( ( model, ggd, [] ), gd )
 
-                    KeyDown 13 ->
-                        -- For cutscene
-                        let
-                            ( newactors, _, newggd ) =
-                                updateSingleGameComponentByName msg NullGameComponentMsg ggd gd t "CutScene" model.actors
-                        in
-                        ( ( { model | actors = newactors }, newggd, [] ), gd )
-
                     KeyDown _ ->
                         if model.ignoreInput then
                             ( ( model, ggd, [] ), gd )
@@ -769,7 +704,11 @@ updateModel msg gd lm ( model, t ) ggd =
 
                     MouseDown 2 mp ->
                         if model.ignoreInput then
-                            ( ( model, ggd, [] ), gd )
+                            let
+                                ( newactors, _, newggd ) =
+                                    updateSingleGameComponentByName msg NullGameComponentMsg ggd gd t "CutScene" model.actors
+                            in
+                            ( ( { model | actors = newactors }, newggd, [] ), gd )
 
                         else if t - model.lastuseEnergyTime < 15 then
                             ( ( model, ggd, [] ), gd )
@@ -868,7 +807,11 @@ updateModel msg gd lm ( model, t ) ggd =
 
                     MouseDown 0 _ ->
                         if model.ignoreInput then
-                            ( ( model, ggd, [] ), gd )
+                            let
+                                ( newactors, _, newggd ) =
+                                    updateSingleGameComponentByName msg NullGameComponentMsg ggd gd t "CutScene" model.actors
+                            in
+                            ( ( { model | actors = newactors }, newggd, [] ), gd )
 
                         else
                             let

@@ -35,14 +35,11 @@ renderSolids ggd gd =
         ( cx2, cy2 ) =
             ( cx + 1920, cy + 1080 )
 
-        ( mw, mh ) =
-            ggd.mapsize
-
         ir =
-            List.range 0 mw
+            List.range (rfint cx - 10) (rfint cx2 + 10)
 
         jr =
-            List.range 0 mh
+            List.range (rfint cy - 10) (rfint cy2 + 10)
 
         sls =
             List.foldl
@@ -123,15 +120,15 @@ renderSingleBlock tp p ggd gd =
 
         16 ->
             -- longxi ground
-            renderSprite gd [] ( cpx - 3, cpy ) ( brickSize * 8, 0 ) "lx/ground"
+            renderSprite gd [] ( cpx - 3, cpy - 9 ) ( brickSize * 8, 0 ) "lx/ground"
 
         17 ->
             -- longxi ground
-            renderSpriteWithRev True gd [] ( cpx, cpy ) ( brickSize * 8, 0 ) "lx/ground"
+            renderSpriteWithRev True gd [] ( cpx, cpy - 9 ) ( brickSize * 8, 0 ) "lx/ground"
 
         18 ->
             -- longxi ground
-            renderSprite gd [] ( cpx - 4, cpy + 5 ) ( brickSize * 2 + 4, 16 ) "lx/PieceOfGround"
+            renderSprite gd [] ( cpx - 4, cpy + 5 - 9 ) ( brickSize * 2 + 4, 16 ) "lx/PieceOfGround"
 
         19 ->
             -- zhongyuan stick

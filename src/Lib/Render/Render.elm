@@ -5,6 +5,7 @@ module Lib.Render.Render exposing
     , renderBrickSheet
     , renderText
     , renderTextWithColor
+    , renderSpriteRawPos
     )
 
 {-| This is the doc for this module
@@ -20,6 +21,8 @@ module Lib.Render.Render exposing
 @docs renderText
 
 @docs renderTextWithColor
+
+@docs renderSpriteRawPos
 
 -}
 
@@ -119,7 +122,86 @@ renderSprite gd ls p ( w, h ) name =
                     t
 
         Nothing ->
-            text [] (transPoint gd p) "Wrong Sprite"
+            text [] (transPoint gd p) ""
+
+
+{-| renderSpriteRawPos
+-}
+renderSpriteRawPos : GlobalData -> List Setting -> ( Float, Float ) -> ( Int, Int ) -> String -> Renderable
+renderSpriteRawPos gd ls p ( w, h ) name =
+    let
+        dst =
+            gd.sprites
+    in
+    case igetSprite name dst of
+        Just t ->
+            let
+                text_dim =
+                    dimensions t
+
+                rw =
+                    widthToReal gd w
+
+                rh =
+                    heightToReal gd h
+
+                text_width =
+                    text_dim.width
+
+                text_height =
+                    text_dim.height
+
+                width_s =
+                    rw / text_width
+
+                height_s =
+                    rh / text_height
+
+                ( newx, newy ) =
+                    p
+            in
+            if w > 0 && h > 0 then
+                texture
+                    (transform
+                        [ translate newx newy
+                        , scale width_s height_s
+                        ]
+                        :: ls
+                    )
+                    ( 0, 0 )
+                    t
+
+            else if w > 0 && h <= 0 then
+                texture
+                    (transform
+                        [ translate newx newy
+                        , scale width_s width_s
+                        ]
+                        :: ls
+                    )
+                    ( 0, 0 )
+                    t
+
+            else if w <= 0 && h > 0 then
+                texture
+                    (transform
+                        [ translate newx newy
+                        , scale height_s height_s
+                        ]
+                        :: ls
+                    )
+                    ( 0, 0 )
+                    t
+
+            else
+                -- All <= 0
+                texture
+                    ls
+                    ( newx, newy )
+                    t
+
+        Nothing ->
+            text [] p ""
 
 
 {-| renderSpriteWithRev

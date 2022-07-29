@@ -1,8 +1,13 @@
-module Lib.CoreEngine.Physics.Velocity exposing (changeCVel)
+module Lib.CoreEngine.Physics.Velocity exposing
+    ( changeCVel
+    , calcVel
+    )
 
 {-| This is the doc for this module
 
 @docs changeCVel
+
+@docs calcVel
 
 -}
 
@@ -50,3 +55,10 @@ changeCVel c ( px, py ) k =
             }
     in
     newdata
+
+
+{-| calcVel
+-}
+calcVel : ( Float, Float ) -> Float
+calcVel ( x, y ) =
+    sqrt (x * x + y * y)

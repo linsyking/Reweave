@@ -157,7 +157,7 @@ checkStatusReport list childComponentsList globalData ( model, t ) =
 {-| updateDialog
 -}
 updateDialog : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
-updateDialog mainMsg _ globalData ( model, t ) =
+updateDialog mainMsg comMsg globalData ( model, t ) =
     case mainMsg of
         Tick _ ->
             let
@@ -237,7 +237,7 @@ updateDialog mainMsg _ globalData ( model, t ) =
                     ( model
                         |> dsetint "_Timer" timer
                         |> dsetstring "_Status" "OnEnd"
-                    , []
+                    , [ ComponentStringMsg "skip" ]
                     , globalData
                     )
 
@@ -257,63 +257,104 @@ updateDialog mainMsg _ globalData ( model, t ) =
                 ( _, _ ) ->
                     ( model |> dsetint "_Timer" timer, [], globalData )
 
-        _ ->
-            let
-                childComponetsList =
-                    dgetLComponent model "_Child"
+        MouseDown 2 _ ->
+            ( model
+                |> dsetint "_Timer" 0
+                |> dsetstring "_Status" "OnDeBuild"
+                |> dsetLComponent "_Child" []
+            , []
+            , globalData
+            )
 
-                ( newChildComponentsList, newChildComponentMsg ) =
-                    List.foldl
-                        (\( comName, comModel ) ( tmpComponentsList, tmpComponentsMsg ) ->
-                            if comName == "NextButton" then
-                                let
-                                    ( tmpData, tmpMsg, _ ) =
-                                        comModel.update mainMsg NullComponentMsg globalData ( comModel.data, t )
-                                in
-                                ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], tmpMsg )
+        MouseDown 0 ( x, y ) ->
+            if dgetString model "_Status" == "OnShow" then
+                if judgeMouse globalData ( x, y ) ( 1600, 120 ) ( 40, 40 ) then
+                    ( model
+                        |> dsetint "_Timer" 0
+                        |> dsetstring "_Status" "OnDeBuild"
+                        |> dsetLComponent "_Child" []
+                    , []
+                    , globalData
+                    )
 
-                            else
-                                ( List.append tmpComponentsList [ ( comName, comModel ) ], tmpComponentsMsg )
-                        )
-                        ( [], [] )
-                        childComponetsList
-            in
-            case List.head newChildComponentMsg of
-                Just (ComponentLSStringMsg demand list) ->
-                    case demand of
-                        "Interaction" ->
-                            let
-                                request =
-                                    Maybe.withDefault "" (List.head list)
-                            in
-                            if request == "OnDeBuild" then
-                                let
-                                    ( tmpChildComponentsList, _ ) =
-                                        List.foldl
-                                            (\( comName, comModel ) ( tmpComponentsList, tmpComponentsMsg ) ->
-                                                if comName == "Text" then
-                                                    let
-                                                        ( tmpData, tmpMsg, _ ) =
-                                                            comModel.update UnknownMsg (ComponentStringMsg "OnDeBuild") globalData ( comModel.data, t )
-                                                    in
-                                                    ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], tmpMsg )
+                else
+                    let
+                        childComponetsList =
+                            dgetLComponent model "_Child"
 
-                                                else
-                                                    ( List.append tmpComponentsList [ ( comName, comModel ) ], tmpComponentsMsg )
-                                            )
-                                            ( [], [] )
-                                            childComponetsList
-                                in
-                                ( model |> dsetLComponent "_Child" tmpChildComponentsList, [], globalData )
+                        ( newChildComponentsList, newChildComponentMsg ) =
+                            List.foldl
+                                (\( comName, comModel ) ( tmpComponentsList, tmpComponentsMsg ) ->
+                                    if comName == "NextButton" then
+                                        let
+                                            ( tmpData, tmpMsg, _ ) =
+                                                comModel.update (KeyDown 13) NullComponentMsg globalData ( comModel.data, t )
+                                        in
+                                        ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], tmpMsg )
 
-                            else
-                                ( model |> dsetLComponent "_Child" newChildComponentsList, [], globalData )
+                                    else
+                                        ( List.append tmpComponentsList [ ( comName, comModel ) ], tmpComponentsMsg )
+                                )
+                                ( [], [] )
+                                childComponetsList
+                    in
+                    case List.head newChildComponentMsg of
+                        Just (ComponentLSStringMsg demand list) ->
+                            case demand of
+                                "Interaction" ->
+                                    let
+                                        request =
+                                            Maybe.withDefault "" (List.head list)
+                                    in
+                                    if request == "OnDeBuild" then
+                                        let
+                                            ( tmpChildComponentsList, _ ) =
+                                                List.foldl
+                                                    (\( comName, comModel ) ( tmpComponentsList, tmpComponentsMsg ) ->
+                                                        if comName == "Text" then
+                                                            let
+                                                                ( tmpData, tmpMsg, _ ) =
+                                                                    comModel.update UnknownMsg (ComponentStringMsg "OnDeBuild") globalData ( comModel.data, t )
+                                                            in
+                                                            ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], tmpMsg )
+
+                                                        else
+                                                            ( List.append tmpComponentsList [ ( comName, comModel ) ], tmpComponentsMsg )
+                                                    )
+                                                    ( [], [] )
+                                                    childComponetsList
+                                        in
+                                        ( model |> dsetLComponent "_Child" tmpChildComponentsList, [], globalData )
+
+                                    else
+                                        ( model |> dsetLComponent "_Child" newChildComponentsList, [], globalData )
+
+                                _ ->
+                                    ( model |> dsetLComponent "_Child" newChildComponentsList, [], globalData )
 
                         _ ->
                             ( model |> dsetLComponent "_Child" newChildComponentsList, [], globalData )
 
+            else
+                ( model, [], globalData )
+
+        _ ->
+            case comMsg of
+                ComponentStringMsg str ->
+                    if str == "Close" then
+                        ( model
+                            |> dsetint "_Timer" 0
+                            |> dsetstring "_Status" "OnDeBuild"
+                            |> dsetLComponent "_Child" []
+                        , []
+                        , globalData
+                        )
+
+                    else
+                        ( model, [], globalData )
+
                 _ ->
-                    ( model |> dsetLComponent "_Child" newChildComponentsList, [], globalData )
+                    ( model, [], globalData )
 
 
 {-| viewDialog
@@ -338,7 +379,8 @@ viewDialog ( model, t ) globalData =
                         []
 
                      else
-                        [ renderSprite globalData [] ( 859 - 72 * timer, 50 ) ( 154 * timer, 300 ) "dialogue" ]
+                        [ renderSprite globalData [] ( 859 - 72 * timer, 50 ) ( 154 * timer, 300 ) "dialogue"
+                        ]
                     )
                     (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
                 )
@@ -346,7 +388,8 @@ viewDialog ( model, t ) globalData =
         "OnDeBuild" ->
             group []
                 (List.append
-                    [ renderSprite globalData [] ( 189 + 72 * timer, 50 ) ( 1540 - 154 * timer, 300 ) "dialogue" ]
+                    [ renderSprite globalData [] ( 189 + 72 * timer, 50 ) ( 1540 - 154 * timer, 300 ) "dialogue"
+                    ]
                     (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
                 )
 
@@ -356,6 +399,8 @@ viewDialog ( model, t ) globalData =
         _ ->
             group []
                 (List.append
-                    [ renderSprite globalData [] ( 189, 50 ) ( 1540, 300 ) "dialogue" ]
+                    [ renderSprite globalData [] ( 189, 50 ) ( 1540, 300 ) "dialogue"
+                    , renderSprite globalData [] ( 1600, 120 ) ( 40, 40 ) "ot/close"
+                    ]
                     (List.map (\( _, comModel ) -> comModel.view ( comModel.data, t ) globalData) childComponentsList)
                 )

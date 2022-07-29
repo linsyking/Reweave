@@ -25,6 +25,7 @@ module Lib.CoreEngine.GameComponents.Goomba.Model exposing
 
 import Base exposing (GlobalData, Msg(..))
 import Dict
+import Lib.Component.Base exposing (DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (judgeMouse)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
@@ -100,7 +101,10 @@ initModel _ gcm =
             , acceleration = ( 0, -8 )
             , simplecheck = simplecheckBox
             , collisionbox = [ collisionBox, reboundBox ]
-            , extra = Dict.empty
+            , extra =
+                Dict.fromList
+                    [ ( "constv", CDFloat info.constVelocity )
+                    ]
             , uid = info.uid
             }
 

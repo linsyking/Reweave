@@ -90,27 +90,39 @@ updateMap mainMsg comMsg globalData ( model, t ) =
     case mainMsg of
         MouseDown 0 ( x, y ) ->
             if judgeMouse globalData ( x, y ) ( posX, posY ) ( radius, radius ) then
+                let
+                    oldlo =
+                        globalData.localstorage
+                in
                 ( model
                 , []
                 , case comType of
                     "Down" ->
-                        { globalData
-                            | audioVolume =
+                        let
+                            newaudiov =
                                 if globalData.audioVolume >= 0.1 then
                                     globalData.audioVolume - 0.1
 
                                 else
                                     globalData.audioVolume
+                        in
+                        { globalData
+                            | audioVolume = newaudiov
+                            , localstorage = { oldlo | volume = newaudiov * 100 }
                         }
 
                     "Up" ->
-                        { globalData
-                            | audioVolume =
+                        let
+                            newaudiov =
                                 if globalData.audioVolume <= 0.9 then
                                     globalData.audioVolume + 0.1
 
                                 else
                                     globalData.audioVolume
+                        in
+                        { globalData
+                            | audioVolume = newaudiov
+                            , localstorage = { oldlo | volume = newaudiov * 100 }
                         }
 
                     _ ->
