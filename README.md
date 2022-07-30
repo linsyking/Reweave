@@ -1,4 +1,4 @@
-Project 2
+Project 2 for UM-JI VG100 Course
 
 # README
 
@@ -37,7 +37,7 @@ Other ways of contribution, such as reviews and bug reports are welcome.
 
 # Author team
 
-    Spindle
+**Spindle**
 
 Duan Lingbo
 
@@ -47,10 +47,6 @@ Zhang Jingjing
 
 Wang Dayong
 
-### Team logo
-
-
-
 # License
 
-[SilverFocs Incubator Licence] (Link to it on silverfocs website) 
+[SilverFocs Incubator Licence](https://focs.ji.sjtu.edu.cn/silverfocs/markdown/license) 
