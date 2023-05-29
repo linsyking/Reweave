@@ -15,11 +15,10 @@ minted-*
 *.lmk
 .tag*
 elm-stuff/
-build/
 scripts/grouping.csv
 *.DS_Store
 node_modules/
-index.html
-build/
+!index.html
+!build/
 !public/index.html
 .vscode/
