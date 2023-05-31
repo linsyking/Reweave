@@ -2,6 +2,8 @@ Project 2 for UM-JI VG100 Course
 
 **Note. If you want to use the game framework of this game, please go [here](https://github.com/linsyking/Messenger) and take this game as an example of that game framework.**
 
+You can access the game [here](https://focs.ji.sjtu.edu.cn/silverfocs/demo/2022/p2team01/) or on github page.
+
 # README
 
 This file contains relevant information about installation and startup.
