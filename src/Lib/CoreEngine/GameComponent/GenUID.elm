@@ -2,6 +2,8 @@ module Lib.CoreEngine.GameComponent.GenUID exposing (genUID)
 
 {-| This is the doc for this module
 
+Generate a new UID for a gamecomponent
+
 @docs genUID
 
 -}

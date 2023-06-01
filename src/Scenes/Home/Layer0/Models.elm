@@ -12,7 +12,6 @@ module Scenes.Home.Layer0.Models exposing
 -}
 
 import Base exposing (..)
-import Constants exposing (..)
 import Lib.Audio.Base exposing (AudioOption(..))
 import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget(..))
 import Lib.Scene.Base exposing (..)

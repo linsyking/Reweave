@@ -7,6 +7,12 @@ module Lib.Layer.Base exposing
 
 {-| This is the doc for this module
 
+Layer plays a very important role in our game.
+
+It is mainly used to seperate different rendering layers.
+
+Using layers can help us deal with different things in different layers.
+
 @docs LayerMsg
 
 @docs LayerTarget
@@ -68,7 +74,6 @@ type alias GameLayerInit =
 type LayerTarget
     = LayerParentScene
     | LayerName String
-    | NullLayerTarget
 
 
 

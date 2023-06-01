@@ -12,6 +12,12 @@ import Lib.CoreEngine.GameComponents.Goomba.Model exposing (initData, initModel,
 
 
 {-| gameComponent
+name : gameComponent Type
+data : the model for goomba
+init : the init function for goomba
+update : the update function for goomba
+view : the view function for goomba
+query : goomba does not require query function
 -}
 gameComponent : GameComponent
 gameComponent =

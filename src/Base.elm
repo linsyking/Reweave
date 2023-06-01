@@ -2,19 +2,24 @@ module Base exposing
     ( Msg(..)
     , GlobalData
     , Flags
-    , CursorType(..)
     , LSInfo
     )
 
 {-| This is the doc for this module
+
+WARNING: This file should have no dependencies
+
+Otherwise it will cause import-cycles
+
+I storage TMsg here that every scene can use it to transmit data, however, those data can only be Int, Float, Strong, etc.
+
+This message is the GLOBAL scope message. This message limits what messsages you can get inside a scene.
 
 @docs Msg
 
 @docs GlobalData
 
 @docs Flags
-
-@docs CursorType
 
 @docs LSInfo
 
@@ -27,14 +32,14 @@ import Lib.Audio.Base exposing (AudioOption)
 import Time
 
 
-
---- WARNING: This file should have no dependencies
---- Otherwise it will cause import-cycles
---- I storage TMsg here that every scene can use it to transmit data, however, those data can only be Int, Float, Strong, etc.
---- This message is the GLOBAL scope message. This message limits what messsages you can get inside a scene.
-
-
 {-| Msg
+
+This is the msg data for main.
+
+`Tick` records the time.
+
+`KeyDown`, `KeyUp` records the keyboard events
+
 -}
 type Msg
     = Tick Time.Posix
@@ -51,6 +56,19 @@ type Msg
 
 
 {-| GlobalData
+
+GD is the data that doesn't change during the game.
+
+It won't be reset if you change the scene.
+
+It is mainly used for display and reading/writing some localstorage data.
+
+`browserViewPort` records the browser size.
+
+`sprites` records all the sprites(images).
+
+`localstorage` records the data that we save in localstorage.
+
 -}
 type alias GlobalData =
     { browserViewPort : ( Int, Int )
@@ -69,6 +87,11 @@ type alias GlobalData =
 
 
 {-| LSInfo
+
+LocalStorage data
+
+`collected` saves all the monsters that the player has collected.
+
 -}
 type alias LSInfo =
     { collected : List String
@@ -79,14 +102,12 @@ type alias LSInfo =
     }
 
 
-{-| CursorType
--}
-type CursorType
-    = CursorNormal
-    | CursorNone
-
-
 {-| Flags
+
+The main flags.
+
+Get info from js script
+
 -}
 type alias Flags =
     { windowWidth : Int

@@ -6,6 +6,8 @@ module Lib.CoreEngine.Physics.NaiveCollision exposing
 
 {-| This is the doc for this module
 
+Simple collision check.
+
 @docs getBoxPos
 
 @docs judgeCollision
@@ -17,10 +19,11 @@ module Lib.CoreEngine.Physics.NaiveCollision exposing
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.GameComponent.Base exposing (Box, GameComponent)
 import Lib.CoreEngine.Physics.Base exposing (Position)
-import Lib.CoreEngine.Physics.Vector exposing (addIntVec)
+import Lib.Tools.Math exposing (addIntVec)
 
 
 {-| getBoxPos
+Get the bos position.
 -}
 getBoxPos : Position -> Box -> ( Position, Position )
 getBoxPos ( x1, y1 ) b =
@@ -41,6 +44,7 @@ getBoxPos ( x1, y1 ) b =
 
 
 {-| judgeCollision
+Simply judge if two rectangle collides.
 -}
 judgeCollision : ( Position, Position ) -> ( Position, Position ) -> Bool
 judgeCollision ( p1, p2 ) ( p3, p4 ) =

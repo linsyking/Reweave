@@ -6,6 +6,8 @@ module Lib.CoreEngine.BackgroundLayer.Export exposing
 
 {-| This is the doc for this module
 
+Background layer includes the background images and its visual effect.
+
 @docs Data
 
 @docs nullData

@@ -117,7 +117,7 @@ dialoguesBird =
     [ ( "p_profile", "Wow, who are you?" )
     , ( "bird", "Hi, I am LuanNiao." )
     , ( "p_profile", "Beautiful Bird." )
-    , ( "bird", "I am willing to help you in your journey, don't be afriad." )
+    , ( "bird", "I am willing to help you in your journey, don't be afraid." )
     , ( "p_profile", "Thank you." )
     , ( "", "(You can go to menu to check the monsters you have collected)" )
     ]

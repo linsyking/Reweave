@@ -7,6 +7,11 @@ module Lib.CoreEngine.Base exposing
 
 {-| This is the doc for this module
 
+
+# Core Engine
+
+Please go to `Lib.CoreEngine.Common` to see details
+
 @docs GameGlobalData
 
 @docs brickSize
@@ -23,6 +28,11 @@ import Lib.Map.Poly exposing (buildrect)
 
 
 {-| GameGlobalData
+
+This is the data every layer can read and write.
+
+We don't want too many game objects to be exposed here.
+
 -}
 type alias GameGlobalData =
     { camera : CameraData
@@ -39,6 +49,11 @@ type alias GameGlobalData =
 
 
 {-| brickSize
+
+The pixel size for a brick.
+
+32 is a perfect choice.
+
 -}
 brickSize : Int
 brickSize =

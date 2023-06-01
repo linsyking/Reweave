@@ -57,6 +57,20 @@ simplecheckBox size =
     }
 
 
+cBox : Int -> Box
+cBox size =
+    let
+        rs =
+            toFloat size
+    in
+    { name = "sp"
+    , offsetX = floor (0.2 * rs)
+    , offsetY = floor (0.2 * rs)
+    , width = floor (0.6 * rs)
+    , height = floor (0.6 * rs)
+    }
+
+
 {-| initModel
 -}
 initModel : Int -> GameComponentTMsg -> Data
@@ -69,7 +83,7 @@ initModel _ gcm =
             , mass = floor (toFloat info.size * 2)
             , acceleration = ( 0, 0 )
             , simplecheck = simplecheckBox info.size
-            , collisionbox = [ simplecheckBox info.size ]
+            , collisionbox = [ cBox info.size ]
             , extra = Dict.empty
             , uid = info.uid
             }

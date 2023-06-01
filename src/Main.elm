@@ -22,9 +22,10 @@ import Lib.Audio.Audio exposing (loadAudio, stopAudio)
 import Lib.Coordinate.Coordinates exposing (fromMouseToReal, getStartPoint, maxHandW)
 import Lib.Layer.Base exposing (LayerMsg(..))
 import Lib.LocalStorage.LocalStorage exposing (decodeLSInfo, encodeLSInfo)
-import Lib.Resources.Base exposing (getTexture, saveSprite)
+import Lib.Resources.Base exposing (allTexture, getTexture, saveSprite)
 import Lib.Scene.Base exposing (..)
 import Lib.Scene.SceneLoader exposing (getCurrentScene, loadSceneByName)
+import MainConfig exposing (initScene, timeInterval)
 import Scenes.SceneSettings exposing (..)
 import Task
 import Time
@@ -52,6 +53,9 @@ initModel =
 
 
 {-| main
+
+Main Function
+
 -}
 main : Program Flags (Audio.Model Msg Model) (Audio.Msg Msg)
 main =
@@ -65,17 +69,13 @@ main =
         }
 
 
-
---INIT
-
-
 {-| init
 -}
 init : Flags -> ( Model, Cmd Msg, AudioCmd Msg )
 init flags =
     let
         ms =
-            loadSceneByName initModel "Home" NullSceneMsg
+            loadSceneByName initModel initScene NullSceneMsg
 
         oldgd =
             ms.currentGlobalData
@@ -96,8 +96,75 @@ init flags =
 --UPDATE
 
 
-{-| update
--}
+normalUpdate : Msg -> Model -> ( Model, Cmd Msg, AudioCmd Msg )
+normalUpdate msg model =
+    if List.length (Dict.keys model.currentGlobalData.sprites) < List.length allTexture then
+        -- Still loading assets
+        ( model, Cmd.none, Audio.cmdNone )
+
+    else
+        let
+            cs =
+                getCurrentScene model
+
+            cd =
+                model.currentData
+
+            cm =
+                ( cd, model.time )
+
+            ( sdt, som, newgd ) =
+                cs.update msg model.currentGlobalData cm
+
+            tmodel =
+                case msg of
+                    Tick _ ->
+                        { model | time = model.time + 1, currentGlobalData = newgd }
+
+                    _ ->
+                        { model | currentGlobalData = newgd }
+
+            bnewmodel =
+                { tmodel | currentData = sdt }
+
+            ( newmodel, cmds, audiocmds ) =
+                if List.isEmpty som then
+                    ( updateSceneStartTime bnewmodel, [ sendInfo (encodeLSInfo tmodel.currentGlobalData.localstorage) ], [] )
+
+                else
+                    List.foldr
+                        (\singleSOM ( lastModel, lastCmds, lastAudioCmds ) ->
+                            case singleSOM of
+                                SOChangeScene ( tm, s ) ->
+                                    --- Load new scene
+                                    ( loadSceneByName lastModel s tm
+                                        |> resetSceneStartTime
+                                    , sendInfo (encodeLSInfo lastModel.currentGlobalData.localstorage) :: lastCmds
+                                    , lastAudioCmds
+                                    )
+
+                                SOPlayAudio name path opt ->
+                                    ( lastModel, lastCmds, Audio.loadAudio (SoundLoaded name opt) path :: lastAudioCmds )
+
+                                SOSetVolume s ->
+                                    let
+                                        oldgd =
+                                            lastModel.currentGlobalData
+
+                                        newgd2 =
+                                            { oldgd | audioVolume = s }
+                                    in
+                                    ( { lastModel | currentGlobalData = newgd2 }, lastCmds, lastAudioCmds )
+
+                                SOStopAudio name ->
+                                    ( { lastModel | audiorepo = stopAudio lastModel.audiorepo name }, lastCmds, lastAudioCmds )
+                        )
+                        ( bnewmodel, [], [] )
+                        som
+        in
+        ( newmodel, Cmd.batch cmds, Audio.cmdBatch audiocmds )
+
+
 update : AudioData -> Msg -> Model -> ( Model, Cmd Msg, AudioCmd Msg )
 update _ msg model =
     case msg of
@@ -164,64 +231,7 @@ update _ msg model =
             ( { model | currentGlobalData = { curgd | mousePos = mp } }, Cmd.none, Audio.cmdNone )
 
         _ ->
-            if Dict.isEmpty model.currentGlobalData.sprites then
-                ( model, Cmd.none, Audio.cmdNone )
-
-            else
-                let
-                    cs =
-                        getCurrentScene model
-
-                    cd =
-                        model.currentData
-
-                    cm =
-                        ( cd, model.time )
-
-                    ( sdt, som, newgd ) =
-                        cs.update msg model.currentGlobalData cm
-
-                    ntmodel =
-                        { model | time = model.time + 1, currentGlobalData = newgd }
-
-                    tmodel =
-                        case msg of
-                            Tick _ ->
-                                ntmodel
-
-                            _ ->
-                                { model | currentGlobalData = newgd }
-
-                    bnewmodel =
-                        { tmodel | currentData = sdt, currentGlobalData = newgd }
-                in
-                case som of
-                    SOChangeScene ( tm, s ) ->
-                        --- Load new scene
-                        ( loadSceneByName tmodel s tm
-                            |> resetSceneStartTime
-                        , sendInfo (encodeLSInfo tmodel.currentGlobalData.localstorage)
-                        , Audio.cmdNone
-                        )
-
-                    SOPlayAudio name path opt ->
-                        ( bnewmodel, Cmd.none, Audio.loadAudio (SoundLoaded name opt) path )
-
-                    SOSetVolume s ->
-                        let
-                            oldgd =
-                                bnewmodel.currentGlobalData
-
-                            newgd2 =
-                                { oldgd | audioVolume = s }
-                        in
-                        ( { bnewmodel | currentGlobalData = newgd2 }, Cmd.none, Audio.cmdNone )
-
-                    SOStopAudio name ->
-                        ( { bnewmodel | audiorepo = stopAudio bnewmodel.audiorepo name }, Cmd.none, Audio.cmdNone )
-
-                    _ ->
-                        ( updateSceneStartTime bnewmodel, sendInfo (encodeLSInfo tmodel.currentGlobalData.localstorage), Audio.cmdNone )
+            normalUpdate msg model
 
 
 {-| subscriptions
@@ -229,7 +239,7 @@ update _ msg model =
 subscriptions : AudioData -> Model -> Sub Msg
 subscriptions _ _ =
     Sub.batch
-        [ Time.every 15 Tick --- Slow down the fps
+        [ Time.every timeInterval Tick --- Slow down the fps
         , onKeyDown (Decode.map (\x -> KeyDown x) (Decode.field "keyCode" Decode.int))
         , onKeyUp (Decode.map (\x -> KeyUp x) (Decode.field "keyCode" Decode.int))
         , onResize (\w h -> NewWindowSize ( w, h ))
@@ -249,12 +259,6 @@ view _ model =
 
             else
                 "auto"
-
-        -- case model.currentGlobalData.cursor of
-        --     CursorNormal ->
-        --         "crosshair"
-        --     CursorNone ->
-        --         "none"
     in
     Canvas.toHtmlWith
         { width = model.currentGlobalData.realWidth

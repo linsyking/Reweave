@@ -5,6 +5,8 @@ module Components.Bar.Export exposing
 
 {-| This is the doc for this module
 
+Energy Bar
+
 @docs component
 
 @docs initComponent
@@ -16,6 +18,12 @@ import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 
 
 {-| component
+name : Component Type
+data : the model for bar
+init : the init function for bar
+update : the update function for bar
+view : the view function for bar
+query : bar does not require query function
 -}
 component : Component
 component =

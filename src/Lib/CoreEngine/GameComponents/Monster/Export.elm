@@ -12,6 +12,12 @@ import Lib.CoreEngine.GameComponents.Monster.Model exposing (initData, initModel
 
 
 {-| gameComponent
+name : gameComponent Type
+data : the model for bird
+init : the init function for bird
+update : the update function for bird
+view : the view function for bird
+query : bird does not require query function
 -}
 gameComponent : GameComponent
 gameComponent =

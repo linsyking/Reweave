@@ -8,6 +8,17 @@ module Lib.Resources.Base exposing
 
 {-| This is the doc for this module
 
+
+# Resource
+
+There are many assets (images) in our game, so it's important to manage them.
+
+In elm-canvas, we have to preload all the images before the game starts.
+
+The game will only start when all resources are loaded.
+
+After the resources are loaded, we can get those data from globaldata.sprites.
+
 @docs getResourcePath
 
 @docs getTexture
@@ -61,17 +72,13 @@ allTexture =
     [ ( "background", getResourcePath "img/DongHai.jpg" )
     , ( "homepage", getResourcePath "img/homepage.jpg" )
     , ( "lcloud", getResourcePath "img/cloud.png" )
-    , ( "spikeL", getResourcePath "img/spikeL.png" )
-    , ( "spikeR", getResourcePath "img/spikeR.png" )
-    , ( "spikeT", getResourcePath "img/spikeT.png" )
-    , ( "spikeB", getResourcePath "img/spikeB.png" )
     , ( "blueshadow", getResourcePath "img/ki.png" )
     , ( "skull", getResourcePath "img/skull.png" )
     , ( "dialogue", getResourcePath "img/dialogue.png" )
     , ( "downbutton", getResourcePath "img/down.png" )
-    , ( "bullet", getResourcePath "img/bullet.png" )
     , ( "whiteshadow", getResourcePath "img/white-shadow.png" )
     ]
+        ++ spikeSprites
         ++ charaSprites
         ++ beiminSprites
         ++ donghaiSprites
@@ -81,6 +88,15 @@ allTexture =
         ++ otherSprites
         ++ backgroundSprites
         ++ monsterSprites
+
+
+spikeSprites : List ( String, String )
+spikeSprites =
+    [ ( "spikeL", getResourcePath "img/spikeL.png" )
+    , ( "spikeR", getResourcePath "img/spikeR.png" )
+    , ( "spikeT", getResourcePath "img/spikeT.png" )
+    , ( "spikeB", getResourcePath "img/spikeB.png" )
+    ]
 
 
 monsterSprites : List ( String, String )
@@ -174,23 +190,26 @@ zhongyuanSprites =
 -}
 otherSprites : List ( String, String )
 otherSprites =
-    [ ( "ot/transfer", getResourcePath "img/transfer.png" )
-    , ( "ot/block", getResourcePath "img/block.png" )
-    , ( "ot/cave", getResourcePath "img/cave.png" )
-    , ( "ot/scale", getResourcePath "img/scale.png" )
-    , ( "ot/fireball1", getResourcePath "img/fire1.png" )
-    , ( "ot/fireball2", getResourcePath "img/fire2.png" )
-    , ( "scroll", getResourcePath "img/scroll.png" )
-    , ( "ot/setting", getResourcePath "img/setting.png" )
-    , ( "ot/status", getResourcePath "img/status.png" )
-    , ( "ot/map", getResourcePath "img/map.png" )
-    , ( "ot/vup", getResourcePath "img/volume-up.png" )
-    , ( "ot/vdown", getResourcePath "img/volume-down.png" )
-    , ( "ot/crystal", getResourcePath "img/crystal.png" )
-    , ( "ot/crystaldead", getResourcePath "img/crystaldead.png" )
-    , ( "ot/ball", getResourcePath "img/ball.png" )
-    , ( "ot/close", getResourcePath "img/close.png" )
-    ]
+    ([ ( "ot/transfer", getResourcePath "img/transfer.png" )
+     , ( "ot/block", getResourcePath "img/block.png" )
+     , ( "ot/cave", getResourcePath "img/cave.png" )
+     , ( "ot/scale", getResourcePath "img/scale.png" )
+     , ( "ot/fireball1", getResourcePath "img/fire1.png" )
+     , ( "ot/fireball2", getResourcePath "img/fire2.png" )
+     , ( "scroll", getResourcePath "img/scroll.png" )
+     , ( "ot/setting", getResourcePath "img/setting.png" )
+     ]
+        |> List.append
+            [ ( "ot/status", getResourcePath "img/status.png" )
+            , ( "ot/map", getResourcePath "img/map.png" )
+            , ( "ot/vup", getResourcePath "img/volume-up.png" )
+            , ( "ot/vdown", getResourcePath "img/volume-down.png" )
+            , ( "ot/crystal", getResourcePath "img/crystal.png" )
+            , ( "ot/crystaldead", getResourcePath "img/crystaldead.png" )
+            , ( "ot/ball", getResourcePath "img/ball.png" )
+            , ( "ot/close", getResourcePath "img/close.png" )
+            ]
+    )
         ++ flagSprites
 
 

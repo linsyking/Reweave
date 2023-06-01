@@ -1,15 +1,14 @@
 module Lib.CoreEngine.Model exposing
     ( initModel
-    , handleLayerMsg
     , updateModel
     , viewModel
     )
 
 {-| This is the doc for this module
 
-@docs initModel
+Please go to `Lib.CoreEngine.Common` to see details
 
-@docs handleLayerMsg
+@docs initModel
 
 @docs updateModel
 
@@ -87,27 +86,25 @@ initModel t sm =
             }
 
 
-{-| handleLayerMsg
--}
-handleLayerMsg : LayerMsg -> ( Model, Int ) -> ( Model, SceneOutputMsg )
+handleLayerMsg : LayerMsg -> ( Model, Int ) -> ( Model, List SceneOutputMsg )
 handleLayerMsg lmsg ( model, _ ) =
     case lmsg of
         LayerSoundMsg name path opt ->
-            ( model, SOPlayAudio name path opt )
+            ( model, [ SOPlayAudio name path opt ] )
 
         LayerStopSoundMsg name ->
-            ( model, SOStopAudio name )
+            ( model, [ SOStopAudio name ] )
 
         LayerExitMsg et ss _ ->
-            ( model, SOChangeScene ( SceneEngineTMsg et, ss ) )
+            ( model, [ SOChangeScene ( SceneEngineTMsg et, ss ) ] )
 
         _ ->
-            ( model, NullSceneOutputMsg )
+            ( model, [] )
 
 
 {-| updateModel
 -}
-updateModel : Msg -> GlobalData -> ( Model, Int ) -> ( Model, SceneOutputMsg, GlobalData )
+updateModel : Msg -> GlobalData -> ( Model, Int ) -> ( Model, List SceneOutputMsg, GlobalData )
 updateModel msg gd ( model, t ) =
     let
         ( ( newdata, newcd, msgs ), newgd ) =
@@ -117,7 +114,7 @@ updateModel msg gd ( model, t ) =
             { model | gameGlobalData = newcd, layers = newdata }
 
         ( newmodel, newso ) =
-            List.foldl (\x ( y, _ ) -> handleLayerMsg x ( y, t )) ( nmodel, NullSceneOutputMsg ) msgs
+            List.foldl (\x ( y, _ ) -> handleLayerMsg x ( y, t )) ( nmodel, [] ) msgs
     in
     ( newmodel, newso, newgd )
 

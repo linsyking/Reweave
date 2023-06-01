@@ -47,6 +47,9 @@ type alias Model =
 
 
 {-| searchNameGC
+
+Search gc by name.
+
 -}
 searchNameGC : String -> Array.Array GameComponent -> List Int
 searchNameGC s gcs =
@@ -54,6 +57,9 @@ searchNameGC s gcs =
 
 
 {-| searchUIDGC
+
+Search gc by UID.
+
 -}
 searchUIDGC : Int -> Array.Array GameComponent -> Int
 searchUIDGC s gcs =

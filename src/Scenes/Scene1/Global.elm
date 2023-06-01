@@ -58,7 +58,7 @@ toCT sd =
         init t tm =
             sdata (sd.init t tm)
 
-        update : Msg -> GlobalData -> ( SceneDataTypes, Int ) -> ( SceneDataTypes, SceneOutputMsg, GlobalData )
+        update : Msg -> GlobalData -> ( SceneDataTypes, Int ) -> ( SceneDataTypes, List SceneOutputMsg, GlobalData )
         update msg gd ( dt, t ) =
             let
                 ( sdt, som, newgd ) =

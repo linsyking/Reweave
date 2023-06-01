@@ -12,6 +12,12 @@ import Lib.CoreEngine.GameComponents.Turtle.Model exposing (initData, initModel,
 
 
 {-| gameComponent
+name : gameComponent Type
+data : the model for turtle
+init : the init function for turtle
+update : the update function for turtle
+view : the view function for turtle
+query : turtle does not require query function
 -}
 gameComponent : GameComponent
 gameComponent =

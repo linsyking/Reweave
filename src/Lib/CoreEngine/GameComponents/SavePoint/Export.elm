@@ -12,6 +12,12 @@ import Lib.CoreEngine.GameComponents.SavePoint.Model exposing (initData, initMod
 
 
 {-| gameComponent
+name : gameComponent Type
+data : the model for SavePoint
+init : the init function for SavePoint
+update : the update function for SavePoint
+view : the view function for SavePoint
+query : SavePoint does not require query function
 -}
 gameComponent : GameComponent
 gameComponent =

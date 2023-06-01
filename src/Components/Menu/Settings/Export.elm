@@ -16,6 +16,12 @@ import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 
 
 {-| component
+name : Component Type
+data : the model for Settings
+init : the init function for Settings
+update : the update function for Settings
+view : the view function for Settings
+query : Settings does not require query function
 -}
 component : Component
 component =

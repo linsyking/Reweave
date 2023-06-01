@@ -12,6 +12,12 @@ import Lib.CoreEngine.GameComponents.Bone.Model exposing (initData, initModel, u
 
 
 {-| gameComponent
+name : gameComponent Type
+data : the model for bone
+init : the init function for bone
+update : the update function for bone
+view : the view function for bone
+query : bone does not require query function
 -}
 gameComponent : GameComponent
 gameComponent =

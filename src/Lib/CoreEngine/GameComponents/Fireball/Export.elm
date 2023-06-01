@@ -12,6 +12,12 @@ import Lib.CoreEngine.GameComponents.Fireball.Model exposing (initData, initMode
 
 
 {-| gameComponent
+name : gameComponent Type
+data : the model for fireball
+init : the init function for fireball
+update : the update function for fireball
+view : the view function for fireball
+query : fireball does not require query function
 -}
 gameComponent : GameComponent
 gameComponent =

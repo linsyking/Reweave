@@ -12,6 +12,12 @@ import Lib.CoreEngine.GameComponents.Trigger.Model exposing (initData, initModel
 
 
 {-| gameComponent
+name : gameComponent Type
+data : the model for trigger
+init : the init function for trigger
+update : the update function for trigger
+view : the view function for trigger
+query : trigger does not require query function
 -}
 gameComponent : GameComponent
 gameComponent =

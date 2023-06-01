@@ -16,6 +16,9 @@ import Math.Vector2 exposing (vec2)
 
 
 {-| changeCVel
+
+Chaneg the velocity according to the energy.
+
 -}
 changeCVel : Data -> ( Float, Float ) -> Float -> Data
 changeCVel c ( px, py ) k =
@@ -58,6 +61,7 @@ changeCVel c ( px, py ) k =
 
 
 {-| calcVel
+Calculate the norm of a vector in R^2.
 -}
 calcVel : ( Float, Float ) -> Float
 calcVel ( x, y ) =

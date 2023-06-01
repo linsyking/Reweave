@@ -1,31 +1,18 @@
 module Lib.CoreEngine.Physics.SolidCollision exposing
     ( pointIsSolid
-    , pointOfSolid
-    , blockIsSolid
-    , lineHasSolid
-    , velToDis
     , canMove
     , movePointPlain
     , gonnaSolidCollide
-    , genSplits
     , ceilFloored
-    , gonnaCollideSolidOrigin
-    , judgeEasyCollision
     , moveTilCollide
     , getNearBySolid
     )
 
 {-| This is the doc for this module
 
+Calculate if the object collides with the solid.
+
 @docs pointIsSolid
-
-@docs pointOfSolid
-
-@docs blockIsSolid
-
-@docs lineHasSolid
-
-@docs velToDis
 
 @docs canMove
 
@@ -33,13 +20,7 @@ module Lib.CoreEngine.Physics.SolidCollision exposing
 
 @docs gonnaSolidCollide
 
-@docs genSplits
-
 @docs ceilFloored
-
-@docs gonnaCollideSolidOrigin
-
-@docs judgeEasyCollision
 
 @docs moveTilCollide
 
@@ -58,6 +39,7 @@ import Math.Vector2 exposing (Vec2, vec2)
 
 
 {-| pointIsSolid
+Is this point in solid?
 -}
 pointIsSolid : ( Int, Int ) -> GameGlobalData -> Bool
 pointIsSolid ( x, y ) model =
@@ -223,6 +205,11 @@ movePointPlain vec ( x, y ) =
 
 
 {-| gonnaSolidCollide
+
+Check if the object collides with any solid.
+
+Continuous collision check implemented.
+
 -}
 gonnaSolidCollide : Data -> GameGlobalData -> List ( Int, Int )
 gonnaSolidCollide gc ggd =
@@ -269,6 +256,39 @@ ceilFloored x =
         floor x
 
 
+moveAgent : Array.Array Vec2 -> Int -> GameGlobalData -> Array.Array ( Int, Int ) -> Int -> Array.Array ( Int, Int )
+moveAgent alfs frags model agents index =
+    let
+        mapToNew : ( Int, Int ) -> Int -> ( Int, Int )
+        mapToNew ( x, y ) i =
+            case Array.get i alfs of
+                Just t ->
+                    ( x + floor (Math.Vector2.getX t), y + floor (Math.Vector2.getY t) )
+
+                Nothing ->
+                    ( x, y )
+    in
+    if index == frags + 1 then
+        Array.empty
+
+    else
+        let
+            curagents =
+                Array.map (\x -> mapToNew x index) agents
+
+            testres =
+                Array.map (\x -> pointOfSolid x model) curagents
+
+            td =
+                List.filterMap (\x -> x) (Array.toList testres)
+        in
+        if List.isEmpty td then
+            moveAgent alfs frags model agents (index + 1)
+
+        else
+            Array.fromList td
+
+
 {-| gonnaCollideSolidOrigin
 -}
 gonnaCollideSolidOrigin : Data -> GameGlobalData -> Array.Array ( Int, Int )
@@ -289,10 +309,6 @@ gonnaCollideSolidOrigin actor model =
         velvy =
             velToDis (Tuple.second velv)
 
-        -- dsad =
-        --     Debug.log "DSd" ( velvx, velvy )
-        -- dsadd =
-        --     Debug.log "agents" ( bottomAgents, rightAgents )
         disv =
             vec2 velvx -velvy
 
@@ -315,17 +331,6 @@ gonnaCollideSolidOrigin actor model =
 
         alfs =
             Array.push disv (Array.fromList (List.map (\x -> Math.Vector2.scale (toFloat x) dunit) (List.range 1 frags)))
-
-        -- widthfrags = floor ( (toFloat (x2A - x1A)) / 5)
-        -- heightfrags = floor ( (toFloat (y2A - y1A)) / 5)
-        mapToNew : ( Int, Int ) -> Int -> ( Int, Int )
-        mapToNew ( x, y ) i =
-            case Array.get i alfs of
-                Just t ->
-                    ( x + floor (Math.Vector2.getX t), y + floor (Math.Vector2.getY t) )
-
-                Nothing ->
-                    ( x, y )
 
         rightAgents =
             Array.map (\x -> ( x2A, x )) (genSplits y1A y2A 5)
@@ -350,63 +355,33 @@ gonnaCollideSolidOrigin actor model =
 
         rightbottomAgents =
             Array.fromList (List.append (Array.toList rightAgents) (Array.toList bottomAgents))
-
-        moveAgent : Array.Array ( Int, Int ) -> Int -> Array.Array ( Int, Int )
-        moveAgent agents index =
-            if index == frags + 1 then
-                Array.empty
-
-            else
-                let
-                    curagents =
-                        Array.map (\x -> mapToNew x index) agents
-
-                    testres =
-                        Array.map (\x -> pointOfSolid x model) curagents
-
-                    td =
-                        List.filterMap (\x -> x) (Array.toList testres)
-                in
-                if List.isEmpty td then
-                    moveAgent agents (index + 1)
-
-                else
-                    Array.fromList td
     in
     if velvx == 0 && velvy == 0 then
         Array.empty
 
     else if velvx == 0 && velvy > 0 then
-        --- Up
-        moveAgent topAgents 0
+        moveAgent alfs frags model topAgents 0
 
     else if velvx == 0 && velvy < 0 then
-        --- Down
-        moveAgent bottomAgents 0
+        moveAgent alfs frags model bottomAgents 0
 
     else if velvx > 0 && velvy == 0 then
-        --- Right
-        moveAgent rightAgents 0
+        moveAgent alfs frags model rightAgents 0
 
     else if velvx < 0 && velvy == 0 then
-        --- Left
-        moveAgent leftAgents 0
+        moveAgent alfs frags model leftAgents 0
 
     else if velvx < 0 && velvy > 0 then
-        --- LeftUp
-        moveAgent lefttopAgents 0
+        moveAgent alfs frags model lefttopAgents 0
 
     else if velvx < 0 && velvy < 0 then
-        --- LeftDown
-        moveAgent leftbottomAgents 0
+        moveAgent alfs frags model leftbottomAgents 0
 
     else if velvx > 0 && velvy > 0 then
-        --- RightUp
-        moveAgent righttopAgents 0
+        moveAgent alfs frags model righttopAgents 0
 
     else if velvx > 0 && velvy < 0 then
-        --- RightDown
-        moveAgent rightbottomAgents 0
+        moveAgent alfs frags model rightbottomAgents 0
 
     else
         Array.empty

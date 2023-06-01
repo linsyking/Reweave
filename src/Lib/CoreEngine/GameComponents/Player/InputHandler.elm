@@ -1,61 +1,10 @@
-module Lib.CoreEngine.GameComponents.Player.InputHandler exposing
-    ( VelDirMsg(..)
-    , VelTypeMsg(..)
-    , DelVelocityFunction
-    , pressedVelocityFunction
-    , oppositeVelocityFunction
-    , blankVelocityFunction
-    , jumpPressedVelocityFunction
-    , jumpOppositeVelocityFunction
-    , jumpBlankVelocityFunction
-    , changePlayerVelocity
-    , delLargeVelocity
-    , delVelocityFunction
-    , changePlayerVelocityX
-    , changePlayerVelocityY
-    , changePlayerVelocityHelper
-    , delVelocityFunctionHelper
-    , boundXY
-    , sign
-    )
+module Lib.CoreEngine.GameComponents.Player.InputHandler exposing (changePlayerVelocity)
 
 {-| This is the doc for this module
 
-@docs VelDirMsg
-
-@docs VelTypeMsg
-
-@docs DelVelocityFunction
-
-@docs pressedVelocityFunction
-
-@docs oppositeVelocityFunction
-
-@docs blankVelocityFunction
-
-@docs jumpPressedVelocityFunction
-
-@docs jumpOppositeVelocityFunction
-
-@docs jumpBlankVelocityFunction
+Handle input and apply changes to the character.
 
 @docs changePlayerVelocity
-
-@docs delLargeVelocity
-
-@docs delVelocityFunction
-
-@docs changePlayerVelocityX
-
-@docs changePlayerVelocityY
-
-@docs changePlayerVelocityHelper
-
-@docs delVelocityFunctionHelper
-
-@docs boundXY
-
-@docs sign
 
 -}
 
@@ -122,6 +71,9 @@ jumpBlankVelocityFunction =
 
 
 {-| changePlayerVelocity
+
+Calculate the new velocity for the character
+
 -}
 changePlayerVelocity : Int -> Data -> GameGlobalData -> Model -> ( Model, Data )
 changePlayerVelocity t char ggd model =
@@ -168,6 +120,52 @@ changePlayerVelocity t char ggd model =
         ( { model | keyPressed = Nope }, changePlayerVelocityHelper char (boundXY (changePlayerVelocityX char model Xdir) char.velocity) )
 
 
+dealLargeVelocityForNoJump : Bool -> Int -> Int -> Model -> Data -> ( Model, Data )
+dealLargeVelocityForNoJump cj left right model d =
+    let
+        ( vx, vy ) =
+            d.velocity
+    in
+    if cj then
+        if vx > 0 then
+            if left == 1 && right == 0 then
+                ( model, { d | velocity = ( vx / 1.1, vy ) } )
+
+            else if right == 1 && left == 0 then
+                ( model, { d | velocity = ( vx / 1.04, vy ) } )
+
+            else
+                ( model, { d | velocity = ( vx / 1.05, vy ) } )
+
+        else if left == 1 && right == 0 then
+            ( model, { d | velocity = ( vx / 1.04, vy ) } )
+
+        else if right == 1 && left == 0 then
+            ( model, { d | velocity = ( vx / 1.1, vy ) } )
+
+        else
+            ( model, { d | velocity = ( vx / 1.05, vy ) } )
+
+    else if vx > 0 then
+        if left == 1 && right == 0 then
+            ( model, { d | velocity = ( vx / 1.1, vy ) } )
+
+        else if right == 1 && left == 0 then
+            ( model, { d | velocity = ( vx / 1.01, vy ) } )
+
+        else
+            ( model, { d | velocity = ( vx / 1.05, vy ) } )
+
+    else if left == 1 && right == 0 then
+        ( model, { d | velocity = ( vx / 1.01, vy ) } )
+
+    else if right == 1 && left == 0 then
+        ( model, { d | velocity = ( vx / 1.1, vy ) } )
+
+    else
+        ( model, { d | velocity = ( vx / 1.05, vy ) } )
+
+
 {-| delLargeVelocity
 -}
 delLargeVelocity : Int -> Model -> Data -> Bool -> ( Model, Data )
@@ -186,44 +184,7 @@ delLargeVelocity ct model d cj =
             d.velocity
     in
     if space == 0 then
-        if cj then
-            if vx > 0 then
-                if left == 1 && right == 0 then
-                    ( model, { d | velocity = ( vx / 1.1, vy ) } )
-
-                else if right == 1 && left == 0 then
-                    ( model, { d | velocity = ( vx / 1.04, vy ) } )
-
-                else
-                    ( model, { d | velocity = ( vx / 1.05, vy ) } )
-
-            else if left == 1 && right == 0 then
-                ( model, { d | velocity = ( vx / 1.04, vy ) } )
-
-            else if right == 1 && left == 0 then
-                ( model, { d | velocity = ( vx / 1.1, vy ) } )
-
-            else
-                ( model, { d | velocity = ( vx / 1.05, vy ) } )
-
-        else if vx > 0 then
-            if left == 1 && right == 0 then
-                ( model, { d | velocity = ( vx / 1.1, vy ) } )
-
-            else if right == 1 && left == 0 then
-                ( model, { d | velocity = ( vx / 1.01, vy ) } )
-
-            else
-                ( model, { d | velocity = ( vx / 1.05, vy ) } )
-
-        else if left == 1 && right == 0 then
-            ( model, { d | velocity = ( vx / 1.01, vy ) } )
-
-        else if right == 1 && left == 0 then
-            ( model, { d | velocity = ( vx / 1.1, vy ) } )
-
-        else
-            ( model, { d | velocity = ( vx / 1.05, vy ) } )
+        dealLargeVelocityForNoJump cj left right model d
 
     else
         case model.keyPressed of

@@ -16,6 +16,12 @@ import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 
 
 {-| component
+name : Component Type
+data : the model for Collect
+init : the init function for Collect
+update : the update function for Collect
+view : the view function for Collect
+query : Collect does not require query function
 -}
 component : Component
 component =

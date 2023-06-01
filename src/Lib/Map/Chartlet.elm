@@ -69,10 +69,6 @@ renderBackgroundChartletsFromSolid ggd _ =
     sls
 
 
-
--- TODO:
-
-
 {-| renderSingleBlock
 -}
 renderSingleBlock : Int -> ( Int, Int ) -> List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )

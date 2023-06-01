@@ -74,36 +74,42 @@ initPlayer t pos =
             initGameComponent t (GamePlayerInit (PlayerInit x)) Player.gameComponent
 
 
+gameGoomba : Int -> List GameComponent
+gameGoomba t =
+    [ initGameComponent t (GameGoombaInit (GoombaInit ( 3360, 1696 ) ( 0, 0 ) 50 2)) Goomba.gameComponent
+    , initGameComponent t (GameGoombaInit (GoombaInit ( 4416, 1696 ) ( 0, 0 ) 50 3)) Goomba.gameComponent
+    , initGameComponent t (GameGoombaInit (GoombaInit ( 4416, 1800 ) ( 0, 0 ) 50 4)) Goomba.gameComponent
+    , initGameComponent t (GameGoombaInit (GoombaInit ( 5300, 1800 ) ( 0, 0 ) 50 5)) Goomba.gameComponent
+    , initGameComponent t (GameGoombaInit (GoombaInit ( 832, 1600 ) ( 0, 0 ) 50 6)) Goomba.gameComponent
+    , initGameComponent t (GameGoombaInit (GoombaInit ( 1280, 1696 ) ( 0, 0 ) 50 7)) Goomba.gameComponent
+    , initGameComponent t (GameGoombaInit (GoombaInit ( 1760, 1800 ) ( 0, 0 ) 50 8)) Goomba.gameComponent
+    , initGameComponent t (GameGoombaInit (GoombaInit ( 2240, 1800 ) ( 0, 0 ) 50 9)) Goomba.gameComponent
+    , initGameComponent t (GameGoombaInit (GoombaInit ( 3840, 2080 ) ( 0, 0 ) 50 15)) Goomba.gameComponent
+    , initGameComponent t (GameGoombaInit (GoombaInit ( 4160, 2080 ) ( 0, 0 ) 50 16)) Goomba.gameComponent
+    ]
+
+
+gameOther : Int -> List GameComponent
+gameOther t =
+    [ initGameComponent t (GameExitInit (ExitInit ( 30, 2000 ) "Level3" (CustomPlayerPosition ( 4413, 1608 )) 0 98)) Exit.gameComponent
+    , initGameComponent t (GameExitInit (ExitInit ( 5690, 1920 ) "Level4boss" DefaultPlayerPosition 0 99)) Exit.gameComponent
+    , initGameComponent t (GameSpikeInit (SpikeInit ( 672, 2060 ) HorUp 2 True 12)) Spike.gameComponent
+    , initGameComponent t (GameSpikeInit (SpikeInit ( 1568, 2060 ) HorUp 3 True 13)) Spike.gameComponent
+    , initGameComponent t (GameSpikeInit (SpikeInit ( 3360, 1408 ) HorDown 11 True 10)) Spike.gameComponent
+    , initGameComponent t (GameSpikeInit (SpikeInit ( 3232, 2120 ) HorUp 15 True 11)) Spike.gameComponent
+    , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 3900, 1880 ) 200 False 17)) EnergyCrystal.gameComponent
+    , initGameComponent t (GameCutSceneInit (CutSceneInit ( 5420, 2130 ) ( 100, 32 ) 18 fishtalk True)) CutScene.gameComponent
+    , initGameComponent t (GameSavePointInit (SavePointInit ( 2927, 1320 ) 19)) Save.gameComponent
+    , initGameComponent t (GameSavePointInit (SavePointInit ( 5258, 2056 ) 20)) Save.gameComponent
+    ]
+
+
 {-| initActors
 -}
 initActors : Int -> Array GameComponent
 initActors t =
     Array.fromList
-        [ initGameComponent t (GameGoombaInit (GoombaInit ( 3360, 1696 ) ( 0, 0 ) 50 2)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 4416, 1696 ) ( 0, 0 ) 50 3)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 4416, 1800 ) ( 0, 0 ) 50 4)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 5300, 1800 ) ( 0, 0 ) 50 5)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 832, 1600 ) ( 0, 0 ) 50 6)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 1280, 1696 ) ( 0, 0 ) 50 7)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 1760, 1800 ) ( 0, 0 ) 50 8)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 2240, 1800 ) ( 0, 0 ) 50 9)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 3840, 2080 ) ( 0, 0 ) 50 15)) Goomba.gameComponent
-        , initGameComponent t (GameGoombaInit (GoombaInit ( 4160, 2080 ) ( 0, 0 ) 50 16)) Goomba.gameComponent
-        , initGameComponent t (GameExitInit (ExitInit ( 30, 2000 ) "Level3" (CustomPlayerPosition ( 4413, 1608 )) 0 98)) Exit.gameComponent
-        , initGameComponent t (GameExitInit (ExitInit ( 5690, 1920 ) "Level4boss" DefaultPlayerPosition 0 99)) Exit.gameComponent
-
-        --, initGameComponent t (GameCutSceneInit (CutSceneInit ( 100, 1800 ) ( 100, 160 ) 88 [ ( "1", "Dear master, I want learn something from you", True ), ( "1", "Yes, please go ahead.", False ) ])) CutScene.gameComponent
-        , initGameComponent t (GameSpikeInit (SpikeInit ( 672, 2060 ) HorUp 2 True 12)) Spike.gameComponent
-        , initGameComponent t (GameSpikeInit (SpikeInit ( 1568, 2060 ) HorUp 3 True 13)) Spike.gameComponent
-        , initGameComponent t (GameSpikeInit (SpikeInit ( 3360, 1408 ) HorDown 11 True 10)) Spike.gameComponent
-        , initGameComponent t (GameSpikeInit (SpikeInit ( 3232, 2120 ) HorUp 15 True 11)) Spike.gameComponent
-        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 3900, 1880 ) 200 False 17)) EnergyCrystal.gameComponent
-        , initGameComponent t (GameCutSceneInit (CutSceneInit ( 5420, 2130 ) ( 100, 32 ) 18 fishtalk True)) CutScene.gameComponent
-        , initGameComponent t (GameSavePointInit (SavePointInit ( 2927, 1320 ) 19)) Save.gameComponent
-        , initGameComponent t (GameSavePointInit (SavePointInit ( 5258, 2056 ) 20)) Save.gameComponent
-
-        -- , initGameComponent t (GameFishInit (FishInit ( 5632, 100 ) ( 0, 0 ) "default" 100 12)) Monster.gameComponent
-        ]
+        (List.append (gameGoomba t) (gameOther t))
 
 
 fishtalk : List ( String, String )

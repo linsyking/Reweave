@@ -4,7 +4,9 @@ module Lib.Audio.Audio exposing
     , getAudio
     )
 
-{-| This is the doc for this module
+{-| Audio module
+
+This module mainly deals with the audio problems.
 
 @docs loadAudio
 
@@ -21,6 +23,9 @@ import Time
 
 
 {-| loadAudio
+
+Load audio from name
+
 -}
 loadAudio : AudioRepo -> String -> Audio.Source -> AudioOption -> Time.Posix -> AudioRepo
 loadAudio repo name source opt t =
@@ -32,6 +37,9 @@ loadAudio repo name source opt t =
 
 
 {-| stopAudio
+
+Stop an audio by id
+
 -}
 stopAudio : AudioRepo -> String -> AudioRepo
 stopAudio repo s =

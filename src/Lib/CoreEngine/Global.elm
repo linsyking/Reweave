@@ -22,6 +22,9 @@ import Scenes.SceneSettings exposing (SceneCT, SceneDataTypes(..))
 
 
 {-| sdata
+
+Change the scene customized data to SceneDataTypes
+
 -}
 sdata : Data -> SceneDataTypes
 sdata d =
@@ -29,6 +32,9 @@ sdata d =
 
 
 {-| dtToT
+
+Change back to the scene data.
+
 -}
 dtToT : SceneDataTypes -> Data
 dtToT dt =
@@ -45,6 +51,9 @@ dtToT dt =
 
 
 {-| toCT
+
+Change the scene data to the SceneCT data.
+
 -}
 toCT : Scene Data -> SceneCT
 toCT sd =
@@ -53,7 +62,7 @@ toCT sd =
         init t tm =
             sdata (sd.init t tm)
 
-        update : Msg -> GlobalData -> ( SceneDataTypes, Int ) -> ( SceneDataTypes, SceneOutputMsg, GlobalData )
+        update : Msg -> GlobalData -> ( SceneDataTypes, Int ) -> ( SceneDataTypes, List SceneOutputMsg, GlobalData )
         update msg gd ( dt, t ) =
             let
                 ( sdt, som, newgd ) =

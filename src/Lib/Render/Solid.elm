@@ -5,6 +5,8 @@ module Lib.Render.Solid exposing
 
 {-| This is the doc for this module
 
+This module is used to render solid objects
+
 @docs renderSolids
 
 @docs renderSingleBlock

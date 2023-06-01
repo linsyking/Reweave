@@ -22,7 +22,6 @@ module Common exposing
 
 import Audio exposing (Audio, AudioData)
 import Base exposing (..)
-import Constants exposing (..)
 import Dict
 import Lib.Audio.Audio exposing (getAudio)
 import Lib.Audio.Base exposing (AudioRepo)
@@ -31,11 +30,20 @@ import Scenes.SceneSettings exposing (..)
 
 
 {-| Model
+
+This is the main model data.
+
+`currentData` is writable, `currentScene` is readonly, `time` is readonly.
+
+Those data is not exposed to the scene.
+
+We only use it in the main update.
+
 -}
 type alias Model =
     { currentData : SceneDataTypes --- Writable
     , currentScene : SceneCT --- Readonly
-    , currentGlobalData : GlobalData
+    , currentGlobalData : GlobalData --- Writable
     , time : Int --- Readonly
     , audiorepo : AudioRepo
     }
@@ -70,6 +78,9 @@ resetSceneStartTime m =
 
 
 {-| initGlobalData
+
+Default settings for globaldata
+
 -}
 initGlobalData : GlobalData
 initGlobalData =

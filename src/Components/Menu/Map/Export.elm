@@ -16,6 +16,12 @@ import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 
 
 {-| component
+name : Component Type
+data : the model for Map
+init : the init function for Map
+update : the update function for Map
+view : the view function for Map
+query : Map does not require query function
 -}
 component : Component
 component =

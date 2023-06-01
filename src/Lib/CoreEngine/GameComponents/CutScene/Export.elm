@@ -12,6 +12,12 @@ import Lib.CoreEngine.GameComponents.CutScene.Model exposing (initData, initMode
 
 
 {-| gameComponent
+name : gameComponent Type
+data : the model for CutScene
+init : the init function for CutScene
+update : the update function for CutScene
+view : the view function for CutScene
+query : CutScene does not require query function
 -}
 gameComponent : GameComponent
 gameComponent =

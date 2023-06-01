@@ -75,28 +75,35 @@ initPlayer t pos =
             initGameComponent t (GamePlayerInit (PlayerInit x)) Player.gameComponent
 
 
+gameComponentsList : Int -> List GameComponent
+gameComponentsList t =
+    List.append
+        [ initGameComponent t (GameExitInit (ExitInit ( 40, 1740 ) "Level5" (CustomPlayerPosition ( 14400, 1544 )) 1 2)) Exit.gameComponent
+        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 48 * 32, 2050 ) 200 True 5)) EnergyCrystal.gameComponent
+        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 51 * 32, 2050 ) 200 True 6)) EnergyCrystal.gameComponent
+        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 54 * 32, 2050 ) 200 True 7)) EnergyCrystal.gameComponent
+        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 57 * 32, 2050 ) 200 True 9)) EnergyCrystal.gameComponent
+        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 60 * 32, 2050 ) 200 True 10)) EnergyCrystal.gameComponent
+        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 63 * 32, 2050 ) 200 True 11)) EnergyCrystal.gameComponent
+        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 66 * 32, 2050 ) 200 True 12)) EnergyCrystal.gameComponent
+        ]
+        [ initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 69 * 32, 2050 ) 200 True 13)) EnergyCrystal.gameComponent
+        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 72 * 32, 2050 ) 200 True 14)) EnergyCrystal.gameComponent
+        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 75 * 32, 2050 ) 200 True 15)) EnergyCrystal.gameComponent
+        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 78 * 32, 2050 ) 200 True 16)) EnergyCrystal.gameComponent
+        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 81 * 32, 2050 ) 200 True 17)) EnergyCrystal.gameComponent
+        , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 84 * 32, 2050 ) 200 True 18)) EnergyCrystal.gameComponent
+        , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2190 ) HorUp 100 False 19)) Spike.gameComponent
+        , initGameComponent t (GameExitInit (ExitInit ( 1900, 630 ) "Path" DefaultPlayerPosition 0 20)) Exit.gameComponent
+        ]
+
+
 {-| initActors
 -}
 initActors : Int -> List String -> Array GameComponent
 initActors t cs =
     Array.fromList
-        ([ initGameComponent t (GameExitInit (ExitInit ( 40, 1740 ) "Level5" (CustomPlayerPosition ( 14400, 1544 )) 1 2)) Exit.gameComponent
-         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 48 * 32, 2050 ) 200 True 5)) EnergyCrystal.gameComponent
-         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 51 * 32, 2050 ) 200 True 6)) EnergyCrystal.gameComponent
-         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 54 * 32, 2050 ) 200 True 7)) EnergyCrystal.gameComponent
-         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 57 * 32, 2050 ) 200 True 9)) EnergyCrystal.gameComponent
-         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 60 * 32, 2050 ) 200 True 10)) EnergyCrystal.gameComponent
-         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 63 * 32, 2050 ) 200 True 11)) EnergyCrystal.gameComponent
-         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 66 * 32, 2050 ) 200 True 12)) EnergyCrystal.gameComponent
-         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 69 * 32, 2050 ) 200 True 13)) EnergyCrystal.gameComponent
-         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 72 * 32, 2050 ) 200 True 14)) EnergyCrystal.gameComponent
-         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 75 * 32, 2050 ) 200 True 15)) EnergyCrystal.gameComponent
-         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 78 * 32, 2050 ) 200 True 16)) EnergyCrystal.gameComponent
-         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 81 * 32, 2050 ) 200 True 17)) EnergyCrystal.gameComponent
-         , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 84 * 32, 2050 ) 200 True 18)) EnergyCrystal.gameComponent
-         , initGameComponent t (GameSpikeInit (SpikeInit ( 0, 2190 ) HorUp 100 False 19)) Spike.gameComponent
-         , initGameComponent t (GameExitInit (ExitInit ( 1900, 630 ) "Path" DefaultPlayerPosition 0 20)) Exit.gameComponent
-         ]
+        (gameComponentsList t
             ++ (if isInCollected "turtle" cs then
                     []
 

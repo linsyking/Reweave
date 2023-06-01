@@ -1,43 +1,17 @@
-module Lib.CoreEngine.Camera.Camera exposing
-    ( getNewCamera
-    , cameraWidth
-    , cameraHeight
-    , moveCamera
-    , judgeInBound
-    , changeCP
-    , dealInboundSpeed
-    , calcMoveVec
-    , judgeInBox
-    , getCameraInbox
-    , getPlayerCenter
-    , getCameraInboxCenter
-    )
+module Lib.CoreEngine.Camera.Camera exposing (getNewCamera)
 
-{-| This is the doc for this module
+{-|
+
+
+# Camera
+
+Camera plays an important role in games.
+
+In our game, we use a camera that is similar to the game _Celeste_.
+
+There are many tricks to build a better camera, like using `attracter` and `repellor`.
 
 @docs getNewCamera
-
-@docs cameraWidth
-
-@docs cameraHeight
-
-@docs moveCamera
-
-@docs judgeInBound
-
-@docs changeCP
-
-@docs dealInboundSpeed
-
-@docs calcMoveVec
-
-@docs judgeInBox
-
-@docs getCameraInbox
-
-@docs getPlayerCenter
-
-@docs getCameraInboxCenter
 
 -}
 

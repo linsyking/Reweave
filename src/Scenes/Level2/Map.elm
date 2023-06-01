@@ -92,6 +92,7 @@ mymap =
         |> buildzystick ( 127, 25 )
         |> buildlxrock ( 120, 21 )
         |> buildlxrock ( 133, 24 )
+        |> buildlxrock ( 133, 23 )
         |> buildzystick ( 133, 13 )
         |> buildzystick ( 139, 13 )
         |> buildzystick ( 145, 13 )

@@ -12,6 +12,12 @@ import Lib.CoreEngine.GameComponents.GoombaEmitter.Model exposing (initData, ini
 
 
 {-| gameComponent
+name : gameComponent Type
+data : the model for goombaemitter
+init : the init function for goombaemitter
+update : the update function for goombaemitter
+view : the view function for goombaemitter
+query : goombaemitter does not require query function
 -}
 gameComponent : GameComponent
 gameComponent =

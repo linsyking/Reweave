@@ -12,6 +12,12 @@ import Lib.CoreEngine.GameComponents.Ball.Model exposing (initData, initModel, u
 
 
 {-| gameComponent
+name : gameComponent Type
+data : the model for ball
+init : the init function for ball
+update : the update function for ball
+view : the view function for ball
+query : ball does not require query function
 -}
 gameComponent : GameComponent
 gameComponent =

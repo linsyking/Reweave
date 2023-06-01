@@ -1,7 +1,6 @@
 module Components.Console.Console exposing
     ( initModel
     , updateModel
-    , sendmsg
     , viewModel
     )
 
@@ -10,8 +9,6 @@ module Components.Console.Console exposing
 @docs initModel
 
 @docs updateModel
-
-@docs sendmsg
 
 @docs viewModel
 

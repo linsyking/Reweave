@@ -10,6 +10,9 @@ import Lib.CoreEngine.Base exposing (GameGlobalData)
 
 
 {-| getPositionUnderCamera
+
+Get the position under the camera.
+
 -}
 getPositionUnderCamera : ( Int, Int ) -> GameGlobalData -> ( Int, Int )
 getPositionUnderCamera ( x, y ) ggd =

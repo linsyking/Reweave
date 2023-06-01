@@ -6,6 +6,8 @@ module Lib.CoreEngine.FrontgroundLayer.Export exposing
 
 {-| This is the doc for this module
 
+Frontground includes energy ball, trans, etc..
+
 @docs Data
 
 @docs nullData

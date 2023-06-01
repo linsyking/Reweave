@@ -5,6 +5,8 @@ module Components.Console.Export exposing
 
 {-| This is the doc for this module
 
+Console is a tool to load levels and enter commands.
+
 @docs component
 
 @docs initComponent
@@ -16,6 +18,12 @@ import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 
 
 {-| component
+name : Component Type
+data : the model for Console
+init : the init function for Console
+update : the update function for Console
+view : the view function for Console
+query : Console does not require query function
 -}
 component : Component
 component =

@@ -15,7 +15,6 @@ module Scenes.Home.Layer1.Models exposing
 -}
 
 import Base exposing (..)
-import Constants exposing (..)
 import Lib.Component.Base exposing (ComponentTMsg(..))
 import Lib.Coordinate.Coordinates exposing (..)
 import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget(..))
@@ -55,10 +54,10 @@ updateModel msg gd _ ( model, t ) cd =
                     ( ( model, cd, [ ( LayerParentScene, LayerIntMsg 3 ) ] ), gd )
 
                 else
-                    ( ( model, cd, [ ( NullLayerTarget, NullLayerMsg ) ] ), gd )
+                    ( ( model, cd, [] ), gd )
 
             _ ->
-                ( ( model, cd, [ ( NullLayerTarget, NullLayerMsg ) ] ), gd )
+                ( ( model, cd, [] ), gd )
 
     else
         case msg of
@@ -67,11 +66,11 @@ updateModel msg gd _ ( model, t ) cd =
                     ( ( model, { cd | started = True, presstime = t }, [ ( LayerParentScene, LayerIntMsg 2 ) ] ), gd )
 
                 else
-                    ( ( model, cd, [ ( NullLayerTarget, NullLayerMsg ) ] ), gd )
+                    ( ( model, cd, [] ), gd )
 
             _ ->
                 if isFirstPlay gd.localstorage then
-                    ( ( model, cd, [ ( NullLayerTarget, NullLayerMsg ) ] ), gd )
+                    ( ( model, cd, [] ), gd )
 
                 else
                     let
@@ -82,4 +81,4 @@ updateModel msg gd _ ( model, t ) cd =
                         newcontinuebutton =
                             initButton "Continue" True ( 1100, 920 ) 350 80
                     in
-                    ( ( { model | start = newstartbutton, continue = newcontinuebutton }, cd, [ ( NullLayerTarget, NullLayerMsg ) ] ), gd )
+                    ( ( { model | start = newstartbutton, continue = newcontinuebutton }, cd, [] ), gd )

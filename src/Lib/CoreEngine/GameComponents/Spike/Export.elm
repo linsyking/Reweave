@@ -12,6 +12,12 @@ import Lib.CoreEngine.GameComponents.Spike.Model exposing (initData, initModel, 
 
 
 {-| gameComponent
+name : gameComponent Type
+data : the model for spike
+init : the init function for spike
+update : the update function for spike
+view : the view function for spike
+query : spike does not require query function
 -}
 gameComponent : GameComponent
 gameComponent =

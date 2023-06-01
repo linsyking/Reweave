@@ -52,9 +52,9 @@ initFrontGroundComponents t cs =
             []
 
           else
-            [ Hints.initComponent t (ComponentLStringMsg [ "100", "1000", "700", "40", "Seems that you haven't collected all the monsters", "The teleporter will not start if you don't collect all of them" ]) ]
+            [ Hints.initComponent t (ComponentLStringMsg [ "100", "980", "700", "40", "Seems that you haven't collected all the monsters", "The teleporter will not start if you don't collect all of them" ]) ]
          )
-            ++ [ Hints.initComponent t (ComponentLStringMsg [ "40", "1400", "30", "50", "JiangNan Path  江南小道" ]) ]
+            ++ [ Hints.initComponent t (ComponentLStringMsg [ "40", "1380", "30", "50", "JiangNan Path  江南小道" ]) ]
         )
 
 

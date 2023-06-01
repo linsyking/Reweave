@@ -12,6 +12,12 @@ import Lib.CoreEngine.GameComponents.EnergyCrystal.Model exposing (initData, ini
 
 
 {-| gameComponent
+name : gameComponent Type
+data : the model for energyCrystal
+init : the init function for energyCrystal
+update : the update function for energyCrystal
+view : the view function for energyCrystal
+query : energyCrystal does not require query function
 -}
 gameComponent : GameComponent
 gameComponent =

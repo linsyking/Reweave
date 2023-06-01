@@ -12,6 +12,12 @@ import Lib.CoreEngine.GameComponents.Exit.Model exposing (initData, initModel, u
 
 
 {-| gameComponent
+name : gameComponent Type
+data : the model for exit
+init : the init function for exit
+update : the update function for exit
+view : the view function for exit
+query : exit does not require query function
 -}
 gameComponent : GameComponent
 gameComponent =

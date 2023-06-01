@@ -98,18 +98,12 @@ initActors t cs =
          , initGameComponent t (GameSpikeInit (SpikeInit ( 46 * 32, 50 * 32 - 20 ) HorUp 2 True 11)) Spike.gameComponent
          , initGameComponent t (GameSpikeInit (SpikeInit ( 32 * 50, 2190 ) HorUp 30 True 12)) Spike.gameComponent
          , initGameComponent t (GameGoombaEmitterInit (GoombaEmitterInit ( 32 * 94, 53 * 32 ) 360 ( -50, 0 ) 13)) GoombaEmitter.gameComponent
-
-         -- , initGameComponent t (GameSpikeInit (SpikeInit ( 32 * 80, 2195 ) HorUp 2 True 14)) Spike.gameComponent
          , initGameComponent t (GameSavePointInit (SavePointInit ( 1924, 1320 ) 15)) Save.gameComponent
          , initGameComponent t (GameExitInit (ExitInit ( -20, 1820 ) "Level1" (CustomPlayerPosition ( 3536, 1384 )) 0 16)) Exit.gameComponent
          , initGameComponent t (GameSpikeInit (SpikeInit ( 32 * 5 + 5, 2000 ) VerRight 2 True 17)) Spike.gameComponent
-
-         -- , initGameComponent t (GameGoombaInit (GoombaInit ( 130 * 32, 22 * 32 ) ( -50, 0 ) 18)) Goomba.gameComponent
          , initGameComponent t (GameSavePointInit (SavePointInit ( 3880, 360 ) 19)) Save.gameComponent
          , initGameComponent t (GameGoombaInit (GoombaInit ( 94 * 32, 35 * 32 ) ( 0, 0 ) 50 22)) Goomba.gameComponent
          , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 36 * 32 + 20, 62 * 32 - 60 ) 300 True 23)) Energy.gameComponent
-
-         -- , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 2670, 1060 ) 1000 True 24)) Energy.gameComponent
          ]
             ++ (if isInCollected "lion" cs then
                     []

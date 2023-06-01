@@ -2,6 +2,8 @@ module Scenes.AllScenes exposing (allScenes)
 
 {-| This is the doc for this module
 
+This module records all the scenes.
+
 @docs allScenes
 
 -}
@@ -31,19 +33,21 @@ import Scenes.TestChamber.Export as TC
 -}
 allScenes : List ( String, SceneCT )
 allScenes =
-    [ ( "Scene1", S1G.toCT S1.scene )
-    , ( "Engine", CEG.toCT CE.scene )
-    , ( "Test", CEG.toCT TC.scene )
-    , ( "Home", HG.toCT H.scene )
-    , ( "Level2", CEG.toCT Level2.scene )
-    , ( "Level4", CEG.toCT LV4.scene )
-    , ( "Platformtest", CEG.toCT Platformtest.scene )
-    , ( "Level0", CEG.toCT Level0.scene )
-    , ( "Level1", CEG.toCT Level1.scene )
-    , ( "Level3", CEG.toCT Level3.scene )
-    , ( "Level4boss", CEG.toCT Level4boss.scene )
-    , ( "Level5boss", CEG.toCT Level5boss.scene )
-    , ( "Level5", CEG.toCT Level5.scene )
-    , ( "Path", CEG.toCT Path.scene )
-    , ( "End", CEG.toCT End.scene )
-    ]
+    List.append
+        [ ( "Scene1", S1G.toCT S1.scene )
+        , ( "Engine", CEG.toCT CE.scene )
+        , ( "Test", CEG.toCT TC.scene )
+        , ( "Home", HG.toCT H.scene )
+        , ( "Level2", CEG.toCT Level2.scene )
+        , ( "Level4", CEG.toCT LV4.scene )
+        , ( "Platformtest", CEG.toCT Platformtest.scene )
+        ]
+        [ ( "Level0", CEG.toCT Level0.scene )
+        , ( "Level1", CEG.toCT Level1.scene )
+        , ( "Level3", CEG.toCT Level3.scene )
+        , ( "Level4boss", CEG.toCT Level4boss.scene )
+        , ( "Level5boss", CEG.toCT Level5boss.scene )
+        , ( "Level5", CEG.toCT Level5.scene )
+        , ( "Path", CEG.toCT Path.scene )
+        , ( "End", CEG.toCT End.scene )
+        ]

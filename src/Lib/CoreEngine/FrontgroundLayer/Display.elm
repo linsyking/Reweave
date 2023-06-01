@@ -1,13 +1,8 @@
-module Lib.CoreEngine.FrontgroundLayer.Display exposing
-    ( view
-    , genFPS
-    )
+module Lib.CoreEngine.FrontgroundLayer.Display exposing (view)
 
 {-| This is the doc for this module
 
 @docs view
-
-@docs genFPS
 
 -}
 

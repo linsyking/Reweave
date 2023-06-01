@@ -1,15 +1,14 @@
 module Scenes.Scene1.Model exposing
     ( initModel
-    , handleLayerMsg
     , updateModel
     , viewModel
     )
 
 {-| This is the doc for this module
 
-@docs initModel
+An example scene
 
-@docs handleLayerMsg
+@docs initModel
 
 @docs updateModel
 
@@ -60,29 +59,29 @@ initModel t _ =
 
 {-| handleLayerMsg
 -}
-handleLayerMsg : LayerMsg -> ( XModel, Int ) -> ( XModel, SceneOutputMsg )
+handleLayerMsg : LayerMsg -> ( XModel, Int ) -> ( XModel, List SceneOutputMsg )
 handleLayerMsg lmsg ( model, _ ) =
     case lmsg of
         LayerStringMsg str ->
             if str == "Restart" then
-                ( model, SOChangeScene ( NullSceneMsg, "Scene1" ) )
+                ( model, [ SOChangeScene ( NullSceneMsg, "Scene1" ) ] )
 
             else
-                ( model, NullSceneOutputMsg )
+                ( model, [] )
 
         LayerSoundMsg name path opt ->
-            ( model, SOPlayAudio name path opt )
+            ( model, [ SOPlayAudio name path opt ] )
 
         LayerStopSoundMsg name ->
-            ( model, SOStopAudio name )
+            ( model, [ SOStopAudio name ] )
 
         _ ->
-            ( model, NullSceneOutputMsg )
+            ( model, [] )
 
 
 {-| updateModel
 -}
-updateModel : Msg -> GlobalData -> ( XModel, Int ) -> ( XModel, SceneOutputMsg, GlobalData )
+updateModel : Msg -> GlobalData -> ( XModel, Int ) -> ( XModel, List SceneOutputMsg, GlobalData )
 updateModel msg gd ( model, t ) =
     let
         ( ( newdata, newcd, msgs ), newgd ) =
@@ -92,7 +91,7 @@ updateModel msg gd ( model, t ) =
             { model | commonData = newcd, layers = newdata }
 
         ( newmodel, newso ) =
-            List.foldl (\x ( y, _ ) -> handleLayerMsg x ( y, t )) ( nmodel, NullSceneOutputMsg ) msgs
+            List.foldl (\x ( y, _ ) -> handleLayerMsg x ( y, t )) ( nmodel, [] ) msgs
     in
     ( newmodel, newso, newgd )
 

@@ -19,9 +19,8 @@ import Canvas exposing (..)
 import Canvas.Settings exposing (..)
 import Canvas.Settings.Advanced exposing (..)
 import Components.Dialog.Text.Word.Export as DialTextWordE
-import Constants exposing (..)
 import Dict
-import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..))
+import Lib.Component.Base exposing (Component, ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
 import Lib.DefinedTypes.Parser exposing (dgetLComponent, dgetString, dgetint, dsetLComponent, dsetint, dsetstring)
 import Lib.Render.Render exposing (renderSprite)
@@ -53,116 +52,123 @@ initText _ comMsg =
             Dict.empty
 
 
+updateOnDebuild : Msg -> Int -> GlobalData -> ( String, Component ) -> ( List ( String, Component ), List ComponentTMsg, Bool ) -> ( List ( String, Component ), List ComponentTMsg, Bool )
+updateOnDebuild mainMsg t globalData ( comName, comModel ) ( tmpComponentsList, tmpAllMsg, tmpFlag ) =
+    let
+        tmpMsg =
+            Maybe.withDefault NullComponentMsg (List.head tmpAllMsg)
+
+        ( tmpData, _, _ ) =
+            if tmpMsg == ComponentLSStringMsg "StatusReport" [ "OnShow" ] && tmpFlag == True then
+                comModel.update UnknownMsg (ComponentStringMsg "OnDeBuild") globalData ( comModel.data, t )
+
+            else
+                comModel.update mainMsg NullComponentMsg globalData ( comModel.data, t )
+    in
+    if tmpMsg == ComponentLSStringMsg "StatusReport" [ "OnShow" ] && tmpFlag == True then
+        ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], List.drop 1 tmpAllMsg, False )
+
+    else
+        ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], List.drop 1 tmpAllMsg, tmpFlag )
+
+
+updateTick : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
+updateTick mainMsg _ globalData ( model, t ) =
+    let
+        timer =
+            dgetint model "_Timer" + 1
+
+        currentPos =
+            dgetint model "_currentPos" + 1
+
+        wholeLength =
+            dgetint model "_wholeTextLength"
+
+        currentLength =
+            dgetint model "_currentLength" + 20
+
+        childComponentsList =
+            dgetLComponent model "_Child"
+
+        ( newChildComponentsList, allChildComponentsMsg ) =
+            List.foldl
+                (\( comName, comModel ) ( tmpComponentsList, tmpComponentsMsg ) ->
+                    let
+                        ( tmpData, tmpMsg, _ ) =
+                            comModel.update mainMsg NullComponentMsg globalData ( comModel.data, t )
+                    in
+                    ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], List.append tmpComponentsMsg [ tmpMsg ] )
+                )
+                ( [], [] )
+                childComponentsList
+    in
+    if currentPos > wholeLength then
+        if dgetString model "_Status" == "OnBuild" then
+            ( model
+                |> dsetint "_Timer" timer
+                |> dsetstring "_Status" "OnShow"
+                |> dsetLComponent "_Child" newChildComponentsList
+            , [ ComponentLSStringMsg "StatusReport" [ "OnShow" ] ]
+            , globalData
+            )
+
+        else if List.all (\x -> x == ComponentLSStringMsg "StatusReport" [ "OnEnd" ]) (List.concat allChildComponentsMsg) then
+            ( model
+                |> dsetint "_Timer" timer
+                |> dsetstring "_Status" "OnEnd"
+                |> dsetLComponent "_Child" newChildComponentsList
+            , [ ComponentLSStringMsg "StatusReport" [ "OnEnd" ] ]
+            , globalData
+            )
+
+        else if dgetString model "_Status" == "OnDeBuild" then
+            let
+                ( tmpChildComponentsList, _, _ ) =
+                    List.foldl
+                        (updateOnDebuild mainMsg t globalData)
+                        ( [], List.concat allChildComponentsMsg, True )
+                        childComponentsList
+            in
+            ( model
+                |> dsetint "_Timer" timer
+                |> dsetLComponent "_Child" tmpChildComponentsList
+            , [ ComponentLSStringMsg "StatusReport" [ dgetString model "_Status" ] ]
+            , globalData
+            )
+
+        else
+            ( model
+                |> dsetint "_Timer" timer
+                |> dsetLComponent "_Child" newChildComponentsList
+            , [ ComponentLSStringMsg "StatusReport" [ dgetString model "_Status" ] ]
+            , globalData
+            )
+
+    else
+        let
+            tmpChar =
+                String.slice currentPos (currentPos + 1) (dgetString model "_wholeText")
+        in
+        ( model
+            |> dsetint "_Timer" timer
+            |> dsetint "_currentPos" currentPos
+            |> dsetint "_currentLength" currentLength
+            |> dsetLComponent "_Child"
+                (List.append newChildComponentsList
+                    [ ( "Word" ++ String.fromInt currentPos, DialTextWordE.initComponent currentLength (ComponentStringMsg tmpChar) ) ]
+                )
+        , [ ComponentLSStringMsg "StatusReport" [ "OnBuild" ] ]
+        , globalData
+        )
+
+
 {-| updateText
 -}
 updateText : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
 updateText mainMsg comMsg globalData ( model, t ) =
     case mainMsg of
         Tick _ ->
-            let
-                timer =
-                    dgetint model "_Timer" + 1
-
-                currentPos =
-                    dgetint model "_currentPos" + 1
-
-                wholeLength =
-                    dgetint model "_wholeTextLength"
-
-                currentLength =
-                    dgetint model "_currentLength" + 20
-
-                childComponentsList =
-                    dgetLComponent model "_Child"
-
-                ( newChildComponentsList, allChildComponentsMsg ) =
-                    List.foldl
-                        (\( comName, comModel ) ( tmpComponentsList, tmpComponentsMsg ) ->
-                            let
-                                ( tmpData, tmpMsg, _ ) =
-                                    comModel.update mainMsg NullComponentMsg globalData ( comModel.data, t )
-                            in
-                            ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], List.append tmpComponentsMsg [ tmpMsg ] )
-                        )
-                        ( [], [] )
-                        childComponentsList
-            in
-            if currentPos > wholeLength then
-                if dgetString model "_Status" == "OnBuild" then
-                    ( model
-                        |> dsetint "_Timer" timer
-                        |> dsetstring "_Status" "OnShow"
-                        |> dsetLComponent "_Child" newChildComponentsList
-                    , [ ComponentLSStringMsg "StatusReport" [ "OnShow" ] ]
-                    , globalData
-                    )
-
-                else if List.all (\x -> x == ComponentLSStringMsg "StatusReport" [ "OnEnd" ]) (List.concat allChildComponentsMsg) then
-                    ( model
-                        |> dsetint "_Timer" timer
-                        |> dsetstring "_Status" "OnEnd"
-                        |> dsetLComponent "_Child" newChildComponentsList
-                    , [ ComponentLSStringMsg "StatusReport" [ "OnEnd" ] ]
-                    , globalData
-                    )
-
-                else if dgetString model "_Status" == "OnDeBuild" then
-                    let
-                        ( tmpChildComponentsList, _, _ ) =
-                            List.foldl
-                                (\( comName, comModel ) ( tmpComponentsList, tmpAllMsg, tmpFlag ) ->
-                                    let
-                                        tmpMsg =
-                                            Maybe.withDefault NullComponentMsg (List.head tmpAllMsg)
-                                    in
-                                    let
-                                        ( tmpData, _, _ ) =
-                                            if tmpMsg == ComponentLSStringMsg "StatusReport" [ "OnShow" ] && tmpFlag == True then
-                                                comModel.update UnknownMsg (ComponentStringMsg "OnDeBuild") globalData ( comModel.data, t )
-
-                                            else
-                                                comModel.update mainMsg NullComponentMsg globalData ( comModel.data, t )
-                                    in
-                                    if tmpMsg == ComponentLSStringMsg "StatusReport" [ "OnShow" ] && tmpFlag == True then
-                                        ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], List.drop 1 tmpAllMsg, False )
-
-                                    else
-                                        ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], List.drop 1 tmpAllMsg, tmpFlag )
-                                )
-                                ( [], List.concat allChildComponentsMsg, True )
-                                childComponentsList
-                    in
-                    ( model
-                        |> dsetint "_Timer" timer
-                        |> dsetLComponent "_Child" tmpChildComponentsList
-                    , [ ComponentLSStringMsg "StatusReport" [ dgetString model "_Status" ] ]
-                    , globalData
-                    )
-
-                else
-                    ( model
-                        |> dsetint "_Timer" timer
-                        |> dsetLComponent "_Child" newChildComponentsList
-                    , [ ComponentLSStringMsg "StatusReport" [ dgetString model "_Status" ] ]
-                    , globalData
-                    )
-
-            else
-                let
-                    tmpChar =
-                        String.slice currentPos (currentPos + 1) (dgetString model "_wholeText")
-                in
-                ( model
-                    |> dsetint "_Timer" timer
-                    |> dsetint "_currentPos" currentPos
-                    |> dsetint "_currentLength" currentLength
-                    |> dsetLComponent "_Child"
-                        (List.append newChildComponentsList
-                            [ ( "Word" ++ String.fromInt currentPos, DialTextWordE.initComponent currentLength (ComponentStringMsg tmpChar) ) ]
-                        )
-                , [ ComponentLSStringMsg "StatusReport" [ "OnBuild" ] ]
-                , globalData
-                )
+            updateTick mainMsg comMsg globalData ( model, t )
 
         _ ->
             let
@@ -173,22 +179,8 @@ updateText mainMsg comMsg globalData ( model, t ) =
                 ComponentStringMsg demand ->
                     case demand of
                         "OnDeBuild" ->
-                            -- let
-                            --     ( newChildComponentsList, _ ) =
-                            --         List.foldl
-                            --             (\( comName, comModel ) ( tmpComponentsList, tmpComponentsMsg ) ->
-                            --                 let
-                            --                     ( tmpData, tmpMsg, _ ) =
-                            --                         comModel.update UnknownMsg (ComponentStringMsg "OnDeBuild") globalData ( comModel.data, t )
-                            --                 in
-                            --                 ( List.append tmpComponentsList [ ( comName, { comModel | data = tmpData } ) ], tmpMsg :: tmpComponentsMsg )
-                            --             )
-                            --             ( [], [] )
-                            --             (dgetLComponent model "_Child")
-                            -- in
                             ( model
                                 |> dsetstring "_Status" "OnDeBuild"
-                              -- |> dsetLComponent "_Child" newChildComponentsList
                             , [ ComponentLSStringMsg "StatusReport" [ "OnDeBuild" ] ]
                             , globalData
                             )

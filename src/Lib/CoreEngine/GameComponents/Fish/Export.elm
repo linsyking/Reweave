@@ -12,6 +12,12 @@ import Lib.CoreEngine.GameComponents.Fish.Model exposing (initData, initModel, u
 
 
 {-| gameComponent
+name : gameComponent Type
+data : the model for fish
+init : the init function for fish
+update : the update function for fish
+view : the view function for fish
+query : fish does not require query function
 -}
 gameComponent : GameComponent
 gameComponent =

@@ -16,7 +16,6 @@ module Scenes.Scene1.Layer2.Models exposing
 import Array
 import Base exposing (..)
 import Components.Menu.Export as ComMenuE
-import Constants exposing (..)
 import Lib.Audio.Base exposing (AudioOption(..))
 import Lib.Component.Base exposing (ComponentTMsg(..))
 import Lib.Component.ComponentHandler exposing (updateSingleComponent)

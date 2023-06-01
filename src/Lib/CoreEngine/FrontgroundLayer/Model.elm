@@ -1,17 +1,11 @@
 module Lib.CoreEngine.FrontgroundLayer.Model exposing
     ( initModel
-    , dealComponentsMsg
-    , dealAllComponentMsg
     , updateModel
     )
 
 {-| This is the doc for this module
 
 @docs initModel
-
-@docs dealComponentsMsg
-
-@docs dealAllComponentMsg
 
 @docs updateModel
 

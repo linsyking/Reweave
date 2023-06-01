@@ -23,6 +23,10 @@ module Lib.DefinedTypes.Parser exposing
 
 {-| This is the doc for this module
 
+Deal with the definedtypes.
+
+You can use this module to set/get items from DefinedType.
+
 @docs dgetint
 
 @docs dsetint

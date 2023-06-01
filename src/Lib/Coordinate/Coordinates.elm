@@ -1,6 +1,5 @@
 module Lib.Coordinate.Coordinates exposing
-    ( floatpairadd
-    , fixedPosToReal
+    ( fixedPosToReal
     , posToReal
     , widthToReal
     , heightToReal
@@ -10,9 +9,14 @@ module Lib.Coordinate.Coordinates exposing
     , fromMouseToReal
     )
 
-{-| This is the doc for this module
+{-|
 
-@docs floatpairadd
+
+# Coordinate
+
+This module deals with the coordinate transformation.
+
+This module is very important because it can calculate the correct position of the point you want to draw.
 
 @docs fixedPosToReal
 
@@ -33,15 +37,22 @@ module Lib.Coordinate.Coordinates exposing
 -}
 
 import Base exposing (GlobalData)
-import Constants exposing (plHeight, plWidth)
+
+
+plHeight : Int
+plHeight =
+    1080
+
+
+plWidth : Int
+plWidth =
+    1920
 
 
 
 --- Transform Coordinates
 
 
-{-| floatpairadd
--}
 floatpairadd : ( Float, Float ) -> ( Float, Float ) -> ( Float, Float )
 floatpairadd ( x, y ) ( z, w ) =
     ( x + z, y + w )
@@ -82,12 +93,8 @@ widthToReal gd x =
 {-| heightToReal
 -}
 heightToReal : GlobalData -> Int -> Float
-heightToReal gd x =
-    let
-        realHeight =
-            gd.realHeight
-    in
-    toFloat realHeight * (toFloat x / toFloat (plHeight - 1))
+heightToReal =
+    widthToReal
 
 
 {-| maxHandW

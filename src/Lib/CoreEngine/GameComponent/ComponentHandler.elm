@@ -2,9 +2,7 @@ module Lib.CoreEngine.GameComponent.ComponentHandler exposing
     ( updateOneGameComponent
     , updateSingleGameComponent
     , updateSingleGameComponentByName
-    , getGameComponentFromName
     , genView
-    , renderSingleObject
     , getGameComponent
     , simpleUpdateAllGameComponent
     , isAlive
@@ -23,11 +21,7 @@ module Lib.CoreEngine.GameComponent.ComponentHandler exposing
 
 @docs updateSingleGameComponentByName
 
-@docs getGameComponentFromName
-
 @docs genView
-
-@docs renderSingleObject
 
 @docs getGameComponent
 
@@ -58,6 +52,9 @@ import Lib.Tools.Array exposing (locate)
 
 
 {-| updateOneGameComponent
+
+Update one gc. Input a gc, returns a gc.
+
 -}
 updateOneGameComponent : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> Int -> GameComponent -> ( GameComponent, List GameComponentMsgType, GameGlobalData )
 updateOneGameComponent msg ct ggd gd t c =
@@ -69,6 +66,9 @@ updateOneGameComponent msg ct ggd gd t c =
 
 
 {-| updateSingleGameComponent
+
+Update one gc. Input the array of gc and the index of the gc you want to update, returns a new array.
+
 -}
 updateSingleGameComponent : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> Int -> Int -> Array GameComponent -> ( Array GameComponent, List GameComponentMsgType, GameGlobalData )
 updateSingleGameComponent msg ct ggd gd t n xs =
@@ -85,6 +85,9 @@ updateSingleGameComponent msg ct ggd gd t n xs =
 
 
 {-| updateSingleGameComponentByName
+
+Similar to `updateSingleGameComponent`, but uses name instead of index.
+
 -}
 updateSingleGameComponentByName : Msg -> GameComponentTMsg -> GameGlobalData -> GlobalData -> Int -> String -> Array GameComponent -> ( Array GameComponent, List GameComponentMsgType, GameGlobalData )
 updateSingleGameComponentByName msg ct ggd gd t s xs =
@@ -109,14 +112,15 @@ updateSingleGameComponentByName msg ct ggd gd t s xs =
         ns
 
 
-{-| getGameComponentFromName
--}
 getGameComponentFromName : String -> Array GameComponent -> List Int
 getGameComponentFromName s xs =
     locate (\x -> x.name == s) xs
 
 
 {-| genView
+
+Generate the view for a gc.
+
 -}
 genView : GameGlobalData -> GlobalData -> Int -> Array GameComponent -> Renderable
 genView ggd gd t xs =
@@ -140,8 +144,6 @@ genView ggd gd t xs =
     group [] (List.map (\( x, _ ) -> x) res)
 
 
-{-| renderSingleObject
--}
 renderSingleObject : Int -> GameComponent -> GameGlobalData -> GlobalData -> Maybe (List ( Renderable, Int ))
 renderSingleObject t gc ggd gd =
     if judgeInCamera gc ggd then
@@ -238,6 +240,9 @@ sendManyGameComponentMsg msg gct ggd gd ns t gcs =
 
 
 {-| splitPlayerObjs
+
+Split players and actors.
+
 -}
 splitPlayerObjs : Array GameComponent -> GameComponent -> ( GameComponent, Array GameComponent )
 splitPlayerObjs gcs defaultplayer =
@@ -249,6 +254,9 @@ splitPlayerObjs gcs defaultplayer =
 
 
 {-| initGameComponent
+
+initialize the gc.
+
 -}
 initGameComponent : Int -> GameComponentTMsg -> GameComponent -> GameComponent
 initGameComponent t gct gc =

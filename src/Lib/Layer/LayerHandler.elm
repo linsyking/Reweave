@@ -1,38 +1,14 @@
 module Lib.Layer.LayerHandler exposing
-    ( getLayerMsg
-    , applyOnce
-    , applyOnceOnlyNew
-    , updateOnce
-    , updateOnceOnlyNew
-    , updateLayer
-    , judgeEnd
-    , filterLayerParentMsg
-    , filterLayerParentMsgT
-    , updateLayerRecursive
+    ( updateLayer
     , viewLayer
     )
 
-{-| This is the doc for this module
+{-|
 
-@docs getLayerMsg
 
-@docs applyOnce
-
-@docs applyOnceOnlyNew
-
-@docs updateOnce
-
-@docs updateOnceOnlyNew
+# Layer Handler
 
 @docs updateLayer
-
-@docs judgeEnd
-
-@docs filterLayerParentMsg
-
-@docs filterLayerParentMsgT
-
-@docs updateLayerRecursive
 
 @docs viewLayer
 
@@ -41,215 +17,80 @@ module Lib.Layer.LayerHandler exposing
 import Base exposing (GlobalData, Msg)
 import Canvas exposing (Renderable)
 import Lib.Layer.Base exposing (Layer, LayerMsg(..), LayerTarget(..))
+import Messenger.Recursion exposing (RecBody)
+import Messenger.RecursionList exposing (updateObjects)
 
 
+type alias Env a =
+    { msg : Msg
+    , globalData : GlobalData
+    , t : Int
+    , commonData : a
+    }
 
---- Handle Layer
+
+type alias LayerT a b =
+    ( String, Layer a b )
 
 
-{-| getLayerMsg
--}
-getLayerMsg : List ( LayerTarget, LayerMsg ) -> String -> List LayerMsg
-getLayerMsg xs s =
+update : LayerT a b -> Env a -> LayerMsg -> ( LayerT a b, List ( LayerTarget, LayerMsg ), Env a )
+update l env lm =
     let
-        ref =
-            List.filter
-                (\( x, _ ) ->
-                    case x of
-                        LayerName ln ->
-                            if ln == s then
-                                True
+        layer =
+            Tuple.second l
 
-                            else
-                                False
-
-                        _ ->
-                            False
-                )
-                xs
+        ( ( newData, newCD, nl ), newGD ) =
+            layer.update env.msg env.globalData lm ( layer.data, env.t ) env.commonData
     in
-    List.map (\( _, x ) -> x) ref
+    ( ( Tuple.first l, { layer | data = newData } ), nl, { env | globalData = newGD, commonData = newCD } )
 
 
-{-| applyOnce
--}
-applyOnce : Msg -> GlobalData -> Int -> a -> List ( LayerTarget, LayerMsg ) -> List ( LayerTarget, LayerMsg ) -> List ( String, Layer a b ) -> List ( String, Layer a b ) -> ( ( List ( LayerTarget, LayerMsg ), List ( String, Layer a b ), a ), GlobalData )
-applyOnce msg gd t cd lms ms dxs xs =
-    case xs of
-        [] ->
-            ( ( lms, dxs, cd ), gd )
+match : LayerT a b -> LayerTarget -> Bool
+match l t =
+    case t of
+        LayerParentScene ->
+            False
 
-        ( name, layer ) :: lxs ->
-            let
-                data =
-                    layer.data
-
-                slname =
-                    getLayerMsg ms name
-
-                ( ( newdata, newcd, newmsg ), newgd ) =
-                    if List.isEmpty slname then
-                        let
-                            ( ( xxx, yyy, lltlm ), zgd ) =
-                                layer.update msg gd NullLayerMsg ( data, t ) cd
-                        in
-                        ( ( xxx, yyy, lltlm ), zgd )
-
-                    else
-                        List.foldl
-                            (\x ( ( dd, dcd, dmg ), nngd ) ->
-                                let
-                                    ( ( xxx, yyy, lltlm ), zgd ) =
-                                        layer.update msg nngd x ( dd, t ) dcd
-                                in
-                                ( ( xxx, yyy, dmg ++ lltlm ), zgd )
-                            )
-                            ( ( data, cd, [] ), gd )
-                            slname
-            in
-            applyOnce msg newgd t newcd (lms ++ newmsg) ms (dxs ++ [ ( name, { layer | data = newdata } ) ]) lxs
+        LayerName n ->
+            n == Tuple.first l
 
 
-{-| applyOnceOnlyNew
--}
-applyOnceOnlyNew : Msg -> GlobalData -> Int -> a -> List ( LayerTarget, LayerMsg ) -> List ( LayerTarget, LayerMsg ) -> List ( String, Layer a b ) -> List ( String, Layer a b ) -> ( ( List ( LayerTarget, LayerMsg ), List ( String, Layer a b ), a ), GlobalData )
-applyOnceOnlyNew msg gd t cd lms ms dxs xs =
-    case xs of
-        [] ->
-            ( ( lms, dxs, cd ), gd )
+super : LayerTarget -> Bool
+super t =
+    case t of
+        LayerParentScene ->
+            True
 
-        ( name, layer ) :: lxs ->
-            let
-                data =
-                    layer.data
-
-                slname =
-                    getLayerMsg ms name
-
-                ( ( newdata, newcd, newmsg ), newgd ) =
-                    if List.isEmpty slname then
-                        ( ( data, cd, [] ), gd )
-
-                    else
-                        List.foldl
-                            (\x ( ( dd, dcd, dmg ), nngd ) ->
-                                let
-                                    ( ( xxx, yyy, lltlm ), zgd ) =
-                                        layer.update msg nngd x ( dd, t ) dcd
-                                in
-                                ( ( xxx, yyy, dmg ++ lltlm ), zgd )
-                            )
-                            ( ( data, cd, [] ), gd )
-                            slname
-            in
-            applyOnceOnlyNew msg newgd t newcd (lms ++ newmsg) ms (dxs ++ [ ( name, { layer | data = newdata } ) ]) lxs
+        LayerName _ ->
+            False
 
 
-{-| updateOnce
--}
-updateOnce : Msg -> GlobalData -> Int -> a -> List ( LayerTarget, LayerMsg ) -> List ( String, Layer a b ) -> ( ( List ( LayerTarget, LayerMsg ), List ( String, Layer a b ), a ), GlobalData )
-updateOnce msg gd t cd msgs xs =
-    applyOnce msg gd t cd [] msgs [] xs
+recBody : RecBody (LayerT a b) LayerMsg (Env a) LayerTarget
+recBody =
+    { update = update, match = match, super = super }
 
 
-{-| updateOnceOnlyNew
--}
-updateOnceOnlyNew : Msg -> GlobalData -> Int -> a -> List ( LayerTarget, LayerMsg ) -> List ( String, Layer a b ) -> ( ( List ( LayerTarget, LayerMsg ), List ( String, Layer a b ), a ), GlobalData )
-updateOnceOnlyNew msg gd t cd msgs xs =
-    applyOnceOnlyNew msg gd t cd [] msgs [] xs
+updateLayerProto : Env a -> LayerMsg -> List (LayerT a b) -> ( List (LayerT a b), List LayerMsg, Env a )
+updateLayerProto =
+    updateObjects recBody
 
 
-
---- msg, t, ms and xs doesn't change
-
-
-{-| updateLayer
--}
 updateLayer : Msg -> GlobalData -> Int -> a -> List ( String, Layer a b ) -> ( ( List ( String, Layer a b ), a, List LayerMsg ), GlobalData )
 updateLayer msg gd t cd xs =
     let
-        ( ( fmsg, fdata, fcd ), newgd ) =
-            updateOnce msg gd t cd [] xs
+        env =
+            { msg = msg, globalData = gd, t = t, commonData = cd }
+
+        ( nl, nlm, nenv ) =
+            updateLayerProto env NullLayerMsg xs
     in
-    updateLayerRecursive msg newgd t fcd fmsg fdata
-
-
-{-| judgeEnd
--}
-judgeEnd : List ( LayerTarget, LayerMsg ) -> Bool
-judgeEnd xs =
-    List.all
-        (\( x, _ ) ->
-            case x of
-                LayerParentScene ->
-                    True
-
-                NullLayerTarget ->
-                    True
-
-                _ ->
-                    False
-        )
-        xs
-
-
-{-| filterLayerParentMsg
--}
-filterLayerParentMsg : List ( LayerTarget, LayerMsg ) -> List ( LayerTarget, LayerMsg )
-filterLayerParentMsg xs =
-    List.filter
-        (\( x, _ ) ->
-            case x of
-                LayerParentScene ->
-                    True
-
-                _ ->
-                    False
-        )
-        xs
-
-
-{-| filterLayerParentMsgT
--}
-filterLayerParentMsgT : List ( LayerTarget, LayerMsg ) -> List LayerMsg
-filterLayerParentMsgT xs =
-    let
-        css =
-            List.filter
-                (\( x, _ ) ->
-                    case x of
-                        LayerParentScene ->
-                            True
-
-                        _ ->
-                            False
-                )
-                xs
-    in
-    List.map (\( _, x ) -> x) css
-
-
-{-| updateLayerRecursive
--}
-updateLayerRecursive : Msg -> GlobalData -> Int -> a -> List ( LayerTarget, LayerMsg ) -> List ( String, Layer a b ) -> ( ( List ( String, Layer a b ), a, List LayerMsg ), GlobalData )
-updateLayerRecursive msg gd t cd msgs xs =
-    if judgeEnd msgs then
-        ( ( xs, cd, filterLayerParentMsgT msgs ), gd )
-
-    else
-        --- Update once
-        let
-            -- dsa = Debug.log "dsdda" xs
-            ( ( newmsgs, newdata, newcd ), newgd ) =
-                updateOnceOnlyNew msg gd t cd msgs xs
-
-            tmsgs =
-                filterLayerParentMsg msgs
-        in
-        updateLayerRecursive msg newgd t newcd (newmsgs ++ tmsgs) newdata
+    ( ( nl, nenv.commonData, nlm ), nenv.globalData )
 
 
 {-| viewLayer
+
+Get the view of the layer.
+
 -}
 viewLayer : GlobalData -> Int -> a -> List ( String, Layer a b ) -> Renderable
 viewLayer vp t cd xs =

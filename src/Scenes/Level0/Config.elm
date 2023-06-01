@@ -62,14 +62,6 @@ import Scenes.Level0.Map exposing (mapwidth, mymap)
 -}
 initFrontGroundComponents : Int -> Int -> Array Component
 initFrontGroundComponents t _ =
-    -- case sp of
-    --     0 ->
-    --         Array.fromList
-    --             [ Hints.initComponent t (ComponentLStringMsg [ "50", "750", "700", "30", "Use A,D to move to left and right, Use C or Space to jump", "Use Esc to call the menu" ])
-    --             , Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "Beiming  北溟" ])
-    --             , Hints.initComponent t (ComponentLStringMsg [ "40", "1570", "100", "35", "Near A Temple 寺庙旁" ])
-    --             ]
-    --     _ ->
     Array.fromList
         [ Hints.initComponent t (ComponentLStringMsg [ "40", "1600", "30", "50", "BeiMing  北溟" ])
         , Hints.initComponent t (ComponentLStringMsg [ "40", "1570", "100", "35", "Near A Temple  寺庙旁" ])
@@ -100,8 +92,6 @@ initActors t sp =
             , initGameComponent t (GameSavePointInit (SavePointInit ( 2903, 1800 ) 4)) Save.gameComponent
             , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 3153, 1850 ) 300 True 5)) Energy.gameComponent
             , initGameComponent t (GameEnergyCrystalInit (EnergyCrystalInit ( 3463, 1850 ) 500 False 6)) Energy.gameComponent
-
-            -- , initGameComponent t (GameGoombaInit (GoombaInit ( 3863, 1850 ) ( -50, 0 ) 50 7)) Goomba.gameComponent
             , initGameComponent t (GameGoombaEmitterInit (GoombaEmitterInit ( 3560, 1890 ) 100 ( 50, 0 ) 7)) GoombaEmitter.gameComponent
             , initGameComponent t (GameSpikeInit (SpikeInit ( 3970, 1894 ) VerLeft 1 True 30)) Spike.gameComponent
             , initGameComponent t (GameSavePointInit (SavePointInit ( 4327, 1576 ) 8)) Save.gameComponent
@@ -183,17 +173,7 @@ dialogues2 =
     , ( "master", "And then, you can press key W to grasp the energy." )
     , ( "master", "If you want to release energy on a selected object," )
     , ( "master", "Right click at where you want it to go on the screen!" )
-    , ( "master", "The larger the distance between your mouse and the object," )
-    , ( "master", "The larger energy you will use on the object." )
-    , ( "master", "And the larger the blue point is around your mouse," )
-    , ( "master", "which is called the Visual Aid System." )
-    , ( "master", "Also notice that," )
-    , ( "master", "If the selected objects have low energy," )
-    , ( "master", "You cannot grasp energy from them;" )
-    , ( "master", "Similarly, you can't use low energy on objects." )
-    , ( "master", "Another important rule is that, in the air," )
-    , ( "master", "You cannot use energy on yourself," )
-    , ( "master", "However, you can still use energy on other objects." )
+    , ( "master", "You can explore the usage by yourself!" )
     , ( "p_profile", "Alright." )
     , ( "master", "There are many dangers in your journey," )
     , ( "master", "Please be cautious." )
@@ -215,6 +195,32 @@ initGameGlobalData e col spstate =
     , settingpause = False
     , specialState = spstate
     }
+
+
+introduction : List ( GlobalData -> GameGlobalData -> Renderable, GameLayerDepth )
+introduction =
+    [ ( \gd ggd -> renderText gd 30 "Use A,D to move to left and right, Use C or Space to jump" "Times New Roman" (getPositionUnderCamera ( 200, 1560 ) ggd), BehindActors )
+    , ( \gd ggd -> renderText gd 30 "Use Esc to call the menu" "Times New Roman" (getPositionUnderCamera ( 200, 1630 ) ggd), BehindActors )
+    , ( \gd ggd -> renderText gd 30 "Checkpoint" "Times New Roman" (getPositionUnderCamera ( 2880, 1960 ) ggd), BehindActors )
+    , ( \gd ggd -> renderText gd 30 "(Also Save Energy)" "Times New Roman" (getPositionUnderCamera ( 2820, 2000 ) ggd), BehindActors )
+    , ( \gd ggd -> renderText gd 30 "You can restart to go to the last checkpoint" "Times New Roman" (getPositionUnderCamera ( 2820, 2060 ) ggd), BehindActors )
+    , ( \gd ggd -> renderText gd 30 "Energy Crystal" "Times New Roman" (getPositionUnderCamera ( 3080, 1960 ) ggd), BehindActors )
+    , ( \gd ggd -> renderText gd 30 "(Recoverable)" "Times New Roman" (getPositionUnderCamera ( 3080, 1760 ) ggd), BehindActors )
+    , ( \gd ggd -> renderText gd 30 "Energy Crystal" "Times New Roman" (getPositionUnderCamera ( 3390, 1960 ) ggd), BehindActors )
+    , ( \gd ggd -> renderText gd 30 "(Irrecoverable)" "Times New Roman" (getPositionUnderCamera ( 3390, 1760 ) ggd), BehindActors )
+    , ( \gd ggd -> renderText gd 30 "Hit the goomba to get on the platform!" "Times New Roman" (getPositionUnderCamera ( 3690, 1960 ) ggd), BehindActors )
+    , ( \gd ggd -> renderText gd 30 "Jump at the last moment" "Times New Roman" (getPositionUnderCamera ( 4200, 1360 ) ggd), BehindActors )
+    , ( \gd ggd -> renderText gd 30 "Press W to save the energy from the player before you hit the ground" "Times New Roman" (getPositionUnderCamera ( 4200, 1430 ) ggd), BehindActors )
+    , ( \gd ggd -> renderText gd 30 "Right click over the character, and also at the top of your screen" "Times New Roman" (getPositionUnderCamera ( 5290, 2000 ) ggd), BehindActors )
+    , ( \gd ggd -> renderText gd 30 "Try to use energy on the goombas! (Move them away)" "Times New Roman" (getPositionUnderCamera ( 5390, 900 ) ggd), BehindActors )
+    , ( \gd ggd -> renderText gd 30 "Press E to select yourself quickly" "Times New Roman" (getPositionUnderCamera ( 6690, 900 ) ggd), BehindActors )
+    , ( \gd ggd -> renderText gd 50 "Challenging Exercises" "Times New Roman" (getPositionUnderCamera ( 7280, 1100 ) ggd), BehindActors )
+    , ( \gd ggd -> renderText gd 40 "(Optional)" "Times New Roman" (getPositionUnderCamera ( 7400, 1200 ) ggd), BehindActors )
+    , ( \gd ggd -> renderText gd 30 "Right click to release the energy at the correct position" "Times New Roman" (getPositionUnderCamera ( 7500, 2030 ) ggd), BehindActors )
+    , ( \gd ggd -> renderText gd 30 "Try to take advantage of the visual aid system" "Times New Roman" (getPositionUnderCamera ( 7500, 2070 ) ggd), BehindActors )
+    , ( \gd ggd -> renderText gd 30 "(You can also turn it off in the menu)" "Times New Roman" (getPositionUnderCamera ( 7500, 2110 ) ggd), BehindActors )
+    , ( \gd ggd -> renderText gd 40 "You are ready to go!" "Times New Roman" (getPositionUnderCamera ( 8900, 700 ) ggd), BehindActors )
+    ]
 
 
 {-| allChartlets
@@ -242,26 +248,5 @@ allChartlets sp =
             _ ->
                 [ ( \_ _ -> group [] [], BehindActors ) ]
         )
-        ++ [ ( \gd ggd -> renderText gd 30 "Use A,D to move to left and right, Use C or Space to jump" "Times New Roman" (getPositionUnderCamera ( 200, 1560 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "Use Esc to call the menu" "Times New Roman" (getPositionUnderCamera ( 200, 1630 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "Checkpoint" "Times New Roman" (getPositionUnderCamera ( 2880, 1960 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "(Also Save Energy)" "Times New Roman" (getPositionUnderCamera ( 2820, 2000 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "You can restart to go to the last checkpoint" "Times New Roman" (getPositionUnderCamera ( 2820, 2060 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "Energy Crystal" "Times New Roman" (getPositionUnderCamera ( 3080, 1960 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "(Recoverable)" "Times New Roman" (getPositionUnderCamera ( 3080, 1760 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "Energy Crystal" "Times New Roman" (getPositionUnderCamera ( 3390, 1960 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "(Irrecoverable)" "Times New Roman" (getPositionUnderCamera ( 3390, 1760 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "Hit the goomba to get on the platform!" "Times New Roman" (getPositionUnderCamera ( 3690, 1960 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "Jump at the last moment" "Times New Roman" (getPositionUnderCamera ( 4200, 1360 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "Press W to save the energy from the player before you hit the ground" "Times New Roman" (getPositionUnderCamera ( 4200, 1430 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "Right click over the character, and also at the top of your screen" "Times New Roman" (getPositionUnderCamera ( 5290, 2000 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "Try to use energy on the goombas! (Move them away)" "Times New Roman" (getPositionUnderCamera ( 5390, 900 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "Press E to select yourself quickly" "Times New Roman" (getPositionUnderCamera ( 6690, 900 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 50 "Challenging Exercises" "Times New Roman" (getPositionUnderCamera ( 7280, 1100 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 40 "(Optional)" "Times New Roman" (getPositionUnderCamera ( 7400, 1200 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "Right click to release the energy at the correct position" "Times New Roman" (getPositionUnderCamera ( 7500, 2030 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "Try to take advantage of the visual aid system" "Times New Roman" (getPositionUnderCamera ( 7500, 2070 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 30 "(You can also turn it off in the menu)" "Times New Roman" (getPositionUnderCamera ( 7500, 2110 ) ggd), BehindActors )
-           , ( \gd ggd -> renderText gd 40 "You are ready to go!" "Times New Roman" (getPositionUnderCamera ( 8900, 700 ) ggd), BehindActors )
-           ]
+        ++ introduction
         ++ makemanybamboos ( 70, 2093 ) 9

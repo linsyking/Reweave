@@ -20,9 +20,8 @@ import Canvas.Settings exposing (..)
 import Canvas.Settings.Advanced exposing (..)
 import Components.Menu.Settings.Audio.Export as MenuSetAudioE
 import Components.Menu.Settings.Play.Export as MenuSetPlayE
-import Constants exposing (..)
 import Dict
-import Lib.Component.Base exposing (ComponentTMsg(..), Data, DefinedTypes(..))
+import Lib.Component.Base exposing (Component, ComponentTMsg(..), Data, DefinedTypes(..))
 import Lib.Coordinate.Coordinates exposing (..)
 import Lib.DefinedTypes.Parser exposing (dgetLComponent, dgetbool, dgetint, dsetLComponent, dsetbool)
 import Lib.Render.Render exposing (..)
@@ -51,6 +50,97 @@ initSettings _ _ =
         ]
 
 
+updateMouseDown : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Float, Float ) -> ( Int, Int ) -> ( Int, Int ) -> List ( String, Component ) -> ComponentTMsg -> GlobalData -> ( Data, List ComponentTMsg, GlobalData )
+updateMouseDown _ _ globalData ( model, t ) ( x, y ) ( posX, posY ) ( radius, _ ) tmpChildComponentsList newComMsg newGlobalData =
+    let
+        reverseShowStatus =
+            if dgetbool model "show" then
+                False
+
+            else
+                True
+    in
+    if judgeMouse globalData ( x, y ) ( posX, posY ) ( radius, radius ) then
+        let
+            ( newChildComponentsList, _, _ ) =
+                List.foldl
+                    (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
+                        let
+                            ( tmpCom, tmpComMsg, gD ) =
+                                comModel.update UnknownMsg (ComponentStringMsg "Display:SHOW") tmpGData ( comModel.data, t )
+                        in
+                        ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
+                    )
+                    ( [], [], globalData )
+                    tmpChildComponentsList
+        in
+        ( model
+            |> dsetbool "show" True
+            |> dsetLComponent "Child" newChildComponentsList
+        , List.append [ newComMsg ]
+            [ if reverseShowStatus == True then
+                ComponentLSStringMsg "OnShow" [ "Settings" ]
+
+              else
+                ComponentLSStringMsg "OnHide" [ "Settings" ]
+            ]
+        , newGlobalData
+        )
+
+    else
+        ( model |> dsetLComponent "Child" tmpChildComponentsList, [ newComMsg ], newGlobalData )
+
+
+updateOtherwise : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> List ( String, Component ) -> ComponentTMsg -> GlobalData -> ( Data, List ComponentTMsg, GlobalData )
+updateOtherwise _ comMsg globalData ( model, t ) tmpChildComponentsList newComMsg newGlobalData =
+    case comMsg of
+        ComponentStringMsg demand ->
+            case demand of
+                "Display:HIDE" ->
+                    ( model
+                        |> dsetbool "show" False
+                        |> dsetLComponent "Child" tmpChildComponentsList
+                    , [ newComMsg ]
+                    , newGlobalData
+                    )
+
+                "Display:SHOW" ->
+                    ( model
+                        |> dsetbool "show" True
+                        |> dsetLComponent "Child" tmpChildComponentsList
+                    , [ newComMsg ]
+                    , newGlobalData
+                    )
+
+                _ ->
+                    ( model |> dsetLComponent "Child" tmpChildComponentsList, [ newComMsg ], newGlobalData )
+
+        ComponentStringDictMsg _ _ ->
+            let
+                ( newChildComponentsList, _, _ ) =
+                    List.foldl
+                        (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
+                            let
+                                ( tmpCom, tmpComMsg, gD ) =
+                                    comModel.update UnknownMsg (ComponentStringMsg "Display:SHOW") tmpGData ( comModel.data, t )
+                            in
+                            ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
+                        )
+                        ( [], [], globalData )
+                        (dgetLComponent model "Child")
+            in
+            ( model
+                |> dsetbool "show" True
+                |> dsetLComponent "Child"
+                    newChildComponentsList
+            , []
+            , globalData
+            )
+
+        _ ->
+            ( model |> dsetLComponent "Child" tmpChildComponentsList, [ newComMsg ], newGlobalData )
+
+
 {-| updateSettings
 -}
 updateSettings : Msg -> ComponentTMsg -> GlobalData -> ( Data, Int ) -> ( Data, List ComponentTMsg, GlobalData )
@@ -58,13 +148,6 @@ updateSettings mainMsg comMsg globalData ( model, t ) =
     let
         showStatus =
             dgetbool model "show"
-
-        reverseShowStatus =
-            if dgetbool model "show" then
-                False
-
-            else
-                True
 
         posX =
             dgetint model "posX"
@@ -112,83 +195,10 @@ updateSettings mainMsg comMsg globalData ( model, t ) =
     in
     case mainMsg of
         MouseDown 0 ( x, y ) ->
-            if judgeMouse globalData ( x, y ) ( posX, posY ) ( radius, radius ) then
-                let
-                    ( newChildComponentsList, _, _ ) =
-                        List.foldl
-                            (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
-                                let
-                                    ( tmpCom, tmpComMsg, gD ) =
-                                        comModel.update UnknownMsg (ComponentStringMsg "Display:SHOW") tmpGData ( comModel.data, t )
-                                in
-                                ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
-                            )
-                            ( [], [], globalData )
-                            tmpChildComponentsList
-                in
-                ( model
-                    |> dsetbool "show" True
-                    |> dsetLComponent "Child" newChildComponentsList
-                , List.append [ newComMsg ]
-                    [ if reverseShowStatus == True then
-                        ComponentLSStringMsg "OnShow" [ "Settings" ]
-
-                      else
-                        ComponentLSStringMsg "OnHide" [ "Settings" ]
-                    ]
-                , newGlobalData
-                )
-
-            else
-                ( model |> dsetLComponent "Child" tmpChildComponentsList, [ newComMsg ], newGlobalData )
+            updateMouseDown mainMsg comMsg globalData ( model, t ) ( x, y ) ( posX, posY ) ( radius, radius ) tmpChildComponentsList newComMsg newGlobalData
 
         _ ->
-            case comMsg of
-                ComponentStringMsg demand ->
-                    case demand of
-                        "Display:HIDE" ->
-                            ( model
-                                |> dsetbool "show" False
-                                |> dsetLComponent "Child" tmpChildComponentsList
-                            , [ newComMsg ]
-                            , newGlobalData
-                            )
-
-                        "Display:SHOW" ->
-                            ( model
-                                |> dsetbool "show" True
-                                |> dsetLComponent "Child" tmpChildComponentsList
-                            , [ newComMsg ]
-                            , newGlobalData
-                            )
-
-                        _ ->
-                            ( model |> dsetLComponent "Child" tmpChildComponentsList, [ newComMsg ], newGlobalData )
-
-                ComponentStringDictMsg _ _ ->
-                    let
-                        ( newChildComponentsList, _, _ ) =
-                            List.foldl
-                                (\( comName, comModel ) ( tmpComList, tmpComMsgList, tmpGData ) ->
-                                    let
-                                        ( tmpCom, tmpComMsg, gD ) =
-                                            comModel.update UnknownMsg (ComponentStringMsg "Display:SHOW") tmpGData ( comModel.data, t )
-                                    in
-                                    ( List.append tmpComList [ ( comName, { comModel | data = tmpCom } ) ], List.append tmpComMsgList [ tmpComMsg ], gD )
-                                )
-                                ( [], [], globalData )
-                                (dgetLComponent model "Child")
-                    in
-                    ( model
-                        |> dsetbool "show" True
-                        |> dsetLComponent "Child"
-                            newChildComponentsList
-                    , []
-                    , globalData
-                    )
-
-                _ ->
-                    ( model |> dsetLComponent "Child" tmpChildComponentsList, [ newComMsg ], newGlobalData )
+            updateOtherwise mainMsg comMsg globalData ( model, t ) tmpChildComponentsList newComMsg newGlobalData
 
 
 {-| viewSettings

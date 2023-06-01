@@ -6,6 +6,7 @@ module Lib.Render.Render exposing
     , renderText
     , renderTextWithColor
     , renderSpriteRawPos
+    , renderTextCenter
     )
 
 {-| This is the doc for this module
@@ -30,7 +31,7 @@ import Base exposing (GlobalData)
 import Canvas exposing (Point, Renderable, text, texture)
 import Canvas.Settings exposing (Setting, fill)
 import Canvas.Settings.Advanced exposing (scale, transform, translate)
-import Canvas.Settings.Text exposing (TextAlign(..), align, font)
+import Canvas.Settings.Text exposing (TextAlign(..), TextBaseLine(..), align, baseLine, font)
 import Canvas.Texture exposing (Texture, dimensions, sprite)
 import Color exposing (Color)
 import Dict exposing (Dict)
@@ -345,6 +346,26 @@ renderText gd size s ft ( x, y ) =
         , align Start
         ]
         ( dsx, dsy + rx - 1 )
+        s
+
+
+{-| renderTextCenter
+-}
+renderTextCenter : GlobalData -> Int -> String -> String -> ( Int, Int ) -> Renderable
+renderTextCenter gd size s ft ( x, y ) =
+    let
+        rx =
+            heightToReal gd size
+
+        ( dsx, dsy ) =
+            posToReal gd ( x, y )
+    in
+    text
+        [ font { size = floor rx, family = ft }
+        , align Center
+        , baseLine Middle
+        ]
+        ( dsx, dsy )
         s
 
 

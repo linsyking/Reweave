@@ -16,6 +16,12 @@ import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 
 
 {-| component
+name : Component Type
+data : the model for NextButton
+init : the init function for NextButton
+update : the update function for NextButton
+view : the view function for NextButton
+query : NextButton does not require query function
 -}
 component : Component
 component =

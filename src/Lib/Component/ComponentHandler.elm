@@ -9,7 +9,7 @@ module Lib.Component.ComponentHandler exposing
     , queryComponent
     )
 
-{-| This is the doc for this module
+{-| ComponentHandler deals with components
 
 @docs updateComponents
 

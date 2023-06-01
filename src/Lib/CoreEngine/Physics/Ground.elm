@@ -25,6 +25,9 @@ import Math.Vector2 exposing (vec2)
 
 
 {-| isInAir
+
+Judge whether an object is in the air.
+
 -}
 isInAir : Data -> GameGlobalData -> Bool
 isInAir gc ggd =
@@ -40,6 +43,7 @@ isInAir gc ggd =
 
 
 {-| canJump
+Judge whether an object can jump
 -}
 canJump : Data -> GameGlobalData -> Bool
 canJump actor model =
@@ -47,6 +51,9 @@ canJump actor model =
 
 
 {-| isOnground
+
+Judge whether an object is on the ground.
+
 -}
 isOnground : Data -> GameGlobalData -> Bool
 isOnground gc ggd =

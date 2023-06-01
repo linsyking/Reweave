@@ -12,6 +12,12 @@ import Lib.CoreEngine.GameComponents.Bullet.Model exposing (initData, initModel,
 
 
 {-| gameComponent
+name : gameComponent Type
+data : the model for bullet
+init : the init function for bullet
+update : the update function for bullet
+view : the view function for bullet
+query : bullet does not require query function
 -}
 gameComponent : GameComponent
 gameComponent =

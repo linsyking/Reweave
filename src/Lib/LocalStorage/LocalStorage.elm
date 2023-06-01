@@ -6,6 +6,8 @@ module Lib.LocalStorage.LocalStorage exposing
 
 {-| This is the doc for this module
 
+Store some gamedata.
+
 @docs decodeLSInfo
 
 @docs encodeLSInfo

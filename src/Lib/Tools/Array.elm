@@ -3,7 +3,7 @@ module Lib.Tools.Array exposing
     , locate
     )
 
-{-| This is the doc for this module
+{-| This module has some handy tools related to array.
 
 @docs delSame
 

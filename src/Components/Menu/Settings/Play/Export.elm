@@ -16,6 +16,12 @@ import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 
 
 {-| component
+name : Component Type
+data : the model for Play
+init : the init function for Play
+update : the update function for Play
+view : the view function for Play
+query : Play does not require query function
 -}
 component : Component
 component =

@@ -16,6 +16,12 @@ import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 
 
 {-| component
+name : Component Type
+data : the model for Audio
+init : the init function for Audio
+update : the update function for Audio
+view : the view function for Audio
+query : Audio does not require query function
 -}
 component : Component
 component =

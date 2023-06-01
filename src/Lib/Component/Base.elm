@@ -6,7 +6,20 @@ module Lib.Component.Base exposing
     , nullComponent
     )
 
-{-| This is the doc for this module
+{-|
+
+
+# Component
+
+Component is designed to have the best flexibility and compability.
+
+You can use component almost anywhere, in layers, in gamecomponents and components themselves.
+
+You have to manually add components in your layer and update them manually.
+
+Therefore, components aren't capable of communicating with each other (by default).
+
+In contrast, gamecomponents have the ability to communicate with each other.
 
 @docs ComponentTMsg
 
@@ -61,6 +74,11 @@ nullComponent =
 
 
 {-| ComponentTMsg
+
+This is the message that can be sent to the layer
+
+Those entries are some basic data types we need.
+
 -}
 type ComponentTMsg
     = ComponentStringMsg String
@@ -79,6 +97,13 @@ type alias Data =
 
 
 {-| DefinedTypes
+
+Defined type is used to store more data types in components.
+
+Those entries are the commonly used data types.
+
+Note that you can use `CDDict` and `CDLComponent` to implement components inside components.
+
 -}
 type DefinedTypes
     = CDInt Int

@@ -14,7 +14,6 @@ module Scenes.Scene1.Layer1.Models exposing
 --- Init a model, and update it
 
 import Base exposing (..)
-import Constants exposing (..)
 import Lib.Audio.Base exposing (AudioOption(..))
 import Lib.Coordinate.Coordinates exposing (judgeMouse)
 import Lib.Layer.Base exposing (LayerMsg(..), LayerTarget(..))

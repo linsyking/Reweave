@@ -10,6 +10,9 @@ import Lib.CoreEngine.GameComponent.Base exposing (Data)
 
 
 {-| putAccOn
+
+Apply the acceleration (like gravity) to the velocity.
+
 -}
 putAccOn : Data -> Data
 putAccOn ada =

@@ -16,6 +16,12 @@ import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 
 
 {-| component
+name : Component Type
+data : the model for Word
+init : the init function for Word
+update : the update function for Word
+view : the view function for Word
+query : Word does not require query function
 -}
 component : Component
 component =

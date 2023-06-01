@@ -18,7 +18,6 @@ module Lib.Scene.SceneLoader exposing
 -}
 
 import Common exposing (..)
-import Html exposing (i)
 import Lib.Scene.Base exposing (SceneMsg)
 import List exposing (head)
 import Scenes.AllScenes exposing (allScenes)

@@ -1,17 +1,11 @@
 module Lib.CoreEngine.Physics.CollisionShape exposing
     ( CShape(..)
-    , judgeYSame
-    , judgeXSame
     , judgeShape
     )
 
 {-| This is the doc for this module
 
 @docs CShape
-
-@docs judgeYSame
-
-@docs judgeXSame
 
 @docs judgeShape
 
@@ -27,6 +21,15 @@ import Lib.CoreEngine.Physics.NaiveCollision exposing (getBoxPos)
 
 
 {-| CShape
+
+Collision Shape for solid collision. When a collision happens, there must be a shape how the object collide with the solid.
+
+For example, CTOP means that the top area of the object hits the solid.
+
+CBOOSTXX means the corner boost collision. It is similar to the game Braid.
+
+CXCORNERBOOST means that the object hits the very top of the solid, and should not be counted as collision.
+
 -}
 type CShape
     = CTOP
@@ -68,6 +71,7 @@ judgeXSame ls =
 
 
 {-| judgeShape
+Judge the shape of the collision.
 -}
 judgeShape : Data -> List ( Int, Int ) -> CShape
 judgeShape d ls =

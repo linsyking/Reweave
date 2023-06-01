@@ -5,6 +5,8 @@ module Lib.Map.Poly exposing
 
 {-| This is the doc for this module
 
+Map module helps us build map for levels rapidly by using some pre-defined functions.
+
 @docs buildrect
 
 @docs buildPillar

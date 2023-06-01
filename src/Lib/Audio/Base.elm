@@ -3,7 +3,10 @@ module Lib.Audio.Base exposing
     , AudioRepo
     )
 
-{-| This is the doc for this module
+{-|
+
+
+# Audio Base
 
 @docs AudioOption
 

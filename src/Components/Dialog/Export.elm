@@ -5,6 +5,8 @@ module Components.Dialog.Export exposing
 
 {-| This is the doc for this module
 
+Dialogue component. Included in CutScene GC.
+
 @docs component
 
 @docs initComponent
@@ -16,6 +18,12 @@ import Lib.Component.Base exposing (Component, ComponentTMsg(..))
 
 
 {-| component
+name : Component Type
+data : the model for Menu
+init : the init function for Menu
+update : the update function for Menu
+view : the view function for Menu
+query : Menu does not require query function
 -}
 component : Component
 component =

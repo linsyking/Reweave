@@ -11,7 +11,6 @@ import Canvas exposing (Renderable, group)
 import Canvas.Settings.Advanced exposing (GlobalCompositeOperationMode(..), Shadow, shadow)
 import Canvas.Settings.Text exposing (TextAlign(..))
 import Color
-import Constants exposing (..)
 import Lib.Coordinate.Coordinates exposing (..)
 import Lib.Render.Render exposing (renderTextWithColor)
 import Scenes.Home.Layer1.Common exposing (..)

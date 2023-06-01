@@ -9,6 +9,8 @@ module Lib.CoreEngine.GameComponent.Base exposing
 
 {-| This is the doc for this module
 
+GameComponent is the component in gamelayer.
+
 @docs GameComponentMsgType
 
 @docs GameComponentTMsg
@@ -51,6 +53,9 @@ import Lib.CoreEngine.GameComponents.Turtle.Base exposing (TurtleInit)
 
 
 {-| GameComponent
+
+Very Similar to Component, but specify the data field.
+
 -}
 type alias GameComponent =
     { name : String
@@ -62,6 +67,9 @@ type alias GameComponent =
 
 
 {-| GameComponentMsgType
+
+Who do you want to send messages to?
+
 -}
 type GameComponentMsgType
     = GameParentMsg GameComponentTMsg
@@ -70,6 +78,9 @@ type GameComponentMsgType
 
 
 {-| GameComponentTMsg
+
+Data types used to communicate between components
+
 -}
 type GameComponentTMsg
     = GameSolidCollisionMsg (List ( Int, Int ))
@@ -101,6 +112,9 @@ type GameComponentTMsg
 
 
 {-| Data
+
+Pre-defined data types in GameComponent
+
 -}
 type alias Data =
     { status : LifeStatus
@@ -116,6 +130,9 @@ type alias Data =
 
 
 {-| LifeStatus
+
+Life Status for a game component
+
 -}
 type LifeStatus
     = Alive
@@ -123,6 +140,9 @@ type LifeStatus
 
 
 {-| Box
+
+A hyperclass of collisionbox, reboundbox, etc..
+
 -}
 type alias Box =
     { name : String
