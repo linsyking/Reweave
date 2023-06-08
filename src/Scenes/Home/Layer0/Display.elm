@@ -22,5 +22,5 @@ dview : ( ModelX, Int ) -> CommonData -> GlobalData -> Renderable
 dview ( _, _ ) _ gd =
     group []
         [ renderSprite gd [] ( 0, 0 ) ( 1920, 1080 ) "homepage"
-        , renderText gd 30 "Ver. 1.0.0" "Courier New" ( 1700, 1000 )
+        , renderText gd 30 "Ver. 1.0.2" "Courier New" ( 1700, 1000 )
         ]
