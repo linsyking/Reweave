@@ -8365,6 +8365,880 @@ var $author$project$Scenes$SceneSettings$nullSceneCT = {
 };
 var $author$project$Main$initModel = {audiorepo: _List_Nil, currentData: $author$project$Scenes$SceneSettings$NullSceneData, currentGlobalData: $author$project$Common$initGlobalData, currentScene: $author$project$Scenes$SceneSettings$nullSceneCT, time: 0};
 var $author$project$MainConfig$initScene = 'Home';
+var $author$project$Lib$Scene$Base$SceneEngineMsg = function (a) {
+	return {$: 'SceneEngineMsg', a: a};
+};
+var $author$project$Lib$CoreEngine$GameLayer$Base$BehindActors = {$: 'BehindActors'};
+var $author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera = F2(
+	function (_v0, ggd) {
+		var x = _v0.a;
+		var y = _v0.b;
+		var _v1 = ggd.camera.position;
+		var cx = _v1.a;
+		var cy = _v1.b;
+		return _Utils_Tuple2(x - cx, y - cy);
+	});
+var $linsyking$elm_canvas$Canvas$Texture$dimensions = function (texture) {
+	if (texture.$ === 'TImage') {
+		var image = texture.a;
+		return {height: image.height, width: image.width};
+	} else {
+		var data = texture.a;
+		return {height: data.height, width: data.width};
+	}
+};
+var $author$project$Lib$Coordinate$Coordinates$plWidth = 1920;
+var $author$project$Lib$Coordinate$Coordinates$widthToReal = F2(
+	function (gd, x) {
+		var realWidth = gd.realWidth;
+		return realWidth * (x / ($author$project$Lib$Coordinate$Coordinates$plWidth - 1));
+	});
+var $author$project$Lib$Coordinate$Coordinates$heightToReal = $author$project$Lib$Coordinate$Coordinates$widthToReal;
+var $author$project$Lib$Resources$Base$igetSprite = F2(
+	function (name, dst) {
+		return A2($elm$core$Dict$get, name, dst);
+	});
+var $linsyking$elm_canvas$Canvas$Settings$Advanced$Scale = F2(
+	function (a, b) {
+		return {$: 'Scale', a: a, b: b};
+	});
+var $linsyking$elm_canvas$Canvas$Settings$Advanced$scale = $linsyking$elm_canvas$Canvas$Settings$Advanced$Scale;
+var $linsyking$elm_canvas$Canvas$Internal$Canvas$DrawableText = function (a) {
+	return {$: 'DrawableText', a: a};
+};
+var $linsyking$elm_canvas$Canvas$text = F3(
+	function (settings, point, str) {
+		return A2(
+			$linsyking$elm_canvas$Canvas$addSettingsToRenderable,
+			settings,
+			$linsyking$elm_canvas$Canvas$Internal$Canvas$Renderable(
+				{
+					commands: _List_Nil,
+					drawOp: $linsyking$elm_canvas$Canvas$Internal$Canvas$NotSpecified,
+					drawable: $linsyking$elm_canvas$Canvas$Internal$Canvas$DrawableText(
+						{maxWidth: $elm$core$Maybe$Nothing, point: point, text: str})
+				}));
+	});
+var $linsyking$elm_canvas$Canvas$Internal$Canvas$DrawableTexture = F2(
+	function (a, b) {
+		return {$: 'DrawableTexture', a: a, b: b};
+	});
+var $linsyking$elm_canvas$Canvas$texture = F3(
+	function (settings, p, t) {
+		return A2(
+			$linsyking$elm_canvas$Canvas$addSettingsToRenderable,
+			settings,
+			$linsyking$elm_canvas$Canvas$Internal$Canvas$Renderable(
+				{
+					commands: _List_Nil,
+					drawOp: $linsyking$elm_canvas$Canvas$Internal$Canvas$NotSpecified,
+					drawable: A2($linsyking$elm_canvas$Canvas$Internal$Canvas$DrawableTexture, p, t)
+				}));
+	});
+var $author$project$Lib$Coordinate$Coordinates$plHeight = 1080;
+var $author$project$Lib$Coordinate$Coordinates$posToReal = F2(
+	function (gd, _v0) {
+		var x = _v0.a;
+		var y = _v0.b;
+		var realWidth = gd.realWidth;
+		var realHeight = gd.realHeight;
+		return _Utils_Tuple2(realWidth * (x / ($author$project$Lib$Coordinate$Coordinates$plWidth - 1)), realHeight * (y / ($author$project$Lib$Coordinate$Coordinates$plHeight - 1)));
+	});
+var $author$project$Lib$Render$Render$transPoint = F2(
+	function (gd, p) {
+		return A2($author$project$Lib$Coordinate$Coordinates$posToReal, gd, p);
+	});
+var $linsyking$elm_canvas$Canvas$Internal$Canvas$SettingCommands = function (a) {
+	return {$: 'SettingCommands', a: a};
+};
+var $linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$fn = F2(
+	function (name, args) {
+		return $elm$json$Json$Encode$object(
+			_List_fromArray(
+				[
+					_Utils_Tuple2(
+					'type',
+					$elm$json$Json$Encode$string('function')),
+					_Utils_Tuple2(
+					'name',
+					$elm$json$Json$Encode$string(name)),
+					_Utils_Tuple2(
+					'args',
+					A2($elm$json$Json$Encode$list, $elm$core$Basics$identity, args))
+				]));
+	});
+var $linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$rotate = function (angle) {
+	return A2(
+		$linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$fn,
+		'rotate',
+		_List_fromArray(
+			[
+				$elm$json$Json$Encode$float(angle)
+			]));
+};
+var $linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$scale = F2(
+	function (x, y) {
+		return A2(
+			$linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$fn,
+			'scale',
+			_List_fromArray(
+				[
+					$elm$json$Json$Encode$float(x),
+					$elm$json$Json$Encode$float(y)
+				]));
+	});
+var $linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$transform = F6(
+	function (a, b, c, d, e, f) {
+		return A2(
+			$linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$fn,
+			'transform',
+			_List_fromArray(
+				[
+					$elm$json$Json$Encode$float(a),
+					$elm$json$Json$Encode$float(b),
+					$elm$json$Json$Encode$float(c),
+					$elm$json$Json$Encode$float(d),
+					$elm$json$Json$Encode$float(e),
+					$elm$json$Json$Encode$float(f)
+				]));
+	});
+var $linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$translate = F2(
+	function (x, y) {
+		return A2(
+			$linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$fn,
+			'translate',
+			_List_fromArray(
+				[
+					$elm$json$Json$Encode$float(x),
+					$elm$json$Json$Encode$float(y)
+				]));
+	});
+var $linsyking$elm_canvas$Canvas$Settings$Advanced$transform = function (transforms) {
+	return $linsyking$elm_canvas$Canvas$Internal$Canvas$SettingCommands(
+		A2(
+			$elm$core$List$map,
+			function (t) {
+				switch (t.$) {
+					case 'Rotate':
+						var angle = t.a;
+						return $linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$rotate(angle);
+					case 'Scale':
+						var x = t.a;
+						var y = t.b;
+						return A2($linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$scale, x, y);
+					case 'Translate':
+						var x = t.a;
+						var y = t.b;
+						return A2($linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$translate, x, y);
+					default:
+						var m11 = t.a.m11;
+						var m12 = t.a.m12;
+						var m21 = t.a.m21;
+						var m22 = t.a.m22;
+						var dx = t.a.dx;
+						var dy = t.a.dy;
+						return A6($linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$transform, m11, m12, m21, m22, dx, dy);
+				}
+			},
+			transforms));
+};
+var $linsyking$elm_canvas$Canvas$Settings$Advanced$Translate = F2(
+	function (a, b) {
+		return {$: 'Translate', a: a, b: b};
+	});
+var $linsyking$elm_canvas$Canvas$Settings$Advanced$translate = $linsyking$elm_canvas$Canvas$Settings$Advanced$Translate;
+var $author$project$Lib$Render$Render$renderSprite = F5(
+	function (gd, ls, p, _v0, name) {
+		var w = _v0.a;
+		var h = _v0.b;
+		var dst = gd.sprites;
+		var _v1 = A2($author$project$Lib$Resources$Base$igetSprite, name, dst);
+		if (_v1.$ === 'Just') {
+			var t = _v1.a;
+			var text_dim = $linsyking$elm_canvas$Canvas$Texture$dimensions(t);
+			var text_height = text_dim.height;
+			var text_width = text_dim.width;
+			var rw = A2($author$project$Lib$Coordinate$Coordinates$widthToReal, gd, w);
+			var width_s = rw / text_width;
+			var rh = A2($author$project$Lib$Coordinate$Coordinates$heightToReal, gd, h);
+			var height_s = rh / text_height;
+			var _v2 = A2($author$project$Lib$Render$Render$transPoint, gd, p);
+			var newx = _v2.a;
+			var newy = _v2.b;
+			return ((w > 0) && (h > 0)) ? A3(
+				$linsyking$elm_canvas$Canvas$texture,
+				A2(
+					$elm$core$List$cons,
+					$linsyking$elm_canvas$Canvas$Settings$Advanced$transform(
+						_List_fromArray(
+							[
+								A2($linsyking$elm_canvas$Canvas$Settings$Advanced$translate, newx, newy),
+								A2($linsyking$elm_canvas$Canvas$Settings$Advanced$scale, width_s, height_s)
+							])),
+					ls),
+				_Utils_Tuple2(0, 0),
+				t) : (((w > 0) && (h <= 0)) ? A3(
+				$linsyking$elm_canvas$Canvas$texture,
+				A2(
+					$elm$core$List$cons,
+					$linsyking$elm_canvas$Canvas$Settings$Advanced$transform(
+						_List_fromArray(
+							[
+								A2($linsyking$elm_canvas$Canvas$Settings$Advanced$translate, newx, newy),
+								A2($linsyking$elm_canvas$Canvas$Settings$Advanced$scale, width_s, width_s)
+							])),
+					ls),
+				_Utils_Tuple2(0, 0),
+				t) : (((w <= 0) && (h > 0)) ? A3(
+				$linsyking$elm_canvas$Canvas$texture,
+				A2(
+					$elm$core$List$cons,
+					$linsyking$elm_canvas$Canvas$Settings$Advanced$transform(
+						_List_fromArray(
+							[
+								A2($linsyking$elm_canvas$Canvas$Settings$Advanced$translate, newx, newy),
+								A2($linsyking$elm_canvas$Canvas$Settings$Advanced$scale, height_s, height_s)
+							])),
+					ls),
+				_Utils_Tuple2(0, 0),
+				t) : A3(
+				$linsyking$elm_canvas$Canvas$texture,
+				ls,
+				_Utils_Tuple2(newx, newy),
+				t)));
+		} else {
+			return A3(
+				$linsyking$elm_canvas$Canvas$text,
+				_List_Nil,
+				A2($author$project$Lib$Render$Render$transPoint, gd, p),
+				'');
+		}
+	});
+var $elm$core$Basics$not = _Basics_not;
+var $author$project$Lib$Render$Render$renderSpriteWithRev = F6(
+	function (rev, gd, ls, p, _v0, name) {
+		var w = _v0.a;
+		var h = _v0.b;
+		if (!rev) {
+			return A5(
+				$author$project$Lib$Render$Render$renderSprite,
+				gd,
+				ls,
+				p,
+				_Utils_Tuple2(w, h),
+				name);
+		} else {
+			var dst = gd.sprites;
+			var _v1 = A2($author$project$Lib$Resources$Base$igetSprite, name, dst);
+			if (_v1.$ === 'Just') {
+				var t = _v1.a;
+				var text_dim = $linsyking$elm_canvas$Canvas$Texture$dimensions(t);
+				var text_height = text_dim.height;
+				var text_width = text_dim.width;
+				var rw = A2($author$project$Lib$Coordinate$Coordinates$widthToReal, gd, w);
+				var width_s = rw / text_width;
+				var rh = A2($author$project$Lib$Coordinate$Coordinates$heightToReal, gd, h);
+				var height_s = rh / text_height;
+				var _v2 = A2($author$project$Lib$Render$Render$transPoint, gd, p);
+				var newx = _v2.a;
+				var newy = _v2.b;
+				return ((w > 0) && (h > 0)) ? A3(
+					$linsyking$elm_canvas$Canvas$texture,
+					A2(
+						$elm$core$List$cons,
+						$linsyking$elm_canvas$Canvas$Settings$Advanced$transform(
+							_List_fromArray(
+								[
+									A2($linsyking$elm_canvas$Canvas$Settings$Advanced$translate, newx, newy),
+									A2($linsyking$elm_canvas$Canvas$Settings$Advanced$scale, -width_s, width_s),
+									A2($linsyking$elm_canvas$Canvas$Settings$Advanced$translate, -text_width, 0)
+								])),
+						ls),
+					_Utils_Tuple2(0, 0),
+					t) : (((w > 0) && (h <= 0)) ? A3(
+					$linsyking$elm_canvas$Canvas$texture,
+					A2(
+						$elm$core$List$cons,
+						$linsyking$elm_canvas$Canvas$Settings$Advanced$transform(
+							_List_fromArray(
+								[
+									A2($linsyking$elm_canvas$Canvas$Settings$Advanced$translate, newx, newy),
+									A2($linsyking$elm_canvas$Canvas$Settings$Advanced$scale, -width_s, width_s),
+									A2($linsyking$elm_canvas$Canvas$Settings$Advanced$translate, -text_width, 0)
+								])),
+						ls),
+					_Utils_Tuple2(0, 0),
+					t) : (((w <= 0) && (h > 0)) ? A3(
+					$linsyking$elm_canvas$Canvas$texture,
+					A2(
+						$elm$core$List$cons,
+						$linsyking$elm_canvas$Canvas$Settings$Advanced$transform(
+							_List_fromArray(
+								[
+									A2($linsyking$elm_canvas$Canvas$Settings$Advanced$translate, newx, newy),
+									A2($linsyking$elm_canvas$Canvas$Settings$Advanced$scale, -height_s, height_s),
+									A2($linsyking$elm_canvas$Canvas$Settings$Advanced$translate, -text_width, 0)
+								])),
+						ls),
+					_Utils_Tuple2(0, 0),
+					t) : A3(
+					$linsyking$elm_canvas$Canvas$texture,
+					ls,
+					_Utils_Tuple2(newx, newy),
+					t)));
+			} else {
+				return A3(
+					$linsyking$elm_canvas$Canvas$text,
+					_List_Nil,
+					A2($author$project$Lib$Render$Render$transPoint, gd, p),
+					'Wrong Sprite');
+			}
+		}
+	});
+var $author$project$Scenes$End$Config$allChartlets = _List_fromArray(
+	[
+		_Utils_Tuple2(
+		F2(
+			function (gd, ggd) {
+				return A5(
+					$author$project$Lib$Render$Render$renderSprite,
+					gd,
+					_List_Nil,
+					A2(
+						$author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera,
+						_Utils_Tuple2(3800, 1820),
+						ggd),
+					_Utils_Tuple2(32 * 14, 0),
+					'bird');
+			}),
+		$author$project$Lib$CoreEngine$GameLayer$Base$BehindActors),
+		_Utils_Tuple2(
+		F2(
+			function (gd, ggd) {
+				return A5(
+					$author$project$Lib$Render$Render$renderSprite,
+					gd,
+					_List_Nil,
+					A2(
+						$author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera,
+						_Utils_Tuple2(800, 1820),
+						ggd),
+					_Utils_Tuple2(32 * 14, 0),
+					'turtle');
+			}),
+		$author$project$Lib$CoreEngine$GameLayer$Base$BehindActors),
+		_Utils_Tuple2(
+		F2(
+			function (gd, ggd) {
+				return A5(
+					$author$project$Lib$Render$Render$renderSprite,
+					gd,
+					_List_Nil,
+					A2(
+						$author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera,
+						_Utils_Tuple2(1600, 1820),
+						ggd),
+					_Utils_Tuple2(32 * 14, 0),
+					'fish');
+			}),
+		$author$project$Lib$CoreEngine$GameLayer$Base$BehindActors),
+		_Utils_Tuple2(
+		F2(
+			function (gd, ggd) {
+				return A6(
+					$author$project$Lib$Render$Render$renderSpriteWithRev,
+					true,
+					gd,
+					_List_Nil,
+					A2(
+						$author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera,
+						_Utils_Tuple2(2400, 1840),
+						ggd),
+					_Utils_Tuple2(32 * 10, 0),
+					'fox');
+			}),
+		$author$project$Lib$CoreEngine$GameLayer$Base$BehindActors),
+		_Utils_Tuple2(
+		F2(
+			function (gd, ggd) {
+				return A5(
+					$author$project$Lib$Render$Render$renderSprite,
+					gd,
+					_List_Nil,
+					A2(
+						$author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera,
+						_Utils_Tuple2(3000, 1820),
+						ggd),
+					_Utils_Tuple2(32 * 14, 0),
+					'lion');
+			}),
+		$author$project$Lib$CoreEngine$GameLayer$Base$BehindActors),
+		_Utils_Tuple2(
+		F2(
+			function (gd, ggd) {
+				return A5(
+					$author$project$Lib$Render$Render$renderSprite,
+					gd,
+					_List_Nil,
+					A2(
+						$author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera,
+						_Utils_Tuple2(4400, 1970),
+						ggd),
+					_Utils_Tuple2(32 * 5, 0),
+					'jn/willow');
+			}),
+		$author$project$Lib$CoreEngine$GameLayer$Base$BehindActors),
+		_Utils_Tuple2(
+		F2(
+			function (gd, ggd) {
+				return A5(
+					$author$project$Lib$Render$Render$renderSprite,
+					gd,
+					_List_Nil,
+					A2(
+						$author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera,
+						_Utils_Tuple2(5000, 1970),
+						ggd),
+					_Utils_Tuple2(32 * 5, 0),
+					'jn/willow');
+			}),
+		$author$project$Lib$CoreEngine$GameLayer$Base$BehindActors),
+		_Utils_Tuple2(
+		F2(
+			function (gd, ggd) {
+				return A5(
+					$author$project$Lib$Render$Render$renderSprite,
+					gd,
+					_List_Nil,
+					A2(
+						$author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera,
+						_Utils_Tuple2(5600, 1970),
+						ggd),
+					_Utils_Tuple2(32 * 5, 0),
+					'jn/willow');
+			}),
+		$author$project$Lib$CoreEngine$GameLayer$Base$BehindActors),
+		_Utils_Tuple2(
+		F2(
+			function (gd, ggd) {
+				return A5(
+					$author$project$Lib$Render$Render$renderSprite,
+					gd,
+					_List_Nil,
+					A2(
+						$author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera,
+						_Utils_Tuple2(6200, 1970),
+						ggd),
+					_Utils_Tuple2(32 * 5, 0),
+					'jn/willow');
+			}),
+		$author$project$Lib$CoreEngine$GameLayer$Base$BehindActors)
+	]);
+var $author$project$Scenes$End$Background$allbgs = _List_fromArray(
+	[
+		_Utils_Tuple3(
+		'bg/jn',
+		_Utils_Tuple2(0, 0),
+		_Utils_Tuple2(400, 600)),
+		_Utils_Tuple3(
+		'bg/dh',
+		_Utils_Tuple2(400, 600),
+		_Utils_Tuple2(800, 1000)),
+		_Utils_Tuple3(
+		'bg/zy',
+		_Utils_Tuple2(800, 1000),
+		_Utils_Tuple2(1200, 1400)),
+		_Utils_Tuple3(
+		'bg/lx',
+		_Utils_Tuple2(1200, 1400),
+		_Utils_Tuple2(1600, 1800)),
+		_Utils_Tuple3(
+		'bg/bm',
+		_Utils_Tuple2(1600, 1800),
+		_Utils_Tuple2(2000, 2200))
+	]);
+var $elm$core$Basics$ge = _Utils_ge;
+var $linsyking$elm_canvas$Canvas$Internal$Canvas$SettingCommand = function (a) {
+	return {$: 'SettingCommand', a: a};
+};
+var $linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$field = F2(
+	function (name, value) {
+		return $elm$json$Json$Encode$object(
+			_List_fromArray(
+				[
+					_Utils_Tuple2(
+					'type',
+					$elm$json$Json$Encode$string('field')),
+					_Utils_Tuple2(
+					'name',
+					$elm$json$Json$Encode$string(name)),
+					_Utils_Tuple2('value', value)
+				]));
+	});
+var $linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$globalAlpha = function (alpha) {
+	return A2(
+		$linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$field,
+		'globalAlpha',
+		$elm$json$Json$Encode$float(alpha));
+};
+var $linsyking$elm_canvas$Canvas$Settings$Advanced$alpha = function (a) {
+	return $linsyking$elm_canvas$Canvas$Internal$Canvas$SettingCommand(
+		$linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$globalAlpha(a));
+};
+var $author$project$Lib$CoreEngine$BackgroundLayer$ImageRolling$genBackground = F5(
+	function (rate, al, pic, ggd, gd) {
+		var _v0 = ggd.camera.position;
+		var cpx = _v0.a;
+		var offsetx = cpx * rate;
+		return A5(
+			$author$project$Lib$Render$Render$renderSprite,
+			gd,
+			_List_fromArray(
+				[
+					$linsyking$elm_canvas$Canvas$Settings$Advanced$alpha(al)
+				]),
+			_Utils_Tuple2(
+				$elm$core$Basics$floor(-offsetx),
+				0),
+			_Utils_Tuple2(0, 1080),
+			pic);
+	});
+var $elm$core$Basics$modBy = _Basics_modBy;
+var $author$project$Scenes$End$Background$background = F3(
+	function (_v0, ggd, gd) {
+		var t = A2($elm$core$Basics$modBy, 2200, gd.scenestarttime);
+		var allre = A2(
+			$elm$core$List$filter,
+			function (_v4) {
+				var _v5 = _v4.b;
+				var s1 = _v5.a;
+				var _v6 = _v4.c;
+				var e2 = _v6.b;
+				return (_Utils_cmp(s1, t) < 1) && (_Utils_cmp(t, e2) < 1);
+			},
+			$author$project$Scenes$End$Background$allbgs);
+		return A2(
+			$linsyking$elm_canvas$Canvas$group,
+			_List_Nil,
+			_Utils_ap(
+				A2(
+					$elm$core$List$map,
+					function (_v1) {
+						var mapname = _v1.a;
+						var _v2 = _v1.b;
+						var s1 = _v2.a;
+						var s2 = _v2.b;
+						var _v3 = _v1.c;
+						var e1 = _v3.a;
+						var e2 = _v3.b;
+						if ((!s2) && (!t)) {
+							return A5($author$project$Lib$CoreEngine$BackgroundLayer$ImageRolling$genBackground, 0.06, 0.7, mapname, ggd, gd);
+						} else {
+							if (_Utils_cmp(t, s2) < 1) {
+								var progress = ((t - s1) / (s2 - s1)) * 0.7;
+								return A5($author$project$Lib$CoreEngine$BackgroundLayer$ImageRolling$genBackground, 0.06, progress, mapname, ggd, gd);
+							} else {
+								if (_Utils_cmp(t, e1) > -1) {
+									var progress = ((e2 - t) / (e2 - e1)) * 0.7;
+									return A5($author$project$Lib$CoreEngine$BackgroundLayer$ImageRolling$genBackground, 0.06, progress, mapname, ggd, gd);
+								} else {
+									return A5($author$project$Lib$CoreEngine$BackgroundLayer$ImageRolling$genBackground, 0.06, 0.7, mapname, ggd, gd);
+								}
+							}
+						}
+					},
+					allre),
+				function () {
+					if (t >= 2000) {
+						var progress = ((t - 2000) / 200) * 0.7;
+						return _List_fromArray(
+							[
+								A5($author$project$Lib$CoreEngine$BackgroundLayer$ImageRolling$genBackground, 0.06, progress, 'bg/jn', ggd, gd)
+							]);
+					} else {
+						return _List_Nil;
+					}
+				}()));
+	});
+var $author$project$Lib$CoreEngine$GameComponents$Player$Base$CustomPlayerPosition = function (a) {
+	return {$: 'CustomPlayerPosition', a: a};
+};
+var $author$project$Lib$CoreEngine$GameComponents$Player$Base$DefaultPlayerPosition = {$: 'DefaultPlayerPosition'};
+var $author$project$Lib$CoreEngine$GameComponents$Exit$Base$ExitInit = F5(
+	function (initPosition, togo, newPlayerPosition, newState, uid) {
+		return {initPosition: initPosition, newPlayerPosition: newPlayerPosition, newState: newState, togo: togo, uid: uid};
+	});
+var $author$project$Lib$CoreEngine$GameComponent$Base$GameExitInit = function (a) {
+	return {$: 'GameExitInit', a: a};
+};
+var $elm$core$Array$fromListHelp = F3(
+	function (list, nodeList, nodeListSize) {
+		fromListHelp:
+		while (true) {
+			var _v0 = A2($elm$core$Elm$JsArray$initializeFromList, $elm$core$Array$branchFactor, list);
+			var jsArray = _v0.a;
+			var remainingItems = _v0.b;
+			if (_Utils_cmp(
+				$elm$core$Elm$JsArray$length(jsArray),
+				$elm$core$Array$branchFactor) < 0) {
+				return A2(
+					$elm$core$Array$builderToArray,
+					true,
+					{nodeList: nodeList, nodeListSize: nodeListSize, tail: jsArray});
+			} else {
+				var $temp$list = remainingItems,
+					$temp$nodeList = A2(
+					$elm$core$List$cons,
+					$elm$core$Array$Leaf(jsArray),
+					nodeList),
+					$temp$nodeListSize = nodeListSize + 1;
+				list = $temp$list;
+				nodeList = $temp$nodeList;
+				nodeListSize = $temp$nodeListSize;
+				continue fromListHelp;
+			}
+		}
+	});
+var $elm$core$Array$fromList = function (list) {
+	if (!list.b) {
+		return $elm$core$Array$empty;
+	} else {
+		return A3($elm$core$Array$fromListHelp, list, _List_Nil, 0);
+	}
+};
+var $author$project$Lib$CoreEngine$GameComponent$Base$Alive = {$: 'Alive'};
+var $author$project$Lib$CoreEngine$GameComponents$Exit$Model$simplecheckBox = {height: 200, name: 'sp', offsetX: 0, offsetY: 0, width: 200};
+var $author$project$Lib$CoreEngine$GameComponents$Exit$Model$initData = {
+	acceleration: _Utils_Tuple2(0, 0),
+	collisionbox: _List_Nil,
+	extra: $elm$core$Dict$empty,
+	mass: 0,
+	position: _Utils_Tuple2(300, 1100),
+	simplecheck: $author$project$Lib$CoreEngine$GameComponents$Exit$Model$simplecheckBox,
+	status: $author$project$Lib$CoreEngine$GameComponent$Base$Alive,
+	uid: 999,
+	velocity: _Utils_Tuple2(0, 0)
+};
+var $author$project$Lib$Component$Base$CDBool = function (a) {
+	return {$: 'CDBool', a: a};
+};
+var $author$project$Lib$Component$Base$CDInt = function (a) {
+	return {$: 'CDInt', a: a};
+};
+var $author$project$Lib$Component$Base$CDString = function (a) {
+	return {$: 'CDString', a: a};
+};
+var $author$project$Lib$CoreEngine$GameComponents$Exit$Model$colBox = {height: 40, name: 'sp', offsetX: 80, offsetY: 130, width: 40};
+var $author$project$Lib$CoreEngine$GameComponents$Exit$Model$initModel = F2(
+	function (_v0, gcm) {
+		if (gcm.$ === 'GameExitInit') {
+			var info = gcm.a;
+			return {
+				acceleration: _Utils_Tuple2(0, 0),
+				collisionbox: _List_fromArray(
+					[$author$project$Lib$CoreEngine$GameComponents$Exit$Model$colBox]),
+				extra: $elm$core$Dict$fromList(
+					_List_fromArray(
+						[
+							_Utils_Tuple2(
+							'togo',
+							$author$project$Lib$Component$Base$CDString(info.togo)),
+							_Utils_Tuple2(
+							'isdefault',
+							$author$project$Lib$Component$Base$CDBool(
+								function () {
+									var _v2 = info.newPlayerPosition;
+									if (_v2.$ === 'DefaultPlayerPosition') {
+										return true;
+									} else {
+										return false;
+									}
+								}())),
+							_Utils_Tuple2(
+							'posx',
+							$author$project$Lib$Component$Base$CDInt(
+								function () {
+									var _v3 = info.newPlayerPosition;
+									if (_v3.$ === 'DefaultPlayerPosition') {
+										return 0;
+									} else {
+										var _v4 = _v3.a;
+										var px = _v4.a;
+										return px;
+									}
+								}())),
+							_Utils_Tuple2(
+							'posy',
+							$author$project$Lib$Component$Base$CDInt(
+								function () {
+									var _v5 = info.newPlayerPosition;
+									if (_v5.$ === 'DefaultPlayerPosition') {
+										return 0;
+									} else {
+										var _v6 = _v5.a;
+										var py = _v6.b;
+										return py;
+									}
+								}())),
+							_Utils_Tuple2(
+							'newstate',
+							$author$project$Lib$Component$Base$CDInt(info.newState))
+						])),
+				mass: 70,
+				position: info.initPosition,
+				simplecheck: $author$project$Lib$CoreEngine$GameComponents$Exit$Model$simplecheckBox,
+				status: $author$project$Lib$CoreEngine$GameComponent$Base$Alive,
+				uid: info.uid,
+				velocity: _Utils_Tuple2(0, 0)
+			};
+		} else {
+			return $author$project$Lib$CoreEngine$GameComponents$Exit$Model$initData;
+		}
+	});
+var $author$project$Lib$CoreEngine$GameComponent$Base$GameExitScene = F3(
+	function (a, b, c) {
+		return {$: 'GameExitScene', a: a, b: b, c: c};
+	});
+var $author$project$Lib$CoreEngine$GameComponent$Base$GameParentMsg = function (a) {
+	return {$: 'GameParentMsg', a: a};
+};
+var $author$project$Lib$DefinedTypes$Parser$dgetString = F2(
+	function (f, s) {
+		var other = '';
+		var _v0 = A2($elm$core$Dict$get, s, f);
+		if ((_v0.$ === 'Just') && (_v0.a.$ === 'CDString')) {
+			var x = _v0.a.a;
+			return x;
+		} else {
+			return other;
+		}
+	});
+var $author$project$Lib$DefinedTypes$Parser$dgetbool = F2(
+	function (f, s) {
+		var other = false;
+		var _v0 = A2($elm$core$Dict$get, s, f);
+		if ((_v0.$ === 'Just') && (_v0.a.$ === 'CDBool')) {
+			var x = _v0.a.a;
+			return x;
+		} else {
+			return other;
+		}
+	});
+var $author$project$Lib$DefinedTypes$Parser$dgetint = F2(
+	function (f, s) {
+		var other = 0;
+		var _v0 = A2($elm$core$Dict$get, s, f);
+		if ((_v0.$ === 'Just') && (_v0.a.$ === 'CDInt')) {
+			var x = _v0.a.a;
+			return x;
+		} else {
+			return other;
+		}
+	});
+var $author$project$Lib$CoreEngine$GameComponents$Exit$Model$updateModel = F5(
+	function (_v0, gct, ggd, _v1, _v2) {
+		var d = _v2.a;
+		var t = _v2.b;
+		if ((gct.$ === 'GameInterCollisionMsg') && (gct.a === 'player')) {
+			var spstate = A2($author$project$Lib$DefinedTypes$Parser$dgetint, d.extra, 'newstate');
+			var isdefault = A2($author$project$Lib$DefinedTypes$Parser$dgetbool, d.extra, 'isdefault');
+			if (isdefault) {
+				return _Utils_Tuple3(
+					d,
+					_List_fromArray(
+						[
+							$author$project$Lib$CoreEngine$GameComponent$Base$GameParentMsg(
+							A3(
+								$author$project$Lib$CoreEngine$GameComponent$Base$GameExitScene,
+								A2($author$project$Lib$DefinedTypes$Parser$dgetString, d.extra, 'togo'),
+								$author$project$Lib$CoreEngine$GameComponents$Player$Base$DefaultPlayerPosition,
+								spstate))
+						]),
+					ggd);
+			} else {
+				var pp = _Utils_Tuple2(
+					A2($author$project$Lib$DefinedTypes$Parser$dgetint, d.extra, 'posx'),
+					A2($author$project$Lib$DefinedTypes$Parser$dgetint, d.extra, 'posy'));
+				return _Utils_Tuple3(
+					d,
+					_List_fromArray(
+						[
+							$author$project$Lib$CoreEngine$GameComponent$Base$GameParentMsg(
+							A3(
+								$author$project$Lib$CoreEngine$GameComponent$Base$GameExitScene,
+								A2($author$project$Lib$DefinedTypes$Parser$dgetString, d.extra, 'togo'),
+								$author$project$Lib$CoreEngine$GameComponents$Player$Base$CustomPlayerPosition(pp),
+								spstate))
+						]),
+					ggd);
+			}
+		} else {
+			return _Utils_Tuple3(d, _List_Nil, ggd);
+		}
+	});
+var $author$project$Lib$CoreEngine$GameComponents$Exit$Display$view = F3(
+	function (_v0, ggd, gd) {
+		var d = _v0.a;
+		var t = _v0.b;
+		return _List_fromArray(
+			[
+				_Utils_Tuple2(
+				A2(
+					$linsyking$elm_canvas$Canvas$group,
+					_List_Nil,
+					_List_fromArray(
+						[
+							A5(
+							$author$project$Lib$Render$Render$renderSprite,
+							gd,
+							_List_Nil,
+							A2($author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera, d.position, ggd),
+							_Utils_Tuple2(d.simplecheck.width, d.simplecheck.height),
+							'ot/transfer')
+						])),
+				0)
+			]);
+	});
+var $author$project$Lib$CoreEngine$GameComponents$Exit$Export$gameComponent = {data: $author$project$Lib$CoreEngine$GameComponents$Exit$Model$initData, init: $author$project$Lib$CoreEngine$GameComponents$Exit$Model$initModel, name: 'exit', update: $author$project$Lib$CoreEngine$GameComponents$Exit$Model$updateModel, view: $author$project$Lib$CoreEngine$GameComponents$Exit$Display$view};
+var $author$project$Lib$CoreEngine$GameComponent$ComponentHandler$initGameComponent = F3(
+	function (t, gct, gc) {
+		return _Utils_update(
+			gc,
+			{
+				data: A2(gc.init, t, gct)
+			});
+	});
+var $author$project$Scenes$End$Config$initActors = function (t) {
+	return $elm$core$Array$fromList(
+		_List_fromArray(
+			[
+				A3(
+				$author$project$Lib$CoreEngine$GameComponent$ComponentHandler$initGameComponent,
+				t,
+				$author$project$Lib$CoreEngine$GameComponent$Base$GameExitInit(
+					A5(
+						$author$project$Lib$CoreEngine$GameComponents$Exit$Base$ExitInit,
+						_Utils_Tuple2(10, 2000),
+						'Path',
+						$author$project$Lib$CoreEngine$GameComponents$Player$Base$CustomPlayerPosition(
+							_Utils_Tuple2(1344, 2056)),
+						0,
+						2)),
+				$author$project$Lib$CoreEngine$GameComponents$Exit$Export$gameComponent),
+				A3(
+				$author$project$Lib$CoreEngine$GameComponent$ComponentHandler$initGameComponent,
+				t,
+				$author$project$Lib$CoreEngine$GameComponent$Base$GameExitInit(
+					A5(
+						$author$project$Lib$CoreEngine$GameComponents$Exit$Base$ExitInit,
+						_Utils_Tuple2(9300, 2000),
+						'Home',
+						$author$project$Lib$CoreEngine$GameComponents$Player$Base$DefaultPlayerPosition,
+						0,
+						3)),
+				$author$project$Lib$CoreEngine$GameComponents$Exit$Export$gameComponent)
+			]));
+};
 var $author$project$Lib$CoreEngine$FrontgroundLayer$Base$CTInfo = F2(
 	function (components, timeseries) {
 		return {components: components, timeseries: timeseries};
@@ -8484,7 +9358,6 @@ var $elm$core$Array$appendHelpBuilder = F2(
 var $elm$core$Bitwise$and = _Bitwise_and;
 var $elm$core$Bitwise$shiftRightZfBy = _Bitwise_shiftRightZfBy;
 var $elm$core$Array$bitMask = 4294967295 >>> (32 - $elm$core$Array$shiftStep);
-var $elm$core$Basics$ge = _Utils_ge;
 var $elm$core$Elm$JsArray$push = _JsArray_push;
 var $elm$core$Elm$JsArray$singleton = _JsArray_singleton;
 var $elm$core$Elm$JsArray$unsafeGet = _JsArray_unsafeGet;
@@ -8639,46 +9512,8 @@ var $elm$core$Array$append = F2(
 						bTree)));
 		}
 	});
-var $elm$core$Array$fromListHelp = F3(
-	function (list, nodeList, nodeListSize) {
-		fromListHelp:
-		while (true) {
-			var _v0 = A2($elm$core$Elm$JsArray$initializeFromList, $elm$core$Array$branchFactor, list);
-			var jsArray = _v0.a;
-			var remainingItems = _v0.b;
-			if (_Utils_cmp(
-				$elm$core$Elm$JsArray$length(jsArray),
-				$elm$core$Array$branchFactor) < 0) {
-				return A2(
-					$elm$core$Array$builderToArray,
-					true,
-					{nodeList: nodeList, nodeListSize: nodeListSize, tail: jsArray});
-			} else {
-				var $temp$list = remainingItems,
-					$temp$nodeList = A2(
-					$elm$core$List$cons,
-					$elm$core$Array$Leaf(jsArray),
-					nodeList),
-					$temp$nodeListSize = nodeListSize + 1;
-				list = $temp$list;
-				nodeList = $temp$nodeList;
-				nodeListSize = $temp$nodeListSize;
-				continue fromListHelp;
-			}
-		}
-	});
-var $elm$core$Array$fromList = function (list) {
-	if (!list.b) {
-		return $elm$core$Array$empty;
-	} else {
-		return A3($elm$core$Array$fromListHelp, list, _List_Nil, 0);
-	}
-};
 var $author$project$Lib$Component$Base$CDFloat = function (a) {
 	return {$: 'CDFloat', a: a};
-};
-var $author$project$Lib$Component$Base$CDInt = function (a) {
-	return {$: 'CDInt', a: a};
 };
 var $author$project$Components$Bar$Bar$initBar = F2(
 	function (energy, _v0) {
@@ -8857,7 +9692,6 @@ var $author$project$Components$Bar$Bar$bezier = F3(
 				return d;
 		}
 	});
-var $elm$core$Basics$modBy = _Basics_modBy;
 var $author$project$Components$Bar$Bar$updateBar = F4(
 	function (_v0, gMsg, globalData, _v1) {
 		var d = _v1.a;
@@ -8916,13 +9750,6 @@ var $linsyking$elm_canvas$Canvas$Settings$fill = function (color) {
 			$linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$Color(color)));
 };
 var $avh4$elm_color$Color$green = A4($avh4$elm_color$Color$RgbaSpace, 115 / 255, 210 / 255, 22 / 255, 1.0);
-var $author$project$Lib$Coordinate$Coordinates$plWidth = 1920;
-var $author$project$Lib$Coordinate$Coordinates$widthToReal = F2(
-	function (gd, x) {
-		var realWidth = gd.realWidth;
-		return realWidth * (x / ($author$project$Lib$Coordinate$Coordinates$plWidth - 1));
-	});
-var $author$project$Lib$Coordinate$Coordinates$heightToReal = $author$project$Lib$Coordinate$Coordinates$widthToReal;
 var $linsyking$elm_canvas$Canvas$Internal$Canvas$Path = F2(
 	function (a, b) {
 		return {$: 'Path', a: a, b: b};
@@ -8935,7 +9762,6 @@ var $linsyking$elm_canvas$Canvas$Internal$Canvas$Arc = F5(
 	function (a, b, c, d, e) {
 		return {$: 'Arc', a: a, b: b, c: c, d: d, e: e};
 	});
-var $elm$core$Basics$not = _Basics_not;
 var $linsyking$elm_canvas$Canvas$arc = F3(
 	function (pos, radius, _v0) {
 		var startAngle = _v0.startAngle;
@@ -9155,12 +9981,6 @@ var $author$project$Components$Bar$Export$initComponent = F2(
 				data: A2($author$project$Components$Bar$Export$component.init, t, ct)
 			});
 	});
-var $author$project$Lib$Component$Base$CDBool = function (a) {
-	return {$: 'CDBool', a: a};
-};
-var $author$project$Lib$Component$Base$CDString = function (a) {
-	return {$: 'CDString', a: a};
-};
 var $author$project$Components$Console$Console$initModel = F2(
 	function (_v0, _v1) {
 		return $elm$core$Dict$fromList(
@@ -9178,28 +9998,6 @@ var $author$project$Lib$Component$Base$ComponentStringMsg = function (a) {
 	return {$: 'ComponentStringMsg', a: a};
 };
 var $elm$core$String$append = _String_append;
-var $author$project$Lib$DefinedTypes$Parser$dgetString = F2(
-	function (f, s) {
-		var other = '';
-		var _v0 = A2($elm$core$Dict$get, s, f);
-		if ((_v0.$ === 'Just') && (_v0.a.$ === 'CDString')) {
-			var x = _v0.a.a;
-			return x;
-		} else {
-			return other;
-		}
-	});
-var $author$project$Lib$DefinedTypes$Parser$dgetbool = F2(
-	function (f, s) {
-		var other = false;
-		var _v0 = A2($elm$core$Dict$get, s, f);
-		if ((_v0.$ === 'Just') && (_v0.a.$ === 'CDBool')) {
-			var x = _v0.a.a;
-			return x;
-		} else {
-			return other;
-		}
-	});
 var $elm$core$String$dropRight = F2(
 	function (n, string) {
 		return (n < 1) ? string : A3($elm$core$String$slice, 0, -n, string);
@@ -9334,42 +10132,6 @@ var $author$project$Components$Console$Console$updateModel = F4(
 			return _Utils_Tuple3(d, _List_Nil, gd);
 		}
 	});
-var $linsyking$elm_canvas$Canvas$Internal$Canvas$SettingCommand = function (a) {
-	return {$: 'SettingCommand', a: a};
-};
-var $linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$field = F2(
-	function (name, value) {
-		return $elm$json$Json$Encode$object(
-			_List_fromArray(
-				[
-					_Utils_Tuple2(
-					'type',
-					$elm$json$Json$Encode$string('field')),
-					_Utils_Tuple2(
-					'name',
-					$elm$json$Json$Encode$string(name)),
-					_Utils_Tuple2('value', value)
-				]));
-	});
-var $linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$globalAlpha = function (alpha) {
-	return A2(
-		$linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$field,
-		'globalAlpha',
-		$elm$json$Json$Encode$float(alpha));
-};
-var $linsyking$elm_canvas$Canvas$Settings$Advanced$alpha = function (a) {
-	return $linsyking$elm_canvas$Canvas$Internal$Canvas$SettingCommand(
-		$linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$globalAlpha(a));
-};
-var $author$project$Lib$Coordinate$Coordinates$plHeight = 1080;
-var $author$project$Lib$Coordinate$Coordinates$posToReal = F2(
-	function (gd, _v0) {
-		var x = _v0.a;
-		var y = _v0.b;
-		var realWidth = gd.realWidth;
-		var realHeight = gd.realHeight;
-		return _Utils_Tuple2(realWidth * (x / ($author$project$Lib$Coordinate$Coordinates$plWidth - 1)), realHeight * (y / ($author$project$Lib$Coordinate$Coordinates$plHeight - 1)));
-	});
 var $linsyking$elm_canvas$Canvas$Internal$Canvas$Rect = F3(
 	function (a, b, c) {
 		return {$: 'Rect', a: a, b: b, c: c};
@@ -9417,22 +10179,6 @@ var $linsyking$elm_canvas$Canvas$Settings$Text$font = function (_v0) {
 		$linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$font(
 			$elm$core$String$fromInt(size) + ('px ' + family)));
 };
-var $linsyking$elm_canvas$Canvas$Internal$Canvas$DrawableText = function (a) {
-	return {$: 'DrawableText', a: a};
-};
-var $linsyking$elm_canvas$Canvas$text = F3(
-	function (settings, point, str) {
-		return A2(
-			$linsyking$elm_canvas$Canvas$addSettingsToRenderable,
-			settings,
-			$linsyking$elm_canvas$Canvas$Internal$Canvas$Renderable(
-				{
-					commands: _List_Nil,
-					drawOp: $linsyking$elm_canvas$Canvas$Internal$Canvas$NotSpecified,
-					drawable: $linsyking$elm_canvas$Canvas$Internal$Canvas$DrawableText(
-						{maxWidth: $elm$core$Maybe$Nothing, point: point, text: str})
-				}));
-	});
 var $author$project$Lib$Render$Render$renderText = F5(
 	function (gd, size, s, ft, _v0) {
 		var x = _v0.a;
@@ -9546,17 +10292,6 @@ var $author$project$Lib$Component$Base$ComponentLSStringMsg = F2(
 	function (a, b) {
 		return {$: 'ComponentLSStringMsg', a: a, b: b};
 	});
-var $author$project$Lib$DefinedTypes$Parser$dgetint = F2(
-	function (f, s) {
-		var other = 0;
-		var _v0 = A2($elm$core$Dict$get, s, f);
-		if ((_v0.$ === 'Just') && (_v0.a.$ === 'CDInt')) {
-			var x = _v0.a.a;
-			return x;
-		} else {
-			return other;
-		}
-	});
 var $author$project$Lib$DefinedTypes$Parser$dsetDict = F3(
 	function (s, dict, f) {
 		return A3(
@@ -9658,210 +10393,6 @@ var $author$project$Lib$DefinedTypes$Parser$dgetDict = F2(
 			return x;
 		} else {
 			return other;
-		}
-	});
-var $linsyking$elm_canvas$Canvas$Texture$dimensions = function (texture) {
-	if (texture.$ === 'TImage') {
-		var image = texture.a;
-		return {height: image.height, width: image.width};
-	} else {
-		var data = texture.a;
-		return {height: data.height, width: data.width};
-	}
-};
-var $author$project$Lib$Resources$Base$igetSprite = F2(
-	function (name, dst) {
-		return A2($elm$core$Dict$get, name, dst);
-	});
-var $linsyking$elm_canvas$Canvas$Settings$Advanced$Scale = F2(
-	function (a, b) {
-		return {$: 'Scale', a: a, b: b};
-	});
-var $linsyking$elm_canvas$Canvas$Settings$Advanced$scale = $linsyking$elm_canvas$Canvas$Settings$Advanced$Scale;
-var $linsyking$elm_canvas$Canvas$Internal$Canvas$DrawableTexture = F2(
-	function (a, b) {
-		return {$: 'DrawableTexture', a: a, b: b};
-	});
-var $linsyking$elm_canvas$Canvas$texture = F3(
-	function (settings, p, t) {
-		return A2(
-			$linsyking$elm_canvas$Canvas$addSettingsToRenderable,
-			settings,
-			$linsyking$elm_canvas$Canvas$Internal$Canvas$Renderable(
-				{
-					commands: _List_Nil,
-					drawOp: $linsyking$elm_canvas$Canvas$Internal$Canvas$NotSpecified,
-					drawable: A2($linsyking$elm_canvas$Canvas$Internal$Canvas$DrawableTexture, p, t)
-				}));
-	});
-var $author$project$Lib$Render$Render$transPoint = F2(
-	function (gd, p) {
-		return A2($author$project$Lib$Coordinate$Coordinates$posToReal, gd, p);
-	});
-var $linsyking$elm_canvas$Canvas$Internal$Canvas$SettingCommands = function (a) {
-	return {$: 'SettingCommands', a: a};
-};
-var $linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$fn = F2(
-	function (name, args) {
-		return $elm$json$Json$Encode$object(
-			_List_fromArray(
-				[
-					_Utils_Tuple2(
-					'type',
-					$elm$json$Json$Encode$string('function')),
-					_Utils_Tuple2(
-					'name',
-					$elm$json$Json$Encode$string(name)),
-					_Utils_Tuple2(
-					'args',
-					A2($elm$json$Json$Encode$list, $elm$core$Basics$identity, args))
-				]));
-	});
-var $linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$rotate = function (angle) {
-	return A2(
-		$linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$fn,
-		'rotate',
-		_List_fromArray(
-			[
-				$elm$json$Json$Encode$float(angle)
-			]));
-};
-var $linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$scale = F2(
-	function (x, y) {
-		return A2(
-			$linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$fn,
-			'scale',
-			_List_fromArray(
-				[
-					$elm$json$Json$Encode$float(x),
-					$elm$json$Json$Encode$float(y)
-				]));
-	});
-var $linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$transform = F6(
-	function (a, b, c, d, e, f) {
-		return A2(
-			$linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$fn,
-			'transform',
-			_List_fromArray(
-				[
-					$elm$json$Json$Encode$float(a),
-					$elm$json$Json$Encode$float(b),
-					$elm$json$Json$Encode$float(c),
-					$elm$json$Json$Encode$float(d),
-					$elm$json$Json$Encode$float(e),
-					$elm$json$Json$Encode$float(f)
-				]));
-	});
-var $linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$translate = F2(
-	function (x, y) {
-		return A2(
-			$linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$fn,
-			'translate',
-			_List_fromArray(
-				[
-					$elm$json$Json$Encode$float(x),
-					$elm$json$Json$Encode$float(y)
-				]));
-	});
-var $linsyking$elm_canvas$Canvas$Settings$Advanced$transform = function (transforms) {
-	return $linsyking$elm_canvas$Canvas$Internal$Canvas$SettingCommands(
-		A2(
-			$elm$core$List$map,
-			function (t) {
-				switch (t.$) {
-					case 'Rotate':
-						var angle = t.a;
-						return $linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$rotate(angle);
-					case 'Scale':
-						var x = t.a;
-						var y = t.b;
-						return A2($linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$scale, x, y);
-					case 'Translate':
-						var x = t.a;
-						var y = t.b;
-						return A2($linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$translate, x, y);
-					default:
-						var m11 = t.a.m11;
-						var m12 = t.a.m12;
-						var m21 = t.a.m21;
-						var m22 = t.a.m22;
-						var dx = t.a.dx;
-						var dy = t.a.dy;
-						return A6($linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$transform, m11, m12, m21, m22, dx, dy);
-				}
-			},
-			transforms));
-};
-var $linsyking$elm_canvas$Canvas$Settings$Advanced$Translate = F2(
-	function (a, b) {
-		return {$: 'Translate', a: a, b: b};
-	});
-var $linsyking$elm_canvas$Canvas$Settings$Advanced$translate = $linsyking$elm_canvas$Canvas$Settings$Advanced$Translate;
-var $author$project$Lib$Render$Render$renderSprite = F5(
-	function (gd, ls, p, _v0, name) {
-		var w = _v0.a;
-		var h = _v0.b;
-		var dst = gd.sprites;
-		var _v1 = A2($author$project$Lib$Resources$Base$igetSprite, name, dst);
-		if (_v1.$ === 'Just') {
-			var t = _v1.a;
-			var text_dim = $linsyking$elm_canvas$Canvas$Texture$dimensions(t);
-			var text_height = text_dim.height;
-			var text_width = text_dim.width;
-			var rw = A2($author$project$Lib$Coordinate$Coordinates$widthToReal, gd, w);
-			var width_s = rw / text_width;
-			var rh = A2($author$project$Lib$Coordinate$Coordinates$heightToReal, gd, h);
-			var height_s = rh / text_height;
-			var _v2 = A2($author$project$Lib$Render$Render$transPoint, gd, p);
-			var newx = _v2.a;
-			var newy = _v2.b;
-			return ((w > 0) && (h > 0)) ? A3(
-				$linsyking$elm_canvas$Canvas$texture,
-				A2(
-					$elm$core$List$cons,
-					$linsyking$elm_canvas$Canvas$Settings$Advanced$transform(
-						_List_fromArray(
-							[
-								A2($linsyking$elm_canvas$Canvas$Settings$Advanced$translate, newx, newy),
-								A2($linsyking$elm_canvas$Canvas$Settings$Advanced$scale, width_s, height_s)
-							])),
-					ls),
-				_Utils_Tuple2(0, 0),
-				t) : (((w > 0) && (h <= 0)) ? A3(
-				$linsyking$elm_canvas$Canvas$texture,
-				A2(
-					$elm$core$List$cons,
-					$linsyking$elm_canvas$Canvas$Settings$Advanced$transform(
-						_List_fromArray(
-							[
-								A2($linsyking$elm_canvas$Canvas$Settings$Advanced$translate, newx, newy),
-								A2($linsyking$elm_canvas$Canvas$Settings$Advanced$scale, width_s, width_s)
-							])),
-					ls),
-				_Utils_Tuple2(0, 0),
-				t) : (((w <= 0) && (h > 0)) ? A3(
-				$linsyking$elm_canvas$Canvas$texture,
-				A2(
-					$elm$core$List$cons,
-					$linsyking$elm_canvas$Canvas$Settings$Advanced$transform(
-						_List_fromArray(
-							[
-								A2($linsyking$elm_canvas$Canvas$Settings$Advanced$translate, newx, newy),
-								A2($linsyking$elm_canvas$Canvas$Settings$Advanced$scale, height_s, height_s)
-							])),
-					ls),
-				_Utils_Tuple2(0, 0),
-				t) : A3(
-				$linsyking$elm_canvas$Canvas$texture,
-				ls,
-				_Utils_Tuple2(newx, newy),
-				t)));
-		} else {
-			return A3(
-				$linsyking$elm_canvas$Canvas$text,
-				_List_Nil,
-				A2($author$project$Lib$Render$Render$transPoint, gd, p),
-				'');
 		}
 	});
 var $author$project$Components$Menu$Map$Map$viewMap = F2(
@@ -11939,86 +12470,6 @@ var $author$project$Components$Trans$Trans$updateTrans = F4(
 				globalData) : _Utils_Tuple3(d, _List_Nil, globalData));
 		}
 	});
-var $author$project$Lib$Render$Render$renderSpriteWithRev = F6(
-	function (rev, gd, ls, p, _v0, name) {
-		var w = _v0.a;
-		var h = _v0.b;
-		if (!rev) {
-			return A5(
-				$author$project$Lib$Render$Render$renderSprite,
-				gd,
-				ls,
-				p,
-				_Utils_Tuple2(w, h),
-				name);
-		} else {
-			var dst = gd.sprites;
-			var _v1 = A2($author$project$Lib$Resources$Base$igetSprite, name, dst);
-			if (_v1.$ === 'Just') {
-				var t = _v1.a;
-				var text_dim = $linsyking$elm_canvas$Canvas$Texture$dimensions(t);
-				var text_height = text_dim.height;
-				var text_width = text_dim.width;
-				var rw = A2($author$project$Lib$Coordinate$Coordinates$widthToReal, gd, w);
-				var width_s = rw / text_width;
-				var rh = A2($author$project$Lib$Coordinate$Coordinates$heightToReal, gd, h);
-				var height_s = rh / text_height;
-				var _v2 = A2($author$project$Lib$Render$Render$transPoint, gd, p);
-				var newx = _v2.a;
-				var newy = _v2.b;
-				return ((w > 0) && (h > 0)) ? A3(
-					$linsyking$elm_canvas$Canvas$texture,
-					A2(
-						$elm$core$List$cons,
-						$linsyking$elm_canvas$Canvas$Settings$Advanced$transform(
-							_List_fromArray(
-								[
-									A2($linsyking$elm_canvas$Canvas$Settings$Advanced$translate, newx, newy),
-									A2($linsyking$elm_canvas$Canvas$Settings$Advanced$scale, -width_s, width_s),
-									A2($linsyking$elm_canvas$Canvas$Settings$Advanced$translate, -text_width, 0)
-								])),
-						ls),
-					_Utils_Tuple2(0, 0),
-					t) : (((w > 0) && (h <= 0)) ? A3(
-					$linsyking$elm_canvas$Canvas$texture,
-					A2(
-						$elm$core$List$cons,
-						$linsyking$elm_canvas$Canvas$Settings$Advanced$transform(
-							_List_fromArray(
-								[
-									A2($linsyking$elm_canvas$Canvas$Settings$Advanced$translate, newx, newy),
-									A2($linsyking$elm_canvas$Canvas$Settings$Advanced$scale, -width_s, width_s),
-									A2($linsyking$elm_canvas$Canvas$Settings$Advanced$translate, -text_width, 0)
-								])),
-						ls),
-					_Utils_Tuple2(0, 0),
-					t) : (((w <= 0) && (h > 0)) ? A3(
-					$linsyking$elm_canvas$Canvas$texture,
-					A2(
-						$elm$core$List$cons,
-						$linsyking$elm_canvas$Canvas$Settings$Advanced$transform(
-							_List_fromArray(
-								[
-									A2($linsyking$elm_canvas$Canvas$Settings$Advanced$translate, newx, newy),
-									A2($linsyking$elm_canvas$Canvas$Settings$Advanced$scale, -height_s, height_s),
-									A2($linsyking$elm_canvas$Canvas$Settings$Advanced$translate, -text_width, 0)
-								])),
-						ls),
-					_Utils_Tuple2(0, 0),
-					t) : A3(
-					$linsyking$elm_canvas$Canvas$texture,
-					ls,
-					_Utils_Tuple2(newx, newy),
-					t)));
-			} else {
-				return A3(
-					$linsyking$elm_canvas$Canvas$text,
-					_List_Nil,
-					A2($author$project$Lib$Render$Render$transPoint, gd, p),
-					'Wrong Sprite');
-			}
-		}
-	});
 var $author$project$Components$Trans$Trans$shapePos = F3(
 	function (time, _v0, _v1) {
 		var startX = _v0.a;
@@ -12409,7 +12860,6 @@ var $author$project$Components$Trans$Export$initComponent = F2(
 				data: A2($author$project$Components$Trans$Export$component.init, t, ct)
 			});
 	});
-var $author$project$Lib$CoreEngine$GameComponents$Player$Base$DefaultPlayerPosition = {$: 'DefaultPlayerPosition'};
 var $author$project$Lib$Scene$Base$nullEngineT = {collectedMonsters: _List_Nil, energy: 500, playerPosition: $author$project$Lib$CoreEngine$GameComponents$Player$Base$DefaultPlayerPosition, specialstate: 0};
 var $author$project$Lib$CoreEngine$FrontgroundLayer$Model$initModel = F3(
 	function (t, lm, _v0) {
@@ -12543,7 +12993,6 @@ var $author$project$Lib$CoreEngine$FrontgroundLayer$Global$getLayerCT = function
 		update,
 		view);
 };
-var $author$project$Lib$CoreEngine$GameComponent$Base$Alive = {$: 'Alive'};
 var $author$project$Lib$CoreEngine$GameComponents$Player$Model$collisionBox = {height: 105, name: 'col', offsetX: 5, offsetY: 15, width: 60};
 var $author$project$Lib$Component$Base$CDPlayerModel = function (a) {
 	return {$: 'CDPlayerModel', a: a};
@@ -13298,15 +13747,6 @@ var $author$project$Lib$DefinedTypes$Parser$dsetPlayer = F3(
 var $author$project$Lib$CoreEngine$GameComponents$Player$Base$fixnotrightdir = F2(
 	function (o, bk) {
 		return ((bk.right === 1) && (!bk.left)) ? true : (((!bk.right) && (bk.left === 1)) ? false : o);
-	});
-var $author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera = F2(
-	function (_v0, ggd) {
-		var x = _v0.a;
-		var y = _v0.b;
-		var _v1 = ggd.camera.position;
-		var cx = _v1.a;
-		var cy = _v1.b;
-		return _Utils_Tuple2(x - cx, y - cy);
 	});
 var $author$project$Lib$CoreEngine$GameComponent$ComponentHandler$isAlive = function (d) {
 	var _v0 = d.status;
@@ -14672,9 +15112,6 @@ var $author$project$Lib$Layer$Base$LayerName = function (a) {
 };
 var $author$project$Lib$Layer$Base$LayerStringMsg = function (a) {
 	return {$: 'LayerStringMsg', a: a};
-};
-var $author$project$Lib$CoreEngine$GameComponents$Player$Base$CustomPlayerPosition = function (a) {
-	return {$: 'CustomPlayerPosition', a: a};
 };
 var $author$project$Lib$Layer$Base$LayerExitMsg = F3(
 	function (a, b, c) {
@@ -17002,14 +17439,6 @@ var $author$project$Lib$CoreEngine$GameComponent$GenUID$genUID = function (model
 		return 99999;
 	}
 };
-var $author$project$Lib$CoreEngine$GameComponent$ComponentHandler$initGameComponent = F3(
-	function (t, gct, gc) {
-		return _Utils_update(
-			gc,
-			{
-				data: A2(gc.init, t, gct)
-			});
-	});
 var $author$project$Lib$CoreEngine$GameLayer$Model$dealParentMsg = F4(
 	function (gct, gd, _v0, ggd) {
 		var model = _v0.a;
@@ -18268,7 +18697,6 @@ var $author$project$Lib$CoreEngine$GameComponent$ComponentHandler$genView = F4(
 				},
 				res));
 	});
-var $author$project$Lib$CoreEngine$GameLayer$Base$BehindActors = {$: 'BehindActors'};
 var $author$project$Lib$Map$Chartlet$renderSingleBlock = F2(
 	function (tp, p) {
 		switch (tp) {
@@ -19192,6 +19620,337 @@ var $author$project$Lib$CoreEngine$Model$initModel = F2(
 			};
 		}
 	});
+var $author$project$Lib$CoreEngine$Export$initEngine = F2(
+	function (t, sm) {
+		return A2($author$project$Lib$CoreEngine$Model$initModel, t, sm);
+	});
+var $author$project$Components$Hints$Hints$initHints = F2(
+	function (t, ct) {
+		if (((((ct.$ === 'ComponentLStringMsg') && ct.a.b) && ct.a.b.b) && ct.a.b.b.b) && ct.a.b.b.b.b) {
+			var _v1 = ct.a;
+			var start = _v1.a;
+			var _v2 = _v1.b;
+			var px = _v2.a;
+			var _v3 = _v2.b;
+			var py = _v3.a;
+			var _v4 = _v3.b;
+			var fsize = _v4.a;
+			var xs = _v4.b;
+			return $elm$core$Dict$fromList(
+				_List_fromArray(
+					[
+						_Utils_Tuple2(
+						'hints',
+						$author$project$Lib$Component$Base$CDLString(xs)),
+						_Utils_Tuple2(
+						'starttime',
+						$author$project$Lib$Component$Base$CDInt(t)),
+						_Utils_Tuple2(
+						'posx',
+						$author$project$Lib$Component$Base$CDInt(
+							A2(
+								$elm$core$Maybe$withDefault,
+								0,
+								$elm$core$String$toInt(px)))),
+						_Utils_Tuple2(
+						'posy',
+						$author$project$Lib$Component$Base$CDInt(
+							A2(
+								$elm$core$Maybe$withDefault,
+								0,
+								$elm$core$String$toInt(py)))),
+						_Utils_Tuple2(
+						'size',
+						$author$project$Lib$Component$Base$CDInt(
+							A2(
+								$elm$core$Maybe$withDefault,
+								0,
+								$elm$core$String$toInt(fsize)))),
+						_Utils_Tuple2(
+						'st',
+						$author$project$Lib$Component$Base$CDInt(
+							A2(
+								$elm$core$Maybe$withDefault,
+								0,
+								$elm$core$String$toInt(start))))
+					]));
+		} else {
+			return $elm$core$Dict$empty;
+		}
+	});
+var $author$project$Components$Hints$Hints$updateHints = F4(
+	function (_v0, _v1, gd, _v2) {
+		var d = _v2.a;
+		return _Utils_Tuple3(d, _List_Nil, gd);
+	});
+var $author$project$Components$Hints$Hints$genalpha = function (k) {
+	return (k < 0) ? 0 : ((k < 70) ? ((1 / 70) * k) : ((k < 170) ? 1 : ((k < 240) ? ((((-1) / 70) * k) + (24 / 7)) : 0)));
+};
+var $author$project$Components$Hints$Hints$viewHints = F2(
+	function (_v0, gd) {
+		var d = _v0.a;
+		var t = _v0.b;
+		var startshow = A2($author$project$Lib$DefinedTypes$Parser$dgetint, d, 'st');
+		var st = A2($author$project$Lib$DefinedTypes$Parser$dgetint, d, 'starttime');
+		var pp = _Utils_Tuple2(
+			A2($author$project$Lib$DefinedTypes$Parser$dgetint, d, 'posx'),
+			A2($author$project$Lib$DefinedTypes$Parser$dgetint, d, 'posy'));
+		var fs = A2($author$project$Lib$DefinedTypes$Parser$dgetint, d, 'size');
+		var elapsed = t - st;
+		var qstart = elapsed - startshow;
+		var stage = A2($elm$core$Basics$modBy, 280, qstart);
+		var cursentn = (qstart / 280) | 0;
+		var allhints = A2($author$project$Lib$DefinedTypes$Parser$dgetLString, d, 'hints');
+		var curh = A2(
+			$elm$core$Maybe$withDefault,
+			'',
+			$elm$core$List$head(
+				A2($elm$core$List$drop, cursentn, allhints)));
+		return (qstart < 0) ? A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil) : A2(
+			$linsyking$elm_canvas$Canvas$group,
+			_List_fromArray(
+				[
+					$linsyking$elm_canvas$Canvas$Settings$Advanced$alpha(
+					$author$project$Components$Hints$Hints$genalpha(stage))
+				]),
+			_List_fromArray(
+				[
+					A5($author$project$Lib$Render$Render$renderText, gd, fs, curh, 'Times New Roman', pp)
+				]));
+	});
+var $author$project$Components$Hints$Export$component = {
+	data: A2($author$project$Components$Hints$Hints$initHints, 0, $author$project$Lib$Component$Base$NullComponentMsg),
+	init: $author$project$Components$Hints$Hints$initHints,
+	name: 'Hints',
+	query: F2(
+		function (_v0, _v1) {
+			return $author$project$Lib$Component$Base$NullComponentMsg;
+		}),
+	update: $author$project$Components$Hints$Hints$updateHints,
+	view: $author$project$Components$Hints$Hints$viewHints
+};
+var $author$project$Components$Hints$Export$initComponent = F2(
+	function (t, ct) {
+		return _Utils_update(
+			$author$project$Components$Hints$Export$component,
+			{
+				data: A2($author$project$Components$Hints$Export$component.init, t, ct)
+			});
+	});
+var $author$project$Scenes$End$Config$initFrontGroundComponents = function (t) {
+	return $elm$core$Array$fromList(
+		_List_fromArray(
+			[
+				A2(
+				$author$project$Components$Hints$Export$initComponent,
+				t,
+				$author$project$Lib$Component$Base$ComponentLStringMsg(
+					_List_fromArray(
+						['40', '600', '500', '90', 'Thanks for playing']))),
+				A2(
+				$author$project$Components$Hints$Export$initComponent,
+				t,
+				$author$project$Lib$Component$Base$ComponentLStringMsg(
+					_List_fromArray(
+						['40', '680', '620', '50', 'You have saved the human']))),
+				A2(
+				$author$project$Components$Hints$Export$initComponent,
+				t,
+				$author$project$Lib$Component$Base$ComponentLStringMsg(
+					_List_fromArray(
+						['200', '1600', '100', '60', 'Director']))),
+				A2(
+				$author$project$Components$Hints$Export$initComponent,
+				t,
+				$author$project$Lib$Component$Base$ComponentLStringMsg(
+					_List_fromArray(
+						['200', '1600', '170', '40', 'Xiang Yiming']))),
+				A2(
+				$author$project$Components$Hints$Export$initComponent,
+				t,
+				$author$project$Lib$Component$Base$ComponentLStringMsg(
+					_List_fromArray(
+						['500', '1400', '600', '60', 'Artist & Composer']))),
+				A2(
+				$author$project$Components$Hints$Export$initComponent,
+				t,
+				$author$project$Lib$Component$Base$ComponentLStringMsg(
+					_List_fromArray(
+						['500', '1400', '670', '40', 'Wang Dayong']))),
+				A2(
+				$author$project$Components$Hints$Export$initComponent,
+				t,
+				$author$project$Lib$Component$Base$ComponentLStringMsg(
+					_List_fromArray(
+						['800', '300', '600', '60', 'Level Designers']))),
+				A2(
+				$author$project$Components$Hints$Export$initComponent,
+				t,
+				$author$project$Lib$Component$Base$ComponentLStringMsg(
+					_List_fromArray(
+						['800', '300', '670', '40', 'Xiang Yiming, Zhang Jingjing']))),
+				A2(
+				$author$project$Components$Hints$Export$initComponent,
+				t,
+				$author$project$Lib$Component$Base$ComponentLStringMsg(
+					_List_fromArray(
+						['1100', '300', '100', '60', 'Game Engine Designers']))),
+				A2(
+				$author$project$Components$Hints$Export$initComponent,
+				t,
+				$author$project$Lib$Component$Base$ComponentLStringMsg(
+					_List_fromArray(
+						['1100', '300', '170', '40', 'Xiang Yiming, Duan Lingbo']))),
+				A2(
+				$author$project$Components$Hints$Export$initComponent,
+				t,
+				$author$project$Lib$Component$Base$ComponentLStringMsg(
+					_List_fromArray(
+						['1400', '300', '600', '60', 'Story Designer']))),
+				A2(
+				$author$project$Components$Hints$Export$initComponent,
+				t,
+				$author$project$Lib$Component$Base$ComponentLStringMsg(
+					_List_fromArray(
+						['1400', '300', '670', '40', 'Zhang Jingjing']))),
+				A2(
+				$author$project$Components$Hints$Export$initComponent,
+				t,
+				$author$project$Lib$Component$Base$ComponentLStringMsg(
+					_List_fromArray(
+						['1800', '600', '400', '90', 'Technical Support']))),
+				A2(
+				$author$project$Components$Hints$Export$initComponent,
+				t,
+				$author$project$Lib$Component$Base$ComponentLStringMsg(
+					_List_fromArray(
+						['1800', '750', '550', '60', 'SFOCS Staffs'])))
+			]));
+};
+var $author$project$Scenes$End$Map$mapwidth = 300;
+var $author$project$Scenes$End$Config$initCamera = A4(
+	$author$project$Lib$CoreEngine$Camera$Base$CameraData,
+	_Utils_Tuple2(0, 1120),
+	_Utils_Tuple2(0, 0),
+	_Utils_Tuple2(
+		_Utils_Tuple2(32, 0),
+		_Utils_Tuple2((32 * ($author$project$Scenes$End$Map$mapwidth - 1)) - 1, (70 * 32) - 1)),
+	_Utils_Tuple2(
+		_Utils_Tuple2(0.2, 0.3),
+		_Utils_Tuple2(0.4, 0.4)));
+var $author$project$Lib$Map$Zhongyuan$buildplatforms = F3(
+	function (_v0, mn, ss) {
+		var x = _v0.a;
+		var y = _v0.b;
+		return A3(
+			$elm$core$List$foldl,
+			F2(
+				function (i, sc) {
+					return A4(
+						$author$project$Lib$Map$Poly$buildrect,
+						_Utils_Tuple2((x + (4 * i)) + 1, y),
+						_Utils_Tuple2(5, 1),
+						2,
+						A4(
+							$author$project$Lib$Map$Poly$buildrect,
+							_Utils_Tuple2(x + (4 * i), y),
+							_Utils_Tuple2(1, 1),
+							20,
+							sc));
+				}),
+			ss,
+			A2($elm$core$List$range, 0, mn - 1));
+	});
+var $author$project$Scenes$End$Map$sds = A3($tortus$elm_array_2d$Array2D$repeat, $author$project$Scenes$End$Map$mapwidth, 70, 0);
+var $author$project$Scenes$End$Map$mymap = A4(
+	$author$project$Lib$Map$Poly$buildrect,
+	_Utils_Tuple2($author$project$Scenes$End$Map$mapwidth - 1, 0),
+	_Utils_Tuple2(1, 70),
+	2,
+	A4(
+		$author$project$Lib$Map$Poly$buildrect,
+		_Utils_Tuple2(0, 69),
+		_Utils_Tuple2($author$project$Scenes$End$Map$mapwidth, 1),
+		2,
+		A3(
+			$author$project$Lib$Map$Zhongyuan$buildplatforms,
+			_Utils_Tuple2(0, 68),
+			80,
+			A4(
+				$author$project$Lib$Map$Poly$buildrect,
+				_Utils_Tuple2(0, 0),
+				_Utils_Tuple2(1, 70),
+				2,
+				$author$project$Scenes$End$Map$sds))));
+var $author$project$Scenes$End$Config$initGameGlobalData = F2(
+	function (e, col) {
+		return {
+			camera: $author$project$Scenes$End$Config$initCamera,
+			collectedMonsters: col,
+			currentScene: 'End',
+			energy: e,
+			ingamepause: false,
+			mapsize: _Utils_Tuple2($author$project$Scenes$End$Map$mapwidth, 70),
+			selectobj: 1,
+			settingpause: false,
+			solidmap: $author$project$Scenes$End$Map$mymap,
+			specialState: 0
+		};
+	});
+var $author$project$Lib$CoreEngine$GameComponent$Base$GamePlayerInit = function (a) {
+	return {$: 'GamePlayerInit', a: a};
+};
+var $author$project$Lib$CoreEngine$GameComponents$Player$Base$PlayerInit = function (initPosition) {
+	return {initPosition: initPosition};
+};
+var $author$project$Scenes$End$Config$initPlayer = F2(
+	function (t, pos) {
+		if (pos.$ === 'DefaultPlayerPosition') {
+			return A3(
+				$author$project$Lib$CoreEngine$GameComponent$ComponentHandler$initGameComponent,
+				t,
+				$author$project$Lib$CoreEngine$GameComponent$Base$GamePlayerInit(
+					$author$project$Lib$CoreEngine$GameComponents$Player$Base$PlayerInit(
+						_Utils_Tuple2(250, 2000))),
+				$author$project$Lib$CoreEngine$GameComponents$Player$Export$gameComponent);
+		} else {
+			var x = pos.a;
+			return A3(
+				$author$project$Lib$CoreEngine$GameComponent$ComponentHandler$initGameComponent,
+				t,
+				$author$project$Lib$CoreEngine$GameComponent$Base$GamePlayerInit(
+					$author$project$Lib$CoreEngine$GameComponents$Player$Base$PlayerInit(x)),
+				$author$project$Lib$CoreEngine$GameComponents$Player$Export$gameComponent);
+		}
+	});
+var $author$project$Scenes$End$Export$game = F2(
+	function (t, sm) {
+		var engineMsg = function () {
+			if (sm.$ === 'SceneEngineTMsg') {
+				var x = sm.a;
+				return x;
+			} else {
+				return $author$project$Lib$Scene$Base$nullEngineT;
+			}
+		}();
+		return A2(
+			$author$project$Lib$CoreEngine$Export$initEngine,
+			t,
+			$author$project$Lib$Scene$Base$SceneEngineMsg(
+				{
+					actors: $author$project$Scenes$End$Config$initActors(t),
+					background: _Utils_Tuple2($elm$core$Array$empty, $author$project$Scenes$End$Background$background),
+					chartlets: $author$project$Scenes$End$Config$allChartlets,
+					frontground: _Utils_Tuple2(
+						$author$project$Scenes$End$Config$initFrontGroundComponents(t),
+						F3(
+							function (_v0, _v1, _v2) {
+								return A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil);
+							})),
+					globalData: A2($author$project$Scenes$End$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters),
+					player: A2($author$project$Scenes$End$Config$initPlayer, t, engineMsg.playerPosition)
+				}));
+	});
 var $author$project$Lib$Scene$Base$SOChangeScene = function (a) {
 	return {$: 'SOChangeScene', a: a};
 };
@@ -19525,766 +20284,6 @@ var $author$project$Lib$CoreEngine$Model$viewModel = F2(
 		var model = _v0.a;
 		var t = _v0.b;
 		return A4($author$project$Lib$Layer$LayerHandler$viewLayer, gd, t, model.gameGlobalData, model.layers);
-	});
-var $author$project$Lib$CoreEngine$Export$scene = {init: $author$project$Lib$CoreEngine$Model$initModel, update: $author$project$Lib$CoreEngine$Model$updateModel, view: $author$project$Lib$CoreEngine$Model$viewModel};
-var $author$project$Lib$Scene$Base$SceneEngineMsg = function (a) {
-	return {$: 'SceneEngineMsg', a: a};
-};
-var $author$project$Scenes$End$Config$allChartlets = _List_fromArray(
-	[
-		_Utils_Tuple2(
-		F2(
-			function (gd, ggd) {
-				return A5(
-					$author$project$Lib$Render$Render$renderSprite,
-					gd,
-					_List_Nil,
-					A2(
-						$author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera,
-						_Utils_Tuple2(3800, 1820),
-						ggd),
-					_Utils_Tuple2(32 * 14, 0),
-					'bird');
-			}),
-		$author$project$Lib$CoreEngine$GameLayer$Base$BehindActors),
-		_Utils_Tuple2(
-		F2(
-			function (gd, ggd) {
-				return A5(
-					$author$project$Lib$Render$Render$renderSprite,
-					gd,
-					_List_Nil,
-					A2(
-						$author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera,
-						_Utils_Tuple2(800, 1820),
-						ggd),
-					_Utils_Tuple2(32 * 14, 0),
-					'turtle');
-			}),
-		$author$project$Lib$CoreEngine$GameLayer$Base$BehindActors),
-		_Utils_Tuple2(
-		F2(
-			function (gd, ggd) {
-				return A5(
-					$author$project$Lib$Render$Render$renderSprite,
-					gd,
-					_List_Nil,
-					A2(
-						$author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera,
-						_Utils_Tuple2(1600, 1820),
-						ggd),
-					_Utils_Tuple2(32 * 14, 0),
-					'fish');
-			}),
-		$author$project$Lib$CoreEngine$GameLayer$Base$BehindActors),
-		_Utils_Tuple2(
-		F2(
-			function (gd, ggd) {
-				return A6(
-					$author$project$Lib$Render$Render$renderSpriteWithRev,
-					true,
-					gd,
-					_List_Nil,
-					A2(
-						$author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera,
-						_Utils_Tuple2(2400, 1840),
-						ggd),
-					_Utils_Tuple2(32 * 10, 0),
-					'fox');
-			}),
-		$author$project$Lib$CoreEngine$GameLayer$Base$BehindActors),
-		_Utils_Tuple2(
-		F2(
-			function (gd, ggd) {
-				return A5(
-					$author$project$Lib$Render$Render$renderSprite,
-					gd,
-					_List_Nil,
-					A2(
-						$author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera,
-						_Utils_Tuple2(3000, 1820),
-						ggd),
-					_Utils_Tuple2(32 * 14, 0),
-					'lion');
-			}),
-		$author$project$Lib$CoreEngine$GameLayer$Base$BehindActors),
-		_Utils_Tuple2(
-		F2(
-			function (gd, ggd) {
-				return A5(
-					$author$project$Lib$Render$Render$renderSprite,
-					gd,
-					_List_Nil,
-					A2(
-						$author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera,
-						_Utils_Tuple2(4400, 1970),
-						ggd),
-					_Utils_Tuple2(32 * 5, 0),
-					'jn/willow');
-			}),
-		$author$project$Lib$CoreEngine$GameLayer$Base$BehindActors),
-		_Utils_Tuple2(
-		F2(
-			function (gd, ggd) {
-				return A5(
-					$author$project$Lib$Render$Render$renderSprite,
-					gd,
-					_List_Nil,
-					A2(
-						$author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera,
-						_Utils_Tuple2(5000, 1970),
-						ggd),
-					_Utils_Tuple2(32 * 5, 0),
-					'jn/willow');
-			}),
-		$author$project$Lib$CoreEngine$GameLayer$Base$BehindActors),
-		_Utils_Tuple2(
-		F2(
-			function (gd, ggd) {
-				return A5(
-					$author$project$Lib$Render$Render$renderSprite,
-					gd,
-					_List_Nil,
-					A2(
-						$author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera,
-						_Utils_Tuple2(5600, 1970),
-						ggd),
-					_Utils_Tuple2(32 * 5, 0),
-					'jn/willow');
-			}),
-		$author$project$Lib$CoreEngine$GameLayer$Base$BehindActors),
-		_Utils_Tuple2(
-		F2(
-			function (gd, ggd) {
-				return A5(
-					$author$project$Lib$Render$Render$renderSprite,
-					gd,
-					_List_Nil,
-					A2(
-						$author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera,
-						_Utils_Tuple2(6200, 1970),
-						ggd),
-					_Utils_Tuple2(32 * 5, 0),
-					'jn/willow');
-			}),
-		$author$project$Lib$CoreEngine$GameLayer$Base$BehindActors)
-	]);
-var $author$project$Scenes$End$Background$allbgs = _List_fromArray(
-	[
-		_Utils_Tuple3(
-		'bg/jn',
-		_Utils_Tuple2(0, 0),
-		_Utils_Tuple2(400, 600)),
-		_Utils_Tuple3(
-		'bg/dh',
-		_Utils_Tuple2(400, 600),
-		_Utils_Tuple2(800, 1000)),
-		_Utils_Tuple3(
-		'bg/zy',
-		_Utils_Tuple2(800, 1000),
-		_Utils_Tuple2(1200, 1400)),
-		_Utils_Tuple3(
-		'bg/lx',
-		_Utils_Tuple2(1200, 1400),
-		_Utils_Tuple2(1600, 1800)),
-		_Utils_Tuple3(
-		'bg/bm',
-		_Utils_Tuple2(1600, 1800),
-		_Utils_Tuple2(2000, 2200))
-	]);
-var $author$project$Lib$CoreEngine$BackgroundLayer$ImageRolling$genBackground = F5(
-	function (rate, al, pic, ggd, gd) {
-		var _v0 = ggd.camera.position;
-		var cpx = _v0.a;
-		var offsetx = cpx * rate;
-		return A5(
-			$author$project$Lib$Render$Render$renderSprite,
-			gd,
-			_List_fromArray(
-				[
-					$linsyking$elm_canvas$Canvas$Settings$Advanced$alpha(al)
-				]),
-			_Utils_Tuple2(
-				$elm$core$Basics$floor(-offsetx),
-				0),
-			_Utils_Tuple2(0, 1080),
-			pic);
-	});
-var $author$project$Scenes$End$Background$background = F3(
-	function (_v0, ggd, gd) {
-		var t = A2($elm$core$Basics$modBy, 2200, gd.scenestarttime);
-		var allre = A2(
-			$elm$core$List$filter,
-			function (_v4) {
-				var _v5 = _v4.b;
-				var s1 = _v5.a;
-				var _v6 = _v4.c;
-				var e2 = _v6.b;
-				return (_Utils_cmp(s1, t) < 1) && (_Utils_cmp(t, e2) < 1);
-			},
-			$author$project$Scenes$End$Background$allbgs);
-		return A2(
-			$linsyking$elm_canvas$Canvas$group,
-			_List_Nil,
-			_Utils_ap(
-				A2(
-					$elm$core$List$map,
-					function (_v1) {
-						var mapname = _v1.a;
-						var _v2 = _v1.b;
-						var s1 = _v2.a;
-						var s2 = _v2.b;
-						var _v3 = _v1.c;
-						var e1 = _v3.a;
-						var e2 = _v3.b;
-						if ((!s2) && (!t)) {
-							return A5($author$project$Lib$CoreEngine$BackgroundLayer$ImageRolling$genBackground, 0.06, 0.7, mapname, ggd, gd);
-						} else {
-							if (_Utils_cmp(t, s2) < 1) {
-								var progress = ((t - s1) / (s2 - s1)) * 0.7;
-								return A5($author$project$Lib$CoreEngine$BackgroundLayer$ImageRolling$genBackground, 0.06, progress, mapname, ggd, gd);
-							} else {
-								if (_Utils_cmp(t, e1) > -1) {
-									var progress = ((e2 - t) / (e2 - e1)) * 0.7;
-									return A5($author$project$Lib$CoreEngine$BackgroundLayer$ImageRolling$genBackground, 0.06, progress, mapname, ggd, gd);
-								} else {
-									return A5($author$project$Lib$CoreEngine$BackgroundLayer$ImageRolling$genBackground, 0.06, 0.7, mapname, ggd, gd);
-								}
-							}
-						}
-					},
-					allre),
-				function () {
-					if (t >= 2000) {
-						var progress = ((t - 2000) / 200) * 0.7;
-						return _List_fromArray(
-							[
-								A5($author$project$Lib$CoreEngine$BackgroundLayer$ImageRolling$genBackground, 0.06, progress, 'bg/jn', ggd, gd)
-							]);
-					} else {
-						return _List_Nil;
-					}
-				}()));
-	});
-var $author$project$Lib$CoreEngine$GameComponents$Exit$Base$ExitInit = F5(
-	function (initPosition, togo, newPlayerPosition, newState, uid) {
-		return {initPosition: initPosition, newPlayerPosition: newPlayerPosition, newState: newState, togo: togo, uid: uid};
-	});
-var $author$project$Lib$CoreEngine$GameComponent$Base$GameExitInit = function (a) {
-	return {$: 'GameExitInit', a: a};
-};
-var $author$project$Lib$CoreEngine$GameComponents$Exit$Model$simplecheckBox = {height: 200, name: 'sp', offsetX: 0, offsetY: 0, width: 200};
-var $author$project$Lib$CoreEngine$GameComponents$Exit$Model$initData = {
-	acceleration: _Utils_Tuple2(0, 0),
-	collisionbox: _List_Nil,
-	extra: $elm$core$Dict$empty,
-	mass: 0,
-	position: _Utils_Tuple2(300, 1100),
-	simplecheck: $author$project$Lib$CoreEngine$GameComponents$Exit$Model$simplecheckBox,
-	status: $author$project$Lib$CoreEngine$GameComponent$Base$Alive,
-	uid: 999,
-	velocity: _Utils_Tuple2(0, 0)
-};
-var $author$project$Lib$CoreEngine$GameComponents$Exit$Model$colBox = {height: 40, name: 'sp', offsetX: 80, offsetY: 130, width: 40};
-var $author$project$Lib$CoreEngine$GameComponents$Exit$Model$initModel = F2(
-	function (_v0, gcm) {
-		if (gcm.$ === 'GameExitInit') {
-			var info = gcm.a;
-			return {
-				acceleration: _Utils_Tuple2(0, 0),
-				collisionbox: _List_fromArray(
-					[$author$project$Lib$CoreEngine$GameComponents$Exit$Model$colBox]),
-				extra: $elm$core$Dict$fromList(
-					_List_fromArray(
-						[
-							_Utils_Tuple2(
-							'togo',
-							$author$project$Lib$Component$Base$CDString(info.togo)),
-							_Utils_Tuple2(
-							'isdefault',
-							$author$project$Lib$Component$Base$CDBool(
-								function () {
-									var _v2 = info.newPlayerPosition;
-									if (_v2.$ === 'DefaultPlayerPosition') {
-										return true;
-									} else {
-										return false;
-									}
-								}())),
-							_Utils_Tuple2(
-							'posx',
-							$author$project$Lib$Component$Base$CDInt(
-								function () {
-									var _v3 = info.newPlayerPosition;
-									if (_v3.$ === 'DefaultPlayerPosition') {
-										return 0;
-									} else {
-										var _v4 = _v3.a;
-										var px = _v4.a;
-										return px;
-									}
-								}())),
-							_Utils_Tuple2(
-							'posy',
-							$author$project$Lib$Component$Base$CDInt(
-								function () {
-									var _v5 = info.newPlayerPosition;
-									if (_v5.$ === 'DefaultPlayerPosition') {
-										return 0;
-									} else {
-										var _v6 = _v5.a;
-										var py = _v6.b;
-										return py;
-									}
-								}())),
-							_Utils_Tuple2(
-							'newstate',
-							$author$project$Lib$Component$Base$CDInt(info.newState))
-						])),
-				mass: 70,
-				position: info.initPosition,
-				simplecheck: $author$project$Lib$CoreEngine$GameComponents$Exit$Model$simplecheckBox,
-				status: $author$project$Lib$CoreEngine$GameComponent$Base$Alive,
-				uid: info.uid,
-				velocity: _Utils_Tuple2(0, 0)
-			};
-		} else {
-			return $author$project$Lib$CoreEngine$GameComponents$Exit$Model$initData;
-		}
-	});
-var $author$project$Lib$CoreEngine$GameComponent$Base$GameExitScene = F3(
-	function (a, b, c) {
-		return {$: 'GameExitScene', a: a, b: b, c: c};
-	});
-var $author$project$Lib$CoreEngine$GameComponent$Base$GameParentMsg = function (a) {
-	return {$: 'GameParentMsg', a: a};
-};
-var $author$project$Lib$CoreEngine$GameComponents$Exit$Model$updateModel = F5(
-	function (_v0, gct, ggd, _v1, _v2) {
-		var d = _v2.a;
-		var t = _v2.b;
-		if ((gct.$ === 'GameInterCollisionMsg') && (gct.a === 'player')) {
-			var spstate = A2($author$project$Lib$DefinedTypes$Parser$dgetint, d.extra, 'newstate');
-			var isdefault = A2($author$project$Lib$DefinedTypes$Parser$dgetbool, d.extra, 'isdefault');
-			if (isdefault) {
-				return _Utils_Tuple3(
-					d,
-					_List_fromArray(
-						[
-							$author$project$Lib$CoreEngine$GameComponent$Base$GameParentMsg(
-							A3(
-								$author$project$Lib$CoreEngine$GameComponent$Base$GameExitScene,
-								A2($author$project$Lib$DefinedTypes$Parser$dgetString, d.extra, 'togo'),
-								$author$project$Lib$CoreEngine$GameComponents$Player$Base$DefaultPlayerPosition,
-								spstate))
-						]),
-					ggd);
-			} else {
-				var pp = _Utils_Tuple2(
-					A2($author$project$Lib$DefinedTypes$Parser$dgetint, d.extra, 'posx'),
-					A2($author$project$Lib$DefinedTypes$Parser$dgetint, d.extra, 'posy'));
-				return _Utils_Tuple3(
-					d,
-					_List_fromArray(
-						[
-							$author$project$Lib$CoreEngine$GameComponent$Base$GameParentMsg(
-							A3(
-								$author$project$Lib$CoreEngine$GameComponent$Base$GameExitScene,
-								A2($author$project$Lib$DefinedTypes$Parser$dgetString, d.extra, 'togo'),
-								$author$project$Lib$CoreEngine$GameComponents$Player$Base$CustomPlayerPosition(pp),
-								spstate))
-						]),
-					ggd);
-			}
-		} else {
-			return _Utils_Tuple3(d, _List_Nil, ggd);
-		}
-	});
-var $author$project$Lib$CoreEngine$GameComponents$Exit$Display$view = F3(
-	function (_v0, ggd, gd) {
-		var d = _v0.a;
-		var t = _v0.b;
-		return _List_fromArray(
-			[
-				_Utils_Tuple2(
-				A2(
-					$linsyking$elm_canvas$Canvas$group,
-					_List_Nil,
-					_List_fromArray(
-						[
-							A5(
-							$author$project$Lib$Render$Render$renderSprite,
-							gd,
-							_List_Nil,
-							A2($author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera, d.position, ggd),
-							_Utils_Tuple2(d.simplecheck.width, d.simplecheck.height),
-							'ot/transfer')
-						])),
-				0)
-			]);
-	});
-var $author$project$Lib$CoreEngine$GameComponents$Exit$Export$gameComponent = {data: $author$project$Lib$CoreEngine$GameComponents$Exit$Model$initData, init: $author$project$Lib$CoreEngine$GameComponents$Exit$Model$initModel, name: 'exit', update: $author$project$Lib$CoreEngine$GameComponents$Exit$Model$updateModel, view: $author$project$Lib$CoreEngine$GameComponents$Exit$Display$view};
-var $author$project$Scenes$End$Config$initActors = function (t) {
-	return $elm$core$Array$fromList(
-		_List_fromArray(
-			[
-				A3(
-				$author$project$Lib$CoreEngine$GameComponent$ComponentHandler$initGameComponent,
-				t,
-				$author$project$Lib$CoreEngine$GameComponent$Base$GameExitInit(
-					A5(
-						$author$project$Lib$CoreEngine$GameComponents$Exit$Base$ExitInit,
-						_Utils_Tuple2(10, 2000),
-						'Path',
-						$author$project$Lib$CoreEngine$GameComponents$Player$Base$CustomPlayerPosition(
-							_Utils_Tuple2(1344, 2056)),
-						0,
-						2)),
-				$author$project$Lib$CoreEngine$GameComponents$Exit$Export$gameComponent),
-				A3(
-				$author$project$Lib$CoreEngine$GameComponent$ComponentHandler$initGameComponent,
-				t,
-				$author$project$Lib$CoreEngine$GameComponent$Base$GameExitInit(
-					A5(
-						$author$project$Lib$CoreEngine$GameComponents$Exit$Base$ExitInit,
-						_Utils_Tuple2(9300, 2000),
-						'Home',
-						$author$project$Lib$CoreEngine$GameComponents$Player$Base$DefaultPlayerPosition,
-						0,
-						3)),
-				$author$project$Lib$CoreEngine$GameComponents$Exit$Export$gameComponent)
-			]));
-};
-var $author$project$Lib$CoreEngine$Export$initEngine = F2(
-	function (t, sm) {
-		return A2($author$project$Lib$CoreEngine$Model$initModel, t, sm);
-	});
-var $author$project$Components$Hints$Hints$initHints = F2(
-	function (t, ct) {
-		if (((((ct.$ === 'ComponentLStringMsg') && ct.a.b) && ct.a.b.b) && ct.a.b.b.b) && ct.a.b.b.b.b) {
-			var _v1 = ct.a;
-			var start = _v1.a;
-			var _v2 = _v1.b;
-			var px = _v2.a;
-			var _v3 = _v2.b;
-			var py = _v3.a;
-			var _v4 = _v3.b;
-			var fsize = _v4.a;
-			var xs = _v4.b;
-			return $elm$core$Dict$fromList(
-				_List_fromArray(
-					[
-						_Utils_Tuple2(
-						'hints',
-						$author$project$Lib$Component$Base$CDLString(xs)),
-						_Utils_Tuple2(
-						'starttime',
-						$author$project$Lib$Component$Base$CDInt(t)),
-						_Utils_Tuple2(
-						'posx',
-						$author$project$Lib$Component$Base$CDInt(
-							A2(
-								$elm$core$Maybe$withDefault,
-								0,
-								$elm$core$String$toInt(px)))),
-						_Utils_Tuple2(
-						'posy',
-						$author$project$Lib$Component$Base$CDInt(
-							A2(
-								$elm$core$Maybe$withDefault,
-								0,
-								$elm$core$String$toInt(py)))),
-						_Utils_Tuple2(
-						'size',
-						$author$project$Lib$Component$Base$CDInt(
-							A2(
-								$elm$core$Maybe$withDefault,
-								0,
-								$elm$core$String$toInt(fsize)))),
-						_Utils_Tuple2(
-						'st',
-						$author$project$Lib$Component$Base$CDInt(
-							A2(
-								$elm$core$Maybe$withDefault,
-								0,
-								$elm$core$String$toInt(start))))
-					]));
-		} else {
-			return $elm$core$Dict$empty;
-		}
-	});
-var $author$project$Components$Hints$Hints$updateHints = F4(
-	function (_v0, _v1, gd, _v2) {
-		var d = _v2.a;
-		return _Utils_Tuple3(d, _List_Nil, gd);
-	});
-var $author$project$Components$Hints$Hints$genalpha = function (k) {
-	return (k < 0) ? 0 : ((k < 70) ? ((1 / 70) * k) : ((k < 170) ? 1 : ((k < 240) ? ((((-1) / 70) * k) + (24 / 7)) : 0)));
-};
-var $author$project$Components$Hints$Hints$viewHints = F2(
-	function (_v0, gd) {
-		var d = _v0.a;
-		var t = _v0.b;
-		var startshow = A2($author$project$Lib$DefinedTypes$Parser$dgetint, d, 'st');
-		var st = A2($author$project$Lib$DefinedTypes$Parser$dgetint, d, 'starttime');
-		var pp = _Utils_Tuple2(
-			A2($author$project$Lib$DefinedTypes$Parser$dgetint, d, 'posx'),
-			A2($author$project$Lib$DefinedTypes$Parser$dgetint, d, 'posy'));
-		var fs = A2($author$project$Lib$DefinedTypes$Parser$dgetint, d, 'size');
-		var elapsed = t - st;
-		var qstart = elapsed - startshow;
-		var stage = A2($elm$core$Basics$modBy, 280, qstart);
-		var cursentn = (qstart / 280) | 0;
-		var allhints = A2($author$project$Lib$DefinedTypes$Parser$dgetLString, d, 'hints');
-		var curh = A2(
-			$elm$core$Maybe$withDefault,
-			'',
-			$elm$core$List$head(
-				A2($elm$core$List$drop, cursentn, allhints)));
-		return (qstart < 0) ? A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil) : A2(
-			$linsyking$elm_canvas$Canvas$group,
-			_List_fromArray(
-				[
-					$linsyking$elm_canvas$Canvas$Settings$Advanced$alpha(
-					$author$project$Components$Hints$Hints$genalpha(stage))
-				]),
-			_List_fromArray(
-				[
-					A5($author$project$Lib$Render$Render$renderText, gd, fs, curh, 'Times New Roman', pp)
-				]));
-	});
-var $author$project$Components$Hints$Export$component = {
-	data: A2($author$project$Components$Hints$Hints$initHints, 0, $author$project$Lib$Component$Base$NullComponentMsg),
-	init: $author$project$Components$Hints$Hints$initHints,
-	name: 'Hints',
-	query: F2(
-		function (_v0, _v1) {
-			return $author$project$Lib$Component$Base$NullComponentMsg;
-		}),
-	update: $author$project$Components$Hints$Hints$updateHints,
-	view: $author$project$Components$Hints$Hints$viewHints
-};
-var $author$project$Components$Hints$Export$initComponent = F2(
-	function (t, ct) {
-		return _Utils_update(
-			$author$project$Components$Hints$Export$component,
-			{
-				data: A2($author$project$Components$Hints$Export$component.init, t, ct)
-			});
-	});
-var $author$project$Scenes$End$Config$initFrontGroundComponents = function (t) {
-	return $elm$core$Array$fromList(
-		_List_fromArray(
-			[
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['40', '600', '500', '90', 'Thanks for playing']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['40', '680', '620', '50', 'You have saved the human']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['200', '1600', '100', '60', 'Director']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['200', '1600', '170', '40', 'Xiang Yiming']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['500', '1400', '600', '60', 'Artist & Composer']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['500', '1400', '670', '40', 'Wang Dayong']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['800', '300', '600', '60', 'Level Designers']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['800', '300', '670', '40', 'Xiang Yiming, Zhang Jingjing']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['1100', '300', '100', '60', 'Game Engine Designers']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['1100', '300', '170', '40', 'Xiang Yiming, Duan Lingbo']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['1400', '300', '600', '60', 'Story Designer']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['1400', '300', '670', '40', 'Zhang Jingjing']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['1800', '600', '400', '90', 'Technical Support']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['1800', '750', '550', '60', 'SFOCS Staffs'])))
-			]));
-};
-var $author$project$Scenes$End$Map$mapwidth = 300;
-var $author$project$Scenes$End$Config$initCamera = A4(
-	$author$project$Lib$CoreEngine$Camera$Base$CameraData,
-	_Utils_Tuple2(0, 1120),
-	_Utils_Tuple2(0, 0),
-	_Utils_Tuple2(
-		_Utils_Tuple2(32, 0),
-		_Utils_Tuple2((32 * ($author$project$Scenes$End$Map$mapwidth - 1)) - 1, (70 * 32) - 1)),
-	_Utils_Tuple2(
-		_Utils_Tuple2(0.2, 0.3),
-		_Utils_Tuple2(0.4, 0.4)));
-var $author$project$Lib$Map$Zhongyuan$buildplatforms = F3(
-	function (_v0, mn, ss) {
-		var x = _v0.a;
-		var y = _v0.b;
-		return A3(
-			$elm$core$List$foldl,
-			F2(
-				function (i, sc) {
-					return A4(
-						$author$project$Lib$Map$Poly$buildrect,
-						_Utils_Tuple2((x + (4 * i)) + 1, y),
-						_Utils_Tuple2(5, 1),
-						2,
-						A4(
-							$author$project$Lib$Map$Poly$buildrect,
-							_Utils_Tuple2(x + (4 * i), y),
-							_Utils_Tuple2(1, 1),
-							20,
-							sc));
-				}),
-			ss,
-			A2($elm$core$List$range, 0, mn - 1));
-	});
-var $author$project$Scenes$End$Map$sds = A3($tortus$elm_array_2d$Array2D$repeat, $author$project$Scenes$End$Map$mapwidth, 70, 0);
-var $author$project$Scenes$End$Map$mymap = A4(
-	$author$project$Lib$Map$Poly$buildrect,
-	_Utils_Tuple2($author$project$Scenes$End$Map$mapwidth - 1, 0),
-	_Utils_Tuple2(1, 70),
-	2,
-	A4(
-		$author$project$Lib$Map$Poly$buildrect,
-		_Utils_Tuple2(0, 69),
-		_Utils_Tuple2($author$project$Scenes$End$Map$mapwidth, 1),
-		2,
-		A3(
-			$author$project$Lib$Map$Zhongyuan$buildplatforms,
-			_Utils_Tuple2(0, 68),
-			80,
-			A4(
-				$author$project$Lib$Map$Poly$buildrect,
-				_Utils_Tuple2(0, 0),
-				_Utils_Tuple2(1, 70),
-				2,
-				$author$project$Scenes$End$Map$sds))));
-var $author$project$Scenes$End$Config$initGameGlobalData = F2(
-	function (e, col) {
-		return {
-			camera: $author$project$Scenes$End$Config$initCamera,
-			collectedMonsters: col,
-			currentScene: 'End',
-			energy: e,
-			ingamepause: false,
-			mapsize: _Utils_Tuple2($author$project$Scenes$End$Map$mapwidth, 70),
-			selectobj: 1,
-			settingpause: false,
-			solidmap: $author$project$Scenes$End$Map$mymap,
-			specialState: 0
-		};
-	});
-var $author$project$Lib$CoreEngine$GameComponent$Base$GamePlayerInit = function (a) {
-	return {$: 'GamePlayerInit', a: a};
-};
-var $author$project$Lib$CoreEngine$GameComponents$Player$Base$PlayerInit = function (initPosition) {
-	return {initPosition: initPosition};
-};
-var $author$project$Scenes$End$Config$initPlayer = F2(
-	function (t, pos) {
-		if (pos.$ === 'DefaultPlayerPosition') {
-			return A3(
-				$author$project$Lib$CoreEngine$GameComponent$ComponentHandler$initGameComponent,
-				t,
-				$author$project$Lib$CoreEngine$GameComponent$Base$GamePlayerInit(
-					$author$project$Lib$CoreEngine$GameComponents$Player$Base$PlayerInit(
-						_Utils_Tuple2(250, 2000))),
-				$author$project$Lib$CoreEngine$GameComponents$Player$Export$gameComponent);
-		} else {
-			var x = pos.a;
-			return A3(
-				$author$project$Lib$CoreEngine$GameComponent$ComponentHandler$initGameComponent,
-				t,
-				$author$project$Lib$CoreEngine$GameComponent$Base$GamePlayerInit(
-					$author$project$Lib$CoreEngine$GameComponents$Player$Base$PlayerInit(x)),
-				$author$project$Lib$CoreEngine$GameComponents$Player$Export$gameComponent);
-		}
-	});
-var $author$project$Scenes$End$Export$game = F2(
-	function (t, sm) {
-		var engineMsg = function () {
-			if (sm.$ === 'SceneEngineTMsg') {
-				var x = sm.a;
-				return x;
-			} else {
-				return $author$project$Lib$Scene$Base$nullEngineT;
-			}
-		}();
-		return A2(
-			$author$project$Lib$CoreEngine$Export$initEngine,
-			t,
-			$author$project$Lib$Scene$Base$SceneEngineMsg(
-				{
-					actors: $author$project$Scenes$End$Config$initActors(t),
-					background: _Utils_Tuple2($elm$core$Array$empty, $author$project$Scenes$End$Background$background),
-					chartlets: $author$project$Scenes$End$Config$allChartlets,
-					frontground: _Utils_Tuple2(
-						$author$project$Scenes$End$Config$initFrontGroundComponents(t),
-						F3(
-							function (_v0, _v1, _v2) {
-								return A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil);
-							})),
-					globalData: A2($author$project$Scenes$End$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters),
-					player: A2($author$project$Scenes$End$Config$initPlayer, t, engineMsg.playerPosition)
-				}));
 	});
 var $author$project$Lib$CoreEngine$Export$genEngineScene = function (f) {
 	return {
@@ -30665,998 +30664,6 @@ var $author$project$Scenes$Path$Export$game = F2(
 				}));
 	});
 var $author$project$Scenes$Path$Export$scene = $author$project$Lib$CoreEngine$Export$genEngineScene($author$project$Scenes$Path$Export$game);
-var $author$project$Scenes$Platformtest$Config$allChartlets = _List_Nil;
-var $author$project$Scenes$Platformtest$Background$background = F3(
-	function (_v0, _v1, gd) {
-		return A5(
-			$author$project$Lib$Render$Render$renderSprite,
-			gd,
-			_List_fromArray(
-				[
-					$linsyking$elm_canvas$Canvas$Settings$Advanced$alpha(0.3)
-				]),
-			_Utils_Tuple2(0, 0),
-			_Utils_Tuple2(1920, 1080),
-			'background');
-	});
-var $author$project$Scenes$Platformtest$Config$initActors = function (_v0) {
-	return $elm$core$Array$empty;
-};
-var $author$project$Scenes$Platformtest$Config$initFrontGroundComponents = function (_v0) {
-	return $elm$core$Array$fromList(_List_Nil);
-};
-var $author$project$Scenes$Platformtest$Config$initCamera = A4(
-	$author$project$Lib$CoreEngine$Camera$Base$CameraData,
-	_Utils_Tuple2(0, 1120),
-	_Utils_Tuple2(0, 0),
-	_Utils_Tuple2(
-		_Utils_Tuple2(32, 0),
-		_Utils_Tuple2((32 * 119) - 1, (70 * 32) - 1)),
-	_Utils_Tuple2(
-		_Utils_Tuple2(0.2, 0.3),
-		_Utils_Tuple2(0.4, 0.4)));
-var $author$project$Lib$Map$Beimin$buildbmlongground = F2(
-	function (_v0, ss) {
-		var x = _v0.a;
-		var y = _v0.b;
-		return A4(
-			$author$project$Lib$Map$Poly$buildrect,
-			_Utils_Tuple2(x + 1, y),
-			_Utils_Tuple2(19, 1),
-			2,
-			A4(
-				$author$project$Lib$Map$Poly$buildrect,
-				_Utils_Tuple2(x, y),
-				_Utils_Tuple2(1, 1),
-				4,
-				ss));
-	});
-var $author$project$Scenes$Platformtest$Map$sds = A3($tortus$elm_array_2d$Array2D$repeat, 120, 70, 0);
-var $author$project$Scenes$Platformtest$Map$mymap = A3(
-	$author$project$Lib$Map$Zhongyuan$buildplatforms,
-	_Utils_Tuple2(90, 60),
-	4,
-	A2(
-		$author$project$Lib$Map$Zhongyuan$buildzystick,
-		_Utils_Tuple2(90, 50),
-		A3(
-			$author$project$Lib$Map$Longxi$buildlxlongground,
-			_Utils_Tuple2(60, 60),
-			3,
-			A2(
-				$author$project$Lib$Map$Longxi$buildlxplain,
-				_Utils_Tuple2(105, 55),
-				A2(
-					$author$project$Lib$Map$Longxi$buildlxrock,
-					_Utils_Tuple2(100, 55),
-					A2(
-						$author$project$Lib$Map$Jiangnan$buildjnleaf,
-						_Utils_Tuple2(95, 55),
-						A3(
-							$author$project$Lib$Map$Jiangnan$buildlongroof,
-							_Utils_Tuple2(70, 55),
-							5,
-							A2(
-								$author$project$Lib$Map$Jiangnan$buildroofright,
-								_Utils_Tuple2(64, 53),
-								A2(
-									$author$project$Lib$Map$Jiangnan$buildroofleft,
-									_Utils_Tuple2(58, 53),
-									A2(
-										$author$project$Lib$Map$Donghai$builddhbigrock,
-										_Utils_Tuple2(52, 45),
-										A2(
-											$author$project$Lib$Map$Donghai$builddhrock,
-											_Utils_Tuple2(46, 53),
-											A2(
-												$author$project$Lib$Map$Donghai$builddhsmallrock,
-												_Utils_Tuple2(41, 53),
-												A2(
-													$author$project$Lib$Map$Beimin$buildbmleaf,
-													_Utils_Tuple2(35, 53),
-													A2(
-														$author$project$Lib$Map$Beimin$buildbmlotus,
-														_Utils_Tuple2(29, 53),
-														A2(
-															$author$project$Lib$Map$Beimin$buildbmlongground,
-															_Utils_Tuple2(25, 60),
-															A4(
-																$author$project$Lib$Map$Poly$buildrect,
-																_Utils_Tuple2(19, 53),
-																_Utils_Tuple2(2, 2),
-																1,
-																A4(
-																	$author$project$Lib$Map$Poly$buildrect,
-																	_Utils_Tuple2(13, 53),
-																	_Utils_Tuple2(2, 2),
-																	2,
-																	A4(
-																		$author$project$Lib$Map$Poly$buildrect,
-																		_Utils_Tuple2(7, 53),
-																		_Utils_Tuple2(2, 2),
-																		1,
-																		A4(
-																			$author$project$Lib$Map$Poly$buildrect,
-																			_Utils_Tuple2(0, 60),
-																			_Utils_Tuple2(120, 2),
-																			1,
-																			A4(
-																				$author$project$Lib$Map$Poly$buildrect,
-																				_Utils_Tuple2(0, 0),
-																				_Utils_Tuple2(1, 70),
-																				1,
-																				$author$project$Scenes$Platformtest$Map$sds))))))))))))))))))));
-var $author$project$Scenes$Platformtest$Config$initGameGlobalData = F2(
-	function (e, col) {
-		return {
-			camera: $author$project$Scenes$Platformtest$Config$initCamera,
-			collectedMonsters: col,
-			currentScene: 'Platformtest',
-			energy: e,
-			ingamepause: false,
-			mapsize: _Utils_Tuple2(120, 70),
-			selectobj: 1,
-			settingpause: false,
-			solidmap: $author$project$Scenes$Platformtest$Map$mymap,
-			specialState: 0
-		};
-	});
-var $author$project$Scenes$Platformtest$Config$initPlayer = F2(
-	function (t, pos) {
-		if (pos.$ === 'DefaultPlayerPosition') {
-			return A3(
-				$author$project$Lib$CoreEngine$GameComponent$ComponentHandler$initGameComponent,
-				t,
-				$author$project$Lib$CoreEngine$GameComponent$Base$GamePlayerInit(
-					$author$project$Lib$CoreEngine$GameComponents$Player$Base$PlayerInit(
-						_Utils_Tuple2(100, 1800))),
-				$author$project$Lib$CoreEngine$GameComponents$Player$Export$gameComponent);
-		} else {
-			var x = pos.a;
-			return A3(
-				$author$project$Lib$CoreEngine$GameComponent$ComponentHandler$initGameComponent,
-				t,
-				$author$project$Lib$CoreEngine$GameComponent$Base$GamePlayerInit(
-					$author$project$Lib$CoreEngine$GameComponents$Player$Base$PlayerInit(x)),
-				$author$project$Lib$CoreEngine$GameComponents$Player$Export$gameComponent);
-		}
-	});
-var $author$project$Scenes$Platformtest$Export$game = F2(
-	function (t, sm) {
-		var engineMsg = function () {
-			if (sm.$ === 'SceneEngineTMsg') {
-				var x = sm.a;
-				return x;
-			} else {
-				return $author$project$Lib$Scene$Base$nullEngineT;
-			}
-		}();
-		return A2(
-			$author$project$Lib$CoreEngine$Export$initEngine,
-			t,
-			$author$project$Lib$Scene$Base$SceneEngineMsg(
-				{
-					actors: $author$project$Scenes$Platformtest$Config$initActors(t),
-					background: _Utils_Tuple2($elm$core$Array$empty, $author$project$Scenes$Platformtest$Background$background),
-					chartlets: $author$project$Scenes$Platformtest$Config$allChartlets,
-					frontground: _Utils_Tuple2(
-						$author$project$Scenes$Platformtest$Config$initFrontGroundComponents(t),
-						F3(
-							function (_v0, _v1, _v2) {
-								return A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil);
-							})),
-					globalData: A2($author$project$Scenes$Platformtest$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters),
-					player: A2($author$project$Scenes$Platformtest$Config$initPlayer, t, engineMsg.playerPosition)
-				}));
-	});
-var $author$project$Scenes$Platformtest$Export$scene = $author$project$Lib$CoreEngine$Export$genEngineScene($author$project$Scenes$Platformtest$Export$game);
-var $author$project$Scenes$Scene1$Layer1$Export$nullData = {s: 0};
-var $author$project$Scenes$Scene1$Layer1$Global$ctTod = function (ldt) {
-	if (ldt.$ === 'Layer1Data') {
-		var x = ldt.a;
-		return x;
-	} else {
-		return $author$project$Scenes$Scene1$Layer1$Export$nullData;
-	}
-};
-var $author$project$Scenes$Scene1$LayerSettings$Layer1Data = function (a) {
-	return {$: 'Layer1Data', a: a};
-};
-var $author$project$Scenes$Scene1$Layer1$Global$dToCT = function (data) {
-	return $author$project$Scenes$Scene1$LayerSettings$Layer1Data(data);
-};
-var $author$project$Scenes$Scene1$Layer1$Global$getLayerCT = function (layer) {
-	var view = F3(
-		function (_v3, cd, gd) {
-			var ldt = _v3.a;
-			var t = _v3.b;
-			return A3(
-				layer.view,
-				_Utils_Tuple2(
-					$author$project$Scenes$Scene1$Layer1$Global$ctTod(ldt),
-					t),
-				cd,
-				gd);
-		});
-	var update = F5(
-		function (m, gd, lm, _v2, cd) {
-			var ldt = _v2.a;
-			var t = _v2.b;
-			var _v0 = A5(
-				layer.update,
-				m,
-				gd,
-				lm,
-				_Utils_Tuple2(
-					$author$project$Scenes$Scene1$Layer1$Global$ctTod(ldt),
-					t),
-				cd);
-			var _v1 = _v0.a;
-			var rldt = _v1.a;
-			var rcd = _v1.b;
-			var ltm = _v1.c;
-			var newgd = _v0.b;
-			return _Utils_Tuple2(
-				_Utils_Tuple3(
-					$author$project$Scenes$Scene1$Layer1$Global$dToCT(rldt),
-					rcd,
-					ltm),
-				newgd);
-		});
-	var init = F3(
-		function (t, lm, cd) {
-			return $author$project$Scenes$Scene1$Layer1$Global$dToCT(
-				A3(layer.init, t, lm, cd));
-		});
-	return A4(
-		$author$project$Lib$Layer$Base$Layer,
-		$author$project$Scenes$Scene1$Layer1$Global$dToCT(layer.data),
-		init,
-		update,
-		view);
-};
-var $author$project$Scenes$Scene1$Layer2$Export$nullData = {components: _List_Nil};
-var $author$project$Scenes$Scene1$Layer2$Global$ctTod = function (ldt) {
-	if (ldt.$ === 'Layer2Data') {
-		var x = ldt.a;
-		return x;
-	} else {
-		return $author$project$Scenes$Scene1$Layer2$Export$nullData;
-	}
-};
-var $author$project$Scenes$Scene1$LayerSettings$Layer2Data = function (a) {
-	return {$: 'Layer2Data', a: a};
-};
-var $author$project$Scenes$Scene1$Layer2$Global$dToCT = function (data) {
-	return $author$project$Scenes$Scene1$LayerSettings$Layer2Data(data);
-};
-var $author$project$Scenes$Scene1$Layer2$Global$getLayerCT = function (layer) {
-	var view = F3(
-		function (_v3, cd, gd) {
-			var ldt = _v3.a;
-			var t = _v3.b;
-			return A3(
-				layer.view,
-				_Utils_Tuple2(
-					$author$project$Scenes$Scene1$Layer2$Global$ctTod(ldt),
-					t),
-				cd,
-				gd);
-		});
-	var update = F5(
-		function (m, gd, lm, _v2, cd) {
-			var ldt = _v2.a;
-			var t = _v2.b;
-			var _v0 = A5(
-				layer.update,
-				m,
-				gd,
-				lm,
-				_Utils_Tuple2(
-					$author$project$Scenes$Scene1$Layer2$Global$ctTod(ldt),
-					t),
-				cd);
-			var _v1 = _v0.a;
-			var rldt = _v1.a;
-			var rcd = _v1.b;
-			var ltm = _v1.c;
-			var newgd = _v0.b;
-			return _Utils_Tuple2(
-				_Utils_Tuple3(
-					$author$project$Scenes$Scene1$Layer2$Global$dToCT(rldt),
-					rcd,
-					ltm),
-				newgd);
-		});
-	var init = F3(
-		function (t, lm, cd) {
-			return $author$project$Scenes$Scene1$Layer2$Global$dToCT(
-				A3(layer.init, t, lm, cd));
-		});
-	return A4(
-		$author$project$Lib$Layer$Base$Layer,
-		$author$project$Scenes$Scene1$Layer2$Global$dToCT(layer.data),
-		init,
-		update,
-		view);
-};
-var $author$project$Scenes$Scene1$Layer1$Display$dview = F3(
-	function (_v0, _v1, gd) {
-		var t = _v0.b;
-		return A2(
-			$linsyking$elm_canvas$Canvas$group,
-			_List_Nil,
-			_List_fromArray(
-				[
-					A5(
-					$author$project$Lib$Render$Render$renderSprite,
-					gd,
-					_List_Nil,
-					_Utils_Tuple2(0, 0),
-					_Utils_Tuple2(1920, 1080),
-					'background'),
-					A2(
-					$linsyking$elm_canvas$Canvas$shapes,
-					_List_fromArray(
-						[
-							$linsyking$elm_canvas$Canvas$Settings$fill($avh4$elm_color$Color$red)
-						]),
-					_List_fromArray(
-						[
-							A3(
-							$linsyking$elm_canvas$Canvas$rect,
-							A2(
-								$author$project$Lib$Coordinate$Coordinates$posToReal,
-								gd,
-								_Utils_Tuple2(200, 100)),
-							A2($author$project$Lib$Coordinate$Coordinates$widthToReal, gd, 100),
-							A2($author$project$Lib$Coordinate$Coordinates$heightToReal, gd, 200))
-						])),
-					A4(
-					$author$project$Lib$Render$Energy$renderEnergyPoint,
-					t,
-					gd,
-					1,
-					_Utils_Tuple2(
-						_Utils_Tuple2(200, 100),
-						_Utils_Tuple2(299, 299))),
-					A5(
-					$author$project$Lib$Render$Render$renderText,
-					gd,
-					50,
-					'ohohoh',
-					'sans-serif',
-					_Utils_Tuple2(0, 50))
-				]));
-	});
-var $author$project$Scenes$Scene1$Layer1$Models$initModel = F3(
-	function (_v0, _v1, _v2) {
-		return {s: 0};
-	});
-var $author$project$Scenes$Scene1$Layer1$Models$updateModel = F5(
-	function (msg, gd, _v0, _v1, cd) {
-		var model = _v1.a;
-		var t = _v1.b;
-		if ((msg.$ === 'MouseDown') && (msg.a === 1)) {
-			var _v3 = msg.b;
-			var x = _v3.a;
-			var y = _v3.b;
-			return A4(
-				$author$project$Lib$Coordinate$Coordinates$judgeMouse,
-				gd,
-				_Utils_Tuple2(x, y),
-				_Utils_Tuple2(100, 100),
-				_Utils_Tuple2(100, 100)) ? _Utils_Tuple2(
-				_Utils_Tuple3(model, cd, _List_Nil),
-				gd) : _Utils_Tuple2(
-				_Utils_Tuple3(model, cd, _List_Nil),
-				gd);
-		} else {
-			return _Utils_Tuple2(
-				_Utils_Tuple3(model, cd, _List_Nil),
-				gd);
-		}
-	});
-var $author$project$Scenes$Scene1$Layer1$Export$layer = {data: $author$project$Scenes$Scene1$Layer1$Export$nullData, init: $author$project$Scenes$Scene1$Layer1$Models$initModel, update: $author$project$Scenes$Scene1$Layer1$Models$updateModel, view: $author$project$Scenes$Scene1$Layer1$Display$dview};
-var $author$project$Scenes$Scene1$Layer2$Display$dview = F3(
-	function (_v0, _v1, gd) {
-		var model = _v0.a;
-		var t = _v0.b;
-		return A3(
-			$author$project$Lib$Component$ComponentHandler$genView,
-			gd,
-			t,
-			$elm$core$Array$fromList(model.components));
-	});
-var $author$project$Scenes$Scene1$Layer2$Models$initModel = F3(
-	function (_v0, _v1, _v2) {
-		return {
-			components: _List_fromArray(
-				[
-					A2($author$project$Components$Menu$Export$initComponent, 0, $author$project$Lib$Component$Base$NullComponentMsg)
-				])
-		};
-	});
-var $author$project$Lib$Component$ComponentHandler$updateSingleComponent = F6(
-	function (msg, ct, gd, t, n, xs) {
-		var _v0 = A2($author$project$Lib$Component$ComponentHandler$getComponent, n, xs);
-		if (_v0.$ === 'Just') {
-			var k = _v0.a;
-			var _v1 = A4(
-				k.update,
-				msg,
-				ct,
-				gd,
-				_Utils_Tuple2(k.data, t));
-			var newx = _v1.a;
-			var newmsg = _v1.b;
-			var newgd = _v1.c;
-			return _Utils_Tuple3(
-				A3(
-					$elm$core$Array$set,
-					n,
-					_Utils_update(
-						k,
-						{data: newx}),
-					xs),
-				newmsg,
-				newgd);
-		} else {
-			return _Utils_Tuple3(xs, _List_Nil, gd);
-		}
-	});
-var $author$project$Scenes$Scene1$Layer2$Models$updateModel = F5(
-	function (msg, gd, _v0, _v1, cd) {
-		var model = _v1.a;
-		var t = _v1.b;
-		switch (msg.$) {
-			case 'Tick':
-				var components = model.components;
-				var _v3 = (t === 100) ? A6(
-					$author$project$Lib$Component$ComponentHandler$updateSingleComponent,
-					msg,
-					$author$project$Lib$Component$Base$ComponentIntMsg(50),
-					gd,
-					t,
-					0,
-					$elm$core$Array$fromList(components)) : A6(
-					$author$project$Lib$Component$ComponentHandler$updateSingleComponent,
-					msg,
-					$author$project$Lib$Component$Base$NullComponentMsg,
-					gd,
-					t,
-					0,
-					$elm$core$Array$fromList(components));
-				var newComponents = _v3.a;
-				var newGlobalData = _v3.c;
-				return _Utils_Tuple2(
-					_Utils_Tuple3(
-						_Utils_update(
-							model,
-							{
-								components: $elm$core$Array$toList(newComponents)
-							}),
-						cd,
-						_List_Nil),
-					newGlobalData);
-			case 'MouseDown':
-				var components = model.components;
-				var _v4 = A6(
-					$author$project$Lib$Component$ComponentHandler$updateSingleComponent,
-					msg,
-					$author$project$Lib$Component$Base$NullComponentMsg,
-					gd,
-					t,
-					0,
-					$elm$core$Array$fromList(components));
-				var newComponents = _v4.a;
-				var newGlobalData = _v4.c;
-				return _Utils_Tuple2(
-					_Utils_Tuple3(
-						_Utils_update(
-							model,
-							{
-								components: $elm$core$Array$toList(newComponents)
-							}),
-						cd,
-						_List_Nil),
-					newGlobalData);
-			default:
-				return _Utils_Tuple2(
-					_Utils_Tuple3(model, cd, _List_Nil),
-					gd);
-		}
-	});
-var $author$project$Scenes$Scene1$Layer2$Export$layer = {data: $author$project$Scenes$Scene1$Layer2$Export$nullData, init: $author$project$Scenes$Scene1$Layer2$Models$initModel, update: $author$project$Scenes$Scene1$Layer2$Models$updateModel, view: $author$project$Scenes$Scene1$Layer2$Display$dview};
-var $author$project$Scenes$Scene1$Model$initModel = F2(
-	function (t, _v0) {
-		var l2l = $author$project$Scenes$Scene1$Layer2$Export$layer;
-		var l1l = $author$project$Scenes$Scene1$Layer1$Export$layer;
-		var icd = {plt: 0};
-		var l1ct = $author$project$Scenes$Scene1$Layer1$Global$getLayerCT(
-			_Utils_update(
-				l1l,
-				{
-					data: A3($author$project$Scenes$Scene1$Layer1$Export$layer.init, t, $author$project$Lib$Layer$Base$NullLayerMsg, icd)
-				}));
-		var l2ct = $author$project$Scenes$Scene1$Layer2$Global$getLayerCT(
-			_Utils_update(
-				l2l,
-				{
-					data: A3($author$project$Scenes$Scene1$Layer2$Export$layer.init, t, $author$project$Lib$Layer$Base$NullLayerMsg, icd)
-				}));
-		return {
-			commonData: icd,
-			layers: _List_fromArray(
-				[
-					_Utils_Tuple2('Layer1', l1ct),
-					_Utils_Tuple2('Layer2', l2ct)
-				])
-		};
-	});
-var $author$project$Scenes$Scene1$Model$handleLayerMsg = F2(
-	function (lmsg, _v0) {
-		var model = _v0.a;
-		switch (lmsg.$) {
-			case 'LayerStringMsg':
-				var str = lmsg.a;
-				return (str === 'Restart') ? _Utils_Tuple2(
-					model,
-					_List_fromArray(
-						[
-							$author$project$Lib$Scene$Base$SOChangeScene(
-							_Utils_Tuple2($author$project$Lib$Scene$Base$NullSceneMsg, 'Scene1'))
-						])) : _Utils_Tuple2(model, _List_Nil);
-			case 'LayerSoundMsg':
-				var name = lmsg.a;
-				var path = lmsg.b;
-				var opt = lmsg.c;
-				return _Utils_Tuple2(
-					model,
-					_List_fromArray(
-						[
-							A3($author$project$Lib$Scene$Base$SOPlayAudio, name, path, opt)
-						]));
-			case 'LayerStopSoundMsg':
-				var name = lmsg.a;
-				return _Utils_Tuple2(
-					model,
-					_List_fromArray(
-						[
-							$author$project$Lib$Scene$Base$SOStopAudio(name)
-						]));
-			default:
-				return _Utils_Tuple2(model, _List_Nil);
-		}
-	});
-var $author$project$Scenes$Scene1$Model$updateModel = F3(
-	function (msg, gd, _v0) {
-		var model = _v0.a;
-		var t = _v0.b;
-		var _v1 = A5($author$project$Lib$Layer$LayerHandler$updateLayer, msg, gd, t, model.commonData, model.layers);
-		var _v2 = _v1.a;
-		var newdata = _v2.a;
-		var newcd = _v2.b;
-		var msgs = _v2.c;
-		var newgd = _v1.b;
-		var nmodel = _Utils_update(
-			model,
-			{commonData: newcd, layers: newdata});
-		var _v3 = A3(
-			$elm$core$List$foldl,
-			F2(
-				function (x, _v4) {
-					var y = _v4.a;
-					return A2(
-						$author$project$Scenes$Scene1$Model$handleLayerMsg,
-						x,
-						_Utils_Tuple2(y, t));
-				}),
-			_Utils_Tuple2(nmodel, _List_Nil),
-			msgs);
-		var newmodel = _v3.a;
-		var newso = _v3.b;
-		return _Utils_Tuple3(newmodel, newso, newgd);
-	});
-var $author$project$Scenes$Scene1$Model$viewModel = F2(
-	function (_v0, gd) {
-		var model = _v0.a;
-		var t = _v0.b;
-		return A4($author$project$Lib$Layer$LayerHandler$viewLayer, gd, t, model.commonData, model.layers);
-	});
-var $author$project$Scenes$Scene1$Export$scene = {init: $author$project$Scenes$Scene1$Model$initModel, update: $author$project$Scenes$Scene1$Model$updateModel, view: $author$project$Scenes$Scene1$Model$viewModel};
-var $author$project$Scenes$TestChamber$Config$allChartlets = _List_fromArray(
-	[
-		_Utils_Tuple2(
-		F2(
-			function (gd, ggd) {
-				return A5(
-					$author$project$Lib$Render$Render$renderText,
-					gd,
-					50,
-					'Hit those goombas!',
-					'Times New Roman',
-					A2(
-						$author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera,
-						_Utils_Tuple2(900, 2100),
-						ggd));
-			}),
-		$author$project$Lib$CoreEngine$GameLayer$Base$BehindActors),
-		_Utils_Tuple2(
-		F2(
-			function (gd, ggd) {
-				return A5(
-					$author$project$Lib$Render$Render$renderSprite,
-					gd,
-					_List_Nil,
-					A2(
-						$author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera,
-						_Utils_Tuple2(0, 2176),
-						ggd),
-					_Utils_Tuple2(3840, 64),
-					'background');
-			}),
-		$author$project$Lib$CoreEngine$GameLayer$Base$FrontSolids),
-		_Utils_Tuple2(
-		F2(
-			function (gd, ggd) {
-				return A5(
-					$author$project$Lib$Render$Render$renderText,
-					gd,
-					40,
-					'Short Description (Will be deleted in the real game, this is only for the game testers)',
-					'Times New Roman',
-					A2(
-						$author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera,
-						_Utils_Tuple2(200, 1400),
-						ggd));
-			}),
-		$author$project$Lib$CoreEngine$GameLayer$Base$BehindActors),
-		_Utils_Tuple2(
-		F2(
-			function (gd, ggd) {
-				return A5(
-					$author$project$Lib$Render$Render$renderText,
-					gd,
-					30,
-					'1. Use Mouse to left click on any object to select it',
-					'Times New Roman',
-					A2(
-						$author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera,
-						_Utils_Tuple2(200, 1450),
-						ggd));
-			}),
-		$author$project$Lib$CoreEngine$GameLayer$Base$BehindActors),
-		_Utils_Tuple2(
-		F2(
-			function (gd, ggd) {
-				return A5(
-					$author$project$Lib$Render$Render$renderText,
-					gd,
-					30,
-					'2. Press \'W\' key to grasp its kinetic energy(if its energy is too low, you cannot grasp it)',
-					'Times New Roman',
-					A2(
-						$author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera,
-						_Utils_Tuple2(200, 1500),
-						ggd));
-			}),
-		$author$project$Lib$CoreEngine$GameLayer$Base$BehindActors),
-		_Utils_Tuple2(
-		F2(
-			function (gd, ggd) {
-				return A5(
-					$author$project$Lib$Render$Render$renderText,
-					gd,
-					30,
-					'3. Select any new object(Of course you can choose not to change)',
-					'Times New Roman',
-					A2(
-						$author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera,
-						_Utils_Tuple2(200, 1550),
-						ggd));
-			}),
-		$author$project$Lib$CoreEngine$GameLayer$Base$BehindActors),
-		_Utils_Tuple2(
-		F2(
-			function (gd, ggd) {
-				return A5(
-					$author$project$Lib$Render$Render$renderText,
-					gd,
-					30,
-					'4. Right click on any position to use the kinetic energy on the chosen object',
-					'Times New Roman',
-					A2(
-						$author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera,
-						_Utils_Tuple2(200, 1600),
-						ggd));
-			}),
-		$author$project$Lib$CoreEngine$GameLayer$Base$BehindActors),
-		_Utils_Tuple2(
-		F2(
-			function (gd, ggd) {
-				return A5(
-					$author$project$Lib$Render$Render$renderText,
-					gd,
-					100,
-					'Test Chamber',
-					'Times New Roman',
-					A2(
-						$author$project$Lib$CoreEngine$Camera$Position$getPositionUnderCamera,
-						_Utils_Tuple2(200, 1250),
-						ggd));
-			}),
-		$author$project$Lib$CoreEngine$GameLayer$Base$BehindActors)
-	]);
-var $author$project$Scenes$TestChamber$Background$background = F3(
-	function (_v0, _v1, gd) {
-		return A5(
-			$author$project$Lib$Render$Render$renderSprite,
-			gd,
-			_List_fromArray(
-				[
-					$linsyking$elm_canvas$Canvas$Settings$Advanced$alpha(0.3)
-				]),
-			_Utils_Tuple2(0, 0),
-			_Utils_Tuple2(1920, 1080),
-			'background');
-	});
-var $author$project$Scenes$TestChamber$Config$initActors = function (t) {
-	return $elm$core$Array$fromList(
-		_List_fromArray(
-			[
-				A3(
-				$author$project$Lib$CoreEngine$GameComponent$ComponentHandler$initGameComponent,
-				t,
-				$author$project$Lib$CoreEngine$GameComponent$Base$GameGoombaInit(
-					A4(
-						$author$project$Lib$CoreEngine$GameComponents$Goomba$Base$GoombaInit,
-						_Utils_Tuple2(1200, 1800),
-						_Utils_Tuple2(0, 0),
-						50,
-						4)),
-				$author$project$Lib$CoreEngine$GameComponents$Goomba$Export$gameComponent),
-				A3(
-				$author$project$Lib$CoreEngine$GameComponent$ComponentHandler$initGameComponent,
-				t,
-				$author$project$Lib$CoreEngine$GameComponent$Base$GameGoombaInit(
-					A4(
-						$author$project$Lib$CoreEngine$GameComponents$Goomba$Base$GoombaInit,
-						_Utils_Tuple2(1000, 1800),
-						_Utils_Tuple2(0, 0),
-						50,
-						5)),
-				$author$project$Lib$CoreEngine$GameComponents$Goomba$Export$gameComponent),
-				A3(
-				$author$project$Lib$CoreEngine$GameComponent$ComponentHandler$initGameComponent,
-				t,
-				$author$project$Lib$CoreEngine$GameComponent$Base$GameGoombaInit(
-					A4(
-						$author$project$Lib$CoreEngine$GameComponents$Goomba$Base$GoombaInit,
-						_Utils_Tuple2(2000, 800),
-						_Utils_Tuple2(0, 0),
-						50,
-						2)),
-				$author$project$Lib$CoreEngine$GameComponents$Goomba$Export$gameComponent),
-				A3(
-				$author$project$Lib$CoreEngine$GameComponent$ComponentHandler$initGameComponent,
-				t,
-				$author$project$Lib$CoreEngine$GameComponent$Base$GameGoombaInit(
-					A4(
-						$author$project$Lib$CoreEngine$GameComponents$Goomba$Base$GoombaInit,
-						_Utils_Tuple2(3500, 500),
-						_Utils_Tuple2(0, 0),
-						50,
-						3)),
-				$author$project$Lib$CoreEngine$GameComponents$Goomba$Export$gameComponent),
-				A3(
-				$author$project$Lib$CoreEngine$GameComponent$ComponentHandler$initGameComponent,
-				t,
-				$author$project$Lib$CoreEngine$GameComponent$Base$GameEnergyCrystalInit(
-					A4(
-						$author$project$Lib$CoreEngine$GameComponents$EnergyCrystal$Base$EnergyCrystalInit,
-						_Utils_Tuple2(2200, 2000),
-						300,
-						true,
-						17)),
-				$author$project$Lib$CoreEngine$GameComponents$EnergyCrystal$Export$gameComponent),
-				A3(
-				$author$project$Lib$CoreEngine$GameComponent$ComponentHandler$initGameComponent,
-				t,
-				$author$project$Lib$CoreEngine$GameComponent$Base$GameGoombaEmitterInit(
-					A4(
-						$author$project$Lib$CoreEngine$GameComponents$GoombaEmitter$Base$GoombaEmitterInit,
-						_Utils_Tuple2(900, 1800),
-						200,
-						_Utils_Tuple2(-50, 0),
-						6)),
-				$author$project$Lib$CoreEngine$GameComponents$GoombaEmitter$Export$gameComponent),
-				A3(
-				$author$project$Lib$CoreEngine$GameComponent$ComponentHandler$initGameComponent,
-				t,
-				$author$project$Lib$CoreEngine$GameComponent$Base$GameSpikeInit(
-					A5(
-						$author$project$Lib$CoreEngine$GameComponents$Spike$Base$SpikeInit,
-						_Utils_Tuple2(704, 2028),
-						$author$project$Lib$CoreEngine$GameComponents$Spike$Base$HorUp,
-						1,
-						true,
-						10)),
-				$author$project$Lib$CoreEngine$GameComponents$Spike$Export$gameComponent),
-				A3(
-				$author$project$Lib$CoreEngine$GameComponent$ComponentHandler$initGameComponent,
-				t,
-				$author$project$Lib$CoreEngine$GameComponent$Base$GameSpikeInit(
-					A5(
-						$author$project$Lib$CoreEngine$GameComponents$Spike$Base$SpikeInit,
-						_Utils_Tuple2(736, 2048),
-						$author$project$Lib$CoreEngine$GameComponents$Spike$Base$VerRight,
-						3,
-						true,
-						11)),
-				$author$project$Lib$CoreEngine$GameComponents$Spike$Export$gameComponent),
-				A3(
-				$author$project$Lib$CoreEngine$GameComponent$ComponentHandler$initGameComponent,
-				t,
-				$author$project$Lib$CoreEngine$GameComponent$Base$GameSpikeInit(
-					A5(
-						$author$project$Lib$CoreEngine$GameComponents$Spike$Base$SpikeInit,
-						_Utils_Tuple2(864, 2016),
-						$author$project$Lib$CoreEngine$GameComponents$Spike$Base$HorDown,
-						15,
-						true,
-						12)),
-				$author$project$Lib$CoreEngine$GameComponents$Spike$Export$gameComponent),
-				A3(
-				$author$project$Lib$CoreEngine$GameComponent$ComponentHandler$initGameComponent,
-				t,
-				$author$project$Lib$CoreEngine$GameComponent$Base$GameBallInit(
-					A3(
-						$author$project$Lib$CoreEngine$GameComponents$Ball$Base$BallInit,
-						_Utils_Tuple2(2700, 1800),
-						100,
-						14)),
-				$author$project$Lib$CoreEngine$GameComponents$Ball$Export$gameComponent),
-				A3(
-				$author$project$Lib$CoreEngine$GameComponent$ComponentHandler$initGameComponent,
-				t,
-				$author$project$Lib$CoreEngine$GameComponent$Base$GameSavePointInit(
-					A2(
-						$author$project$Lib$CoreEngine$GameComponents$SavePoint$Base$SavePointInit,
-						_Utils_Tuple2(2300, 2000),
-						15)),
-				$author$project$Lib$CoreEngine$GameComponents$SavePoint$Export$gameComponent)
-			]));
-};
-var $author$project$Scenes$TestChamber$Config$initFrontGroundComponents = function (_v0) {
-	return $elm$core$Array$fromList(_List_Nil);
-};
-var $author$project$Scenes$TestChamber$Config$initCamera = A4(
-	$author$project$Lib$CoreEngine$Camera$Base$CameraData,
-	_Utils_Tuple2(0, 1120),
-	_Utils_Tuple2(0, 0),
-	_Utils_Tuple2(
-		_Utils_Tuple2(32, 0),
-		_Utils_Tuple2((32 * 119) - 1, (70 * 32) - 1)),
-	_Utils_Tuple2(
-		_Utils_Tuple2(0.2, 0.3),
-		_Utils_Tuple2(0.4, 0.4)));
-var $author$project$Scenes$TestChamber$Map$sds = A3($tortus$elm_array_2d$Array2D$repeat, 120, 70, 0);
-var $author$project$Scenes$TestChamber$Map$mymap = A4(
-	$author$project$Lib$Map$Poly$buildrect,
-	_Utils_Tuple2(60, 48),
-	_Utils_Tuple2(10, 1),
-	1,
-	A4(
-		$author$project$Lib$Map$Poly$buildrect,
-		_Utils_Tuple2(47, 52),
-		_Utils_Tuple2(10, 1),
-		1,
-		A4(
-			$author$project$Lib$Map$Poly$buildrect,
-			_Utils_Tuple2(41, 61),
-			_Utils_Tuple2(1, 1),
-			1,
-			A4(
-				$author$project$Lib$Map$Poly$buildrect,
-				_Utils_Tuple2(27, 61),
-				_Utils_Tuple2(1, 1),
-				1,
-				A4(
-					$author$project$Lib$Map$Poly$buildrect,
-					_Utils_Tuple2(27, 62),
-					_Utils_Tuple2(15, 1),
-					1,
-					A4(
-						$author$project$Lib$Map$Poly$buildrect,
-						_Utils_Tuple2(20, 64),
-						_Utils_Tuple2(3, 3),
-						1,
-						A4(
-							$author$project$Lib$Map$Poly$buildrect,
-							_Utils_Tuple2(119, 0),
-							_Utils_Tuple2(1, 70),
-							1,
-							A4(
-								$author$project$Lib$Map$Poly$buildrect,
-								_Utils_Tuple2(0, 0),
-								_Utils_Tuple2(120, 1),
-								1,
-								A4(
-									$author$project$Lib$Map$Poly$buildrect,
-									_Utils_Tuple2(0, 68),
-									_Utils_Tuple2(120, 2),
-									1,
-									A4(
-										$author$project$Lib$Map$Poly$buildrect,
-										_Utils_Tuple2(0, 0),
-										_Utils_Tuple2(1, 70),
-										1,
-										$author$project$Scenes$TestChamber$Map$sds))))))))));
-var $author$project$Scenes$TestChamber$Config$initGameGlobalData = F2(
-	function (e, col) {
-		return {
-			camera: $author$project$Scenes$TestChamber$Config$initCamera,
-			collectedMonsters: col,
-			currentScene: 'Test',
-			energy: e,
-			ingamepause: false,
-			mapsize: _Utils_Tuple2(120, 70),
-			selectobj: 1,
-			settingpause: false,
-			solidmap: $author$project$Scenes$TestChamber$Map$mymap,
-			specialState: 0
-		};
-	});
-var $author$project$Scenes$TestChamber$Config$initPlayer = F2(
-	function (t, pos) {
-		if (pos.$ === 'DefaultPlayerPosition') {
-			return A3(
-				$author$project$Lib$CoreEngine$GameComponent$ComponentHandler$initGameComponent,
-				t,
-				$author$project$Lib$CoreEngine$GameComponent$Base$GamePlayerInit(
-					$author$project$Lib$CoreEngine$GameComponents$Player$Base$PlayerInit(
-						_Utils_Tuple2(2000, 2000))),
-				$author$project$Lib$CoreEngine$GameComponents$Player$Export$gameComponent);
-		} else {
-			var x = pos.a;
-			return A3(
-				$author$project$Lib$CoreEngine$GameComponent$ComponentHandler$initGameComponent,
-				t,
-				$author$project$Lib$CoreEngine$GameComponent$Base$GamePlayerInit(
-					$author$project$Lib$CoreEngine$GameComponents$Player$Base$PlayerInit(x)),
-				$author$project$Lib$CoreEngine$GameComponents$Player$Export$gameComponent);
-		}
-	});
-var $author$project$Scenes$TestChamber$Export$game = F2(
-	function (t, sm) {
-		var engineMsg = function () {
-			if (sm.$ === 'SceneEngineTMsg') {
-				var x = sm.a;
-				return x;
-			} else {
-				return $author$project$Lib$Scene$Base$nullEngineT;
-			}
-		}();
-		return A2(
-			$author$project$Lib$CoreEngine$Export$initEngine,
-			t,
-			$author$project$Lib$Scene$Base$SceneEngineMsg(
-				{
-					actors: $author$project$Scenes$TestChamber$Config$initActors(t),
-					background: _Utils_Tuple2($elm$core$Array$empty, $author$project$Scenes$TestChamber$Background$background),
-					chartlets: $author$project$Scenes$TestChamber$Config$allChartlets,
-					frontground: _Utils_Tuple2(
-						$author$project$Scenes$TestChamber$Config$initFrontGroundComponents(t),
-						F3(
-							function (_v0, _v1, _v2) {
-								return A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil);
-							})),
-					globalData: A2($author$project$Scenes$TestChamber$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters),
-					player: A2($author$project$Scenes$TestChamber$Config$initPlayer, t, engineMsg.playerPosition)
-				}));
-	});
-var $author$project$Scenes$TestChamber$Export$scene = $author$project$Lib$CoreEngine$Export$genEngineScene($author$project$Scenes$TestChamber$Export$game);
 var $author$project$Lib$CoreEngine$Export$nullData = {gameGlobalData: $author$project$Lib$CoreEngine$Base$nullGameGlobalData, layers: _List_Nil};
 var $author$project$Lib$CoreEngine$Global$dtToT = function (dt) {
 	if (dt.$ === 'CoreEngineDataT') {
@@ -31770,118 +30777,42 @@ var $author$project$Scenes$Home$Global$toCT = function (sd) {
 		});
 	return {init: init, update: update, view: view};
 };
-var $author$project$Scenes$Scene1$LayerBase$CommonData = function (plt) {
-	return {plt: plt};
-};
-var $author$project$Scenes$Scene1$Export$nullData = {
-	commonData: $author$project$Scenes$Scene1$LayerBase$CommonData(0),
-	layers: _List_Nil
-};
-var $author$project$Scenes$Scene1$Global$dtToT = function (dt) {
-	if (dt.$ === 'S1DataT') {
-		var x = dt.a;
-		return x;
-	} else {
-		return $author$project$Scenes$Scene1$Export$nullData;
-	}
-};
-var $author$project$Scenes$SceneSettings$S1DataT = function (a) {
-	return {$: 'S1DataT', a: a};
-};
-var $author$project$Scenes$Scene1$Global$sdata = function (d) {
-	return $author$project$Scenes$SceneSettings$S1DataT(d);
-};
-var $author$project$Scenes$Scene1$Global$toCT = function (sd) {
-	var view = F2(
-		function (_v2, vp) {
-			var dt = _v2.a;
-			var t = _v2.b;
-			return A2(
-				sd.view,
-				_Utils_Tuple2(
-					$author$project$Scenes$Scene1$Global$dtToT(dt),
-					t),
-				vp);
-		});
-	var update = F3(
-		function (msg, gd, _v1) {
-			var dt = _v1.a;
-			var t = _v1.b;
-			var _v0 = A3(
-				sd.update,
-				msg,
-				gd,
-				_Utils_Tuple2(
-					$author$project$Scenes$Scene1$Global$dtToT(dt),
-					t));
-			var sdt = _v0.a;
-			var som = _v0.b;
-			var newgd = _v0.c;
-			return _Utils_Tuple3(
-				$author$project$Scenes$Scene1$Global$sdata(sdt),
-				som,
-				newgd);
-		});
-	var init = F2(
-		function (t, tm) {
-			return $author$project$Scenes$Scene1$Global$sdata(
-				A2(sd.init, t, tm));
-		});
-	return {init: init, update: update, view: view};
-};
-var $author$project$Scenes$AllScenes$allScenes = A2(
-	$elm$core$List$append,
-	_List_fromArray(
-		[
-			_Utils_Tuple2(
-			'Scene1',
-			$author$project$Scenes$Scene1$Global$toCT($author$project$Scenes$Scene1$Export$scene)),
-			_Utils_Tuple2(
-			'Engine',
-			$author$project$Lib$CoreEngine$Global$toCT($author$project$Lib$CoreEngine$Export$scene)),
-			_Utils_Tuple2(
-			'Test',
-			$author$project$Lib$CoreEngine$Global$toCT($author$project$Scenes$TestChamber$Export$scene)),
-			_Utils_Tuple2(
-			'Home',
-			$author$project$Scenes$Home$Global$toCT($author$project$Scenes$Home$Export$scene)),
-			_Utils_Tuple2(
-			'Level2',
-			$author$project$Lib$CoreEngine$Global$toCT($author$project$Scenes$Level2$Export$scene)),
-			_Utils_Tuple2(
-			'Level4',
-			$author$project$Lib$CoreEngine$Global$toCT($author$project$Scenes$Level4$Export$scene)),
-			_Utils_Tuple2(
-			'Platformtest',
-			$author$project$Lib$CoreEngine$Global$toCT($author$project$Scenes$Platformtest$Export$scene))
-		]),
-	_List_fromArray(
-		[
-			_Utils_Tuple2(
-			'Level0',
-			$author$project$Lib$CoreEngine$Global$toCT($author$project$Scenes$Level0$Export$scene)),
-			_Utils_Tuple2(
-			'Level1',
-			$author$project$Lib$CoreEngine$Global$toCT($author$project$Scenes$Level1$Export$scene)),
-			_Utils_Tuple2(
-			'Level3',
-			$author$project$Lib$CoreEngine$Global$toCT($author$project$Scenes$Level3$Export$scene)),
-			_Utils_Tuple2(
-			'Level4boss',
-			$author$project$Lib$CoreEngine$Global$toCT($author$project$Scenes$Level4boss$Export$scene)),
-			_Utils_Tuple2(
-			'Level5boss',
-			$author$project$Lib$CoreEngine$Global$toCT($author$project$Scenes$Level5boss$Export$scene)),
-			_Utils_Tuple2(
-			'Level5',
-			$author$project$Lib$CoreEngine$Global$toCT($author$project$Scenes$Level5$Export$scene)),
-			_Utils_Tuple2(
-			'Path',
-			$author$project$Lib$CoreEngine$Global$toCT($author$project$Scenes$Path$Export$scene)),
-			_Utils_Tuple2(
-			'End',
-			$author$project$Lib$CoreEngine$Global$toCT($author$project$Scenes$End$Export$scene))
-		]));
+var $author$project$Scenes$AllScenes$allScenes = _List_fromArray(
+	[
+		_Utils_Tuple2(
+		'Home',
+		$author$project$Scenes$Home$Global$toCT($author$project$Scenes$Home$Export$scene)),
+		_Utils_Tuple2(
+		'Level2',
+		$author$project$Lib$CoreEngine$Global$toCT($author$project$Scenes$Level2$Export$scene)),
+		_Utils_Tuple2(
+		'Level4',
+		$author$project$Lib$CoreEngine$Global$toCT($author$project$Scenes$Level4$Export$scene)),
+		_Utils_Tuple2(
+		'Level0',
+		$author$project$Lib$CoreEngine$Global$toCT($author$project$Scenes$Level0$Export$scene)),
+		_Utils_Tuple2(
+		'Level1',
+		$author$project$Lib$CoreEngine$Global$toCT($author$project$Scenes$Level1$Export$scene)),
+		_Utils_Tuple2(
+		'Level3',
+		$author$project$Lib$CoreEngine$Global$toCT($author$project$Scenes$Level3$Export$scene)),
+		_Utils_Tuple2(
+		'Level4boss',
+		$author$project$Lib$CoreEngine$Global$toCT($author$project$Scenes$Level4boss$Export$scene)),
+		_Utils_Tuple2(
+		'Level5boss',
+		$author$project$Lib$CoreEngine$Global$toCT($author$project$Scenes$Level5boss$Export$scene)),
+		_Utils_Tuple2(
+		'Level5',
+		$author$project$Lib$CoreEngine$Global$toCT($author$project$Scenes$Level5$Export$scene)),
+		_Utils_Tuple2(
+		'Path',
+		$author$project$Lib$CoreEngine$Global$toCT($author$project$Scenes$Path$Export$scene)),
+		_Utils_Tuple2(
+		'End',
+		$author$project$Lib$CoreEngine$Global$toCT($author$project$Scenes$End$Export$scene))
+	]);
 var $author$project$Lib$Scene$SceneLoader$getScene = function (i) {
 	var scenes = $author$project$Scenes$AllScenes$allScenes;
 	var tests = A2(

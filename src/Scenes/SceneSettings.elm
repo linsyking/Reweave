@@ -19,7 +19,6 @@ import Canvas exposing (group)
 import Lib.CoreEngine.Export as CoreEngine
 import Lib.Scene.Base exposing (..)
 import Scenes.Home.Export as H
-import Scenes.Scene1.Export as S1
 
 
 
@@ -36,8 +35,7 @@ All the scene data types should be listed here.
 
 -}
 type SceneDataTypes
-    = S1DataT S1.Data
-    | HDataT H.Data
+    = HDataT H.Data
     | CoreEngineDataT CoreEngine.Data
     | NullSceneData
 
