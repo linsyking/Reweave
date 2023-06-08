@@ -1,5 +1,3 @@
-Project 2 for UM-JI VG100 Course
-
 **Note. If you want to use the game framework of this game, please go [here](https://github.com/linsyking/Messenger) and take this game as an example of that game framework.**
 
 You can access the game [here](https://focs.ji.sjtu.edu.cn/silverfocs/demo/2022/p2team01/) or on github page.
@@ -18,10 +16,10 @@ Any system that can use elm compiler. To debug the project, you also need a mode
 
 ```bash
 # First clone the repo
-git clone ssh://git@focs.ji.sjtu.edu.cn:2222/SilverFOCS-22/p2team01.git
+git clone https://github.com/linsyking/Reweave
 
 # Then open the dir
-cd p2team01
+cd Reweave
 
 # Next, install packages and compile
 make
@@ -35,7 +33,7 @@ You can change the scenes and click some buttons to interact with the game objec
 
 # Contributing
 
-Due to the rules and regulation of the SilverFocs incubator, pushing code to this project by people other than assigned members of the group is prohibited. 
+Due to the rules and regulation of the SilverFOCS incubator, pushing code to this project by people other than assigned members of the group is prohibited.
 
 Other ways of contribution, such as reviews and bug reports are welcome.
 
