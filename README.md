@@ -2,6 +2,8 @@
 
 You can access the game [here](https://focs.ji.sjtu.edu.cn/silverfocs/demo/2022/p2team01/) or on Github page.
 
+[Discord server](https://discord.com/invite/y4mH3Vdx)
+
 # README
 
 This file contains relevant information about installation and startup.

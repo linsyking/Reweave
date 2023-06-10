@@ -25,8 +25,7 @@ import Lib.Audio.Base exposing (AudioOption(..))
 import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInitPosition(..))
 import Lib.Layer.Base exposing (LayerMsg(..))
 import Lib.Layer.LayerHandler exposing (updateLayer, viewLayer)
-import Lib.LocalStorage.LocalStorage exposing (isFirstPlay)
-import Lib.Render.Render exposing (renderText, renderTextCenter)
+import Lib.Render.Render exposing (renderTextCenter)
 import Lib.Resources.Base exposing (allTexture)
 import Lib.Scene.Base exposing (EngineT, SceneMsg(..), SceneOutputMsg(..))
 import Scenes.Home.Common exposing (XModel)
@@ -161,18 +160,8 @@ starttext t gd =
                 "Loading... " ++ progress ++ "%"
 
             else
-                "Click anywhere to start"
+                "Click to start"
     in
     group [ alpha (0.7 + sin (toFloat (t + loaded) / 10) / 3) ]
-        (List.append
-            [ renderTextCenter gd 60 maintext "Times New Roman" ( 960, 900 )
-            ]
-            (if isFirstPlay gd.localstorage then
-                [ renderText gd 60 "Tips: This game features auto-save system" "Times New Roman" ( 450, 400 )
-                , renderText gd 60 "You don't have to finish the game in one run" "Times New Roman" ( 430, 480 )
-                ]
-
-             else
-                []
-            )
-        )
+        [ renderTextCenter gd 60 maintext "Times New Roman" ( 960, 900 )
+        ]
