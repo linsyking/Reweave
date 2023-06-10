@@ -204,18 +204,15 @@ update _ msg model =
 updateTAS : Msg -> Model -> ( Model, Cmd Msg, AudioCmd Msg )
 updateTAS msg model =
     case msg of
-        MouseDown _ _ ->
-            ( model, Cmd.none, Audio.cmdNone )
-
-        KeyDown _ ->
-            ( model, Cmd.none, Audio.cmdNone )
-
+        -- MouseDown _ _ ->
+        --     ( model, Cmd.none, Audio.cmdNone )
+        -- KeyDown _ ->
+        --     ( model, Cmd.none, Audio.cmdNone )
         MouseMove _ ->
             ( model, Cmd.none, Audio.cmdNone )
 
-        KeyUp _ ->
-            ( model, Cmd.none, Audio.cmdNone )
-
+        -- KeyUp _ ->
+        -- ( model, Cmd.none, Audio.cmdNone )
         Tick _ ->
             case model.currentGlobalData.tasCommands of
                 ( time, commands ) :: remain ->

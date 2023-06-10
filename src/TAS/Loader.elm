@@ -34,20 +34,32 @@ loadTAS xs =
                         Down TAS.D ->
                             KeyDown 68
 
+                        Down TAS.W ->
+                            KeyDown 87
+
+                        Down TAS.E ->
+                            KeyDown 69
+
                         Up TAS.A ->
-                            KeyDown 65
+                            KeyUp 65
 
                         Up TAS.C ->
-                            KeyDown 67
+                            KeyUp 67
 
                         Up TAS.D ->
-                            KeyDown 68
+                            KeyUp 68
+
+                        Up TAS.W ->
+                            KeyUp 87
+
+                        Up TAS.E ->
+                            KeyUp 69
 
                         MouseLeft pos ->
                             MouseDownInt 0 pos
 
                         MouseRright pos ->
-                            MouseDownInt 1 pos
+                            MouseDownInt 2 pos
                 )
                 b
             )

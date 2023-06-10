@@ -30927,6 +30927,9 @@ var $author$project$Lib$Scene$SceneLoader$loadSceneByName = F3(
 		var sc = $author$project$Lib$Scene$SceneLoader$getScene(i);
 		return A3($author$project$Lib$Scene$SceneLoader$loadScene, model, sc, tm);
 	});
+var $author$project$Base$KeyUp = function (a) {
+	return {$: 'KeyUp', a: a};
+};
 var $author$project$Base$MouseDownInt = F2(
 	function (a, b) {
 		return {$: 'MouseDownInt', a: a, b: b};
@@ -30951,28 +30954,40 @@ var $author$project$TAS$Loader$loadTAS = function (xs) {
 									case 'C':
 										var _v3 = c.a;
 										return $author$project$Base$KeyDown(67);
-									default:
+									case 'D':
 										var _v4 = c.a;
 										return $author$project$Base$KeyDown(68);
+									case 'W':
+										var _v5 = c.a;
+										return $author$project$Base$KeyDown(87);
+									default:
+										var _v6 = c.a;
+										return $author$project$Base$KeyDown(69);
 								}
 							case 'Up':
 								switch (c.a.$) {
 									case 'A':
-										var _v5 = c.a;
-										return $author$project$Base$KeyDown(65);
-									case 'C':
-										var _v6 = c.a;
-										return $author$project$Base$KeyDown(67);
-									default:
 										var _v7 = c.a;
-										return $author$project$Base$KeyDown(68);
+										return $author$project$Base$KeyUp(65);
+									case 'C':
+										var _v8 = c.a;
+										return $author$project$Base$KeyUp(67);
+									case 'D':
+										var _v9 = c.a;
+										return $author$project$Base$KeyUp(68);
+									case 'W':
+										var _v10 = c.a;
+										return $author$project$Base$KeyUp(87);
+									default:
+										var _v11 = c.a;
+										return $author$project$Base$KeyUp(69);
 								}
 							case 'MouseLeft':
 								var pos = c.a;
 								return A2($author$project$Base$MouseDownInt, 0, pos);
 							default:
 								var pos = c.a;
-								return A2($author$project$Base$MouseDownInt, 1, pos);
+								return A2($author$project$Base$MouseDownInt, 2, pos);
 						}
 					},
 					b));
@@ -30999,6 +31014,10 @@ var $author$project$TAS$TAS$MouseLeft = function (a) {
 var $author$project$TAS$TAS$MouseRright = function (a) {
 	return {$: 'MouseRright', a: a};
 };
+var $author$project$TAS$TAS$Up = function (a) {
+	return {$: 'Up', a: a};
+};
+var $author$project$TAS$TAS$W = {$: 'W'};
 var $author$project$TAS$TAS$tas = _List_fromArray(
 	[
 		_Utils_Tuple2(
@@ -31019,17 +31038,168 @@ var $author$project$TAS$TAS$tas = _List_fromArray(
 		3,
 		_List_fromArray(
 			[
-				$author$project$TAS$TAS$Down($author$project$TAS$TAS$D),
-				$author$project$TAS$TAS$MouseRright(
-				_Utils_Tuple2(1920, 0)),
-				$author$project$TAS$TAS$Down($author$project$TAS$TAS$C)
+				$author$project$TAS$TAS$Down($author$project$TAS$TAS$D)
 			])),
 		_Utils_Tuple2(
-		50,
+		18,
 		_List_fromArray(
 			[
 				$author$project$TAS$TAS$MouseRright(
-				_Utils_Tuple2(1920, 0))
+				_Utils_Tuple2(1920, 1000)),
+				$author$project$TAS$TAS$Down($author$project$TAS$TAS$C),
+				$author$project$TAS$TAS$Down($author$project$TAS$TAS$W),
+				$author$project$TAS$TAS$Up($author$project$TAS$TAS$C)
+			])),
+		_Utils_Tuple2(
+		19,
+		_List_fromArray(
+			[
+				$author$project$TAS$TAS$MouseRright(
+				_Utils_Tuple2(1920, 1000)),
+				$author$project$TAS$TAS$Down($author$project$TAS$TAS$C),
+				$author$project$TAS$TAS$Down($author$project$TAS$TAS$W),
+				$author$project$TAS$TAS$Up($author$project$TAS$TAS$C)
+			])),
+		_Utils_Tuple2(
+		33,
+		_List_fromArray(
+			[
+				$author$project$TAS$TAS$MouseRright(
+				_Utils_Tuple2(1900, 0))
+			])),
+		_Utils_Tuple2(
+		34,
+		_List_fromArray(
+			[
+				$author$project$TAS$TAS$Down($author$project$TAS$TAS$C)
+			])),
+		_Utils_Tuple2(
+		63,
+		_List_fromArray(
+			[
+				$author$project$TAS$TAS$Up($author$project$TAS$TAS$C),
+				$author$project$TAS$TAS$Down($author$project$TAS$TAS$W)
+			])),
+		_Utils_Tuple2(
+		74,
+		_List_fromArray(
+			[
+				$author$project$TAS$TAS$Down($author$project$TAS$TAS$C)
+			])),
+		_Utils_Tuple2(
+		85,
+		_List_fromArray(
+			[
+				$author$project$TAS$TAS$Up($author$project$TAS$TAS$C),
+				$author$project$TAS$TAS$Up($author$project$TAS$TAS$W)
+			])),
+		_Utils_Tuple2(
+		116,
+		_List_fromArray(
+			[
+				$author$project$TAS$TAS$MouseRright(
+				_Utils_Tuple2(1920, 700)),
+				$author$project$TAS$TAS$Down($author$project$TAS$TAS$C),
+				$author$project$TAS$TAS$Down($author$project$TAS$TAS$W),
+				$author$project$TAS$TAS$Up($author$project$TAS$TAS$C)
+			])),
+		_Utils_Tuple2(
+		131,
+		_List_fromArray(
+			[
+				$author$project$TAS$TAS$MouseRright(
+				_Utils_Tuple2(1920, 700)),
+				$author$project$TAS$TAS$Down($author$project$TAS$TAS$C),
+				$author$project$TAS$TAS$Down($author$project$TAS$TAS$W),
+				$author$project$TAS$TAS$Up($author$project$TAS$TAS$C)
+			])),
+		_Utils_Tuple2(
+		146,
+		_List_fromArray(
+			[
+				$author$project$TAS$TAS$MouseRright(
+				_Utils_Tuple2(1920, 91))
+			])),
+		_Utils_Tuple2(
+		195,
+		_List_fromArray(
+			[
+				$author$project$TAS$TAS$Up($author$project$TAS$TAS$C),
+				$author$project$TAS$TAS$Down($author$project$TAS$TAS$W)
+			])),
+		_Utils_Tuple2(
+		233,
+		_List_fromArray(
+			[
+				$author$project$TAS$TAS$MouseRright(
+				_Utils_Tuple2(1420, 0)),
+				$author$project$TAS$TAS$Down($author$project$TAS$TAS$C)
+			])),
+		_Utils_Tuple2(
+		243,
+		_List_fromArray(
+			[
+				$author$project$TAS$TAS$Up($author$project$TAS$TAS$C)
+			])),
+		_Utils_Tuple2(
+		263,
+		_List_fromArray(
+			[
+				$author$project$TAS$TAS$Down($author$project$TAS$TAS$C)
+			])),
+		_Utils_Tuple2(
+		334,
+		_List_fromArray(
+			[
+				$author$project$TAS$TAS$Down($author$project$TAS$TAS$W)
+			])),
+		_Utils_Tuple2(
+		335,
+		_List_fromArray(
+			[
+				$author$project$TAS$TAS$MouseRright(
+				_Utils_Tuple2(800, 0))
+			])),
+		_Utils_Tuple2(
+		373,
+		_List_fromArray(
+			[
+				$author$project$TAS$TAS$Up($author$project$TAS$TAS$C),
+				$author$project$TAS$TAS$Down($author$project$TAS$TAS$W)
+			])),
+		_Utils_Tuple2(
+		385,
+		_List_fromArray(
+			[
+				$author$project$TAS$TAS$MouseRright(
+				_Utils_Tuple2(1920, 419)),
+				$author$project$TAS$TAS$Down($author$project$TAS$TAS$C)
+			])),
+		_Utils_Tuple2(
+		447,
+		_List_fromArray(
+			[
+				$author$project$TAS$TAS$Up($author$project$TAS$TAS$C)
+			])),
+		_Utils_Tuple2(
+		471,
+		_List_fromArray(
+			[
+				$author$project$TAS$TAS$MouseRright(
+				_Utils_Tuple2(1920, 300)),
+				$author$project$TAS$TAS$Down($author$project$TAS$TAS$C)
+			])),
+		_Utils_Tuple2(
+		493,
+		_List_fromArray(
+			[
+				$author$project$TAS$TAS$Up($author$project$TAS$TAS$C)
+			])),
+		_Utils_Tuple2(
+		566,
+		_List_fromArray(
+			[
+				$author$project$TAS$TAS$Down($author$project$TAS$TAS$W)
 			]))
 	]);
 var $author$project$Main$init = function (flags) {
@@ -31060,9 +31230,6 @@ var $author$project$Main$init = function (flags) {
 			{currentGlobalData: newgd}),
 		$elm$core$Platform$Cmd$none,
 		$MartinSStewart$elm_audio$Audio$cmdNone);
-};
-var $author$project$Base$KeyUp = function (a) {
-	return {$: 'KeyUp', a: a};
 };
 var $author$project$Base$MouseDown = F2(
 	function (a, b) {
@@ -31927,13 +32094,7 @@ var $author$project$Main$update__ = F2(
 var $author$project$Main$updateTAS = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 'MouseDown':
-				return _Utils_Tuple3(model, $elm$core$Platform$Cmd$none, $MartinSStewart$elm_audio$Audio$cmdNone);
-			case 'KeyDown':
-				return _Utils_Tuple3(model, $elm$core$Platform$Cmd$none, $MartinSStewart$elm_audio$Audio$cmdNone);
 			case 'MouseMove':
-				return _Utils_Tuple3(model, $elm$core$Platform$Cmd$none, $MartinSStewart$elm_audio$Audio$cmdNone);
-			case 'KeyUp':
 				return _Utils_Tuple3(model, $elm$core$Platform$Cmd$none, $MartinSStewart$elm_audio$Audio$cmdNone);
 			case 'Tick':
 				var _v1 = model.currentGlobalData.tasCommands;
