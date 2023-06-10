@@ -20560,7 +20560,7 @@ var $author$project$Scenes$Home$Layer0$Display$dview = F3(
 					$author$project$Lib$Render$Render$renderText,
 					gd,
 					30,
-					'Ver. 1.0.2',
+					'Ver. 1.0.3',
 					'Courier New',
 					_Utils_Tuple2(1700, 1000))
 				]));
