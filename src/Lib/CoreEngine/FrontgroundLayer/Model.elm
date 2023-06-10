@@ -217,8 +217,15 @@ updateModel msg gd lm ( model, t ) ggd =
 
                         addfpsmodel =
                             { model | fpsrepo = newfpsrepo }
+
+                        newIngameTime =
+                            if ggd.ingamepause || ggd.currentScene == "End" then
+                                ggd.ingameTime
+
+                            else
+                                ggd.ingameTime + 1
                     in
-                    dealAllComponentMsg rmsg { addfpsmodel | components = newcs2 } newgd ggd
+                    dealAllComponentMsg rmsg { addfpsmodel | components = newcs2 } newgd { ggd | ingameTime = newIngameTime }
 
                 MouseDown 0 _ ->
                     let

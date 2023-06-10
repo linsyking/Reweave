@@ -40,7 +40,7 @@ game t sm =
             , globalData =
                 initGameGlobalData engineMsg.energy engineMsg.collectedMonsters engineMsg.ingameTime
             , background = ( Array.empty, background )
-            , frontground = ( initFrontGroundComponents t, \_ _ _ -> group [] [] )
+            , frontground = ( initFrontGroundComponents t engineMsg.ingameTime, \_ _ _ -> group [] [] )
             }
         )
 

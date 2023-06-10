@@ -10166,6 +10166,7 @@ var $linsyking$elm_canvas$Canvas$Settings$Text$align = function (alignment) {
 		$linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$textAlign(
 			$linsyking$elm_canvas$Canvas$Settings$Text$textAlignToString(alignment)));
 };
+var $avh4$elm_color$Color$black = A4($avh4$elm_color$Color$RgbaSpace, 0 / 255, 0 / 255, 0 / 255, 1.0);
 var $linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$font = function (f) {
 	return A2(
 		$linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$field,
@@ -10199,7 +10200,8 @@ var $author$project$Lib$Render$Render$renderText = F5(
 						family: ft,
 						size: $elm$core$Basics$floor(rx)
 					}),
-					$linsyking$elm_canvas$Canvas$Settings$Text$align($linsyking$elm_canvas$Canvas$Settings$Text$Start)
+					$linsyking$elm_canvas$Canvas$Settings$Text$align($linsyking$elm_canvas$Canvas$Settings$Text$Start),
+					$linsyking$elm_canvas$Canvas$Settings$fill($avh4$elm_color$Color$black)
 				]),
 			_Utils_Tuple2(dsx, (dsy + rx) - 1),
 			s);
@@ -11418,7 +11420,6 @@ var $author$project$Components$Menu$Status$Collect$Collect$updateMap = F4(
 			return _Utils_Tuple3(model, _List_Nil, globalData);
 		}
 	});
-var $avh4$elm_color$Color$black = A4($avh4$elm_color$Color$RgbaSpace, 0 / 255, 0 / 255, 0 / 255, 1.0);
 var $author$project$Components$Menu$Status$Collect$Collect$viewMap = F2(
 	function (_v0, globalData) {
 		var model = _v0.a;
@@ -15652,6 +15653,7 @@ var $author$project$Lib$CoreEngine$FrontgroundLayer$Model$updateModel = F5(
 			switch (msg.$) {
 				case 'Tick':
 					var tick = msg.a;
+					var newIngameTime = (ggd.ingamepause || (ggd.currentScene === 'End')) ? ggd.ingameTime : (ggd.ingameTime + 1);
 					var curtime = $elm$time$Time$posixToMillis(tick);
 					var newfpsrepo = ($elm$core$List$length(model.fpsrepo) >= 10) ? _Utils_ap(
 						A2($elm$core$List$drop, 1, model.fpsrepo),
@@ -15684,7 +15686,9 @@ var $author$project$Lib$CoreEngine$FrontgroundLayer$Model$updateModel = F5(
 							addfpsmodel,
 							{components: newcs2}),
 						newgd,
-						ggd);
+						_Utils_update(
+							ggd,
+							{ingameTime: newIngameTime}));
 				case 'MouseDown':
 					if (!msg.a) {
 						var _v7 = A6($author$project$Lib$Component$ComponentHandler$updateSingleComponentByName, msg, $author$project$Lib$Component$Base$NullComponentMsg, gd, t, 'Menu', model.components);
@@ -15842,9 +15846,42 @@ var $author$project$Lib$CoreEngine$FrontgroundLayer$Display$genFPS = F2(
 					$author$project$Lib$Render$Render$renderText,
 					gd,
 					20,
-					'FPS:' + $elm$core$String$fromInt(fps),
+					'FPS: ' + $elm$core$String$fromInt(fps),
 					'sans-serif',
 					_Utils_Tuple2(1850, 0))
+				]));
+	});
+var $linsyking$elm_canvas$Canvas$Internal$Canvas$DrawableEmpty = {$: 'DrawableEmpty'};
+var $linsyking$elm_canvas$Canvas$empty = $linsyking$elm_canvas$Canvas$Internal$Canvas$Renderable(
+	{commands: _List_Nil, drawOp: $linsyking$elm_canvas$Canvas$Internal$Canvas$NotSpecified, drawable: $linsyking$elm_canvas$Canvas$Internal$Canvas$DrawableEmpty});
+var $author$project$MainConfig$timeInterval = 16;
+var $author$project$Lib$Tools$Math$timeFromFrame = function (t) {
+	var total = t * $elm$core$Basics$floor($author$project$MainConfig$timeInterval);
+	var seconds = A2($elm$core$Basics$modBy, 60, (total / 1000) | 0);
+	var secS = (seconds < 10) ? ('0' + $elm$core$String$fromInt(seconds)) : $elm$core$String$fromInt(seconds);
+	var minutes = A2($elm$core$Basics$modBy, 60, (total / 60000) | 0);
+	var minS = (minutes < 10) ? ('0' + $elm$core$String$fromInt(minutes)) : $elm$core$String$fromInt(minutes);
+	var milliSec = A2($elm$core$Basics$modBy, 1000, total);
+	var millisecS = (milliSec < 10) ? ('00' + $elm$core$String$fromInt(milliSec)) : ((milliSec < 100) ? ('0' + $elm$core$String$fromInt(milliSec)) : $elm$core$String$fromInt(milliSec));
+	return minS + (':' + (secS + ('.' + millisecS)));
+};
+var $author$project$Lib$CoreEngine$FrontgroundLayer$Display$genTimer = F2(
+	function (ggd, gd) {
+		return (ggd.currentScene === 'End') ? $linsyking$elm_canvas$Canvas$empty : A2(
+			$linsyking$elm_canvas$Canvas$group,
+			_List_fromArray(
+				[
+					$linsyking$elm_canvas$Canvas$Settings$Advanced$alpha(0.3)
+				]),
+			_List_fromArray(
+				[
+					A5(
+					$author$project$Lib$Render$Render$renderText,
+					gd,
+					20,
+					'Time: ' + $author$project$Lib$Tools$Math$timeFromFrame(ggd.ingameTime),
+					'sans-serif',
+					_Utils_Tuple2(1700, 0))
 				]));
 	});
 var $elm$core$Elm$JsArray$map = _JsArray_map;
@@ -15899,7 +15936,8 @@ var $author$project$Lib$CoreEngine$FrontgroundLayer$Display$view = F3(
 				[
 					A3($author$project$Lib$Component$ComponentHandler$genView, gd, t, model.components),
 					A3(model.render, t, ggd, gd),
-					A2($author$project$Lib$CoreEngine$FrontgroundLayer$Display$genFPS, model, gd)
+					A2($author$project$Lib$CoreEngine$FrontgroundLayer$Display$genFPS, model, gd),
+					A2($author$project$Lib$CoreEngine$FrontgroundLayer$Display$genTimer, ggd, gd)
 				]));
 	});
 var $author$project$Lib$CoreEngine$FrontgroundLayer$Export$layer = {data: $author$project$Lib$CoreEngine$FrontgroundLayer$Export$nullData, init: $author$project$Lib$CoreEngine$FrontgroundLayer$Model$initModel, update: $author$project$Lib$CoreEngine$FrontgroundLayer$Model$updateModel, view: $author$project$Lib$CoreEngine$FrontgroundLayer$Display$view};
@@ -17480,7 +17518,7 @@ var $author$project$Lib$CoreEngine$GameLayer$Model$dealParentMsg = F4(
 									$author$project$Lib$Layer$Base$LayerName('Frontground'),
 									A3(
 										$author$project$Lib$Layer$Base$LayerExitMsg,
-										A5($author$project$Lib$Scene$Base$EngineT, ggd.energy, pls, ggd.collectedMonsters, spstate, 0),
+										A5($author$project$Lib$Scene$Base$EngineT, ggd.energy, pls, ggd.collectedMonsters, spstate, ggd.ingameTime),
 										s,
 										50))
 								])),
@@ -19756,96 +19794,109 @@ var $author$project$Components$Hints$Export$initComponent = F2(
 				data: A2($author$project$Components$Hints$Export$component.init, t, ct)
 			});
 	});
-var $author$project$Scenes$End$Config$initFrontGroundComponents = function (t) {
-	return $elm$core$Array$fromList(
-		_List_fromArray(
-			[
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['40', '600', '500', '90', 'Thanks for playing']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['40', '680', '620', '50', 'You have saved the human']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['200', '1600', '100', '60', 'Director']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['200', '1600', '170', '40', 'Xiang Yiming']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['500', '1400', '600', '60', 'Artist & Composer']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['500', '1400', '670', '40', 'Wang Dayong']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['800', '300', '600', '60', 'Level Designers']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['800', '300', '670', '40', 'Xiang Yiming, Zhang Jingjing']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['1100', '300', '100', '60', 'Game Engine Designers']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['1100', '300', '170', '40', 'Xiang Yiming, Duan Lingbo']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['1400', '300', '600', '60', 'Story Designer']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['1400', '300', '670', '40', 'Zhang Jingjing']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['1800', '600', '400', '90', 'Technical Support']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['1800', '750', '550', '60', 'SFOCS Staffs'])))
-			]));
-};
+var $author$project$Scenes$End$Config$initFrontGroundComponents = F2(
+	function (t, time) {
+		return $elm$core$Array$fromList(
+			_List_fromArray(
+				[
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['40', '600', '400', '90', 'Thanks for playing']))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['40', '680', '520', '50', 'You have saved the human']))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							[
+								'40',
+								'840',
+								'600',
+								'40',
+								'in ' + $author$project$Lib$Tools$Math$timeFromFrame(time)
+							]))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['200', '1600', '100', '60', 'Director']))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['200', '1600', '170', '40', 'Xiang Yiming']))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['500', '1400', '600', '60', 'Artist & Composer']))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['500', '1400', '670', '40', 'Wang Dayong']))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['800', '300', '600', '60', 'Level Designers']))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['800', '300', '670', '40', 'Xiang Yiming, Zhang Jingjing']))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['1100', '300', '100', '60', 'Game Engine Designers']))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['1100', '300', '170', '40', 'Xiang Yiming, Duan Lingbo']))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['1400', '300', '600', '60', 'Story Designer']))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['1400', '300', '670', '40', 'Zhang Jingjing']))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['1800', '600', '400', '90', 'Technical Support']))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['1800', '750', '550', '60', 'SFOCS Staffs'])))
+				]));
+	});
 var $author$project$Scenes$End$Map$mapwidth = 300;
 var $author$project$Scenes$End$Config$initCamera = A4(
 	$author$project$Lib$CoreEngine$Camera$Base$CameraData,
@@ -19962,7 +20013,7 @@ var $author$project$Scenes$End$Export$game = F2(
 					background: _Utils_Tuple2($elm$core$Array$empty, $author$project$Scenes$End$Background$background),
 					chartlets: $author$project$Scenes$End$Config$allChartlets,
 					frontground: _Utils_Tuple2(
-						$author$project$Scenes$End$Config$initFrontGroundComponents(t),
+						A2($author$project$Scenes$End$Config$initFrontGroundComponents, t, engineMsg.ingameTime),
 						F3(
 							function (_v0, _v1, _v2) {
 								return A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil);
@@ -21244,7 +21295,8 @@ var $author$project$Lib$Render$Render$renderTextCenter = F5(
 						size: $elm$core$Basics$floor(rx)
 					}),
 					$linsyking$elm_canvas$Canvas$Settings$Text$align($linsyking$elm_canvas$Canvas$Settings$Text$Center),
-					$linsyking$elm_canvas$Canvas$Settings$Text$baseLine($linsyking$elm_canvas$Canvas$Settings$Text$Middle)
+					$linsyking$elm_canvas$Canvas$Settings$Text$baseLine($linsyking$elm_canvas$Canvas$Settings$Text$Middle),
+					$linsyking$elm_canvas$Canvas$Settings$fill($avh4$elm_color$Color$black)
 				]),
 			_Utils_Tuple2(dsx, dsy),
 			s);
@@ -31356,7 +31408,6 @@ var $elm$browser$Browser$Events$onResize = function (func) {
 				A2($elm$json$Json$Decode$field, 'innerWidth', $elm$json$Json$Decode$int),
 				A2($elm$json$Json$Decode$field, 'innerHeight', $elm$json$Json$Decode$int))));
 };
-var $author$project$MainConfig$timeInterval = 16;
 var $author$project$Main$subscriptions = F2(
 	function (_v0, _v1) {
 		return $elm$core$Platform$Sub$batch(
