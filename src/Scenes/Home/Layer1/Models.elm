@@ -48,7 +48,7 @@ updateModel msg gd _ ( model, t ) cd =
         case msg of
             MouseDown 0 ( x, y ) ->
                 if model.start.display && judgeMouse gd ( x, y ) ( Tuple.first model.start.pos, Tuple.second model.start.pos ) ( model.start.length, model.start.width ) then
-                    ( ( model, cd, [ ( LayerParentScene, LayerIntMsg 1 ) ] ), { gd | localstorage = LSInfo [] "Level0" 300 ( -1, -1 ) gd.localstorage.volume } )
+                    ( ( model, cd, [ ( LayerParentScene, LayerIntMsg 1 ) ] ), { gd | localstorage = LSInfo [] "Level0" 300 ( -1, -1 ) gd.localstorage.volume 0 } )
 
                 else if model.continue.display && judgeMouse gd ( x, y ) ( Tuple.first model.continue.pos, Tuple.second model.continue.pos ) ( model.continue.length, model.continue.width ) then
                     ( ( model, cd, [ ( LayerParentScene, LayerIntMsg 3 ) ] ), gd )

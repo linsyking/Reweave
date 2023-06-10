@@ -39,16 +39,18 @@ import Lib.CoreEngine.GameComponents.Player.Base exposing (PlayerInit, PlayerIni
 import Lib.CoreEngine.GameComponents.Player.Export as Player
 import Lib.CoreEngine.GameLayer.Base exposing (GameLayerDepth(..))
 import Lib.Render.Render exposing (renderSprite, renderSpriteWithRev)
+import Lib.Tools.Math exposing (timeFromFrame)
 import Scenes.End.Map exposing (mapwidth, mymap)
 
 
 {-| initFrontGroundComponents
 -}
-initFrontGroundComponents : Int -> Array Component
-initFrontGroundComponents t =
+initFrontGroundComponents : Int -> Int -> Array Component
+initFrontGroundComponents t time =
     Array.fromList
-        [ Hints.initComponent t (ComponentLStringMsg [ "40", "600", "500", "90", "Thanks for playing" ])
-        , Hints.initComponent t (ComponentLStringMsg [ "40", "680", "620", "50", "You have saved the human" ])
+        [ Hints.initComponent t (ComponentLStringMsg [ "40", "600", "400", "90", "Thanks for playing" ])
+        , Hints.initComponent t (ComponentLStringMsg [ "40", "680", "520", "50", "You have saved the human" ])
+        , Hints.initComponent t (ComponentLStringMsg [ "40", "840", "600", "40", "in " ++ timeFromFrame time ])
         , Hints.initComponent t (ComponentLStringMsg [ "200", "1600", "100", "60", "Director" ])
         , Hints.initComponent t (ComponentLStringMsg [ "200", "1600", "170", "40", "Xiang Yiming" ])
         , Hints.initComponent t (ComponentLStringMsg [ "500", "1400", "600", "60", "Artist & Composer" ])
@@ -95,8 +97,8 @@ initCamera =
 
 {-| initGameGlobalData
 -}
-initGameGlobalData : Float -> List String -> GameGlobalData
-initGameGlobalData e col =
+initGameGlobalData : Float -> List String -> Int -> GameGlobalData
+initGameGlobalData e col time =
     { camera = initCamera
     , solidmap = mymap
     , mapsize = ( mapwidth, 70 )
@@ -107,6 +109,7 @@ initGameGlobalData e col =
     , collectedMonsters = col
     , settingpause = False
     , specialState = 0
+    , ingameTime = time
     }
 
 

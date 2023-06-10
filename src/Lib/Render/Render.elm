@@ -344,6 +344,7 @@ renderText gd size s ft ( x, y ) =
     text
         [ font { size = floor rx, family = ft }
         , align Start
+        , fill Color.black
         ]
         ( dsx, dsy + rx - 1 )
         s
@@ -364,6 +365,7 @@ renderTextCenter gd size s ft ( x, y ) =
         [ font { size = floor rx, family = ft }
         , align Center
         , baseLine Middle
+        , fill Color.black
         ]
         ( dsx, dsy )
         s

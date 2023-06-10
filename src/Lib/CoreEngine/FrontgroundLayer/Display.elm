@@ -7,12 +7,13 @@ module Lib.CoreEngine.FrontgroundLayer.Display exposing (view)
 -}
 
 import Base exposing (GlobalData)
-import Canvas exposing (Renderable, group)
+import Canvas exposing (Renderable, empty, group)
 import Canvas.Settings.Advanced exposing (alpha)
 import Lib.Component.ComponentHandler exposing (genView)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.FrontgroundLayer.Common exposing (Model)
 import Lib.Render.Render exposing (renderText)
+import Lib.Tools.Math exposing (timeFromFrame)
 
 
 {-| view
@@ -23,7 +24,21 @@ view ( model, t ) ggd gd =
         [ genView gd t model.components
         , model.render t ggd gd
         , genFPS model gd
+        , genTimer ggd gd
         ]
+
+
+{-| generate Timer
+-}
+genTimer : GameGlobalData -> GlobalData -> Renderable
+genTimer ggd gd =
+    if ggd.currentScene == "End" then
+        empty
+
+    else
+        group [ alpha 0.3 ]
+            [ renderText gd 20 ("Time: " ++ timeFromFrame ggd.ingameTime) "sans-serif" ( 1700, 0 )
+            ]
 
 
 {-| genFPS
@@ -54,4 +69,4 @@ genFPS model gd =
         group [] []
 
     else
-        group [ alpha 0.3 ] [ renderText gd 20 ("FPS:" ++ String.fromInt fps) "sans-serif" ( 1850, 0 ) ]
+        group [ alpha 0.3 ] [ renderText gd 20 ("FPS: " ++ String.fromInt fps) "sans-serif" ( 1850, 0 ) ]

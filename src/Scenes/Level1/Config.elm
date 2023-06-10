@@ -132,8 +132,8 @@ initCamera =
 
 {-| initGameGlobalData
 -}
-initGameGlobalData : Float -> List String -> GameGlobalData
-initGameGlobalData e col =
+initGameGlobalData : Float -> List String -> Int -> GameGlobalData
+initGameGlobalData e col t =
     { camera = initCamera
     , solidmap = mymap
     , mapsize = ( 120, 70 )
@@ -144,6 +144,7 @@ initGameGlobalData e col =
     , collectedMonsters = col
     , settingpause = False
     , specialState = 0
+    , ingameTime = t
     }
 
 

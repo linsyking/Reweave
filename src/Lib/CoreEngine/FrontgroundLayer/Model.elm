@@ -87,7 +87,7 @@ dealComponentsMsg rmsg model gd ggd =
                 newexitmsg =
                     LayerExitMsg { originet | energy = newenergy, collectedMonsters = ggd.collectedMonsters } s 0
             in
-            ( ( model, ggd, [ ( LayerParentScene, newexitmsg ) ] ), { gd | scenesFinished = gd.scenesFinished ++ [ ggd.currentScene ], localstorage = LSInfo ggd.collectedMonsters s newenergy ( -1, -1 ) gd.localstorage.volume } )
+            ( ( model, ggd, [ ( LayerParentScene, newexitmsg ) ] ), { gd | scenesFinished = gd.scenesFinished ++ [ ggd.currentScene ], localstorage = LSInfo ggd.collectedMonsters s newenergy ( -1, -1 ) gd.localstorage.volume ggd.ingameTime } )
 
         ComponentLStringMsg ("restart" :: _) ->
             -- Final Restart
@@ -177,6 +177,7 @@ updateModel msg gd lm ( model, t ) ggd =
                             DefaultPlayerPosition
                             ggd.collectedMonsters
                             ggd.specialState
+                            ggd.ingameTime
                 }
               , ggd
               , []
@@ -190,7 +191,7 @@ updateModel msg gd lm ( model, t ) ggd =
                     gd.localstorage
 
                 newl =
-                    { oldl | energy = ggd.energy, initPosition = p }
+                    { oldl | energy = ggd.energy, initPosition = p, gameTime = ggd.ingameTime }
             in
             ( ( { model | savePoint = Just ( p, ggd.energy ) }, ggd, [] ), { gd | localstorage = newl } )
 
@@ -216,8 +217,15 @@ updateModel msg gd lm ( model, t ) ggd =
 
                         addfpsmodel =
                             { model | fpsrepo = newfpsrepo }
+
+                        newIngameTime =
+                            if ggd.ingamepause || ggd.currentScene == "End" then
+                                ggd.ingameTime
+
+                            else
+                                ggd.ingameTime + 1
                     in
-                    dealAllComponentMsg rmsg { addfpsmodel | components = newcs2 } newgd ggd
+                    dealAllComponentMsg rmsg { addfpsmodel | components = newcs2 } newgd { ggd | ingameTime = newIngameTime }
 
                 MouseDown 0 _ ->
                     let

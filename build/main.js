@@ -8095,9 +8095,9 @@ var $MartinSStewart$elm_audio$Audio$AudioCmdGroup = function (a) {
 	return {$: 'AudioCmdGroup', a: a};
 };
 var $MartinSStewart$elm_audio$Audio$cmdNone = $MartinSStewart$elm_audio$Audio$AudioCmdGroup(_List_Nil);
-var $author$project$Base$LSInfo = F5(
-	function (collected, level, energy, initPosition, volume) {
-		return {collected: collected, energy: energy, initPosition: initPosition, level: level, volume: volume};
+var $author$project$Base$LSInfo = F6(
+	function (collected, level, energy, initPosition, volume, gameTime) {
+		return {collected: collected, energy: energy, gameTime: gameTime, initPosition: initPosition, level: level, volume: volume};
 	});
 var $elm$json$Json$Decode$at = F2(
 	function (fields, decoder) {
@@ -8128,6 +8128,17 @@ var $author$project$Lib$LocalStorage$LocalStorage$decodeLSInfo = function (info)
 				_List_fromArray(
 					['volume']),
 				$elm$json$Json$Decode$float),
+			info));
+	var oldtime = A2(
+		$elm$core$Result$withDefault,
+		0,
+		A2(
+			$elm$json$Json$Decode$decodeString,
+			A2(
+				$elm$json$Json$Decode$at,
+				_List_fromArray(
+					['gametime']),
+				$elm$json$Json$Decode$int),
 			info));
 	var oldposy = A2(
 		$elm$core$Result$withDefault,
@@ -8184,13 +8195,14 @@ var $author$project$Lib$LocalStorage$LocalStorage$decodeLSInfo = function (info)
 					['collected']),
 				$elm$json$Json$Decode$list($elm$json$Json$Decode$string)),
 			info));
-	return A5(
+	return A6(
 		$author$project$Base$LSInfo,
 		oldcol,
 		oldlevel,
 		oldenergy,
 		_Utils_Tuple2(oldposx, oldposy),
-		oldvol);
+		oldvol,
+		oldtime);
 };
 var $author$project$Lib$Coordinate$Coordinates$getStartPoint = function (_v0) {
 	var w = _v0.a;
@@ -8203,13 +8215,14 @@ var $author$project$Scenes$SceneSettings$NullSceneData = {$: 'NullSceneData'};
 var $author$project$Common$initGlobalData = {
 	audioVolume: 0.5,
 	browserViewPort: _Utils_Tuple2(1280, 720),
-	localstorage: A5(
+	localstorage: A6(
 		$author$project$Base$LSInfo,
 		_List_Nil,
 		'Level0',
 		0,
 		_Utils_Tuple2(-1, -1),
-		50),
+		50,
+		0),
 	mousePos: _Utils_Tuple2(0, 0),
 	realHeight: 720,
 	realWidth: 1280,
@@ -10166,6 +10179,7 @@ var $linsyking$elm_canvas$Canvas$Settings$Text$align = function (alignment) {
 		$linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$textAlign(
 			$linsyking$elm_canvas$Canvas$Settings$Text$textAlignToString(alignment)));
 };
+var $avh4$elm_color$Color$black = A4($avh4$elm_color$Color$RgbaSpace, 0 / 255, 0 / 255, 0 / 255, 1.0);
 var $linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$font = function (f) {
 	return A2(
 		$linsyking$elm_canvas$Canvas$Internal$CustomElementJsonApi$field,
@@ -10199,7 +10213,8 @@ var $author$project$Lib$Render$Render$renderText = F5(
 						family: ft,
 						size: $elm$core$Basics$floor(rx)
 					}),
-					$linsyking$elm_canvas$Canvas$Settings$Text$align($linsyking$elm_canvas$Canvas$Settings$Text$Start)
+					$linsyking$elm_canvas$Canvas$Settings$Text$align($linsyking$elm_canvas$Canvas$Settings$Text$Start),
+					$linsyking$elm_canvas$Canvas$Settings$fill($avh4$elm_color$Color$black)
 				]),
 			_Utils_Tuple2(dsx, (dsy + rx) - 1),
 			s);
@@ -11418,7 +11433,6 @@ var $author$project$Components$Menu$Status$Collect$Collect$updateMap = F4(
 			return _Utils_Tuple3(model, _List_Nil, globalData);
 		}
 	});
-var $avh4$elm_color$Color$black = A4($avh4$elm_color$Color$RgbaSpace, 0 / 255, 0 / 255, 0 / 255, 1.0);
 var $author$project$Components$Menu$Status$Collect$Collect$viewMap = F2(
 	function (_v0, globalData) {
 		var model = _v0.a;
@@ -12860,7 +12874,7 @@ var $author$project$Components$Trans$Export$initComponent = F2(
 				data: A2($author$project$Components$Trans$Export$component.init, t, ct)
 			});
 	});
-var $author$project$Lib$Scene$Base$nullEngineT = {collectedMonsters: _List_Nil, energy: 500, playerPosition: $author$project$Lib$CoreEngine$GameComponents$Player$Base$DefaultPlayerPosition, specialstate: 0};
+var $author$project$Lib$Scene$Base$nullEngineT = {collectedMonsters: _List_Nil, energy: 500, ingameTime: 0, playerPosition: $author$project$Lib$CoreEngine$GameComponents$Player$Base$DefaultPlayerPosition, specialstate: 0};
 var $author$project$Lib$CoreEngine$FrontgroundLayer$Model$initModel = F3(
 	function (t, lm, _v0) {
 		if (lm.$ === 'LayerCTMsg') {
@@ -12921,6 +12935,7 @@ var $author$project$Lib$CoreEngine$Base$nullGameGlobalData = {
 	collectedMonsters: _List_Nil,
 	currentScene: '',
 	energy: 0,
+	ingameTime: 0,
 	ingamepause: false,
 	mapsize: _Utils_Tuple2(0, 0),
 	selectobj: 1,
@@ -15103,9 +15118,9 @@ var $author$project$Lib$CoreEngine$BackgroundLayer$Export$layer = {data: $author
 var $author$project$Lib$Component$Base$ComponentIntMsg = function (a) {
 	return {$: 'ComponentIntMsg', a: a};
 };
-var $author$project$Lib$Scene$Base$EngineT = F4(
-	function (energy, playerPosition, collectedMonsters, specialstate) {
-		return {collectedMonsters: collectedMonsters, energy: energy, playerPosition: playerPosition, specialstate: specialstate};
+var $author$project$Lib$Scene$Base$EngineT = F5(
+	function (energy, playerPosition, collectedMonsters, specialstate, ingameTime) {
+		return {collectedMonsters: collectedMonsters, energy: energy, ingameTime: ingameTime, playerPosition: playerPosition, specialstate: specialstate};
 	});
 var $author$project$Lib$Layer$Base$LayerName = function (a) {
 	return {$: 'LayerName', a: a};
@@ -15164,13 +15179,14 @@ var $author$project$Lib$CoreEngine$FrontgroundLayer$Model$dealComponentsMsg = F4
 										_Utils_update(
 											gd,
 											{
-												localstorage: A5(
+												localstorage: A6(
 													$author$project$Base$LSInfo,
 													ggd.collectedMonsters,
 													s,
 													newenergy,
 													_Utils_Tuple2(-1, -1),
-													gd.localstorage.volume),
+													gd.localstorage.volume,
+													ggd.ingameTime),
 												scenesFinished: _Utils_ap(
 													gd.scenesFinished,
 													_List_fromArray(
@@ -15614,7 +15630,7 @@ var $author$project$Lib$CoreEngine$FrontgroundLayer$Model$updateModel = F5(
 								model,
 								{
 									components: newcs,
-									exitinfo: A4($author$project$Lib$Scene$Base$EngineT, 500, $author$project$Lib$CoreEngine$GameComponents$Player$Base$DefaultPlayerPosition, ggd.collectedMonsters, ggd.specialState)
+									exitinfo: A5($author$project$Lib$Scene$Base$EngineT, 500, $author$project$Lib$CoreEngine$GameComponents$Player$Base$DefaultPlayerPosition, ggd.collectedMonsters, ggd.specialState, ggd.ingameTime)
 								}),
 							ggd,
 							_List_Nil),
@@ -15625,7 +15641,7 @@ var $author$project$Lib$CoreEngine$FrontgroundLayer$Model$updateModel = F5(
 						var oldl = gd.localstorage;
 						var newl = _Utils_update(
 							oldl,
-							{energy: ggd.energy, initPosition: p});
+							{energy: ggd.energy, gameTime: ggd.ingameTime, initPosition: p});
 						return _Utils_Tuple2(
 							_Utils_Tuple3(
 								_Utils_update(
@@ -15651,6 +15667,7 @@ var $author$project$Lib$CoreEngine$FrontgroundLayer$Model$updateModel = F5(
 			switch (msg.$) {
 				case 'Tick':
 					var tick = msg.a;
+					var newIngameTime = (ggd.ingamepause || (ggd.currentScene === 'End')) ? ggd.ingameTime : (ggd.ingameTime + 1);
 					var curtime = $elm$time$Time$posixToMillis(tick);
 					var newfpsrepo = ($elm$core$List$length(model.fpsrepo) >= 10) ? _Utils_ap(
 						A2($elm$core$List$drop, 1, model.fpsrepo),
@@ -15683,7 +15700,9 @@ var $author$project$Lib$CoreEngine$FrontgroundLayer$Model$updateModel = F5(
 							addfpsmodel,
 							{components: newcs2}),
 						newgd,
-						ggd);
+						_Utils_update(
+							ggd,
+							{ingameTime: newIngameTime}));
 				case 'MouseDown':
 					if (!msg.a) {
 						var _v7 = A6($author$project$Lib$Component$ComponentHandler$updateSingleComponentByName, msg, $author$project$Lib$Component$Base$NullComponentMsg, gd, t, 'Menu', model.components);
@@ -15841,9 +15860,42 @@ var $author$project$Lib$CoreEngine$FrontgroundLayer$Display$genFPS = F2(
 					$author$project$Lib$Render$Render$renderText,
 					gd,
 					20,
-					'FPS:' + $elm$core$String$fromInt(fps),
+					'FPS: ' + $elm$core$String$fromInt(fps),
 					'sans-serif',
 					_Utils_Tuple2(1850, 0))
+				]));
+	});
+var $linsyking$elm_canvas$Canvas$Internal$Canvas$DrawableEmpty = {$: 'DrawableEmpty'};
+var $linsyking$elm_canvas$Canvas$empty = $linsyking$elm_canvas$Canvas$Internal$Canvas$Renderable(
+	{commands: _List_Nil, drawOp: $linsyking$elm_canvas$Canvas$Internal$Canvas$NotSpecified, drawable: $linsyking$elm_canvas$Canvas$Internal$Canvas$DrawableEmpty});
+var $author$project$MainConfig$timeInterval = 16;
+var $author$project$Lib$Tools$Math$timeFromFrame = function (t) {
+	var total = t * $elm$core$Basics$floor($author$project$MainConfig$timeInterval);
+	var seconds = A2($elm$core$Basics$modBy, 60, (total / 1000) | 0);
+	var secS = (seconds < 10) ? ('0' + $elm$core$String$fromInt(seconds)) : $elm$core$String$fromInt(seconds);
+	var minutes = A2($elm$core$Basics$modBy, 60, (total / 60000) | 0);
+	var minS = (minutes < 10) ? ('0' + $elm$core$String$fromInt(minutes)) : $elm$core$String$fromInt(minutes);
+	var milliSec = A2($elm$core$Basics$modBy, 1000, total);
+	var millisecS = (milliSec < 10) ? ('00' + $elm$core$String$fromInt(milliSec)) : ((milliSec < 100) ? ('0' + $elm$core$String$fromInt(milliSec)) : $elm$core$String$fromInt(milliSec));
+	return minS + (':' + (secS + ('.' + millisecS)));
+};
+var $author$project$Lib$CoreEngine$FrontgroundLayer$Display$genTimer = F2(
+	function (ggd, gd) {
+		return (ggd.currentScene === 'End') ? $linsyking$elm_canvas$Canvas$empty : A2(
+			$linsyking$elm_canvas$Canvas$group,
+			_List_fromArray(
+				[
+					$linsyking$elm_canvas$Canvas$Settings$Advanced$alpha(0.3)
+				]),
+			_List_fromArray(
+				[
+					A5(
+					$author$project$Lib$Render$Render$renderText,
+					gd,
+					20,
+					'Time: ' + $author$project$Lib$Tools$Math$timeFromFrame(ggd.ingameTime),
+					'sans-serif',
+					_Utils_Tuple2(1700, 0))
 				]));
 	});
 var $elm$core$Elm$JsArray$map = _JsArray_map;
@@ -15898,7 +15950,8 @@ var $author$project$Lib$CoreEngine$FrontgroundLayer$Display$view = F3(
 				[
 					A3($author$project$Lib$Component$ComponentHandler$genView, gd, t, model.components),
 					A3(model.render, t, ggd, gd),
-					A2($author$project$Lib$CoreEngine$FrontgroundLayer$Display$genFPS, model, gd)
+					A2($author$project$Lib$CoreEngine$FrontgroundLayer$Display$genFPS, model, gd),
+					A2($author$project$Lib$CoreEngine$FrontgroundLayer$Display$genTimer, ggd, gd)
 				]));
 	});
 var $author$project$Lib$CoreEngine$FrontgroundLayer$Export$layer = {data: $author$project$Lib$CoreEngine$FrontgroundLayer$Export$nullData, init: $author$project$Lib$CoreEngine$FrontgroundLayer$Model$initModel, update: $author$project$Lib$CoreEngine$FrontgroundLayer$Model$updateModel, view: $author$project$Lib$CoreEngine$FrontgroundLayer$Display$view};
@@ -16212,42 +16265,20 @@ var $author$project$Lib$CoreEngine$GameLayer$Model$updateModelKeydown = F5(
 		var model = _v1.a;
 		var t = _v1.b;
 		if (msg.$ === 'KeyDown') {
-			if (msg.a === 87) {
-				if (model.ignoreInput) {
-					return _Utils_Tuple2(
-						_Utils_Tuple3(model, ggd, _List_Nil),
-						gd);
-				} else {
-					if (ggd.selectobj > 0) {
-						if (_Utils_eq(ggd.selectobj, model.player.data.uid)) {
-							var k = A2($author$project$Lib$CoreEngine$GameLayer$Common$kineticCalc, model.player.data.mass, model.player.data.velocity);
-							var _v3 = (k > 300) ? A6($author$project$Lib$CoreEngine$GameComponent$ComponentHandler$updateOneGameComponent, $author$project$Base$UnknownMsg, $author$project$Lib$CoreEngine$GameComponent$Base$GameClearVelocity, ggd, gd, t, model.player) : _Utils_Tuple3(model.player, _List_Nil, ggd);
-							var newplayer = _v3.a;
-							var newggd = _v3.c;
-							var tcggd = (k > 300) ? _Utils_update(
-								newggd,
-								{
-									energy: A2($author$project$Lib$CoreEngine$GameLayer$Common$addenergy, ggd.energy, k)
-								}) : newggd;
-							return _Utils_Tuple2(
-								_Utils_Tuple3(
-									_Utils_update(
-										model,
-										{player: newplayer}),
-									tcggd,
-									_List_Nil),
-								gd);
-						} else {
-							var tn = A2($author$project$Lib$CoreEngine$GameLayer$Common$searchUIDGC, ggd.selectobj, model.actors);
-							var tac = A2($elm$core$Array$get, tn, model.actors);
-							if (tac.$ === 'Just') {
-								var thisactor = tac.a;
-								var k = A2($author$project$Lib$CoreEngine$GameLayer$Common$kineticCalc, thisactor.data.mass, thisactor.data.velocity);
-								var _v5 = (k > 300) ? A6($author$project$Lib$CoreEngine$GameComponent$ComponentHandler$updateOneGameComponent, $author$project$Base$UnknownMsg, $author$project$Lib$CoreEngine$GameComponent$Base$GameClearVelocity, ggd, gd, t, thisactor) : _Utils_Tuple3(thisactor, _List_Nil, ggd);
-								var newactor = _v5.a;
-								var newggd = _v5.c;
-								var newactors = A3($elm$core$Array$set, tn, newactor, model.actors);
-								var onew = (k > 300) ? _Utils_update(
+			switch (msg.a) {
+				case 87:
+					if (model.ignoreInput) {
+						return _Utils_Tuple2(
+							_Utils_Tuple3(model, ggd, _List_Nil),
+							gd);
+					} else {
+						if (ggd.selectobj > 0) {
+							if (_Utils_eq(ggd.selectobj, model.player.data.uid)) {
+								var k = A2($author$project$Lib$CoreEngine$GameLayer$Common$kineticCalc, model.player.data.mass, model.player.data.velocity);
+								var _v3 = (k > 300) ? A6($author$project$Lib$CoreEngine$GameComponent$ComponentHandler$updateOneGameComponent, $author$project$Base$UnknownMsg, $author$project$Lib$CoreEngine$GameComponent$Base$GameClearVelocity, ggd, gd, t, model.player) : _Utils_Tuple3(model.player, _List_Nil, ggd);
+								var newplayer = _v3.a;
+								var newggd = _v3.c;
+								var tcggd = (k > 300) ? _Utils_update(
 									newggd,
 									{
 										energy: A2($author$project$Lib$CoreEngine$GameLayer$Common$addenergy, ggd.energy, k)
@@ -16256,40 +16287,79 @@ var $author$project$Lib$CoreEngine$GameLayer$Model$updateModelKeydown = F5(
 									_Utils_Tuple3(
 										_Utils_update(
 											model,
-											{actors: newactors}),
-										onew,
+											{player: newplayer}),
+										tcggd,
 										_List_Nil),
 									gd);
 							} else {
-								return _Utils_Tuple2(
-									_Utils_Tuple3(model, ggd, _List_Nil),
-									gd);
+								var tn = A2($author$project$Lib$CoreEngine$GameLayer$Common$searchUIDGC, ggd.selectobj, model.actors);
+								var tac = A2($elm$core$Array$get, tn, model.actors);
+								if (tac.$ === 'Just') {
+									var thisactor = tac.a;
+									var k = A2($author$project$Lib$CoreEngine$GameLayer$Common$kineticCalc, thisactor.data.mass, thisactor.data.velocity);
+									var _v5 = (k > 300) ? A6($author$project$Lib$CoreEngine$GameComponent$ComponentHandler$updateOneGameComponent, $author$project$Base$UnknownMsg, $author$project$Lib$CoreEngine$GameComponent$Base$GameClearVelocity, ggd, gd, t, thisactor) : _Utils_Tuple3(thisactor, _List_Nil, ggd);
+									var newactor = _v5.a;
+									var newggd = _v5.c;
+									var newactors = A3($elm$core$Array$set, tn, newactor, model.actors);
+									var onew = (k > 300) ? _Utils_update(
+										newggd,
+										{
+											energy: A2($author$project$Lib$CoreEngine$GameLayer$Common$addenergy, ggd.energy, k)
+										}) : newggd;
+									return _Utils_Tuple2(
+										_Utils_Tuple3(
+											_Utils_update(
+												model,
+												{actors: newactors}),
+											onew,
+											_List_Nil),
+										gd);
+								} else {
+									return _Utils_Tuple2(
+										_Utils_Tuple3(model, ggd, _List_Nil),
+										gd);
+								}
 							}
+						} else {
+							return _Utils_Tuple2(
+								_Utils_Tuple3(model, ggd, _List_Nil),
+								gd);
 						}
-					} else {
+					}
+				case 82:
+					return model.ignoreInput ? _Utils_Tuple2(
+						_Utils_Tuple3(model, ggd, _List_Nil),
+						gd) : _Utils_Tuple2(
+						_Utils_Tuple3(
+							model,
+							_Utils_update(
+								ggd,
+								{ingamepause: true}),
+							_List_fromArray(
+								[
+									_Utils_Tuple2(
+									$author$project$Lib$Layer$Base$LayerName('Frontground'),
+									$author$project$Lib$Layer$Base$LayerRestartMsg(10))
+								])),
+						gd);
+				default:
+					if (model.ignoreInput) {
 						return _Utils_Tuple2(
 							_Utils_Tuple3(model, ggd, _List_Nil),
 							gd);
+					} else {
+						var _v6 = A6($author$project$Lib$CoreEngine$GameComponent$ComponentHandler$updateOneGameComponent, msg, $author$project$Lib$CoreEngine$GameComponent$Base$NullGameComponentMsg, ggd, gd, t, model.player);
+						var newplayer = _v6.a;
+						var newggd = _v6.c;
+						return _Utils_Tuple2(
+							_Utils_Tuple3(
+								_Utils_update(
+									model,
+									{player: newplayer}),
+								newggd,
+								_List_Nil),
+							gd);
 					}
-				}
-			} else {
-				if (model.ignoreInput) {
-					return _Utils_Tuple2(
-						_Utils_Tuple3(model, ggd, _List_Nil),
-						gd);
-				} else {
-					var _v6 = A6($author$project$Lib$CoreEngine$GameComponent$ComponentHandler$updateOneGameComponent, msg, $author$project$Lib$CoreEngine$GameComponent$Base$NullGameComponentMsg, ggd, gd, t, model.player);
-					var newplayer = _v6.a;
-					var newggd = _v6.c;
-					return _Utils_Tuple2(
-						_Utils_Tuple3(
-							_Utils_update(
-								model,
-								{player: newplayer}),
-							newggd,
-							_List_Nil),
-						gd);
-				}
 			}
 		} else {
 			return _Utils_Tuple2(
@@ -17462,7 +17532,7 @@ var $author$project$Lib$CoreEngine$GameLayer$Model$dealParentMsg = F4(
 									$author$project$Lib$Layer$Base$LayerName('Frontground'),
 									A3(
 										$author$project$Lib$Layer$Base$LayerExitMsg,
-										A4($author$project$Lib$Scene$Base$EngineT, ggd.energy, pls, ggd.collectedMonsters, spstate),
+										A5($author$project$Lib$Scene$Base$EngineT, ggd.energy, pls, ggd.collectedMonsters, spstate, ggd.ingameTime),
 										s,
 										50))
 								])),
@@ -19531,6 +19601,7 @@ var $author$project$Lib$CoreEngine$Base$testGameGlobalData = {
 	collectedMonsters: _List_Nil,
 	currentScene: 'Level1',
 	energy: 0,
+	ingameTime: 0,
 	ingamepause: false,
 	mapsize: _Utils_Tuple2(120, 70),
 	selectobj: -1,
@@ -19737,96 +19808,109 @@ var $author$project$Components$Hints$Export$initComponent = F2(
 				data: A2($author$project$Components$Hints$Export$component.init, t, ct)
 			});
 	});
-var $author$project$Scenes$End$Config$initFrontGroundComponents = function (t) {
-	return $elm$core$Array$fromList(
-		_List_fromArray(
-			[
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['40', '600', '500', '90', 'Thanks for playing']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['40', '680', '620', '50', 'You have saved the human']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['200', '1600', '100', '60', 'Director']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['200', '1600', '170', '40', 'Xiang Yiming']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['500', '1400', '600', '60', 'Artist & Composer']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['500', '1400', '670', '40', 'Wang Dayong']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['800', '300', '600', '60', 'Level Designers']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['800', '300', '670', '40', 'Xiang Yiming, Zhang Jingjing']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['1100', '300', '100', '60', 'Game Engine Designers']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['1100', '300', '170', '40', 'Xiang Yiming, Duan Lingbo']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['1400', '300', '600', '60', 'Story Designer']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['1400', '300', '670', '40', 'Zhang Jingjing']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['1800', '600', '400', '90', 'Technical Support']))),
-				A2(
-				$author$project$Components$Hints$Export$initComponent,
-				t,
-				$author$project$Lib$Component$Base$ComponentLStringMsg(
-					_List_fromArray(
-						['1800', '750', '550', '60', 'SFOCS Staffs'])))
-			]));
-};
+var $author$project$Scenes$End$Config$initFrontGroundComponents = F2(
+	function (t, time) {
+		return $elm$core$Array$fromList(
+			_List_fromArray(
+				[
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['40', '600', '400', '90', 'Thanks for playing']))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['40', '680', '520', '50', 'You have saved the human']))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							[
+								'40',
+								'840',
+								'600',
+								'40',
+								'in ' + $author$project$Lib$Tools$Math$timeFromFrame(time)
+							]))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['200', '1600', '100', '60', 'Director']))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['200', '1600', '170', '40', 'Xiang Yiming']))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['500', '1400', '600', '60', 'Artist & Composer']))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['500', '1400', '670', '40', 'Wang Dayong']))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['800', '300', '600', '60', 'Level Designers']))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['800', '300', '670', '40', 'Xiang Yiming, Zhang Jingjing']))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['1100', '300', '100', '60', 'Game Engine Designers']))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['1100', '300', '170', '40', 'Xiang Yiming, Duan Lingbo']))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['1400', '300', '600', '60', 'Story Designer']))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['1400', '300', '670', '40', 'Zhang Jingjing']))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['1800', '600', '400', '90', 'Technical Support']))),
+					A2(
+					$author$project$Components$Hints$Export$initComponent,
+					t,
+					$author$project$Lib$Component$Base$ComponentLStringMsg(
+						_List_fromArray(
+							['1800', '750', '550', '60', 'SFOCS Staffs'])))
+				]));
+	});
 var $author$project$Scenes$End$Map$mapwidth = 300;
 var $author$project$Scenes$End$Config$initCamera = A4(
 	$author$project$Lib$CoreEngine$Camera$Base$CameraData,
@@ -19882,13 +19966,14 @@ var $author$project$Scenes$End$Map$mymap = A4(
 				_Utils_Tuple2(1, 70),
 				2,
 				$author$project$Scenes$End$Map$sds))));
-var $author$project$Scenes$End$Config$initGameGlobalData = F2(
-	function (e, col) {
+var $author$project$Scenes$End$Config$initGameGlobalData = F3(
+	function (e, col, time) {
 		return {
 			camera: $author$project$Scenes$End$Config$initCamera,
 			collectedMonsters: col,
 			currentScene: 'End',
 			energy: e,
+			ingameTime: time,
 			ingamepause: false,
 			mapsize: _Utils_Tuple2($author$project$Scenes$End$Map$mapwidth, 70),
 			selectobj: 1,
@@ -19942,12 +20027,12 @@ var $author$project$Scenes$End$Export$game = F2(
 					background: _Utils_Tuple2($elm$core$Array$empty, $author$project$Scenes$End$Background$background),
 					chartlets: $author$project$Scenes$End$Config$allChartlets,
 					frontground: _Utils_Tuple2(
-						$author$project$Scenes$End$Config$initFrontGroundComponents(t),
+						A2($author$project$Scenes$End$Config$initFrontGroundComponents, t, engineMsg.ingameTime),
 						F3(
 							function (_v0, _v1, _v2) {
 								return A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil);
 							})),
-					globalData: A2($author$project$Scenes$End$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters),
+					globalData: A3($author$project$Scenes$End$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters, engineMsg.ingameTime),
 					player: A2($author$project$Scenes$End$Config$initPlayer, t, engineMsg.playerPosition)
 				}));
 	});
@@ -20475,7 +20560,7 @@ var $author$project$Scenes$Home$Layer0$Display$dview = F3(
 					$author$project$Lib$Render$Render$renderText,
 					gd,
 					30,
-					'Ver. 1.0.2',
+					'Ver. 1.0.3',
 					'Courier New',
 					_Utils_Tuple2(1700, 1000))
 				]));
@@ -20671,13 +20756,14 @@ var $author$project$Scenes$Home$Layer1$Models$updateModel = F5(
 					_Utils_update(
 						gd,
 						{
-							localstorage: A5(
+							localstorage: A6(
 								$author$project$Base$LSInfo,
 								_List_Nil,
 								'Level0',
 								300,
 								_Utils_Tuple2(-1, -1),
-								gd.localstorage.volume)
+								gd.localstorage.volume,
+								0)
 						})) : ((model._continue.display && A4(
 					$author$project$Lib$Coordinate$Coordinates$judgeMouse,
 					gd,
@@ -20824,7 +20910,7 @@ var $author$project$Scenes$Home$Model$handleLayerMsg = F3(
 									$author$project$Lib$Scene$Base$SOChangeScene(
 									_Utils_Tuple2(
 										$author$project$Lib$Scene$Base$SceneEngineTMsg(
-											A4($author$project$Lib$Scene$Base$EngineT, gd.localstorage.energy, $author$project$Lib$CoreEngine$GameComponents$Player$Base$DefaultPlayerPosition, gd.localstorage.collected, 0)),
+											A5($author$project$Lib$Scene$Base$EngineT, gd.localstorage.energy, $author$project$Lib$CoreEngine$GameComponents$Player$Base$DefaultPlayerPosition, gd.localstorage.collected, 0, gd.localstorage.gameTime)),
 										gd.localstorage.level))
 								]),
 							gd) : _Utils_Tuple3(
@@ -20834,12 +20920,13 @@ var $author$project$Scenes$Home$Model$handleLayerMsg = F3(
 									$author$project$Lib$Scene$Base$SOChangeScene(
 									_Utils_Tuple2(
 										$author$project$Lib$Scene$Base$SceneEngineTMsg(
-											A4(
+											A5(
 												$author$project$Lib$Scene$Base$EngineT,
 												gd.localstorage.energy,
 												$author$project$Lib$CoreEngine$GameComponents$Player$Base$CustomPlayerPosition(gd.localstorage.initPosition),
 												gd.localstorage.collected,
-												0)),
+												0,
+												gd.localstorage.gameTime)),
 										gd.localstorage.level))
 								]),
 							gd);
@@ -21223,7 +21310,8 @@ var $author$project$Lib$Render$Render$renderTextCenter = F5(
 						size: $elm$core$Basics$floor(rx)
 					}),
 					$linsyking$elm_canvas$Canvas$Settings$Text$align($linsyking$elm_canvas$Canvas$Settings$Text$Center),
-					$linsyking$elm_canvas$Canvas$Settings$Text$baseLine($linsyking$elm_canvas$Canvas$Settings$Text$Middle)
+					$linsyking$elm_canvas$Canvas$Settings$Text$baseLine($linsyking$elm_canvas$Canvas$Settings$Text$Middle),
+					$linsyking$elm_canvas$Canvas$Settings$fill($avh4$elm_color$Color$black)
 				]),
 			_Utils_Tuple2(dsx, dsy),
 			s);
@@ -25011,13 +25099,14 @@ var $author$project$Scenes$Level0$Map$mymap = A3(
 																																															_Utils_Tuple2(1, 70),
 																																															2,
 																																															$author$project$Scenes$Level0$Map$sds)))))))))))))))))))))))))))))))))))))))))))))));
-var $author$project$Scenes$Level0$Config$initGameGlobalData = F3(
-	function (e, col, spstate) {
+var $author$project$Scenes$Level0$Config$initGameGlobalData = F4(
+	function (e, col, spstate, t) {
 		return {
 			camera: $author$project$Scenes$Level0$Config$initCamera,
 			collectedMonsters: col,
 			currentScene: 'Level0',
 			energy: e,
+			ingameTime: t,
 			ingamepause: false,
 			mapsize: _Utils_Tuple2($author$project$Scenes$Level0$Map$mapwidth, 70),
 			selectobj: 1,
@@ -25070,7 +25159,7 @@ var $author$project$Scenes$Level0$Export$game = F2(
 							function (_v0, _v1, _v2) {
 								return A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil);
 							})),
-					globalData: A3($author$project$Scenes$Level0$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters, engineMsg.specialstate),
+					globalData: A4($author$project$Scenes$Level0$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters, engineMsg.specialstate, engineMsg.ingameTime),
 					player: A2($author$project$Scenes$Level0$Config$initPlayer, t, engineMsg.playerPosition)
 				}));
 	});
@@ -25636,13 +25725,14 @@ var $author$project$Scenes$Level1$Map$mymap = A4(
 																				_Utils_Tuple2(1, 70),
 																				2,
 																				$author$project$Scenes$Level1$Map$sds))))))))))))))))))));
-var $author$project$Scenes$Level1$Config$initGameGlobalData = F2(
-	function (e, col) {
+var $author$project$Scenes$Level1$Config$initGameGlobalData = F3(
+	function (e, col, t) {
 		return {
 			camera: $author$project$Scenes$Level1$Config$initCamera,
 			collectedMonsters: col,
 			currentScene: 'Level1',
 			energy: e,
+			ingameTime: t,
 			ingamepause: false,
 			mapsize: _Utils_Tuple2(120, 70),
 			selectobj: 1,
@@ -25695,7 +25785,7 @@ var $author$project$Scenes$Level1$Export$game = F2(
 							function (_v0, _v1, _v2) {
 								return A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil);
 							})),
-					globalData: A2($author$project$Scenes$Level1$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters),
+					globalData: A3($author$project$Scenes$Level1$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters, engineMsg.ingameTime),
 					player: A2($author$project$Scenes$Level1$Config$initPlayer, t, engineMsg.playerPosition)
 				}));
 	});
@@ -26369,13 +26459,14 @@ var $author$project$Scenes$Level2$Map$mymap = A3(
 																																																																									_Utils_Tuple2(1, 70),
 																																																																									1,
 																																																																									$author$project$Scenes$Level2$Map$sds)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))));
-var $author$project$Scenes$Level2$Config$initGameGlobalData = F2(
-	function (e, col) {
+var $author$project$Scenes$Level2$Config$initGameGlobalData = F3(
+	function (e, col, t) {
 		return {
 			camera: $author$project$Scenes$Level2$Config$initCamera,
 			collectedMonsters: col,
 			currentScene: 'Level2',
 			energy: e,
+			ingameTime: t,
 			ingamepause: false,
 			mapsize: _Utils_Tuple2($author$project$Scenes$Level2$Map$mapwidth, 70),
 			selectobj: 1,
@@ -26428,7 +26519,7 @@ var $author$project$Scenes$Level2$Export$game = F2(
 							function (_v0, _v1, _v2) {
 								return A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil);
 							})),
-					globalData: A2($author$project$Scenes$Level2$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters),
+					globalData: A3($author$project$Scenes$Level2$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters, engineMsg.ingameTime),
 					player: A2($author$project$Scenes$Level2$Config$initPlayer, t, engineMsg.playerPosition)
 				}));
 	});
@@ -27174,13 +27265,14 @@ var $author$project$Scenes$Level3$Map$mymap = A3(
 																			_Utils_Tuple2(1, 70),
 																			2,
 																			$author$project$Scenes$Level3$Map$sds)))))))))))))))))));
-var $author$project$Scenes$Level3$Config$initGameGlobalData = F2(
-	function (e, col) {
+var $author$project$Scenes$Level3$Config$initGameGlobalData = F3(
+	function (e, col, t) {
 		return {
 			camera: $author$project$Scenes$Level3$Config$initCamera,
 			collectedMonsters: col,
 			currentScene: 'Level3',
 			energy: e,
+			ingameTime: t,
 			ingamepause: false,
 			mapsize: _Utils_Tuple2(160, 70),
 			selectobj: 1,
@@ -27233,7 +27325,7 @@ var $author$project$Scenes$Level3$Export$game = F2(
 							function (_v0, _v1, _v2) {
 								return A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil);
 							})),
-					globalData: A2($author$project$Scenes$Level3$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters),
+					globalData: A3($author$project$Scenes$Level3$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters, engineMsg.ingameTime),
 					player: A2($author$project$Scenes$Level3$Config$initPlayer, t, engineMsg.playerPosition)
 				}));
 	});
@@ -27872,13 +27964,14 @@ var $author$project$Scenes$Level4$Map$mymap = A2(
 																																				_Utils_Tuple2(1, 70),
 																																				1,
 																																				$author$project$Scenes$Level4$Map$sds))))))))))))))))))))))))))))))))))));
-var $author$project$Scenes$Level4$Config$initGameGlobalData = F2(
-	function (e, col) {
+var $author$project$Scenes$Level4$Config$initGameGlobalData = F3(
+	function (e, col, t) {
 		return {
 			camera: $author$project$Scenes$Level4$Config$initCamera,
 			collectedMonsters: col,
 			currentScene: 'Level4',
 			energy: e,
+			ingameTime: t,
 			ingamepause: false,
 			mapsize: _Utils_Tuple2(200, 70),
 			selectobj: 1,
@@ -27931,7 +28024,7 @@ var $author$project$Scenes$Level4$Export$game = F2(
 							function (_v0, _v1, _v2) {
 								return A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil);
 							})),
-					globalData: A2($author$project$Scenes$Level4$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters),
+					globalData: A3($author$project$Scenes$Level4$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters, engineMsg.ingameTime),
 					player: A2($author$project$Scenes$Level4$Config$initPlayer, t, engineMsg.playerPosition)
 				}));
 	});
@@ -28920,13 +29013,14 @@ var $author$project$Scenes$Level4boss$Map$mymap = A2(
 																											_Utils_Tuple2(1, 70),
 																											2,
 																											$author$project$Scenes$Level4boss$Map$sds)))))))))))))))))))))))))));
-var $author$project$Scenes$Level4boss$Config$initGameGlobalData = F2(
-	function (e, col) {
+var $author$project$Scenes$Level4boss$Config$initGameGlobalData = F3(
+	function (e, col, t) {
 		return {
 			camera: $author$project$Scenes$Level4boss$Config$initCamera,
 			collectedMonsters: col,
 			currentScene: 'Level4boss',
 			energy: e,
+			ingameTime: t,
 			ingamepause: false,
 			mapsize: _Utils_Tuple2(120, 70),
 			selectobj: 1,
@@ -28979,7 +29073,7 @@ var $author$project$Scenes$Level4boss$Export$game = F2(
 							function (_v0, _v1, _v2) {
 								return A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil);
 							})),
-					globalData: A2($author$project$Scenes$Level4boss$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters),
+					globalData: A3($author$project$Scenes$Level4boss$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters, engineMsg.ingameTime),
 					player: A2($author$project$Scenes$Level4boss$Config$initPlayer, t, engineMsg.playerPosition)
 				}));
 	});
@@ -29343,13 +29437,14 @@ var $author$project$Scenes$Level5$Map$mymap = A3(
 															_Utils_Tuple2(1, 70),
 															2,
 															$author$project$Scenes$Level5$Map$sds)))))))))))))));
-var $author$project$Scenes$Level5$Config$initGameGlobalData = F2(
-	function (e, col) {
+var $author$project$Scenes$Level5$Config$initGameGlobalData = F3(
+	function (e, col, t) {
 		return {
 			camera: $author$project$Scenes$Level5$Config$initCamera,
 			collectedMonsters: col,
 			currentScene: 'Level5',
 			energy: e,
+			ingameTime: t,
 			ingamepause: false,
 			mapsize: _Utils_Tuple2($author$project$Scenes$Level5$Map$mapsize, 70),
 			selectobj: 1,
@@ -29402,7 +29497,7 @@ var $author$project$Scenes$Level5$Export$game = F2(
 							function (_v0, _v1, _v2) {
 								return A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil);
 							})),
-					globalData: A2($author$project$Scenes$Level5$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters),
+					globalData: A3($author$project$Scenes$Level5$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters, engineMsg.ingameTime),
 					player: A2($author$project$Scenes$Level5$Config$initPlayer, t, engineMsg.playerPosition)
 				}));
 	});
@@ -30406,13 +30501,14 @@ var $author$project$Scenes$Level5boss$Map$mymap = A3(
 									_Utils_Tuple2(1, 70),
 									2,
 									$author$project$Scenes$Level5boss$Map$sds)))))))));
-var $author$project$Scenes$Level5boss$Config$initGameGlobalData = F2(
-	function (e, col) {
+var $author$project$Scenes$Level5boss$Config$initGameGlobalData = F3(
+	function (e, col, t) {
 		return {
 			camera: $author$project$Scenes$Level5boss$Config$initCamera,
 			collectedMonsters: col,
 			currentScene: 'Level5boss',
 			energy: e,
+			ingameTime: t,
 			ingamepause: false,
 			mapsize: _Utils_Tuple2(100, 70),
 			selectobj: 1,
@@ -30465,7 +30561,7 @@ var $author$project$Scenes$Level5boss$Export$game = F2(
 							function (_v0, _v1, _v2) {
 								return A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil);
 							})),
-					globalData: A2($author$project$Scenes$Level5boss$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters),
+					globalData: A3($author$project$Scenes$Level5boss$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters, engineMsg.ingameTime),
 					player: A2($author$project$Scenes$Level5boss$Config$initPlayer, t, engineMsg.playerPosition)
 				}));
 	});
@@ -30600,13 +30696,14 @@ var $author$project$Scenes$Path$Map$mymap = A4(
 				_Utils_Tuple2(1, 70),
 				2,
 				$author$project$Scenes$Path$Map$sds))));
-var $author$project$Scenes$Path$Config$initGameGlobalData = F2(
-	function (e, col) {
+var $author$project$Scenes$Path$Config$initGameGlobalData = F3(
+	function (e, col, t) {
 		return {
 			camera: $author$project$Scenes$Path$Config$initCamera,
 			collectedMonsters: col,
 			currentScene: 'Path',
 			energy: e,
+			ingameTime: t,
 			ingamepause: false,
 			mapsize: _Utils_Tuple2(62, 70),
 			selectobj: 1,
@@ -30659,7 +30756,7 @@ var $author$project$Scenes$Path$Export$game = F2(
 							function (_v0, _v1, _v2) {
 								return A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil);
 							})),
-					globalData: A2($author$project$Scenes$Path$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters),
+					globalData: A3($author$project$Scenes$Path$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters, engineMsg.ingameTime),
 					player: A2($author$project$Scenes$Path$Config$initPlayer, t, engineMsg.playerPosition)
 				}));
 	});
@@ -31326,7 +31423,6 @@ var $elm$browser$Browser$Events$onResize = function (func) {
 				A2($elm$json$Json$Decode$field, 'innerWidth', $elm$json$Json$Decode$int),
 				A2($elm$json$Json$Decode$field, 'innerHeight', $elm$json$Json$Decode$int))));
 };
-var $author$project$MainConfig$timeInterval = 16;
 var $author$project$Main$subscriptions = F2(
 	function (_v0, _v1) {
 		return $elm$core$Platform$Sub$batch(
@@ -31435,7 +31531,10 @@ var $author$project$Lib$LocalStorage$LocalStorage$encodeLSInfo = function (info)
 					$elm$json$Json$Encode$int(y)),
 					_Utils_Tuple2(
 					'volume',
-					$elm$json$Json$Encode$float(info.volume))
+					$elm$json$Json$Encode$float(info.volume)),
+					_Utils_Tuple2(
+					'gametime',
+					$elm$json$Json$Encode$int(info.gameTime))
 				])));
 };
 var $author$project$Lib$Scene$SceneLoader$getCurrentScene = function (model) {

@@ -43,8 +43,11 @@ decodeLSInfo info =
 
         oldvol =
             Result.withDefault 50 (decodeString (at [ "volume" ] Decode.float) info)
+
+        oldtime =
+            Result.withDefault 0 (decodeString (at [ "gametime" ] Decode.int) info)
     in
-    LSInfo oldcol oldlevel oldenergy ( oldposx, oldposy ) oldvol
+    LSInfo oldcol oldlevel oldenergy ( oldposx, oldposy ) oldvol oldtime
 
 
 {-| encodeLSInfo
@@ -63,6 +66,7 @@ encodeLSInfo info =
             , ( "posx", Encode.int x )
             , ( "posy", Encode.int y )
             , ( "volume", Encode.float info.volume )
+            , ( "gametime", Encode.int info.gameTime )
             ]
         )
 
