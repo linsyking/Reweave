@@ -199,6 +199,12 @@ updateModel msg gd lm ( model, t ) ggd =
             case msg of
                 Tick tick ->
                     let
+                        oldLS =
+                            newgd.localstorage
+
+                        newLS =
+                            { oldLS | gameTime = ggd.ingameTime }
+
                         ( newcs, rmsg, newgd ) =
                             updateComponents t msg gd model.components
 
@@ -225,7 +231,7 @@ updateModel msg gd lm ( model, t ) ggd =
                             else
                                 ggd.ingameTime + 1
                     in
-                    dealAllComponentMsg rmsg { addfpsmodel | components = newcs2 } newgd { ggd | ingameTime = newIngameTime }
+                    dealAllComponentMsg rmsg { addfpsmodel | components = newcs2 } { newgd | localstorage = newLS } { ggd | ingameTime = newIngameTime }
 
                 MouseDown 0 _ ->
                     let

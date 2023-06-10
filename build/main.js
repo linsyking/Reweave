@@ -15683,6 +15683,10 @@ var $author$project$Lib$CoreEngine$FrontgroundLayer$Model$updateModel = F5(
 					var newcs = _v5.a;
 					var rmsg = _v5.b;
 					var newgd = _v5.c;
+					var oldLS = newgd.localstorage;
+					var newLS = _Utils_update(
+						oldLS,
+						{gameTime: ggd.ingameTime});
 					var _v6 = A6(
 						$author$project$Lib$Component$ComponentHandler$updateSingleComponentByName,
 						msg,
@@ -15699,7 +15703,9 @@ var $author$project$Lib$CoreEngine$FrontgroundLayer$Model$updateModel = F5(
 						_Utils_update(
 							addfpsmodel,
 							{components: newcs2}),
-						newgd,
+						_Utils_update(
+							newgd,
+							{localstorage: newLS}),
 						_Utils_update(
 							ggd,
 							{ingameTime: newIngameTime}));
