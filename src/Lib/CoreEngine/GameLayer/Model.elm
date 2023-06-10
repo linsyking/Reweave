@@ -632,6 +632,14 @@ updateModelKeydown msg gd _ ( model, t ) ggd =
             else
                 ( ( model, ggd, [] ), gd )
 
+        KeyDown 82 ->
+            -- Restart
+            if model.ignoreInput then
+                ( ( model, ggd, [] ), gd )
+
+            else
+                ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerRestartMsg 10 ) ] ), gd )
+
         KeyDown _ ->
             if model.ignoreInput then
                 ( ( model, ggd, [] ), gd )

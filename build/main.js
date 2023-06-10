@@ -16212,42 +16212,20 @@ var $author$project$Lib$CoreEngine$GameLayer$Model$updateModelKeydown = F5(
 		var model = _v1.a;
 		var t = _v1.b;
 		if (msg.$ === 'KeyDown') {
-			if (msg.a === 87) {
-				if (model.ignoreInput) {
-					return _Utils_Tuple2(
-						_Utils_Tuple3(model, ggd, _List_Nil),
-						gd);
-				} else {
-					if (ggd.selectobj > 0) {
-						if (_Utils_eq(ggd.selectobj, model.player.data.uid)) {
-							var k = A2($author$project$Lib$CoreEngine$GameLayer$Common$kineticCalc, model.player.data.mass, model.player.data.velocity);
-							var _v3 = (k > 300) ? A6($author$project$Lib$CoreEngine$GameComponent$ComponentHandler$updateOneGameComponent, $author$project$Base$UnknownMsg, $author$project$Lib$CoreEngine$GameComponent$Base$GameClearVelocity, ggd, gd, t, model.player) : _Utils_Tuple3(model.player, _List_Nil, ggd);
-							var newplayer = _v3.a;
-							var newggd = _v3.c;
-							var tcggd = (k > 300) ? _Utils_update(
-								newggd,
-								{
-									energy: A2($author$project$Lib$CoreEngine$GameLayer$Common$addenergy, ggd.energy, k)
-								}) : newggd;
-							return _Utils_Tuple2(
-								_Utils_Tuple3(
-									_Utils_update(
-										model,
-										{player: newplayer}),
-									tcggd,
-									_List_Nil),
-								gd);
-						} else {
-							var tn = A2($author$project$Lib$CoreEngine$GameLayer$Common$searchUIDGC, ggd.selectobj, model.actors);
-							var tac = A2($elm$core$Array$get, tn, model.actors);
-							if (tac.$ === 'Just') {
-								var thisactor = tac.a;
-								var k = A2($author$project$Lib$CoreEngine$GameLayer$Common$kineticCalc, thisactor.data.mass, thisactor.data.velocity);
-								var _v5 = (k > 300) ? A6($author$project$Lib$CoreEngine$GameComponent$ComponentHandler$updateOneGameComponent, $author$project$Base$UnknownMsg, $author$project$Lib$CoreEngine$GameComponent$Base$GameClearVelocity, ggd, gd, t, thisactor) : _Utils_Tuple3(thisactor, _List_Nil, ggd);
-								var newactor = _v5.a;
-								var newggd = _v5.c;
-								var newactors = A3($elm$core$Array$set, tn, newactor, model.actors);
-								var onew = (k > 300) ? _Utils_update(
+			switch (msg.a) {
+				case 87:
+					if (model.ignoreInput) {
+						return _Utils_Tuple2(
+							_Utils_Tuple3(model, ggd, _List_Nil),
+							gd);
+					} else {
+						if (ggd.selectobj > 0) {
+							if (_Utils_eq(ggd.selectobj, model.player.data.uid)) {
+								var k = A2($author$project$Lib$CoreEngine$GameLayer$Common$kineticCalc, model.player.data.mass, model.player.data.velocity);
+								var _v3 = (k > 300) ? A6($author$project$Lib$CoreEngine$GameComponent$ComponentHandler$updateOneGameComponent, $author$project$Base$UnknownMsg, $author$project$Lib$CoreEngine$GameComponent$Base$GameClearVelocity, ggd, gd, t, model.player) : _Utils_Tuple3(model.player, _List_Nil, ggd);
+								var newplayer = _v3.a;
+								var newggd = _v3.c;
+								var tcggd = (k > 300) ? _Utils_update(
 									newggd,
 									{
 										energy: A2($author$project$Lib$CoreEngine$GameLayer$Common$addenergy, ggd.energy, k)
@@ -16256,40 +16234,79 @@ var $author$project$Lib$CoreEngine$GameLayer$Model$updateModelKeydown = F5(
 									_Utils_Tuple3(
 										_Utils_update(
 											model,
-											{actors: newactors}),
-										onew,
+											{player: newplayer}),
+										tcggd,
 										_List_Nil),
 									gd);
 							} else {
-								return _Utils_Tuple2(
-									_Utils_Tuple3(model, ggd, _List_Nil),
-									gd);
+								var tn = A2($author$project$Lib$CoreEngine$GameLayer$Common$searchUIDGC, ggd.selectobj, model.actors);
+								var tac = A2($elm$core$Array$get, tn, model.actors);
+								if (tac.$ === 'Just') {
+									var thisactor = tac.a;
+									var k = A2($author$project$Lib$CoreEngine$GameLayer$Common$kineticCalc, thisactor.data.mass, thisactor.data.velocity);
+									var _v5 = (k > 300) ? A6($author$project$Lib$CoreEngine$GameComponent$ComponentHandler$updateOneGameComponent, $author$project$Base$UnknownMsg, $author$project$Lib$CoreEngine$GameComponent$Base$GameClearVelocity, ggd, gd, t, thisactor) : _Utils_Tuple3(thisactor, _List_Nil, ggd);
+									var newactor = _v5.a;
+									var newggd = _v5.c;
+									var newactors = A3($elm$core$Array$set, tn, newactor, model.actors);
+									var onew = (k > 300) ? _Utils_update(
+										newggd,
+										{
+											energy: A2($author$project$Lib$CoreEngine$GameLayer$Common$addenergy, ggd.energy, k)
+										}) : newggd;
+									return _Utils_Tuple2(
+										_Utils_Tuple3(
+											_Utils_update(
+												model,
+												{actors: newactors}),
+											onew,
+											_List_Nil),
+										gd);
+								} else {
+									return _Utils_Tuple2(
+										_Utils_Tuple3(model, ggd, _List_Nil),
+										gd);
+								}
 							}
+						} else {
+							return _Utils_Tuple2(
+								_Utils_Tuple3(model, ggd, _List_Nil),
+								gd);
 						}
-					} else {
+					}
+				case 82:
+					return model.ignoreInput ? _Utils_Tuple2(
+						_Utils_Tuple3(model, ggd, _List_Nil),
+						gd) : _Utils_Tuple2(
+						_Utils_Tuple3(
+							model,
+							_Utils_update(
+								ggd,
+								{ingamepause: true}),
+							_List_fromArray(
+								[
+									_Utils_Tuple2(
+									$author$project$Lib$Layer$Base$LayerName('Frontground'),
+									$author$project$Lib$Layer$Base$LayerRestartMsg(10))
+								])),
+						gd);
+				default:
+					if (model.ignoreInput) {
 						return _Utils_Tuple2(
 							_Utils_Tuple3(model, ggd, _List_Nil),
 							gd);
+					} else {
+						var _v6 = A6($author$project$Lib$CoreEngine$GameComponent$ComponentHandler$updateOneGameComponent, msg, $author$project$Lib$CoreEngine$GameComponent$Base$NullGameComponentMsg, ggd, gd, t, model.player);
+						var newplayer = _v6.a;
+						var newggd = _v6.c;
+						return _Utils_Tuple2(
+							_Utils_Tuple3(
+								_Utils_update(
+									model,
+									{player: newplayer}),
+								newggd,
+								_List_Nil),
+							gd);
 					}
-				}
-			} else {
-				if (model.ignoreInput) {
-					return _Utils_Tuple2(
-						_Utils_Tuple3(model, ggd, _List_Nil),
-						gd);
-				} else {
-					var _v6 = A6($author$project$Lib$CoreEngine$GameComponent$ComponentHandler$updateOneGameComponent, msg, $author$project$Lib$CoreEngine$GameComponent$Base$NullGameComponentMsg, ggd, gd, t, model.player);
-					var newplayer = _v6.a;
-					var newggd = _v6.c;
-					return _Utils_Tuple2(
-						_Utils_Tuple3(
-							_Utils_update(
-								model,
-								{player: newplayer}),
-							newggd,
-							_List_Nil),
-						gd);
-				}
 			}
 		} else {
 			return _Utils_Tuple2(
