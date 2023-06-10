@@ -141,10 +141,10 @@ judgeMouse gd ( mx, my ) ( x, y ) ( w, h ) =
             heightToReal gd h
 
         mpx =
-            mx - gd.startLeft
+            mx
 
         mpy =
-            my - gd.startTop
+            my
     in
     if rpx <= mpx && mpx <= rpx + rw && rpy <= mpy && mpy <= rpy + rh then
         True

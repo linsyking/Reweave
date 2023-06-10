@@ -51,7 +51,8 @@ type Msg
     | PlaySoundGotTime String AudioOption Audio.Source Time.Posix
     | TextureLoaded String (Maybe Texture)
     | MouseDown Int ( Float, Float )
-    | MouseMove ( Int, Int )
+    | MouseDownInt Int ( Int, Int )
+    | MouseMove ( Float, Float )
     | UnknownMsg
 
 
@@ -83,6 +84,7 @@ type alias GlobalData =
     , mousePos : ( Float, Float )
     , visualaid : Bool
     , localstorage : LSInfo
+    , tasCommands : List ( Int, Msg )
     }
 
 

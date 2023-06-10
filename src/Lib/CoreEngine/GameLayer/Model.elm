@@ -14,7 +14,7 @@ module Lib.CoreEngine.GameLayer.Model exposing
 import Array
 import Array.Extra
 import Base exposing (GlobalData, Msg(..))
-import Lib.Coordinate.Coordinates exposing (fromMouseToReal, posToReal)
+import Lib.Coordinate.Coordinates exposing (posToReal)
 import Lib.CoreEngine.Base exposing (GameGlobalData)
 import Lib.CoreEngine.Camera.Camera exposing (getNewCamera)
 import Lib.CoreEngine.Camera.Position exposing (getPositionUnderCamera)
@@ -675,7 +675,7 @@ playerupdatemouse mp gd ( model, t ) ggd =
                 posToReal gd (getPositionUnderCamera (getGameComponentCenter model.player) ggd)
 
             ( mx, my ) =
-                fromMouseToReal gd mp
+                mp
 
             pp =
                 ( px, py )
@@ -716,7 +716,7 @@ actorupdatemouse mp gd ( model, t ) ggd =
                     posToReal gd (getPositionUnderCamera (getGameComponentCenter thisactor) ggd)
 
                 ( mx, my ) =
-                    fromMouseToReal gd mp
+                    mp
 
                 pp =
                     ( px, py )

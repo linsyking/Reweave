@@ -96,6 +96,7 @@ initGlobalData =
     , mousePos = ( 0, 0 )
     , visualaid = True
     , localstorage = LSInfo [] "Level0" 0 ( -1, -1 ) 50 0
+    , tasCommands = []
     }
 
 

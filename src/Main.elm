@@ -19,7 +19,7 @@ import Html.Attributes exposing (style)
 import Json.Decode as Decode
 import Json.Encode as Encode
 import Lib.Audio.Audio exposing (loadAudio, stopAudio)
-import Lib.Coordinate.Coordinates exposing (fromMouseToReal, getStartPoint, maxHandW)
+import Lib.Coordinate.Coordinates exposing (fromMouseToReal, getStartPoint, maxHandW, posToReal)
 import Lib.Layer.Base exposing (LayerMsg(..))
 import Lib.LocalStorage.LocalStorage exposing (decodeLSInfo, encodeLSInfo)
 import Lib.Resources.Base exposing (allTexture, getTexture, saveSprite)
@@ -220,15 +220,41 @@ update _ msg model =
             in
             ( { model | currentGlobalData = newgd }, Cmd.none, Audio.cmdNone )
 
-        MouseMove ( px, py ) ->
+        MouseMove pos ->
             let
                 curgd =
                     model.currentGlobalData
 
                 mp =
-                    fromMouseToReal curgd ( toFloat px, toFloat py )
+                    fromMouseToReal curgd pos
             in
             ( { model | currentGlobalData = { curgd | mousePos = mp } }, Cmd.none, Audio.cmdNone )
+
+        MouseDown but pos ->
+            let
+                curgd =
+                    model.currentGlobalData
+
+                mp =
+                    fromMouseToReal curgd pos
+
+                newMsg =
+                    MouseDown but mp
+            in
+            normalUpdate newMsg { model | currentGlobalData = { curgd | mousePos = mp } }
+
+        MouseDownInt but pos ->
+            let
+                curgd =
+                    model.currentGlobalData
+
+                mp =
+                    posToReal curgd pos
+
+                newMsg =
+                    MouseDown but mp
+            in
+            normalUpdate newMsg { model | currentGlobalData = { curgd | mousePos = mp } }
 
         _ ->
             normalUpdate msg model
@@ -244,7 +270,7 @@ subscriptions _ _ =
         , onKeyUp (Decode.map (\x -> KeyUp x) (Decode.field "keyCode" Decode.int))
         , onResize (\w h -> NewWindowSize ( w, h ))
         , onMouseDown (Decode.map3 (\b x y -> MouseDown b ( x, y )) (Decode.field "button" Decode.int) (Decode.field "clientX" Decode.float) (Decode.field "clientY" Decode.float))
-        , onMouseMove (Decode.map2 (\x y -> MouseMove ( x, y )) (Decode.field "clientX" Decode.int) (Decode.field "clientY" Decode.int))
+        , onMouseMove (Decode.map2 (\x y -> MouseMove ( x, y )) (Decode.field "clientX" Decode.float) (Decode.field "clientY" Decode.float))
         ]
 
 

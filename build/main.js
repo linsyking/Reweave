@@ -8231,6 +8231,7 @@ var $author$project$Common$initGlobalData = {
 	sprites: $elm$core$Dict$empty,
 	startLeft: 0,
 	startTop: 0,
+	tasCommands: _List_Nil,
 	visualaid: true
 };
 var $linsyking$elm_canvas$Canvas$Internal$Canvas$DrawableGroup = function (a) {
@@ -10328,8 +10329,8 @@ var $author$project$Lib$Coordinate$Coordinates$judgeMouse = F4(
 		var h = _v2.b;
 		var rw = A2($author$project$Lib$Coordinate$Coordinates$widthToReal, gd, w);
 		var rh = A2($author$project$Lib$Coordinate$Coordinates$heightToReal, gd, h);
-		var mpy = my - gd.startTop;
-		var mpx = mx - gd.startLeft;
+		var mpy = my;
+		var mpx = mx;
 		var _v3 = A2(
 			$author$project$Lib$Coordinate$Coordinates$posToReal,
 			gd,
@@ -16377,12 +16378,6 @@ var $author$project$Lib$CoreEngine$GameComponent$Base$GameUseEnergy = F2(
 	function (a, b) {
 		return {$: 'GameUseEnergy', a: a, b: b};
 	});
-var $author$project$Lib$Coordinate$Coordinates$fromMouseToReal = F2(
-	function (gd, _v0) {
-		var px = _v0.a;
-		var py = _v0.b;
-		return _Utils_Tuple2(px - gd.startLeft, py - gd.startTop);
-	});
 var $author$project$Lib$CoreEngine$GameLayer$Common$calcDRate = F3(
 	function (p1, p2, _v0) {
 		var w = _v0.a;
@@ -16461,7 +16456,7 @@ var $author$project$Lib$CoreEngine$GameLayer$Model$actorupdatemouse = F4(
 			var px = _v2.a;
 			var py = _v2.b;
 			var pp = _Utils_Tuple2(px, py);
-			var _v3 = A2($author$project$Lib$Coordinate$Coordinates$fromMouseToReal, gd, mp);
+			var _v3 = mp;
 			var mx = _v3.a;
 			var my = _v3.b;
 			var mm = _Utils_Tuple2(mx, my);
@@ -16523,7 +16518,7 @@ var $author$project$Lib$CoreEngine$GameLayer$Model$playerupdatemouse = F4(
 			var px = _v1.a;
 			var py = _v1.b;
 			var pp = _Utils_Tuple2(px, py);
-			var _v2 = A2($author$project$Lib$Coordinate$Coordinates$fromMouseToReal, gd, mp);
+			var _v2 = mp;
 			var mx = _v2.a;
 			var my = _v2.b;
 			var mm = _Utils_Tuple2(mx, my);
@@ -31457,13 +31452,19 @@ var $author$project$Main$subscriptions = F2(
 								return $author$project$Base$MouseMove(
 									_Utils_Tuple2(x, y));
 							}),
-						A2($elm$json$Json$Decode$field, 'clientX', $elm$json$Json$Decode$int),
-						A2($elm$json$Json$Decode$field, 'clientY', $elm$json$Json$Decode$int)))
+						A2($elm$json$Json$Decode$field, 'clientX', $elm$json$Json$Decode$float),
+						A2($elm$json$Json$Decode$field, 'clientY', $elm$json$Json$Decode$float)))
 				]));
 	});
 var $author$project$Base$PlaySoundGotTime = F4(
 	function (a, b, c, d) {
 		return {$: 'PlaySoundGotTime', a: a, b: b, c: c, d: d};
+	});
+var $author$project$Lib$Coordinate$Coordinates$fromMouseToReal = F2(
+	function (gd, _v0) {
+		var px = _v0.a;
+		var py = _v0.b;
+		return _Utils_Tuple2(px - gd.startLeft, py - gd.startTop);
 	});
 var $author$project$Lib$Audio$Audio$loadAudio = F5(
 	function (repo, name, source, opt, t) {
@@ -31776,14 +31777,9 @@ var $author$project$Main$update = F3(
 					$elm$core$Platform$Cmd$none,
 					$MartinSStewart$elm_audio$Audio$cmdNone);
 			case 'MouseMove':
-				var _v6 = msg.a;
-				var px = _v6.a;
-				var py = _v6.b;
+				var pos = msg.a;
 				var curgd = model.currentGlobalData;
-				var mp = A2(
-					$author$project$Lib$Coordinate$Coordinates$fromMouseToReal,
-					curgd,
-					_Utils_Tuple2(px, py));
+				var mp = A2($author$project$Lib$Coordinate$Coordinates$fromMouseToReal, curgd, pos);
 				return _Utils_Tuple3(
 					_Utils_update(
 						model,
@@ -31794,6 +31790,38 @@ var $author$project$Main$update = F3(
 						}),
 					$elm$core$Platform$Cmd$none,
 					$MartinSStewart$elm_audio$Audio$cmdNone);
+			case 'MouseDown':
+				var but = msg.a;
+				var pos = msg.b;
+				var curgd = model.currentGlobalData;
+				var mp = A2($author$project$Lib$Coordinate$Coordinates$fromMouseToReal, curgd, pos);
+				var newMsg = A2($author$project$Base$MouseDown, but, mp);
+				return A2(
+					$author$project$Main$normalUpdate,
+					newMsg,
+					_Utils_update(
+						model,
+						{
+							currentGlobalData: _Utils_update(
+								curgd,
+								{mousePos: mp})
+						}));
+			case 'MouseDownInt':
+				var but = msg.a;
+				var pos = msg.b;
+				var curgd = model.currentGlobalData;
+				var mp = A2($author$project$Lib$Coordinate$Coordinates$posToReal, curgd, pos);
+				var newMsg = A2($author$project$Base$MouseDown, but, mp);
+				return A2(
+					$author$project$Main$normalUpdate,
+					newMsg,
+					_Utils_update(
+						model,
+						{
+							currentGlobalData: _Utils_update(
+								curgd,
+								{mousePos: mp})
+						}));
 			default:
 				return A2($author$project$Main$normalUpdate, msg, model);
 		}
