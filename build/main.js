@@ -20560,9 +20560,9 @@ var $author$project$Scenes$Home$Layer0$Display$dview = F3(
 					$author$project$Lib$Render$Render$renderText,
 					gd,
 					30,
-					'Ver. 1.0.3',
+					'1.0.3',
 					'Courier New',
-					_Utils_Tuple2(1700, 1000))
+					_Utils_Tuple2(1750, 1000))
 				]));
 	});
 var $author$project$Scenes$Home$Layer0$Models$initModel = F3(
@@ -21326,7 +21326,7 @@ var $author$project$Scenes$Home$Model$starttext = F2(
 			0,
 			4,
 			$elm$core$String$fromFloat((loaded / total) * 100));
-		var maintext = (!t) ? ('Loading... ' + (progress + '%')) : 'Click anywhere to start';
+		var maintext = (!t) ? ('Loading... ' + (progress + '%')) : 'Click to start';
 		return A2(
 			$linsyking$elm_canvas$Canvas$group,
 			_List_fromArray(
@@ -21334,35 +21334,16 @@ var $author$project$Scenes$Home$Model$starttext = F2(
 					$linsyking$elm_canvas$Canvas$Settings$Advanced$alpha(
 					0.7 + ($elm$core$Basics$sin((t + loaded) / 10) / 3))
 				]),
-			A2(
-				$elm$core$List$append,
-				_List_fromArray(
-					[
-						A5(
-						$author$project$Lib$Render$Render$renderTextCenter,
-						gd,
-						60,
-						maintext,
-						'Times New Roman',
-						_Utils_Tuple2(960, 900))
-					]),
-				$author$project$Lib$LocalStorage$LocalStorage$isFirstPlay(gd.localstorage) ? _List_fromArray(
-					[
-						A5(
-						$author$project$Lib$Render$Render$renderText,
-						gd,
-						60,
-						'Tips: This game features auto-save system',
-						'Times New Roman',
-						_Utils_Tuple2(450, 400)),
-						A5(
-						$author$project$Lib$Render$Render$renderText,
-						gd,
-						60,
-						'You don\'t have to finish the game in one run',
-						'Times New Roman',
-						_Utils_Tuple2(430, 480))
-					]) : _List_Nil));
+			_List_fromArray(
+				[
+					A5(
+					$author$project$Lib$Render$Render$renderTextCenter,
+					gd,
+					60,
+					maintext,
+					'Times New Roman',
+					_Utils_Tuple2(960, 900))
+				]));
 	});
 var $author$project$Scenes$Home$Model$viewModel = F2(
 	function (_v0, gd) {
