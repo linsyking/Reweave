@@ -8095,9 +8095,9 @@ var $MartinSStewart$elm_audio$Audio$AudioCmdGroup = function (a) {
 	return {$: 'AudioCmdGroup', a: a};
 };
 var $MartinSStewart$elm_audio$Audio$cmdNone = $MartinSStewart$elm_audio$Audio$AudioCmdGroup(_List_Nil);
-var $author$project$Base$LSInfo = F5(
-	function (collected, level, energy, initPosition, volume) {
-		return {collected: collected, energy: energy, initPosition: initPosition, level: level, volume: volume};
+var $author$project$Base$LSInfo = F6(
+	function (collected, level, energy, initPosition, volume, gameTime) {
+		return {collected: collected, energy: energy, gameTime: gameTime, initPosition: initPosition, level: level, volume: volume};
 	});
 var $elm$json$Json$Decode$at = F2(
 	function (fields, decoder) {
@@ -8128,6 +8128,17 @@ var $author$project$Lib$LocalStorage$LocalStorage$decodeLSInfo = function (info)
 				_List_fromArray(
 					['volume']),
 				$elm$json$Json$Decode$float),
+			info));
+	var oldtime = A2(
+		$elm$core$Result$withDefault,
+		0,
+		A2(
+			$elm$json$Json$Decode$decodeString,
+			A2(
+				$elm$json$Json$Decode$at,
+				_List_fromArray(
+					['gametime']),
+				$elm$json$Json$Decode$int),
 			info));
 	var oldposy = A2(
 		$elm$core$Result$withDefault,
@@ -8184,13 +8195,14 @@ var $author$project$Lib$LocalStorage$LocalStorage$decodeLSInfo = function (info)
 					['collected']),
 				$elm$json$Json$Decode$list($elm$json$Json$Decode$string)),
 			info));
-	return A5(
+	return A6(
 		$author$project$Base$LSInfo,
 		oldcol,
 		oldlevel,
 		oldenergy,
 		_Utils_Tuple2(oldposx, oldposy),
-		oldvol);
+		oldvol,
+		oldtime);
 };
 var $author$project$Lib$Coordinate$Coordinates$getStartPoint = function (_v0) {
 	var w = _v0.a;
@@ -8203,13 +8215,14 @@ var $author$project$Scenes$SceneSettings$NullSceneData = {$: 'NullSceneData'};
 var $author$project$Common$initGlobalData = {
 	audioVolume: 0.5,
 	browserViewPort: _Utils_Tuple2(1280, 720),
-	localstorage: A5(
+	localstorage: A6(
 		$author$project$Base$LSInfo,
 		_List_Nil,
 		'Level0',
 		0,
 		_Utils_Tuple2(-1, -1),
-		50),
+		50,
+		0),
 	mousePos: _Utils_Tuple2(0, 0),
 	realHeight: 720,
 	realWidth: 1280,
@@ -15166,13 +15179,14 @@ var $author$project$Lib$CoreEngine$FrontgroundLayer$Model$dealComponentsMsg = F4
 										_Utils_update(
 											gd,
 											{
-												localstorage: A5(
+												localstorage: A6(
 													$author$project$Base$LSInfo,
 													ggd.collectedMonsters,
 													s,
 													newenergy,
 													_Utils_Tuple2(-1, -1),
-													gd.localstorage.volume),
+													gd.localstorage.volume,
+													ggd.ingameTime),
 												scenesFinished: _Utils_ap(
 													gd.scenesFinished,
 													_List_fromArray(
@@ -15627,7 +15641,7 @@ var $author$project$Lib$CoreEngine$FrontgroundLayer$Model$updateModel = F5(
 						var oldl = gd.localstorage;
 						var newl = _Utils_update(
 							oldl,
-							{energy: ggd.energy, initPosition: p});
+							{energy: ggd.energy, gameTime: ggd.ingameTime, initPosition: p});
 						return _Utils_Tuple2(
 							_Utils_Tuple3(
 								_Utils_update(
@@ -20742,13 +20756,14 @@ var $author$project$Scenes$Home$Layer1$Models$updateModel = F5(
 					_Utils_update(
 						gd,
 						{
-							localstorage: A5(
+							localstorage: A6(
 								$author$project$Base$LSInfo,
 								_List_Nil,
 								'Level0',
 								300,
 								_Utils_Tuple2(-1, -1),
-								gd.localstorage.volume)
+								gd.localstorage.volume,
+								0)
 						})) : ((model._continue.display && A4(
 					$author$project$Lib$Coordinate$Coordinates$judgeMouse,
 					gd,
@@ -20895,7 +20910,7 @@ var $author$project$Scenes$Home$Model$handleLayerMsg = F3(
 									$author$project$Lib$Scene$Base$SOChangeScene(
 									_Utils_Tuple2(
 										$author$project$Lib$Scene$Base$SceneEngineTMsg(
-											A5($author$project$Lib$Scene$Base$EngineT, gd.localstorage.energy, $author$project$Lib$CoreEngine$GameComponents$Player$Base$DefaultPlayerPosition, gd.localstorage.collected, 0, 0)),
+											A5($author$project$Lib$Scene$Base$EngineT, gd.localstorage.energy, $author$project$Lib$CoreEngine$GameComponents$Player$Base$DefaultPlayerPosition, gd.localstorage.collected, 0, gd.localstorage.gameTime)),
 										gd.localstorage.level))
 								]),
 							gd) : _Utils_Tuple3(
@@ -20911,7 +20926,7 @@ var $author$project$Scenes$Home$Model$handleLayerMsg = F3(
 												$author$project$Lib$CoreEngine$GameComponents$Player$Base$CustomPlayerPosition(gd.localstorage.initPosition),
 												gd.localstorage.collected,
 												0,
-												0)),
+												gd.localstorage.gameTime)),
 										gd.localstorage.level))
 								]),
 							gd);
@@ -31516,7 +31531,10 @@ var $author$project$Lib$LocalStorage$LocalStorage$encodeLSInfo = function (info)
 					$elm$json$Json$Encode$int(y)),
 					_Utils_Tuple2(
 					'volume',
-					$elm$json$Json$Encode$float(info.volume))
+					$elm$json$Json$Encode$float(info.volume)),
+					_Utils_Tuple2(
+					'gametime',
+					$elm$json$Json$Encode$int(info.gameTime))
 				])));
 };
 var $author$project$Lib$Scene$SceneLoader$getCurrentScene = function (model) {

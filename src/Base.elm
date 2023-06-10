@@ -99,6 +99,7 @@ type alias LSInfo =
     , energy : Float
     , initPosition : ( Int, Int )
     , volume : Float
+    , gameTime : Int
     }
 
 
