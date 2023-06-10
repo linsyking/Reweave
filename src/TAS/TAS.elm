@@ -1,4 +1,7 @@
-module TAS.TAS exposing (enableTAS, Key(..), Input(..), tas)
+module TAS.TAS exposing
+    ( startFrame
+    , enableTAS, Key(..), Input(..), tas
+    )
 
 {-|
 
@@ -7,9 +10,17 @@ module TAS.TAS exposing (enableTAS, Key(..), Input(..), tas)
 
 TAS Module
 
+@docs startFrame
 @docs enableTAS, Key, Input, tas
 
 -}
+
+
+{-| The frame to starts with
+-}
+startFrame : Int
+startFrame =
+    0
 
 
 {-| enable TAS flag
@@ -38,7 +49,10 @@ type Input
 
 {-| A Sample TAS
 -}
-tas : List ( Int, Input )
+tas : List ( Int, List Input )
 tas =
-    [ ( 1, MouseLeft ( 0, 0 ) )
+    [ ( 1, [ MouseLeft ( 0, 0 ) ] )
+    , ( 2, [ MouseLeft ( 890, 920 ) ] )
+    , ( 3, [ Down D, MouseRright ( 1920, 0 ), Down C ] )
+    , ( 50, [ MouseRright ( 1920, 0 ) ] )
     ]

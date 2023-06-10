@@ -11,6 +11,7 @@ import Base exposing (..)
 import Browser.Events exposing (onKeyDown, onKeyUp, onMouseDown, onMouseMove, onResize)
 import Canvas
 import Canvas.Settings exposing (fill)
+import Canvas.Settings.Text exposing (TextBaseLine(..))
 import Color
 import Common exposing (..)
 import Dict
@@ -22,11 +23,14 @@ import Lib.Audio.Audio exposing (loadAudio, stopAudio)
 import Lib.Coordinate.Coordinates exposing (fromMouseToReal, getStartPoint, maxHandW, posToReal)
 import Lib.Layer.Base exposing (LayerMsg(..))
 import Lib.LocalStorage.LocalStorage exposing (decodeLSInfo, encodeLSInfo)
+import Lib.Render.Render exposing (renderTextCenter)
 import Lib.Resources.Base exposing (allTexture, getTexture, saveSprite)
 import Lib.Scene.Base exposing (..)
 import Lib.Scene.SceneLoader exposing (getCurrentScene, loadSceneByName)
 import MainConfig exposing (initScene, timeInterval)
 import Scenes.SceneSettings exposing (..)
+import TAS.Loader exposing (loadTAS)
+import TAS.TAS exposing (enableTAS, startFrame, tas)
 import Task
 import Time
 
@@ -87,7 +91,7 @@ init flags =
             getStartPoint ( flags.windowWidth, flags.windowHeight )
 
         newgd =
-            { oldgd | localstorage = decodeLSInfo flags.info, browserViewPort = ( flags.windowWidth, flags.windowHeight ), realWidth = gw, realHeight = gh, startLeft = fl, startTop = ft }
+            { oldgd | tasCommands = loadTAS tas, localstorage = decodeLSInfo flags.info, browserViewPort = ( flags.windowWidth, flags.windowHeight ), realWidth = gw, realHeight = gh, startLeft = fl, startTop = ft }
     in
     ( { ms | currentGlobalData = newgd }, Cmd.none, Audio.cmdNone )
 
@@ -165,8 +169,96 @@ normalUpdate msg model =
         ( newmodel, Cmd.batch cmds, Audio.cmdBatch audiocmds )
 
 
+loadTAStilT : Model -> Msg -> Int -> Model
+loadTAStilT model msg t =
+    let
+        first ( x, _, _ ) =
+            x
+    in
+    if t == 0 then
+        first <| updateTAS msg model
+
+    else
+        loadTAStilT (first <| updateTAS msg model) msg (t - 1)
+
+
 update : AudioData -> Msg -> Model -> ( Model, Cmd Msg, AudioCmd Msg )
 update _ msg model =
+    if enableTAS then
+        case msg of
+            Tick _ ->
+                if model.time == 0 then
+                    -- Load game to the start frame
+                    ( loadTAStilT model msg startFrame, Cmd.none, Audio.cmdNone )
+
+                else
+                    updateTAS msg model
+
+            _ ->
+                updateTAS msg model
+
+    else
+        update__ msg model
+
+
+updateTAS : Msg -> Model -> ( Model, Cmd Msg, AudioCmd Msg )
+updateTAS msg model =
+    case msg of
+        MouseDown _ _ ->
+            ( model, Cmd.none, Audio.cmdNone )
+
+        KeyDown _ ->
+            ( model, Cmd.none, Audio.cmdNone )
+
+        MouseMove _ ->
+            ( model, Cmd.none, Audio.cmdNone )
+
+        KeyUp _ ->
+            ( model, Cmd.none, Audio.cmdNone )
+
+        Tick _ ->
+            case model.currentGlobalData.tasCommands of
+                ( time, commands ) :: remain ->
+                    if time == model.time then
+                        let
+                            -- Update Tick Event
+                            ( model1, cmd1, audiocmd1 ) =
+                                update__ msg model
+
+                            -- Update TAS Events
+                            model2 =
+                                List.foldl
+                                    (\command lastModel ->
+                                        let
+                                            -- Cmd and Audio Cmd not useful in TAS mode
+                                            ( model3, _, _ ) =
+                                                update__ command lastModel
+                                        in
+                                        model3
+                                    )
+                                    model1
+                                    commands
+
+                            gd =
+                                model2.currentGlobalData
+
+                            newGD =
+                                { gd | tasCommands = remain }
+                        in
+                        ( { model2 | currentGlobalData = newGD }, cmd1, audiocmd1 )
+
+                    else
+                        update__ msg model
+
+                [] ->
+                    update__ msg model
+
+        _ ->
+            update__ msg model
+
+
+update__ : Msg -> Model -> ( Model, Cmd Msg, AudioCmd Msg )
+update__ msg model =
     case msg of
         TextureLoaded _ Nothing ->
             ( model, Cmd.none, Audio.cmdNone )
@@ -296,6 +388,13 @@ view _ model =
         , style "position" "fixed"
         , style "cursor" cursor
         ]
+    <|
         [ Canvas.shapes [ fill Color.white ] [ Canvas.rect ( 0, 0 ) (toFloat model.currentGlobalData.realWidth) (toFloat model.currentGlobalData.realHeight) ]
         , (getCurrentScene model).view ( model.currentData, model.time ) model.currentGlobalData
         ]
+            ++ (if enableTAS then
+                    [ renderTextCenter model.currentGlobalData 40 "TAS Mode" "Arial" ( 1920 // 2, 40 ) ]
+
+                else
+                    []
+               )

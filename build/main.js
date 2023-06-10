@@ -30927,6 +30927,58 @@ var $author$project$Lib$Scene$SceneLoader$loadSceneByName = F3(
 		var sc = $author$project$Lib$Scene$SceneLoader$getScene(i);
 		return A3($author$project$Lib$Scene$SceneLoader$loadScene, model, sc, tm);
 	});
+var $author$project$Base$MouseDownInt = F2(
+	function (a, b) {
+		return {$: 'MouseDownInt', a: a, b: b};
+	});
+var $author$project$TAS$Loader$loadTAS = function (xs) {
+	return A2(
+		$elm$core$List$map,
+		function (_v0) {
+			var a = _v0.a;
+			var b = _v0.b;
+			return _Utils_Tuple2(
+				a,
+				A2(
+					$elm$core$List$map,
+					function (c) {
+						switch (c.$) {
+							case 'Down':
+								switch (c.a.$) {
+									case 'A':
+										var _v2 = c.a;
+										return $author$project$Base$KeyDown(65);
+									case 'C':
+										var _v3 = c.a;
+										return $author$project$Base$KeyDown(67);
+									default:
+										var _v4 = c.a;
+										return $author$project$Base$KeyDown(68);
+								}
+							case 'Up':
+								switch (c.a.$) {
+									case 'A':
+										var _v5 = c.a;
+										return $author$project$Base$KeyDown(65);
+									case 'C':
+										var _v6 = c.a;
+										return $author$project$Base$KeyDown(67);
+									default:
+										var _v7 = c.a;
+										return $author$project$Base$KeyDown(68);
+								}
+							case 'MouseLeft':
+								var pos = c.a;
+								return A2($author$project$Base$MouseDownInt, 0, pos);
+							default:
+								var pos = c.a;
+								return A2($author$project$Base$MouseDownInt, 1, pos);
+						}
+					},
+					b));
+		},
+		xs);
+};
 var $author$project$Lib$Coordinate$Coordinates$maxHandW = function (_v0) {
 	var w = _v0.a;
 	var h = _v0.b;
@@ -30936,6 +30988,50 @@ var $author$project$Lib$Coordinate$Coordinates$maxHandW = function (_v0) {
 		w,
 		$elm$core$Basics$floor((w * 9) / 16));
 };
+var $author$project$TAS$TAS$C = {$: 'C'};
+var $author$project$TAS$TAS$D = {$: 'D'};
+var $author$project$TAS$TAS$Down = function (a) {
+	return {$: 'Down', a: a};
+};
+var $author$project$TAS$TAS$MouseLeft = function (a) {
+	return {$: 'MouseLeft', a: a};
+};
+var $author$project$TAS$TAS$MouseRright = function (a) {
+	return {$: 'MouseRright', a: a};
+};
+var $author$project$TAS$TAS$tas = _List_fromArray(
+	[
+		_Utils_Tuple2(
+		1,
+		_List_fromArray(
+			[
+				$author$project$TAS$TAS$MouseLeft(
+				_Utils_Tuple2(0, 0))
+			])),
+		_Utils_Tuple2(
+		2,
+		_List_fromArray(
+			[
+				$author$project$TAS$TAS$MouseLeft(
+				_Utils_Tuple2(890, 920))
+			])),
+		_Utils_Tuple2(
+		3,
+		_List_fromArray(
+			[
+				$author$project$TAS$TAS$Down($author$project$TAS$TAS$D),
+				$author$project$TAS$TAS$MouseRright(
+				_Utils_Tuple2(1920, 0)),
+				$author$project$TAS$TAS$Down($author$project$TAS$TAS$C)
+			])),
+		_Utils_Tuple2(
+		50,
+		_List_fromArray(
+			[
+				$author$project$TAS$TAS$MouseRright(
+				_Utils_Tuple2(1920, 0))
+			]))
+	]);
 var $author$project$Main$init = function (flags) {
 	var ms = A3($author$project$Lib$Scene$SceneLoader$loadSceneByName, $author$project$Main$initModel, $author$project$MainConfig$initScene, $author$project$Lib$Scene$Base$NullSceneMsg);
 	var oldgd = ms.currentGlobalData;
@@ -30955,7 +31051,8 @@ var $author$project$Main$init = function (flags) {
 			realHeight: gh,
 			realWidth: gw,
 			startLeft: fl,
-			startTop: ft
+			startTop: ft,
+			tasCommands: $author$project$TAS$Loader$loadTAS($author$project$TAS$TAS$tas)
 		});
 	return _Utils_Tuple3(
 		_Utils_update(
@@ -31456,6 +31553,7 @@ var $author$project$Main$subscriptions = F2(
 						A2($elm$json$Json$Decode$field, 'clientY', $elm$json$Json$Decode$float)))
 				]));
 	});
+var $author$project$TAS$TAS$enableTAS = true;
 var $author$project$Base$PlaySoundGotTime = F4(
 	function (a, b, c, d) {
 		return {$: 'PlaySoundGotTime', a: a, b: b, c: c, d: d};
@@ -31706,12 +31804,12 @@ var $author$project$Lib$Resources$Base$saveSprite = F3(
 	function (dst, name, text) {
 		return A3($elm$core$Dict$insert, name, text, dst);
 	});
-var $author$project$Main$update = F3(
-	function (_v0, msg, model) {
+var $author$project$Main$update__ = F2(
+	function (msg, model) {
 		switch (msg.$) {
 			case 'TextureLoaded':
 				if (msg.b.$ === 'Nothing') {
-					var _v2 = msg.b;
+					var _v1 = msg.b;
 					return _Utils_Tuple3(model, $elm$core$Platform$Cmd$none, $MartinSStewart$elm_audio$Audio$cmdNone);
 				} else {
 					var name = msg.a;
@@ -31761,12 +31859,12 @@ var $author$project$Main$update = F3(
 			case 'NewWindowSize':
 				var t = msg.a;
 				var oldgd = model.currentGlobalData;
-				var _v4 = $author$project$Lib$Coordinate$Coordinates$maxHandW(t);
-				var gw = _v4.a;
-				var gh = _v4.b;
-				var _v5 = $author$project$Lib$Coordinate$Coordinates$getStartPoint(t);
-				var fl = _v5.a;
-				var ft = _v5.b;
+				var _v3 = $author$project$Lib$Coordinate$Coordinates$maxHandW(t);
+				var gw = _v3.a;
+				var gh = _v3.b;
+				var _v4 = $author$project$Lib$Coordinate$Coordinates$getStartPoint(t);
+				var fl = _v4.a;
+				var ft = _v4.b;
 				var newgd = _Utils_update(
 					oldgd,
 					{browserViewPort: t, realHeight: gh, realWidth: gw, startLeft: fl, startTop: ft});
@@ -31824,6 +31922,98 @@ var $author$project$Main$update = F3(
 						}));
 			default:
 				return A2($author$project$Main$normalUpdate, msg, model);
+		}
+	});
+var $author$project$Main$updateTAS = F2(
+	function (msg, model) {
+		switch (msg.$) {
+			case 'MouseDown':
+				return _Utils_Tuple3(model, $elm$core$Platform$Cmd$none, $MartinSStewart$elm_audio$Audio$cmdNone);
+			case 'KeyDown':
+				return _Utils_Tuple3(model, $elm$core$Platform$Cmd$none, $MartinSStewart$elm_audio$Audio$cmdNone);
+			case 'MouseMove':
+				return _Utils_Tuple3(model, $elm$core$Platform$Cmd$none, $MartinSStewart$elm_audio$Audio$cmdNone);
+			case 'KeyUp':
+				return _Utils_Tuple3(model, $elm$core$Platform$Cmd$none, $MartinSStewart$elm_audio$Audio$cmdNone);
+			case 'Tick':
+				var _v1 = model.currentGlobalData.tasCommands;
+				if (_v1.b) {
+					var _v2 = _v1.a;
+					var time = _v2.a;
+					var commands = _v2.b;
+					var remain = _v1.b;
+					if (_Utils_eq(time, model.time)) {
+						var _v3 = A2($author$project$Main$update__, msg, model);
+						var model1 = _v3.a;
+						var cmd1 = _v3.b;
+						var audiocmd1 = _v3.c;
+						var model2 = A3(
+							$elm$core$List$foldl,
+							F2(
+								function (command, lastModel) {
+									var _v4 = A2($author$project$Main$update__, command, lastModel);
+									var model3 = _v4.a;
+									return model3;
+								}),
+							model1,
+							commands);
+						var gd = model2.currentGlobalData;
+						var newGD = _Utils_update(
+							gd,
+							{tasCommands: remain});
+						return _Utils_Tuple3(
+							_Utils_update(
+								model2,
+								{currentGlobalData: newGD}),
+							cmd1,
+							audiocmd1);
+					} else {
+						return A2($author$project$Main$update__, msg, model);
+					}
+				} else {
+					return A2($author$project$Main$update__, msg, model);
+				}
+			default:
+				return A2($author$project$Main$update__, msg, model);
+		}
+	});
+var $author$project$Main$loadTAStilT = F3(
+	function (model, msg, t) {
+		loadTAStilT:
+		while (true) {
+			var first = function (_v0) {
+				var x = _v0.a;
+				return x;
+			};
+			if (!t) {
+				return first(
+					A2($author$project$Main$updateTAS, msg, model));
+			} else {
+				var $temp$model = first(
+					A2($author$project$Main$updateTAS, msg, model)),
+					$temp$msg = msg,
+					$temp$t = t - 1;
+				model = $temp$model;
+				msg = $temp$msg;
+				t = $temp$t;
+				continue loadTAStilT;
+			}
+		}
+	});
+var $author$project$TAS$TAS$startFrame = 0;
+var $author$project$Main$update = F3(
+	function (_v0, msg, model) {
+		if ($author$project$TAS$TAS$enableTAS) {
+			if (msg.$ === 'Tick') {
+				return (!model.time) ? _Utils_Tuple3(
+					A3($author$project$Main$loadTAStilT, model, msg, $author$project$TAS$TAS$startFrame),
+					$elm$core$Platform$Cmd$none,
+					$MartinSStewart$elm_audio$Audio$cmdNone) : A2($author$project$Main$updateTAS, msg, model);
+			} else {
+				return A2($author$project$Main$updateTAS, msg, model);
+			}
+		} else {
+			return A2($author$project$Main$update__, msg, model);
 		}
 	});
 var $author$project$Base$TextureLoaded = F2(
@@ -32725,27 +32915,38 @@ var $author$project$Main$view = F2(
 					A2($elm$html$Html$Attributes$style, 'position', 'fixed'),
 					A2($elm$html$Html$Attributes$style, 'cursor', cursor)
 				]),
-			_List_fromArray(
-				[
-					A2(
-					$linsyking$elm_canvas$Canvas$shapes,
-					_List_fromArray(
-						[
-							$linsyking$elm_canvas$Canvas$Settings$fill($avh4$elm_color$Color$white)
-						]),
-					_List_fromArray(
-						[
-							A3(
-							$linsyking$elm_canvas$Canvas$rect,
-							_Utils_Tuple2(0, 0),
-							model.currentGlobalData.realWidth,
-							model.currentGlobalData.realHeight)
-						])),
-					A2(
-					$author$project$Lib$Scene$SceneLoader$getCurrentScene(model).view,
-					_Utils_Tuple2(model.currentData, model.time),
-					model.currentGlobalData)
-				]));
+			_Utils_ap(
+				_List_fromArray(
+					[
+						A2(
+						$linsyking$elm_canvas$Canvas$shapes,
+						_List_fromArray(
+							[
+								$linsyking$elm_canvas$Canvas$Settings$fill($avh4$elm_color$Color$white)
+							]),
+						_List_fromArray(
+							[
+								A3(
+								$linsyking$elm_canvas$Canvas$rect,
+								_Utils_Tuple2(0, 0),
+								model.currentGlobalData.realWidth,
+								model.currentGlobalData.realHeight)
+							])),
+						A2(
+						$author$project$Lib$Scene$SceneLoader$getCurrentScene(model).view,
+						_Utils_Tuple2(model.currentData, model.time),
+						model.currentGlobalData)
+					]),
+				$author$project$TAS$TAS$enableTAS ? _List_fromArray(
+					[
+						A5(
+						$author$project$Lib$Render$Render$renderTextCenter,
+						model.currentGlobalData,
+						40,
+						'TAS Mode',
+						'Arial',
+						_Utils_Tuple2((1920 / 2) | 0, 40))
+					]) : _List_Nil));
 	});
 var $author$project$Main$main = $MartinSStewart$elm_audio$Audio$elementWithAudio(
 	{

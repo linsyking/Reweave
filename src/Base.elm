@@ -84,7 +84,7 @@ type alias GlobalData =
     , mousePos : ( Float, Float )
     , visualaid : Bool
     , localstorage : LSInfo
-    , tasCommands : List ( Int, Msg )
+    , tasCommands : List ( Int, List Msg )
     }
 
 
