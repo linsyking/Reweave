@@ -1,6 +1,6 @@
 **Note. If you want to use the game framework of this game, please go [here](https://github.com/linsyking/Messenger) and take this game as an example of that game framework.**
 
-You can access the game [here](https://focs.ji.sjtu.edu.cn/silverfocs/demo/2022/p2team01/) or on github page.
+You can access the game [here](https://focs.ji.sjtu.edu.cn/silverfocs/demo/2022/p2team01/) or on Github page.
 
 # README
 
@@ -24,7 +24,8 @@ cd Reweave
 # Next, install packages and compile
 make
 
-# Now you can view the index.html file that elm compiles! 
+# Use a static file server to host the built files, e.g. using python http module:
+python -m http.server
 ```
 
 ## Usage
