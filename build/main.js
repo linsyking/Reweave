@@ -12860,7 +12860,7 @@ var $author$project$Components$Trans$Export$initComponent = F2(
 				data: A2($author$project$Components$Trans$Export$component.init, t, ct)
 			});
 	});
-var $author$project$Lib$Scene$Base$nullEngineT = {collectedMonsters: _List_Nil, energy: 500, playerPosition: $author$project$Lib$CoreEngine$GameComponents$Player$Base$DefaultPlayerPosition, specialstate: 0};
+var $author$project$Lib$Scene$Base$nullEngineT = {collectedMonsters: _List_Nil, energy: 500, ingameTime: 0, playerPosition: $author$project$Lib$CoreEngine$GameComponents$Player$Base$DefaultPlayerPosition, specialstate: 0};
 var $author$project$Lib$CoreEngine$FrontgroundLayer$Model$initModel = F3(
 	function (t, lm, _v0) {
 		if (lm.$ === 'LayerCTMsg') {
@@ -12921,6 +12921,7 @@ var $author$project$Lib$CoreEngine$Base$nullGameGlobalData = {
 	collectedMonsters: _List_Nil,
 	currentScene: '',
 	energy: 0,
+	ingameTime: 0,
 	ingamepause: false,
 	mapsize: _Utils_Tuple2(0, 0),
 	selectobj: 1,
@@ -15103,9 +15104,9 @@ var $author$project$Lib$CoreEngine$BackgroundLayer$Export$layer = {data: $author
 var $author$project$Lib$Component$Base$ComponentIntMsg = function (a) {
 	return {$: 'ComponentIntMsg', a: a};
 };
-var $author$project$Lib$Scene$Base$EngineT = F4(
-	function (energy, playerPosition, collectedMonsters, specialstate) {
-		return {collectedMonsters: collectedMonsters, energy: energy, playerPosition: playerPosition, specialstate: specialstate};
+var $author$project$Lib$Scene$Base$EngineT = F5(
+	function (energy, playerPosition, collectedMonsters, specialstate, ingameTime) {
+		return {collectedMonsters: collectedMonsters, energy: energy, ingameTime: ingameTime, playerPosition: playerPosition, specialstate: specialstate};
 	});
 var $author$project$Lib$Layer$Base$LayerName = function (a) {
 	return {$: 'LayerName', a: a};
@@ -15614,7 +15615,7 @@ var $author$project$Lib$CoreEngine$FrontgroundLayer$Model$updateModel = F5(
 								model,
 								{
 									components: newcs,
-									exitinfo: A4($author$project$Lib$Scene$Base$EngineT, 500, $author$project$Lib$CoreEngine$GameComponents$Player$Base$DefaultPlayerPosition, ggd.collectedMonsters, ggd.specialState)
+									exitinfo: A5($author$project$Lib$Scene$Base$EngineT, 500, $author$project$Lib$CoreEngine$GameComponents$Player$Base$DefaultPlayerPosition, ggd.collectedMonsters, ggd.specialState, ggd.ingameTime)
 								}),
 							ggd,
 							_List_Nil),
@@ -17479,7 +17480,7 @@ var $author$project$Lib$CoreEngine$GameLayer$Model$dealParentMsg = F4(
 									$author$project$Lib$Layer$Base$LayerName('Frontground'),
 									A3(
 										$author$project$Lib$Layer$Base$LayerExitMsg,
-										A4($author$project$Lib$Scene$Base$EngineT, ggd.energy, pls, ggd.collectedMonsters, spstate),
+										A5($author$project$Lib$Scene$Base$EngineT, ggd.energy, pls, ggd.collectedMonsters, spstate, 0),
 										s,
 										50))
 								])),
@@ -19548,6 +19549,7 @@ var $author$project$Lib$CoreEngine$Base$testGameGlobalData = {
 	collectedMonsters: _List_Nil,
 	currentScene: 'Level1',
 	energy: 0,
+	ingameTime: 0,
 	ingamepause: false,
 	mapsize: _Utils_Tuple2(120, 70),
 	selectobj: -1,
@@ -19899,13 +19901,14 @@ var $author$project$Scenes$End$Map$mymap = A4(
 				_Utils_Tuple2(1, 70),
 				2,
 				$author$project$Scenes$End$Map$sds))));
-var $author$project$Scenes$End$Config$initGameGlobalData = F2(
-	function (e, col) {
+var $author$project$Scenes$End$Config$initGameGlobalData = F3(
+	function (e, col, time) {
 		return {
 			camera: $author$project$Scenes$End$Config$initCamera,
 			collectedMonsters: col,
 			currentScene: 'End',
 			energy: e,
+			ingameTime: time,
 			ingamepause: false,
 			mapsize: _Utils_Tuple2($author$project$Scenes$End$Map$mapwidth, 70),
 			selectobj: 1,
@@ -19964,7 +19967,7 @@ var $author$project$Scenes$End$Export$game = F2(
 							function (_v0, _v1, _v2) {
 								return A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil);
 							})),
-					globalData: A2($author$project$Scenes$End$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters),
+					globalData: A3($author$project$Scenes$End$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters, engineMsg.ingameTime),
 					player: A2($author$project$Scenes$End$Config$initPlayer, t, engineMsg.playerPosition)
 				}));
 	});
@@ -20841,7 +20844,7 @@ var $author$project$Scenes$Home$Model$handleLayerMsg = F3(
 									$author$project$Lib$Scene$Base$SOChangeScene(
 									_Utils_Tuple2(
 										$author$project$Lib$Scene$Base$SceneEngineTMsg(
-											A4($author$project$Lib$Scene$Base$EngineT, gd.localstorage.energy, $author$project$Lib$CoreEngine$GameComponents$Player$Base$DefaultPlayerPosition, gd.localstorage.collected, 0)),
+											A5($author$project$Lib$Scene$Base$EngineT, gd.localstorage.energy, $author$project$Lib$CoreEngine$GameComponents$Player$Base$DefaultPlayerPosition, gd.localstorage.collected, 0, 0)),
 										gd.localstorage.level))
 								]),
 							gd) : _Utils_Tuple3(
@@ -20851,11 +20854,12 @@ var $author$project$Scenes$Home$Model$handleLayerMsg = F3(
 									$author$project$Lib$Scene$Base$SOChangeScene(
 									_Utils_Tuple2(
 										$author$project$Lib$Scene$Base$SceneEngineTMsg(
-											A4(
+											A5(
 												$author$project$Lib$Scene$Base$EngineT,
 												gd.localstorage.energy,
 												$author$project$Lib$CoreEngine$GameComponents$Player$Base$CustomPlayerPosition(gd.localstorage.initPosition),
 												gd.localstorage.collected,
+												0,
 												0)),
 										gd.localstorage.level))
 								]),
@@ -25028,13 +25032,14 @@ var $author$project$Scenes$Level0$Map$mymap = A3(
 																																															_Utils_Tuple2(1, 70),
 																																															2,
 																																															$author$project$Scenes$Level0$Map$sds)))))))))))))))))))))))))))))))))))))))))))))));
-var $author$project$Scenes$Level0$Config$initGameGlobalData = F3(
-	function (e, col, spstate) {
+var $author$project$Scenes$Level0$Config$initGameGlobalData = F4(
+	function (e, col, spstate, t) {
 		return {
 			camera: $author$project$Scenes$Level0$Config$initCamera,
 			collectedMonsters: col,
 			currentScene: 'Level0',
 			energy: e,
+			ingameTime: t,
 			ingamepause: false,
 			mapsize: _Utils_Tuple2($author$project$Scenes$Level0$Map$mapwidth, 70),
 			selectobj: 1,
@@ -25087,7 +25092,7 @@ var $author$project$Scenes$Level0$Export$game = F2(
 							function (_v0, _v1, _v2) {
 								return A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil);
 							})),
-					globalData: A3($author$project$Scenes$Level0$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters, engineMsg.specialstate),
+					globalData: A4($author$project$Scenes$Level0$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters, engineMsg.specialstate, engineMsg.ingameTime),
 					player: A2($author$project$Scenes$Level0$Config$initPlayer, t, engineMsg.playerPosition)
 				}));
 	});
@@ -25653,13 +25658,14 @@ var $author$project$Scenes$Level1$Map$mymap = A4(
 																				_Utils_Tuple2(1, 70),
 																				2,
 																				$author$project$Scenes$Level1$Map$sds))))))))))))))))))));
-var $author$project$Scenes$Level1$Config$initGameGlobalData = F2(
-	function (e, col) {
+var $author$project$Scenes$Level1$Config$initGameGlobalData = F3(
+	function (e, col, t) {
 		return {
 			camera: $author$project$Scenes$Level1$Config$initCamera,
 			collectedMonsters: col,
 			currentScene: 'Level1',
 			energy: e,
+			ingameTime: t,
 			ingamepause: false,
 			mapsize: _Utils_Tuple2(120, 70),
 			selectobj: 1,
@@ -25712,7 +25718,7 @@ var $author$project$Scenes$Level1$Export$game = F2(
 							function (_v0, _v1, _v2) {
 								return A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil);
 							})),
-					globalData: A2($author$project$Scenes$Level1$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters),
+					globalData: A3($author$project$Scenes$Level1$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters, engineMsg.ingameTime),
 					player: A2($author$project$Scenes$Level1$Config$initPlayer, t, engineMsg.playerPosition)
 				}));
 	});
@@ -26386,13 +26392,14 @@ var $author$project$Scenes$Level2$Map$mymap = A3(
 																																																																									_Utils_Tuple2(1, 70),
 																																																																									1,
 																																																																									$author$project$Scenes$Level2$Map$sds)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))));
-var $author$project$Scenes$Level2$Config$initGameGlobalData = F2(
-	function (e, col) {
+var $author$project$Scenes$Level2$Config$initGameGlobalData = F3(
+	function (e, col, t) {
 		return {
 			camera: $author$project$Scenes$Level2$Config$initCamera,
 			collectedMonsters: col,
 			currentScene: 'Level2',
 			energy: e,
+			ingameTime: t,
 			ingamepause: false,
 			mapsize: _Utils_Tuple2($author$project$Scenes$Level2$Map$mapwidth, 70),
 			selectobj: 1,
@@ -26445,7 +26452,7 @@ var $author$project$Scenes$Level2$Export$game = F2(
 							function (_v0, _v1, _v2) {
 								return A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil);
 							})),
-					globalData: A2($author$project$Scenes$Level2$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters),
+					globalData: A3($author$project$Scenes$Level2$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters, engineMsg.ingameTime),
 					player: A2($author$project$Scenes$Level2$Config$initPlayer, t, engineMsg.playerPosition)
 				}));
 	});
@@ -27191,13 +27198,14 @@ var $author$project$Scenes$Level3$Map$mymap = A3(
 																			_Utils_Tuple2(1, 70),
 																			2,
 																			$author$project$Scenes$Level3$Map$sds)))))))))))))))))));
-var $author$project$Scenes$Level3$Config$initGameGlobalData = F2(
-	function (e, col) {
+var $author$project$Scenes$Level3$Config$initGameGlobalData = F3(
+	function (e, col, t) {
 		return {
 			camera: $author$project$Scenes$Level3$Config$initCamera,
 			collectedMonsters: col,
 			currentScene: 'Level3',
 			energy: e,
+			ingameTime: t,
 			ingamepause: false,
 			mapsize: _Utils_Tuple2(160, 70),
 			selectobj: 1,
@@ -27250,7 +27258,7 @@ var $author$project$Scenes$Level3$Export$game = F2(
 							function (_v0, _v1, _v2) {
 								return A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil);
 							})),
-					globalData: A2($author$project$Scenes$Level3$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters),
+					globalData: A3($author$project$Scenes$Level3$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters, engineMsg.ingameTime),
 					player: A2($author$project$Scenes$Level3$Config$initPlayer, t, engineMsg.playerPosition)
 				}));
 	});
@@ -27889,13 +27897,14 @@ var $author$project$Scenes$Level4$Map$mymap = A2(
 																																				_Utils_Tuple2(1, 70),
 																																				1,
 																																				$author$project$Scenes$Level4$Map$sds))))))))))))))))))))))))))))))))))));
-var $author$project$Scenes$Level4$Config$initGameGlobalData = F2(
-	function (e, col) {
+var $author$project$Scenes$Level4$Config$initGameGlobalData = F3(
+	function (e, col, t) {
 		return {
 			camera: $author$project$Scenes$Level4$Config$initCamera,
 			collectedMonsters: col,
 			currentScene: 'Level4',
 			energy: e,
+			ingameTime: t,
 			ingamepause: false,
 			mapsize: _Utils_Tuple2(200, 70),
 			selectobj: 1,
@@ -27948,7 +27957,7 @@ var $author$project$Scenes$Level4$Export$game = F2(
 							function (_v0, _v1, _v2) {
 								return A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil);
 							})),
-					globalData: A2($author$project$Scenes$Level4$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters),
+					globalData: A3($author$project$Scenes$Level4$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters, engineMsg.ingameTime),
 					player: A2($author$project$Scenes$Level4$Config$initPlayer, t, engineMsg.playerPosition)
 				}));
 	});
@@ -28937,13 +28946,14 @@ var $author$project$Scenes$Level4boss$Map$mymap = A2(
 																											_Utils_Tuple2(1, 70),
 																											2,
 																											$author$project$Scenes$Level4boss$Map$sds)))))))))))))))))))))))))));
-var $author$project$Scenes$Level4boss$Config$initGameGlobalData = F2(
-	function (e, col) {
+var $author$project$Scenes$Level4boss$Config$initGameGlobalData = F3(
+	function (e, col, t) {
 		return {
 			camera: $author$project$Scenes$Level4boss$Config$initCamera,
 			collectedMonsters: col,
 			currentScene: 'Level4boss',
 			energy: e,
+			ingameTime: t,
 			ingamepause: false,
 			mapsize: _Utils_Tuple2(120, 70),
 			selectobj: 1,
@@ -28996,7 +29006,7 @@ var $author$project$Scenes$Level4boss$Export$game = F2(
 							function (_v0, _v1, _v2) {
 								return A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil);
 							})),
-					globalData: A2($author$project$Scenes$Level4boss$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters),
+					globalData: A3($author$project$Scenes$Level4boss$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters, engineMsg.ingameTime),
 					player: A2($author$project$Scenes$Level4boss$Config$initPlayer, t, engineMsg.playerPosition)
 				}));
 	});
@@ -29360,13 +29370,14 @@ var $author$project$Scenes$Level5$Map$mymap = A3(
 															_Utils_Tuple2(1, 70),
 															2,
 															$author$project$Scenes$Level5$Map$sds)))))))))))))));
-var $author$project$Scenes$Level5$Config$initGameGlobalData = F2(
-	function (e, col) {
+var $author$project$Scenes$Level5$Config$initGameGlobalData = F3(
+	function (e, col, t) {
 		return {
 			camera: $author$project$Scenes$Level5$Config$initCamera,
 			collectedMonsters: col,
 			currentScene: 'Level5',
 			energy: e,
+			ingameTime: t,
 			ingamepause: false,
 			mapsize: _Utils_Tuple2($author$project$Scenes$Level5$Map$mapsize, 70),
 			selectobj: 1,
@@ -29419,7 +29430,7 @@ var $author$project$Scenes$Level5$Export$game = F2(
 							function (_v0, _v1, _v2) {
 								return A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil);
 							})),
-					globalData: A2($author$project$Scenes$Level5$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters),
+					globalData: A3($author$project$Scenes$Level5$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters, engineMsg.ingameTime),
 					player: A2($author$project$Scenes$Level5$Config$initPlayer, t, engineMsg.playerPosition)
 				}));
 	});
@@ -30423,13 +30434,14 @@ var $author$project$Scenes$Level5boss$Map$mymap = A3(
 									_Utils_Tuple2(1, 70),
 									2,
 									$author$project$Scenes$Level5boss$Map$sds)))))))));
-var $author$project$Scenes$Level5boss$Config$initGameGlobalData = F2(
-	function (e, col) {
+var $author$project$Scenes$Level5boss$Config$initGameGlobalData = F3(
+	function (e, col, t) {
 		return {
 			camera: $author$project$Scenes$Level5boss$Config$initCamera,
 			collectedMonsters: col,
 			currentScene: 'Level5boss',
 			energy: e,
+			ingameTime: t,
 			ingamepause: false,
 			mapsize: _Utils_Tuple2(100, 70),
 			selectobj: 1,
@@ -30482,7 +30494,7 @@ var $author$project$Scenes$Level5boss$Export$game = F2(
 							function (_v0, _v1, _v2) {
 								return A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil);
 							})),
-					globalData: A2($author$project$Scenes$Level5boss$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters),
+					globalData: A3($author$project$Scenes$Level5boss$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters, engineMsg.ingameTime),
 					player: A2($author$project$Scenes$Level5boss$Config$initPlayer, t, engineMsg.playerPosition)
 				}));
 	});
@@ -30617,13 +30629,14 @@ var $author$project$Scenes$Path$Map$mymap = A4(
 				_Utils_Tuple2(1, 70),
 				2,
 				$author$project$Scenes$Path$Map$sds))));
-var $author$project$Scenes$Path$Config$initGameGlobalData = F2(
-	function (e, col) {
+var $author$project$Scenes$Path$Config$initGameGlobalData = F3(
+	function (e, col, t) {
 		return {
 			camera: $author$project$Scenes$Path$Config$initCamera,
 			collectedMonsters: col,
 			currentScene: 'Path',
 			energy: e,
+			ingameTime: t,
 			ingamepause: false,
 			mapsize: _Utils_Tuple2(62, 70),
 			selectobj: 1,
@@ -30676,7 +30689,7 @@ var $author$project$Scenes$Path$Export$game = F2(
 							function (_v0, _v1, _v2) {
 								return A2($linsyking$elm_canvas$Canvas$group, _List_Nil, _List_Nil);
 							})),
-					globalData: A2($author$project$Scenes$Path$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters),
+					globalData: A3($author$project$Scenes$Path$Config$initGameGlobalData, engineMsg.energy, engineMsg.collectedMonsters, engineMsg.ingameTime),
 					player: A2($author$project$Scenes$Path$Config$initPlayer, t, engineMsg.playerPosition)
 				}));
 	});

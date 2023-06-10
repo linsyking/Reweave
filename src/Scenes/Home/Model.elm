@@ -87,10 +87,11 @@ handleLayerMsg gd lmsg ( model, _ ) =
 
             else if i == 3 then
                 if gd.localstorage.initPosition == ( -1, -1 ) then
-                    ( model, [ SOChangeScene ( SceneEngineTMsg (EngineT gd.localstorage.energy DefaultPlayerPosition gd.localstorage.collected 0), gd.localstorage.level ) ], gd )
+                    ( model, [ SOChangeScene ( SceneEngineTMsg (EngineT gd.localstorage.energy DefaultPlayerPosition gd.localstorage.collected 0 0), gd.localstorage.level ) ], gd )
 
                 else
-                    ( model, [ SOChangeScene ( SceneEngineTMsg (EngineT gd.localstorage.energy (CustomPlayerPosition gd.localstorage.initPosition) gd.localstorage.collected 0), gd.localstorage.level ) ], gd )
+                    -- TODO: Load Ingame Time
+                    ( model, [ SOChangeScene ( SceneEngineTMsg (EngineT gd.localstorage.energy (CustomPlayerPosition gd.localstorage.initPosition) gd.localstorage.collected 0 0), gd.localstorage.level ) ], gd )
 
             else
                 ( model, [], gd )

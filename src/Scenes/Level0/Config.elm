@@ -182,8 +182,8 @@ dialogues2 =
 
 {-| initGameGlobalData
 -}
-initGameGlobalData : Float -> List String -> Int -> GameGlobalData
-initGameGlobalData e col spstate =
+initGameGlobalData : Float -> List String -> Int -> Int -> GameGlobalData
+initGameGlobalData e col spstate t =
     { camera = initCamera
     , solidmap = mymap
     , mapsize = ( mapwidth, 70 )
@@ -194,6 +194,7 @@ initGameGlobalData e col spstate =
     , collectedMonsters = col
     , settingpause = False
     , specialState = spstate
+    , ingameTime = t
     }
 
 

@@ -375,7 +375,7 @@ dealParentMsg : GameComponentTMsg -> GlobalData -> ( Model, Int ) -> GameGlobalD
 dealParentMsg gct gd ( model, t ) ggd =
     case gct of
         GameExitScene s pls spstate ->
-            ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerExitMsg (EngineT ggd.energy pls ggd.collectedMonsters spstate) s 50 ) ] ), gd )
+            ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerExitMsg (EngineT ggd.energy pls ggd.collectedMonsters spstate ggd.ingameTime) s 50 ) ] ), gd )
 
         GameStringMsg "restart" ->
             ( ( model, { ggd | ingamepause = True }, [ ( LayerName "Frontground", LayerRestartMsg 10 ) ] ), gd )

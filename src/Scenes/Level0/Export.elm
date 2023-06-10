@@ -38,7 +38,7 @@ game t sm =
             , actors = initActors t engineMsg.specialstate
             , chartlets = allChartlets engineMsg.specialstate
             , globalData =
-                initGameGlobalData engineMsg.energy engineMsg.collectedMonsters engineMsg.specialstate
+                initGameGlobalData engineMsg.energy engineMsg.collectedMonsters engineMsg.specialstate engineMsg.ingameTime
             , background = ( Array.empty, background )
             , frontground = ( initFrontGroundComponents t engineMsg.specialstate, \_ _ _ -> group [] [] )
             }

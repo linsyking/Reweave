@@ -117,6 +117,7 @@ type alias EngineT =
     , playerPosition : PlayerInitPosition
     , collectedMonsters : List String
     , specialstate : Int
+    , ingameTime : Int
     }
 
 
@@ -128,4 +129,5 @@ nullEngineT =
     , playerPosition = DefaultPlayerPosition
     , collectedMonsters = []
     , specialstate = 0
+    , ingameTime = 0
     }

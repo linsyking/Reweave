@@ -177,6 +177,7 @@ updateModel msg gd lm ( model, t ) ggd =
                             DefaultPlayerPosition
                             ggd.collectedMonsters
                             ggd.specialState
+                            ggd.ingameTime
                 }
               , ggd
               , []
