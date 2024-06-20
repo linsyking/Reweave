@@ -1,4 +1,4 @@
-**Note. If you want to use the game framework of Reweave, please take a look at the [Elm Messenger](https://github.com/linsyking/Messenger) Project.**
+**Note. The game engine is being developed at [Elm Messenger](https://github.com/linsyking/Messenger).**
 
 You can access the game [here](https://focs.ji.sjtu.edu.cn/silverfocs/demo/2022/p2team01/) or on Github page.
 
