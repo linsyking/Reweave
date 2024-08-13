@@ -3,7 +3,7 @@
 
 echo -e "\033[32mBuilding the project...\033[0m"
 
-make
+make release
 
 echo -e "\033[32mChecking the code...\033[0m"
 
