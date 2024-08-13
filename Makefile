@@ -20,3 +20,5 @@ format:
 
 clean:
 	rm -rf build/
+
+.PHONY: debug release format clean
